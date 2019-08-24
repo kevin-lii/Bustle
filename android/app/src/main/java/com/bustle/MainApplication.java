@@ -9,6 +9,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.facebook.react.PackageList;
 
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -24,7 +26,6 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // additional non auto detected packages can still be added here:
-      // packages.add(new SomeReactNativePackage());
       return packages;
     }
 

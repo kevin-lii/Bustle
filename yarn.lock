@@ -950,6 +950,14 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/common/-/common-0.2.3.tgz#0009e3c5de875fa380c3a46ff36d250262bb18a7"
   integrity sha512-CyvRTD5fODD65ywGThleB+WP7E9wrQv/XB+cy+R8KgEkf3AKDPnI5mjS7t9P8jGLzYZQWy7VU/ynp6f6H/5laQ==
 
+"@react-native-firebase/firestore@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-0.2.3.tgz#86285d26c96de538224d939871bc375719bf0dcf"
+  integrity sha512-jjMZgY26sxoqHCu2c9+ERPx92ewn06GSwMuUfHv66SalLe1dN//5CflCSx6yB+vBq/pmRVSiqde5rmTMcEJZEg==
+  dependencies:
+    "@react-native-firebase/app-types" "0.2.3"
+    "@react-native-firebase/common" "0.2.3"
+
 "@react-navigation/core@~3.5.0":
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.5.0.tgz#73d1a12448e2bd71855e0080b95a7f51ede0cd9e"
@@ -5187,6 +5195,11 @@ react-native-drawer-layout@^2.0.0:
   resolved "https://registry.yarnpkg.com/react-native-drawer-layout/-/react-native-drawer-layout-2.0.0.tgz#8ce1e4027bd3f3a09045afdb46080e18346be232"
   integrity sha512-zYmzv+4QKDwxmAj7pF1yr8VUb+Hp7oBlwMjRZsvv56vPwO89I+kPTI8G78uwSNIf5b4e/iOChE4vpB5J2XsJFA==
 
+react-native-fbsdk@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-1.0.1.tgz#0c34e519d4ef1c3d4b12c1b64dc645d719988ad8"
+  integrity sha512-5TNPOMb+Wq5Z7jmUHGF9f6WrmSl3LeKoZZcgTBUp6Qt/o7g1+VzbI3a9gCrGwJcvWZrdN8qlBhMNcwQ3y8ecyg==
+
 react-native-gesture-handler@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.4.1.tgz#c38d9e57637b95e221722a79f2bafac62e3aeb21"
@@ -5196,6 +5209,16 @@ react-native-gesture-handler@^1.4.1:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-google-signin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-google-signin/-/react-native-google-signin-2.0.0.tgz#0d9cb128a65c0b48216716b979c1ada35900ceb0"
+  integrity sha512-9loM4lcCIdbco5BnmNio7yGaXQKCpCaY1VRmYiTSvC5NjuSf6Ui6jZRee46p/YdaU4yRnS3u5Vct6Psrvr0HNg==
+
+react-native-maps@0.25.0:
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
+  integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
 
 react-native-reanimated@^1.2.0:
   version "1.2.0"

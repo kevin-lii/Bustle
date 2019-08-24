@@ -1,5 +1,6 @@
 import React from 'react'
-import { createBottomTabNavigator } from "react-navigation";
+import { View, Text } from 'react-native'
+import { createBottomTabNavigator, withNavigation } from "react-navigation";
 
 import Feed from '../screens/Page/Feed'
 import Map from '../screens/Page/Map'
