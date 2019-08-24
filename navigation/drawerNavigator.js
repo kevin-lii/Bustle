@@ -1,29 +1,26 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation'
+import { View, ScrollView, Text, TouchableOpacity } from 'react-native'
+import { createDrawerNavigator, DrawerItems, SafeAreaView, withNavigation } from 'react-navigation'
+import auth from '@react-native-firebase/auth'
 
 import Invites from '../screens/Page/Invites'
 import Profile from '../screens/Detail/Profile'
 
-import TabNavigator from './tabNavigator'
+import OverlayNavigator from './overlayNavigator'
 
-const Dashboard = createStackNavigator({
-    TabNavigator
-}, {
-    defaultNavigationOptions: ({ navigation }) => {
-        return {
-            headerRight: (
-                <Text style={{ paddingRight: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} >Menu</Text>
-            )
-        }
-    },
-    navigationOptions: {
-        //custom header
-    }
-})
+const CustomDrawerContentComponent = props => (
+    <ScrollView>
+      <SafeAreaView style={{ flex: 1 }} forceInset={{ top: 'always', horizontal: 'never' }}>
+        <DrawerItems {...props} />
+        <TouchableOpacity onPress={async () => await auth().signOut()}>
+            <Text>Logout</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ScrollView>
+);
 
 export default createDrawerNavigator({
-    Dashboard,
+    Dashboard: OverlayNavigator,
     Invites,
     Profile
 }, {
@@ -31,5 +28,6 @@ export default createDrawerNavigator({
     drawerType: 'front',
     overlayColor: 'grey',
     drawerWidth: 200,
-    // contentComponent: custom ting
+    contentComponent: CustomDrawerContentComponent
 })
+

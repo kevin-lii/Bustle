@@ -12,6 +12,7 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import firebase from '@react-native-firebase/app';
 
 import NavigationContainer from './navigation'
+import AuthContainer from './dataContainers/AuthContainer'
 
 // TODO(you): import any additional firebase services that you require for your app, e.g for auth:
 //    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
@@ -51,7 +52,7 @@ class App2 extends Component<Props> {
 
 export default () => {
     return (
-      <NavigationContainer />
+      <AuthContainer />
     )
 }
 

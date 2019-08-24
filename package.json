@@ -13,11 +13,15 @@
   "dependencies": {
     "@react-native-firebase/app": "0.2.3",
     "@react-native-firebase/auth": "^0.2.3",
+    "@react-native-firebase/firestore": "^0.2.3",
     "moment": "^2.24.0",
     "react": "16.8.6",
     "react-native": "0.60.4",
     "react-native-drawer-layout": "^2.0.0",
+    "react-native-fbsdk": "^1.0.1",
     "react-native-gesture-handler": "^1.4.1",
+    "react-native-google-signin": "^2.0.0",
+    "react-native-maps": "0.25.0",
     "react-native-reanimated": "^1.2.0",
     "react-navigation": "^3.12.0"
   },
