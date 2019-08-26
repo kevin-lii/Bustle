@@ -18,16 +18,28 @@ export default function AuthContainer() {
     // Handle user state changes
     async function onAuthStateChanged(user) {
         setUser(user);
-        const profile = await firestore()
-            .collection('users')
-            .doc(user.uid)
-            .get()
-        setUserProfile(profile.data())
+
+        if(user) {
+            const profile = await firestore()
+                .collection('users')
+                .doc(user.uid)
+                .get()
+            const data = profile.data()
+            setUserProfile(data)
+        }
+        
         if (initilizing) setInitilizing(false);
     }
     
     useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        let subscriber
+        try {
+            subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        } catch (e) {
+            setInitilizing(false)
+            return <Login />
+        }
+        
         return subscriber; // unsubscribe on unmount
     }, []);
     

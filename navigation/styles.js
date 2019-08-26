@@ -15,5 +15,14 @@ export default StyleSheet.create({
     },
     clear: {
         flex: 0
+    },
+    formContainer: {
+        position:'absolute',
+        height: '100%',
+        width: '100%',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        bottom: 0
     }
 })

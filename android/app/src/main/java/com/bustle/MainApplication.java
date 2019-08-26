@@ -11,6 +11,10 @@ import com.facebook.react.PackageList;
 
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
+import com.wix.reactnativeuilib.highlighterview.HighlighterViewPackage;
+import com.wix.reactnativeuilib.textinput.TextInputDelKeyHandlerPackage;
+import com.wix.reactnativeuilib.wheelpicker.WheelPickerPackage;
+
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -26,6 +30,10 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // additional non auto detected packages can still be added here:
+      packages.add(new HighlighterViewPackage());
+      packages.add(new TextInputDelKeyHandlerPackage());
+      packages.add(new WheelPickerPackage());
+
       return packages;
     }
 

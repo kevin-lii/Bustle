@@ -30,7 +30,6 @@ export default function Login({ navigation }) {
             const token = await AccessToken.getCurrentAccessToken()
             const credential = auth.FacebookAuthProvider.credential(token.accessToken)
             auth().signInWithCredential(credential)
-            Alert.alert('ok')
         }
     }
 
@@ -40,12 +39,12 @@ export default function Login({ navigation }) {
 
     return (
         <View style={ {flex: 1, justifyContent: 'center', alignContent: 'center'} }>
-            <TextInput placeholder='Email' onChangeText={ text => setEmail(text) }></TextInput>
+            {/* <TextInput placeholder='Email' onChangeText={ text => setEmail(text) }></TextInput>
             <TextInput placeholder='Password' onChangeText={ text => setPassword(text) }></TextInput>
             <Text>{error}</Text>
             <TouchableOpacity onPress={ emailLogin }>
                 <Text>Login</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <TouchableOpacity onPress={ facebookLogin }>
                 <Text>Facebook Login</Text>
@@ -53,7 +52,7 @@ export default function Login({ navigation }) {
 
             {/* <LoginButton onLoginFinished={ facebookLogin } /> */}
 
-            {/* <TouchableOpacity onPress={ register }>
+            {/* <TouchableOpacity onPress={ googleLogin }>
                 <Text>Login</Text>
             </TouchableOpacity> */}
         </View>

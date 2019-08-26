@@ -1,40 +1,25 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, Text, ImageBackground } from 'react-native'
 
+import IconImage from '../Image/IconImage'
+
 import { UserContext } from '../../dataContainers/context'
 
 export default function HeaderRight({ navigation }) {
+    const margin = 30
+    
     return (
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}
+            style={{
+                marginTop: margin,
+                marginRight: margin,
+            }}>
             <UserContext.Consumer>
                 {user => (
-                    <ImageBackground 
-                        style={ styles.container } 
-                        imageStyle={ styles.image }
-                        source={{uri:user.photoURL}}>
-
-                    </ImageBackground>
+                    <IconImage source={{uri: user ? user.photoURL : ''}} />
                 )}
             </UserContext.Consumer>
         </TouchableOpacity>
     )
 }
 
-const edge = 40
-const margin = 30
-
-const styles = StyleSheet.create({
-    container: {
-        height: edge, 
-        width: edge, 
-        borderRadius: edge/2,
-        marginTop: margin,
-        marginRight: margin,
-        backgroundColor: 'white'
-    },
-    image: {
-        borderRadius: edge/2,
-        borderWidth: 1,
-        borderColor: 'black'
-    }
-})
