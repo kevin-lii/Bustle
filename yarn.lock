@@ -930,40 +930,44 @@
     eslint-plugin-react-native "3.6.0"
     prettier "1.16.4"
 
-"@react-native-firebase/app-types@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-0.2.3.tgz#2a81681a2cbe6ca80d818e653f1ad50c32753578"
-  integrity sha512-EKSvTg/bkD8+ugOeLzNDM8IGYlVetAfy8P++yiByHEULDNIPH8azVyYx5n7rUANjAB/4albgoEuTFehN85ZCNw==
+"@react-native-community/geolocation@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-1.4.2.tgz#7228c6d37c2f55017af9c49c2b9ad586d9bcb9f8"
+  integrity sha512-9x9dHDeUXnh2larA4zTT3y/tXPmRnysh5o9fsNbGcnUKPj1BUCIHnGGPxEIDnwP1DNIMP2DN9DmuMHImtTbX6A==
 
-"@react-native-firebase/app@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-0.2.3.tgz#7b012d820d410e86b7d14129b6fbaf9a41f2a4ad"
-  integrity sha512-YL87BaYSddQmG9YqzlS3ZJOajibj/0W+wX0lcwpJRd6puR+ZWCCT5ZbKTD+CDAqSvt9vokKvXcNcWarE4uDEZg==
+"@react-native-firebase/app-types@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-0.3.0.tgz#311e0b5f604da0b34f9ccb845daf6a737764cece"
+  integrity sha512-38J35TVe0zaok4V35MgFGO+jLIJWdVVZbTji9xBfX4KSHBanKiLGHlG6Xb5JFcTkbive8gfRZXz4Mw7u/hWbKw==
+
+"@react-native-firebase/app@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-0.3.0.tgz#9e124b651dd4fbfdddb13243cef78a812e30f2e4"
+  integrity sha512-dbHeIC+fZ9SP1A+mf/hJ0HozO6Gwv6kY4t4/+JjYSJ19AhW9uU1r4nbLb5kkuaiu6sKUyHSUg4TUkDQZpEPXSA==
   dependencies:
-    "@react-native-firebase/app-types" "0.2.3"
-    "@react-native-firebase/common" "0.2.3"
+    "@react-native-firebase/app-types" "0.3.0"
     opencollective-postinstall "^2.0.1"
 
-"@react-native-firebase/auth@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-0.2.3.tgz#8438e50a1fe56ea8470722363849c8d3d22192e3"
-  integrity sha512-IlamVa7EpWxy1GXw8vBZDpBLROcgGUrMjymw6GjP0W036T/elwbJ6LU/DcE+8Wu13MXG8+MCd8+LZSHSDXlxJg==
+"@react-native-firebase/auth@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-0.3.0.tgz#d7a1d2d4bf38c3f2e4041756d9ac024199b4c5a8"
+  integrity sha512-6B0IQEzUifgro06/OBTVs64bOjoSKnXYYMxoSWeapwQodbO/Exw4cGwObjihm34qRuzXrgVGCNyBOSDjVVeevA==
   dependencies:
-    "@react-native-firebase/app-types" "0.2.3"
-    "@react-native-firebase/common" "0.2.3"
+    "@react-native-firebase/app-types" "0.3.0"
 
-"@react-native-firebase/common@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/common/-/common-0.2.3.tgz#0009e3c5de875fa380c3a46ff36d250262bb18a7"
-  integrity sha512-CyvRTD5fODD65ywGThleB+WP7E9wrQv/XB+cy+R8KgEkf3AKDPnI5mjS7t9P8jGLzYZQWy7VU/ynp6f6H/5laQ==
-
-"@react-native-firebase/firestore@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-0.2.3.tgz#86285d26c96de538224d939871bc375719bf0dcf"
-  integrity sha512-jjMZgY26sxoqHCu2c9+ERPx92ewn06GSwMuUfHv66SalLe1dN//5CflCSx6yB+vBq/pmRVSiqde5rmTMcEJZEg==
+"@react-native-firebase/firestore@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-0.3.0.tgz#ee436221a3f627e6fd25a6f4d359a54e9e36780e"
+  integrity sha512-Xpf4FLYeC/MhbTZGoN1w3D+KqmRa7UIIDSfHaEt08IzZZq7gK5i5mQq2kIq8tJxjjG0uiHmSgg6rO8FXiFgaHA==
   dependencies:
-    "@react-native-firebase/app-types" "0.2.3"
-    "@react-native-firebase/common" "0.2.3"
+    "@react-native-firebase/app-types" "0.3.0"
+
+"@react-native-firebase/storage@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-0.3.0.tgz#e00068a78f97ac293df8451c58ee96479cc0bfef"
+  integrity sha512-AdwCBnRw69vyWH7nPrSdOc71m1HHYg7/UgelaiWDb14fA8p49BYg6iKUUOoEiTo14IvEQBrKAcIw2wSH+Ayyxw==
+  dependencies:
+    "@react-native-firebase/app-types" "0.3.0"
 
 "@react-navigation/core@~3.5.0":
   version "3.5.0"
@@ -4071,6 +4075,11 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -5294,6 +5303,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+qs@^5.2.0:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-5.2.1.tgz#801fee030e0b9450d6385adc48a4cc55b44aedfc"
+  integrity sha1-gB/uAw4LlFDWOFrcSKTMVbRK7fw=
+
 qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
@@ -5363,6 +5377,13 @@ react-native-fbsdk@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-1.0.1.tgz#0c34e519d4ef1c3d4b12c1b64dc645d719988ad8"
   integrity sha512-5TNPOMb+Wq5Z7jmUHGF9f6WrmSl3LeKoZZcgTBUp6Qt/o7g1+VzbI3a9gCrGwJcvWZrdN8qlBhMNcwQ3y8ecyg==
 
+react-native-geolocation-service@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-3.0.0.tgz#9cf822760885a273e712289b00a9c8361734062a"
+  integrity sha512-VU4tJYdHo6fNuMbDd1yBiv1VeD1gdX5RmZYlyRMvR9CiIJSQBzRobKBAesLw+9+5/rFBlyajgWsocs7/UavSFg==
+  dependencies:
+    "@react-native-community/geolocation" "^1.4.2"
+
 react-native-gesture-handler@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.3.0.tgz#d0386f565928ccc1849537f03f2e37fd5f6ad43f"
@@ -5382,6 +5403,15 @@ react-native-gesture-handler@^1.4.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-google-places-autocomplete@^1.3.9:
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.3.9.tgz#34c2e8b51df40ecb55ef3ccf57caba4c89ff9b56"
+  integrity sha512-bMZRYLpkuhvWE+UYmONw5fsEBM9cyJcSBESHTCKT8ZIydi+HKEM4rKZ+qLvgeHMPD2wpWRNwMJFDhR+ja/datQ==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    prop-types "^15.5.10"
+    qs "^5.2.0"
+
 react-native-google-signin@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-google-signin/-/react-native-google-signin-2.0.0.tgz#0d9cb128a65c0b48216716b979c1ada35900ceb0"
@@ -5391,11 +5421,6 @@ react-native-interactable@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-interactable/-/react-native-interactable-1.0.0.tgz#b6dcdff9ec61dfae9233e46e1d673ce8480a4f64"
   integrity sha512-e/GyydV3nFWVL36frdM8H+wGxy5pJu0WjlN6dgtBIRCaGz7nLbCRWFINs7SRwIaI9LPXVAqEXQTOc2d5LJN4HA==
-
-react-native-ionicons@^4.6.1:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-ionicons/-/react-native-ionicons-4.6.1.tgz#173f34065b6e01f2d54084746c321c932f3f3e28"
-  integrity sha512-tLIWsBnOG7lXj6rwFZp6iqXA7/OpxkK0Rtq+3xL8JZoppYWdvFjswK8Qi4uWJUm1o34jc9xSnIvaf2kTu+3J3Q==
 
 react-native-maps@0.25.0:
   version "0.25.0"
@@ -5457,6 +5482,15 @@ react-native-ui-lib@^3.36.0:
     react-native-text-size "^2.0.4"
     semver "^5.5.0"
     url-parse "^1.2.0"
+
+react-native-vector-icons@^6.6.0:
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-6.6.0.tgz#66cf004918eb05d90778d64bd42077c1800d481b"
+  integrity sha512-MImKVx8JEvVVBnaShMr7/yTX4Y062JZMupht1T+IEgbqBj4aQeQ1z2SH4VHWKNtWtppk4kz9gYyUiMWqx6tNSw==
+  dependencies:
+    lodash "^4.0.0"
+    prop-types "^15.6.2"
+    yargs "^13.2.2"
 
 react-native@0.60.4:
   version "0.60.4"
@@ -6676,7 +6710,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@^3.3.2:
+uuid@^3.3.2, uuid@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
@@ -6994,7 +7028,7 @@ yargs@^12.0.5:
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
 
-yargs@^13.3.0:
+yargs@^13.2.2, yargs@^13.3.0:
   version "13.3.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.0.tgz#4c657a55e07e5f2cf947f8a366567c04a0dedc83"
   integrity sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==

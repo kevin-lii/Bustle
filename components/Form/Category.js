@@ -2,15 +2,16 @@ import React from 'react'
 import { Card, View, Text, TouchableOpacity } from 'react-native-ui-lib'
 
 import FormCard from '../Window/FormCard'
+import FormHeader from './FormHeader'
 import CategoryButton from '../Buttons/Category'
 
 import styles from './styles'
 
-export default function({ category, submitCategory }) {
+export default function({ category, submitCategory, headerAction }) {
     
     return (
-        <FormCard height={200}>
-            <View row center style={styles.formTitle}><Text>Category</Text></View>
+        <FormCard height={200} padded>
+            <FormHeader icon='close' title='Choose Category' onPress={headerAction} />
             <View flex row spread centerV style={styles.buttonRow}>
                 <CategoryButton category='Social' submitCategory={submitCategory} current={category} />
                 <CategoryButton category='Dining' submitCategory={submitCategory} current={category} />

@@ -3,7 +3,7 @@ import { View } from 'react-native'
 
 import CreateEventForm from '../screens/Detail/CreateEvent'
 
-export default function(props) {
+export default function({ close }) {
 
 
     const generateEvent = (data) => {
@@ -12,6 +12,6 @@ export default function(props) {
         data.invited = ''
     }
 
-    return <CreateEventForm generateEvent/>
+    return <CreateEventForm generateEvent={generateEvent} close={close}/>
 }
 
