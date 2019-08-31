@@ -43,11 +43,11 @@ export default class CustomNavigator extends React.Component {
             )
 
         let content
-        if(this.state.eventFormVisible)
-        // if(true)
+        // if(this.state.eventFormVisible)
+        if(true)
             content = (
                 <View style={ styles.formContainer } pointerEvents={'box-none'}>
-                    <CreateEvent/>
+                    <CreateEvent close={closeForm}/>
                 </View>)
         else if (this.state.groupFormVisible)
             content = (

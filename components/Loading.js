@@ -1,8 +1,11 @@
-import React from 'react'
-import { Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Animated } from 'react-native'
+import { View } from 'react-native-ui-lib'
+import Icon from 'react-native-vector-icons/Fontisto'
 
 export default function Loading() {
+
     return (
-        <Text>Loading</Text>
+        <View flex center><Icon name="spinner-fidget" size={100}/></View>
     )
 }

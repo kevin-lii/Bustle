@@ -9,20 +9,22 @@ import { setState } from 'expect/build/jestMatchersObject';
 
 import { UserContext } from '../../../dataContainers/context'
 
-export default function CreateEvent({ generateEvent }) {
-    const [stage, setStage] = useState(1)
+export default function CreateEvent({ generateEvent, close }) {
+    const [stage, setStage] = useState(3)
 
     const [category, setCategory] = useState('Social')
 
-    const [type, setType] = useState(1)
+    const [type, setType] = useState('INDIVIDUAL')
     const [host, setHost] = useState()
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
+    const [image, setImage] = useState()
     const [open, setOpen] = useState(true)
-    const [isPublic, setPublic] = useState(true)
-    const [date, setDate] = useState(Date.now())
-    const [coordinates, setCoordinates] = useState()
+    const [isPrivate, setPrivate] = useState(false)
+    const [date, setDate] = useState()
+    const [time, setTime] = useState()
+    const [location, setLocation] = useState()
     
 
     const submitCategory = (category) => {
@@ -43,27 +45,31 @@ export default function CreateEvent({ generateEvent }) {
             type,
             category,
             open,
-            public: isPublic,
+            Private: isPrivate,
             active: date <= Date.now(),
             host,
             
         })
     }
 
+    const goBack = () => setStage(stage-1)
+
     let content
     switch (stage) {
         case 1:
-            content = <CategoryForm submitCategory={submitCategory} category={category}/>
+            content = <CategoryForm submitCategory={submitCategory} category={category} headerAction={close}/>
             break;
 
         case 2:
-            content = <HostChooseForm submitHost={submitHost}/>
+            content = <HostChooseForm submitHost={submitHost} headerAction={goBack}/>
             break;
 
         case 3:
-            content = <EventDetailsForm setName={setName} setCoordinates={setCoordinates}
-                        setDescription={setDescription} setOpen={setOpen} setPublic={setPublic}
-                        setDate={setDate}/>
+            content = <EventDetailsForm name={name} setName={setName} open={open} isPrivate={isPrivate}
+                        description={description} setDescription={setDescription} setOpen={setOpen} 
+                        setPrivate={setPrivate} date={date} setDate={setDate} time={time} setTime={setTime} 
+                        submit={submitForm} location={location} setLocation={setLocation} close={close} 
+                        headerAction={goBack} image={image} setImage={setImage}/>
             break;
     
         default:

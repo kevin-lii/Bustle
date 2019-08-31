@@ -4,7 +4,9 @@ require_relative '../node_modules/@react-native-firebase/app/pod_config'
 
 target 'Bustle' do
   # Pods for Bustle
-  pod 'React', :path => '../node_modules/react-native/'
+  pod 'React', :path => '../node_modules/react-native/' :subspecs => [
+    'RCTGeolocation',
+  ]
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
   pod 'React-fishhook', :path => '../node_modules/react-native/Libraries/fishhook'
@@ -31,7 +33,13 @@ target 'Bustle' do
   pod 'react-native-google-maps', :path => rn_maps_path
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
+
+  # pod 'Firebase/Storage', '~> 6.3.0'
   
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+
+
   target 'BustleTests' do
     inherit! :search_paths
     # Pods for testing
