@@ -5,10 +5,11 @@ import HeaderNavigator from './headerNavigator'
 import AddButton from '../components/Buttons/Add'
 import AddChoose from '../components/Buttons/AddChoose'
 
-import CreateEvent from '../dataContainers/CreateEventContainer'
+import CreateEvent from '../components/Form/EventCreate'
 
 import styles from './styles'
 
+// Supports opening different forms via AddChoose. Currently only displays event creation form. 
 export default class CustomNavigator extends React.Component {
     static router = HeaderNavigator.router;
     constructor(props) {
@@ -16,8 +17,8 @@ export default class CustomNavigator extends React.Component {
         this.state = { 
             overlay: false,
             buttonVisible: true,
-            eventFromVisible: false,
-            groupFormVisible: false
+            formVisible: false,
+            form: -1
         }
     }
 
@@ -26,36 +27,19 @@ export default class CustomNavigator extends React.Component {
 
         const toggleOverlay = () => this.setState({ 
             overlay: !this.state.overlay,
-            eventFormVisible: false,
-            groupFormVisible: false
+            formVisible: !this.state.formVisible
         })
-        const openGroupForm = () => this.setState({ groupFormVisible: true })
-        const openEventForm = () => this.setState({ eventFormVisible: true })
-        const closeForm = () => this.setState({
-            eventFormVisible: false,
-            groupFormVisible: false
-        })
-
-        const buttons = !this.state.overlay ? (
-                <AddButton toggleOverlay={toggleOverlay} />
-            ) : (
-                <AddChoose buttonVisible openEventForm={openEventForm} openGroupForm={openGroupForm}/>
-            )
+        const openForm = id => this.setState({ formVisible: true, form: id })
+        const closeForm = () => this.setState({ formVisible: false, form: -1, overlay: false })
 
         let content
-        // if(this.state.eventFormVisible)
-        if(true)
+        if(this.state.formVisible)
             content = (
                 <View style={ styles.formContainer } pointerEvents={'box-none'}>
                     <CreateEvent close={closeForm}/>
                 </View>)
-        else if (this.state.groupFormVisible)
-            content = (
-                <View style={ styles.formContainer } pointerEvents={'box-none'}>
-                    <Text>Group Form</Text>
-                </View>)
         else
-            content = buttons
+            content = (<AddButton toggleOverlay={toggleOverlay} />)
 
         return (
             <View style={styles.container}>

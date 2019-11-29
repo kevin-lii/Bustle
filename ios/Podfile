@@ -40,6 +40,9 @@ target 'Bustle' do
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
 
 
+
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+
   target 'BustleTests' do
     inherit! :search_paths
     # Pods for testing

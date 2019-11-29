@@ -27,7 +27,7 @@ export default ({ type, label, value, setValue, overlay }) => {
         initialText = 'Now'
 
     const [text, setText] = useState(initialText)
-
+    const toggleSize = 30
     
 
     let formField
@@ -145,7 +145,6 @@ export default ({ type, label, value, setValue, overlay }) => {
                     )
                 }}/>)
     } else if (type=='user-secret') {
-        const toggleSize = 30
         formField = value ? (
             <TouchableWithoutFeedback onPress={() => setValue(!value)}>
                 <View row centerV spread>
@@ -162,7 +161,6 @@ export default ({ type, label, value, setValue, overlay }) => {
             </TouchableWithoutFeedback>
         )
     } else if (type=='shield') {
-        const toggleSize = 30
         formField = value ? (
             <TouchableWithoutFeedback onPress={() => setValue(!value)}>
                 <View row centerV>
@@ -174,6 +172,22 @@ export default ({ type, label, value, setValue, overlay }) => {
             <TouchableWithoutFeedback onPress={() => setValue(!value)}>
                 <View row centerV>
                     <Text>Guests can't invite{'\t'}</Text>
+                    <Icon name='toggle-off' size={toggleSize}/>  
+                </View>
+            </TouchableWithoutFeedback>
+        )
+    } else if (type=='paper-plane') {
+        formField = value ? (
+            <TouchableWithoutFeedback onPress={() => setValue(!value)}>
+                <View row centerV>
+                    <Text>Do{'\t'}</Text>
+                    <Icon name='toggle-on' color={Theme.secondary} size={toggleSize}/>  
+                </View>
+            </TouchableWithoutFeedback>
+        ) : (
+            <TouchableWithoutFeedback onPress={() => setValue(!value)}>
+                <View row centerV>
+                    <Text>Don't {'\t'}</Text>
                     <Icon name='toggle-off' size={toggleSize}/>  
                 </View>
             </TouchableWithoutFeedback>
