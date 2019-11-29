@@ -9,11 +9,13 @@ export default StyleSheet.create({
         borderRadius: 12
     },
     buttonRow: {
-        paddingBottom: 20
+        marginTop: 10,
+        paddingBottom: 10
     },
     formTitle: {
         marginTop: 5,
-        marginBottom: 25,
+        paddingLeft: 15,
+        paddingRight: 15
     },
     listItem: {
 

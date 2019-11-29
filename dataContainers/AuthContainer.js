@@ -25,6 +25,7 @@ export default function AuthContainer() {
                 .doc(user.uid)
                 .get()
             const data = profile.data()
+            data.uid = user.uid
             setUserProfile(data)
         }
         
@@ -46,13 +47,6 @@ export default function AuthContainer() {
     if (initilizing) return <Loading />;
     
     if (!user) return <Login />
-    
-    const unsubscribe = firestore()
-        .collection('users')
-        .doc(user.uid)
-        .onSnapshot(userProfile => {
-            setUserProfile(userProfile.data())
-        });
 
     return (
         <UserContext.Provider value={userProfile}>

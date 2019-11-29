@@ -60,7 +60,8 @@ export default class HostChoose extends React.Component {
             const list = []
             user.groups.foreach(groupId => {
                 firestore().collection('groups').doc(groupId).get()
-                .then(group => {
+                .then(snapshot => {
+                    group = snapshot.data()
                     list.push({
                         key: group.uid,
                         source: {uri: group.photoURL || ''},

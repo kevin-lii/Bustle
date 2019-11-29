@@ -11,9 +11,7 @@ import ChatList from '../screens/Page/ChatList'
 export default createBottomTabNavigator({
     Feed,
     Map,
-    Events: EventList,
-    Groups: GroupList,
-    Chats: ChatList
+    Events: EventList
 },
 {
     initialRouteName: 'Map'
