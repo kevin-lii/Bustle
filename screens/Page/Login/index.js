@@ -1,60 +1,78 @@
-import React, { useState } from 'react'
-import { Alert, View, TouchableOpacity, Text, TextInput } from 'react-native'
-import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
-import auth from '@react-native-firebase/auth';
+import React, { useState } from "react";
+import { Alert, View, TouchableOpacity, Text, TextInput } from "react-native";
+import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
+import auth from "@react-native-firebase/auth";
+
+import TextButton from "../../../components/Buttons/TextButton";
+import SecureText from "../../../components/Text/SecureInput";
 
 export default function Login({ navigation }) {
-    const [email, setEmail] = useState('a@ol.com');
-    const [password, setPassword] = useState('tester');
-    const [error, setError] = useState('')
+  const [email, setEmail] = useState("a@ol.com");
+  const [password, setPassword] = useState("tester");
+  const [error, setError] = useState("");
 
-    async function emailLogin() {
-        try {
-            await auth().signInWithEmailAndPassword(email, password);
-        } catch (e) {
-            handleError(e)
-        }
+  async function emailLogin() {
+    try {
+      resetError();
+      await auth().signInWithEmailAndPassword(email, password);
+    } catch (e) {
+      handleError(e);
+    }
+  }
+
+  async function facebookLogin() {
+    const result = await LoginManager.logInWithPermissions([
+      "public_profile",
+      "email"
+    ]);
+    resetError();
+    if (result.isCancelled) {
+      setError("Login cancelled");
     }
 
-    async function facebookLogin() {
-        const result = await LoginManager.logInWithPermissions(['public_profile', 'email'])
-        if (result.isCancelled) {
-            setError('Login cancelled')
-        }
-
-        if (error) {
-            handleError(e)
-        } else if (result.isCancelled) {
-            setError('Cancelled')
-        } else {
-            const token = await AccessToken.getCurrentAccessToken()
-            const credential = auth.FacebookAuthProvider.credential(token.accessToken)
-            auth().signInWithCredential(credential)
-        }
+    if (error) {
+      handleError(e);
+    } else if (result.isCancelled) {
+      setError("Cancelled");
+    } else {
+      const token = await AccessToken.getCurrentAccessToken();
+      const credential = auth.FacebookAuthProvider.credential(
+        token.accessToken
+      );
+      auth().signInWithCredential(credential);
     }
+  }
 
-    function handleError(e) {
-        setError(e.message)
-    }
+  function handleError(e) {
+    setError(e.message);
+  }
 
-    return (
-        <View style={ {flex: 1, justifyContent: 'center', alignContent: 'center'} }>
-            {/* <TextInput placeholder='Email' onChangeText={ text => setEmail(text) }></TextInput>
-            <TextInput placeholder='Password' onChangeText={ text => setPassword(text) }></TextInput>
-            <Text>{error}</Text>
-            <TouchableOpacity onPress={ emailLogin }>
-                <Text>Login</Text>
-            </TouchableOpacity> */}
+  function resetError() {
+    setError("");
+  }
 
-            <TouchableOpacity onPress={ facebookLogin }>
-                <Text>Facebook Login</Text>
-            </TouchableOpacity>
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
+      <TextInput
+        placeholder="Email"
+        onChangeText={text => setEmail(text)}
+      ></TextInput>
+      <SecureText placeholder="Password" onChange={setPassword}></SecureText>
+      <Text>{error}</Text>
+      <TextButton onPress={emailLogin} text="Login" />
 
-            {/* <LoginButton onLoginFinished={ facebookLogin } /> */}
+      <TextButton onPress={facebookLogin} text="Facebook Login" />
 
-            {/* <TouchableOpacity onPress={ googleLogin }>
-                <Text>Login</Text>
-            </TouchableOpacity> */}
-        </View>
-    )
+      <TextButton
+        onPress={() => navigation.navigate("SignUp")}
+        text="Sign Up"
+      />
+
+      {/* <LoginButton onLoginFinished={facebookLogin} /> */}
+
+      {/* <TouchableOpacity onPress={googleLogin}>
+        <Text>Login</Text>
+      </TouchableOpacity> */}
+    </View>
+  );
 }
