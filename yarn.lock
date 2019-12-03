@@ -4754,6 +4754,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+meaningful-string@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/meaningful-string/-/meaningful-string-1.2.1.tgz#e84d22d2e86106afb8afece49e8fd50bc9c9274d"
+  integrity sha512-K6prrhr/5CW4+VHpQvsi4wxVsGY92WNpVRUHtUhC/qBMV1cHQtCpgTLXJpxUuy02gQ5TSDrmRKWvjEq9GPt5nA==
+
 mem@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
@@ -6065,11 +6070,6 @@ react-native-google-signin@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-google-signin/-/react-native-google-signin-2.0.0.tgz#0d9cb128a65c0b48216716b979c1ada35900ceb0"
   integrity sha512-9loM4lcCIdbco5BnmNio7yGaXQKCpCaY1VRmYiTSvC5NjuSf6Ui6jZRee46p/YdaU4yRnS3u5Vct6Psrvr0HNg==
-
-react-native-image-crop-picker@^0.25.0:
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.25.0.tgz#858fa6fdc857255fe5250252a38d58db347f9067"
-  integrity sha512-SpT8/zRUW+d/girR78Rc9FzqCOwuARRTJX91hENKJ8LPzVos1fthNOJO0LGGvVFYggbtLsLugrPRDRP2MiuGlQ==
 
 react-native-image-picker@^1.1.0:
   version "1.1.0"
