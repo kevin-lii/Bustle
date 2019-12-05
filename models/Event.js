@@ -35,25 +35,12 @@ export default class EventData {
 
     }
     
-    static async get(center) {
+    static async get(filters, func) {
         const store = firestore()
         const geofirestore = new GeoFirestore(store)
         // const query = store.collection('events').orderBy('g').startAt(5)
-        const query = geofirestore.collection('events').near(({ 
-            center: new firestore.GeoPoint(37.86835, -122.265),
-            radius: 100,
-        }))
-        let snapshot
-        try {
-            snapshot = await query.get()
-        } catch (e) {
-            return e
-        }
-        
-
-        const eventList = []
-        snapshot.forEach(doc => eventList.push(doc.data()))
-        return eventList
+        const query = geofirestore.collection('events')
+        query.onSnapshot(func)
     }
 
     static async create(userID, data, events) {
