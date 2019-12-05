@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {getLocation} from '../utils'
 
 import storage from '@react-native-firebase/storage'
-import firestore from '@react-native-firebase/firestore'
+import firestore, { firebase } from '@react-native-firebase/firestore'
 import { GeoFirestore } from 'geofirestore'
 
 import { UserContext } from '../dataContainers/context'
@@ -31,38 +31,58 @@ import { UserContext } from '../dataContainers/context'
 // }
 
 export default class EventData {
-    constructor(userID, data) {
-        now= Date.now()
+    constructor() {
+
+    }
+    
+    static async get(center) {
+        const store = firestore()
+        const geofirestore = new GeoFirestore(store)
+        // const query = store.collection('events').orderBy('g').startAt(5)
+        const query = geofirestore.collection('events').near(({ 
+            center: new firestore.GeoPoint(37.86835, -122.265),
+            radius: 100,
+        }))
+        let snapshot
+        try {
+            snapshot = await query.get()
+        } catch (e) {
+            return e
+        }
+        
+
+        const eventList = []
+        snapshot.forEach(doc => eventList.push(doc.data()))
+        return eventList
+    }
+
+    static async create(userID, data, events) {
         if(!data.name)
             throw new Error('Name not provided')
 
-        console.log(userID)
-        this.data = data
-        this.userID = userID
-        this.data.host = userID
-        this.data.ended = false
-        this.data.invited = [userID]
-    }
-    
-    static async get(filters) {
-
-    }
-
-    async create(events) {
         const store = firestore()
         const geofirestore = new GeoFirestore(store)
+        // const geo = geofirex.init(firebase())
 
-        const data = this.data
-        data.createdAt = Date.now()
+        const now = new Date()
+        data.createdAt = now
+        data.date = data.date || now
+        data.time = data.time || now
+
+        data.host = userID
+        data.ended = false
+        data.invited = [userID]
         
         if (data.location) {
             const { lat, lng } = data.location.geometry.location
             data.coordinates = new firestore.GeoPoint(lat,lng)
+            // data.position = geo.point(lat,lng)
         } else {
             const loc = await getLocation()
             data.coordinates = new firestore.GeoPoint(loc.coords.latitude,loc.coords.longitude)
+            // data.position = geo.point(loc.coords.latitude,loc.coords.longitude)
         }
-            
+        
         
         //1. create chat
         const chat = await store.collection('chats').add({ createdAt: new Date() })
@@ -81,12 +101,12 @@ export default class EventData {
         }
 
         //3.upload event
-        const eventRef = await geofirestore.collection('events').add(data)
+        const eventRef = await store.collection('events').add(data)
         console.log("pushed")
         
         //4.denormed update
         events.push(eventRef.id)
-        await store.collection('users').doc(this.userID).update({ events: events })
+        await store.collection('users').doc(userID).update({ events: events })
     }
 }
 

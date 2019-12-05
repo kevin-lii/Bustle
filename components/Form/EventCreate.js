@@ -32,14 +32,14 @@ export default class EventCreate extends React.Component {
     }
 
     render() {
-        console.log(this.context)
-
         const submit = async () => {
             console.log(this.context.uid)
             try {
                 const stateCopy = Object.assign({}, this.state);
                 delete stateCopy.overlayContent
-                await (new EventData(this.context.uid, stateCopy)).create(this.context.events)
+                await EventData.create(this.context.uid, stateCopy, this.context.events)
+
+                this.props.close()
             } catch (e) {
                 console.log(e)
                 Alert.alert('Error', e.message)

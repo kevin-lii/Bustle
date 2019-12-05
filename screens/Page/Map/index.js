@@ -2,7 +2,15 @@ import React from 'react'
 import { Text } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
+import EventData from '../../../models/Event';
+import firestore from '@react-native-firebase/firestore'
+
+
 export default function Map() {
+    EventData.get().then(res => {
+        console.log(res)
+    })
+    
     return (
         <MapView
             provider={PROVIDER_GOOGLE}
