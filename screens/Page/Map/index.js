@@ -8,13 +8,39 @@ import EventDetails from "../../../components/MapUI/EventBottomSheet";
 
 import styles from "./styles";
 
+import EventData from "../../../models/Event";
+import firestore from "@react-native-firebase/firestore";
+
 export default function Map() {
-  const [eventDetails, openEventDetails] = useState();
+  const [eventSet, setEventSet] = useState([]);
+  const [eventDetails, setEvent] = useState(null);
   const [visible, changeVisibility] = useState(false);
 
-  const toggleOverlay = () => changeVisibility(!visible);
+  function toggleOverlay(event) {
+    setEvent(event);
+    changeVisibility(!visible);
+  }
 
   const turnOffOverlay = () => changeVisibility(false);
+
+  EventData.get({}, snapshot => {
+    eventList = [];
+    snapshot.forEach(doc => eventList.push(doc.data()));
+    setEventSet(eventList);
+  });
+
+  const eventModal = (
+    <Modal
+      isVisible={visible}
+      style={styles.view}
+      onBackdropPress={turnOffOverlay}
+      onBackButtonPress={turnOffOverlay}
+      swipeDirection="down"
+      onSwipeComplete={turnOffOverlay}
+    >
+      <EventDetails event={eventDetails} />
+    </Modal>
+  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -28,23 +54,19 @@ export default function Map() {
           longitudeDelta: 0.0211
         }}
       >
-        <MapView.Marker
-          coordinate={{ latitude: 37.86835, longitude: -122.265 }}
-          onPress={toggleOverlay}
-        >
-          <Marker type="Social" onChange={changeVisibility}></Marker>
-        </MapView.Marker>
+        {eventSet.map(event => (
+          <MapView.Marker
+            coordinate={{
+              latitude: event.coordinates.latitude,
+              longitude: event.coordinates.longitude
+            }}
+            onPress={() => toggleOverlay(event)}
+          >
+            <Marker type={event.category} onChange={changeVisibility}></Marker>
+          </MapView.Marker>
+        ))}
       </MapView>
-      <Modal
-        isVisible={visible}
-        style={styles.view}
-        onBackdropPress={turnOffOverlay}
-        onBackButtonPress={turnOffOverlay}
-        swipeDirection="down"
-        onSwipeComplete={turnOffOverlay}
-      >
-        <EventDetails event={"Heloo"} />
-      </Modal>
+      {eventModal}
     </View>
   );
 }

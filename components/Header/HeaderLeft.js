@@ -3,11 +3,12 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 
 export default function HeaderLeft(props) {
     return (
-        <TouchableOpacity>
-            <View style={ styles.container }>
-                <Text>Search...</Text>
-            </View>
-        </TouchableOpacity>
+        // <TouchableOpacity>
+        //     <View style={ styles.container }>
+        //         <Text>Search...</Text>
+        //     </View>
+        // </TouchableOpacity>
+        <View></View>
     )
 }
 
