@@ -10,7 +10,7 @@ import styles from "./styles";
 import UserData from "../../models/User";
 
 export default function({ type, event, ...props }) {
-  alert(event.uid);
+  // alert(event.uid);
   const [host, setHostName] = useState("");
   const [atEvents, setEvents] = useState(false);
   const user = UserData.get(event.host).then(doc => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Alert, View, TouchableOpacity, Text, TextInput } from "react-native";
+import { Alert, View, TouchableOpacity, Text, TextField } from "react-native-ui-lib";
 import auth from "@react-native-firebase/auth";
 
 import TextButton from "../../../components/Buttons/TextButton";
@@ -14,48 +14,18 @@ export default function SignUp({ navigation }) {
   const [lastName, setUpLastName] = useState("");
   const [phoneNumber, setUpPhoneNumber] = useState("");
   const [error, setError] = useState("");
-  1;
+
   async function register() {
     try {
-      // const submit = async () => {
-      //   console.log(this.context.uid);
-      //   try {
-      //     const stateCopy = Object.assign({}, this.state);
-      //     delete stateCopy.overlayContent;
-      //     await new EventData(this.context.uid, stateCopy).create(
-      //       this.context.events
-      //     );
-      //   } catch (e) {
-      //     console.log(e);
-      //     Alert.alert("Error", e.message);
-      //   }
-      // };
-
-      // const validateSubmission = () => {
-      //   submit();
-      // };
       checkPhoneNumber(phoneNumber);
       checkName(firstName, lastName);
       checkPasswords(password, passwordAgain);
       resetError();
       await auth().createUserWithEmailAndPassword(email, password);
-      // writeUserData();
     } catch (e) {
       handleError(e);
     }
   }
-
-  // function writeUserData() {
-  //   firebase
-  //     .database()
-  //     .ref("users/" + firebase.auth().currentUser.uid)
-  //     .set({
-  //       displayName: firstName + " " + lastName,
-  //       email: email,
-  //       phone: phoneNumber,
-  //       profile_picture: "https://graph.facebook.com/1574614029341804/picture"
-  //     });
-  // }
 
   function handleError(e) {
     setError(e.message);
@@ -67,25 +37,25 @@ export default function SignUp({ navigation }) {
 
   async function facebookRegister() {}
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
-      <TextInput
+    <View >
+      <TextField
         placeholder="First name"
         onChangeText={text => setUpFirstName(text)}
-      ></TextInput>
-      <TextInput
+      ></TextField>
+      <TextField
         placeholder="Last name"
         onChangeText={text => setUpLastName(text)}
-      ></TextInput>
-      <TextInput
+      ></TextField>
+      <TextField
         placeholder="Email"
         onChangeText={text => setUpEmail(text)}
         textContentType="emailAddress"
-      ></TextInput>
-      <TextInput
+      ></TextField>
+      <TextField
         placeholder="Phone number"
         onChangeText={text => setUpPhoneNumber(text)}
         textContentType="telephoneNumber"
-      ></TextInput>
+      ></TextField>
       <SecureText placeholder="Password" onChange={setUpPassword}></SecureText>
       <SecureText
         placeholder="Re-enter password"

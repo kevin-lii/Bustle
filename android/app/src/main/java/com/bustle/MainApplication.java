@@ -1,4 +1,4 @@
-package com.bustle;
+package co.bustleapp;
 
 import android.app.Application;
 

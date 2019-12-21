@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Alert, View, TouchableOpacity, Text, TextInput } from "react-native";
+import { Alert, View, TouchableOpacity, Text, TextField } from "react-native-ui-lib";
 import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
 import auth from "@react-native-firebase/auth";
 
-import TextButton from "../../../components/Buttons/TextButton";
+import ActionButton from "../../../components/Buttons/ActionButton";
 import SecureText from "../../../components/Text/SecureInput";
+
+import styles from './styles'
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("a@ol.com");
@@ -52,27 +54,30 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignContent: "center" }}>
-      <TextInput
-        placeholder="Email"
-        onChangeText={text => setEmail(text)}
-      ></TextInput>
-      <SecureText placeholder="Password" onChange={setPassword}></SecureText>
-      <Text>{error}</Text>
-      <TextButton onPress={emailLogin} text="Login" />
+    <View flex spread style={styles.container}>
+      <View flex centerV>
+        <View centerV style={styles.input}><TextField
+          placeholder="Email"
+          onChangeText={text => setEmail(text)}
+        ></TextField></View>
+        <SecureText placeholder="Password" onChange={setPassword}></SecureText>
+        <Text>{error}</Text>
+      </View>
 
-      <TextButton onPress={facebookLogin} text="Facebook Login" />
+      <View flex centerV>
+        <View style={styles.button}><ActionButton
+          onPress={emailLogin}
+          text="Login" /></View>
 
-      <TextButton
-        onPress={() => navigation.navigate("SignUp")}
-        text="Sign Up"
-      />
+        <View style={styles.button}><ActionButton
+          primary
+          onPress={facebookLogin} 
+          text="Facebook Login" /></View>
 
-      {/* <LoginButton onLoginFinished={facebookLogin} /> */}
-
-      {/* <TouchableOpacity onPress={googleLogin}>
-        <Text>Login</Text>
-      </TouchableOpacity> */}
+        <View style={styles.button}><ActionButton
+          onPress={() => navigation.navigate("SignUp")}
+          text="Sign Up"/></View>
+      </View>
     </View>
   );
 }
