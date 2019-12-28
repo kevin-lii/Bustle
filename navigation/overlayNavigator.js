@@ -22,13 +22,13 @@ const customRouter = {
     if (state.params && state.params.map) {
       map = state.params.map
       event = state.params.preview
-      zoom = 2
+      zoom = 17
     }
     //remove event preview
     else if (lastState && lastState.params && lastState.params.map && (!state.params || ! state.params.map)) {
       map = lastState.params.map
       event = lastState.params.preview
-      zoom = -2
+      zoom = 15
     }
     if (map)
       map.getCamera().then(camera => {
@@ -37,7 +37,7 @@ const customRouter = {
             latitude: event.coordinates.latitude,
             longitude: event.coordinates.longitude
           },
-          zoom: camera.zoom + zoom
+          zoom
         }, { duration: 300 })
       })
     return state
