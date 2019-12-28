@@ -9,6 +9,7 @@ import {
 import auth from "@react-native-firebase/auth";
 
 import Invites from "../screens/Page/Invites";
+import MyEvents from "../screens/Page/MyEvents"
 import Profile from "./profileNavigator";
 
 import OverlayNavigator from "./overlayNavigator";
@@ -29,9 +30,9 @@ const CustomDrawerContentComponent = props => (
 
 export default createDrawerNavigator(
   {
-    Dashboard: OverlayNavigator,
-    Invites,
-    Profile
+    Map: OverlayNavigator,
+    "My Events": MyEvents,
+    // Profile
   },
   {
     drawerPosition: "right",

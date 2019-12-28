@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ListItem,
-  TextField
-} from "react-native-ui-lib";
+import React from "react";
+import { View, TextField } from "react-native-ui-lib";
 import { Alert, ScrollView, TouchableWithoutFeedback } from "react-native";
 
 import FormCard from "../Window/FormCard";
@@ -40,7 +33,6 @@ export default class EventCreate extends React.Component {
 
   render() {
     const submit = async () => {
-      console.log(this.context.uid);
       try {
         const stateCopy = Object.assign({}, this.state);
         delete stateCopy.overlayContent;
@@ -84,7 +76,7 @@ export default class EventCreate extends React.Component {
     }
 
     return (
-      <FormCard height={500}>
+      <FormCard height={500} width={"90%"}>
         <FormHeader
           icon="close-a"
           title="Create Event"

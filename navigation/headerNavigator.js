@@ -9,6 +9,8 @@ import { UserContext } from '../dataContainers/context'
 import HeaderLeft from '../components/Header/HeaderLeft'
 import HeaderRight from '../components/Header/HeaderRight'
 
+import Map from '../screens/Page/Map'
+
 export default createStackNavigator({
     TabNavigator
 }, {

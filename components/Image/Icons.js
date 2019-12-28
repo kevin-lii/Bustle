@@ -5,6 +5,9 @@ import Foundation from "react-native-vector-icons/Foundation";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/Ionicons";
+import Fontisto from 'react-native-vector-icons/Fontisto'
+
+import { Theme } from '../../constants'
 
 export default function Icons({
   type,
@@ -12,10 +15,19 @@ export default function Icons({
   iconOff,
   uponChange,
   size,
-  color,
+  color = Theme.primary,
   onPress
 }) {
   switch (type) {
+    case "Fontisto":
+      return (
+        <Fontisto
+          name={uponChange ? icon : iconOff}
+          onPress={onPress}
+          size={size}
+          color={color}
+        ></Fontisto>
+      );
     case "Entypo":
       return (
         <Entypo

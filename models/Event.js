@@ -39,8 +39,16 @@ export default class EventData {
         const store = firestore()
         const geofirestore = new GeoFirestore(store)
         // const query = store.collection('events').orderBy('g').startAt(5)
-        const query = geofirestore.collection('events')
+        let query = geofirestore.collection('events')
+        if (filters.active)
+            query = query.where("ended", "==", false)
+        if (filters.host)
+            query = query.where("host", "==", filters.host)
         query.onSnapshot(func)
+    }
+
+    static async remove(event) {
+        console.log(event)
     }
 
     static async create(userID, data, events) {
@@ -88,7 +96,7 @@ export default class EventData {
         }
 
         //3.upload event
-        const eventRef = await store.collection('events').add(data)
+        const eventRef = await geofirestore.collection('events').add(data)
         console.log("pushed")
         
         //4.denormed update

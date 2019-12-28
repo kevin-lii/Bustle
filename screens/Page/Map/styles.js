@@ -10,9 +10,5 @@ export default StyleSheet.create({
     backgroundColor: "transparent",
     bottom: 0,
     zIndex: 100
-  },
-  view: {
-    justifyContent: "flex-end",
-    margin: 0
   }
 });

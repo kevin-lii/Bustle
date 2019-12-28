@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Theme } from "../../constants";
 
 export default StyleSheet.create({
   marker: {
@@ -19,10 +20,15 @@ export default StyleSheet.create({
   },
   popup: {
     backgroundColor: "#FFF",
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
+    borderTopLeftRadius: Theme.borderRadius,
+    borderTopRightRadius: Theme.borderRadius,
+    borderColor: Theme.secondary,
+    borderWidth: 2,
+    borderBottomWidth: 0,
     height: 200,
-    alignItems: "center",
-    justifyContent: "center"
+    padding: Theme.margin
+  },
+  popupTitle: {
+    fontSize: 40
   }
 });

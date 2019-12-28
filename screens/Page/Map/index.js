@@ -11,7 +11,7 @@ import styles from "./styles";
 import EventData from "../../../models/Event";
 import firestore from "@react-native-firebase/firestore";
 
-export default function Map() {
+export default function Map({ navigation }) {
   const [eventSet, setEventSet] = useState([]);
   const [eventDetails, setEvent] = useState(null);
   const [visible, changeVisibility] = useState(false);
@@ -22,25 +22,15 @@ export default function Map() {
   }
 
   const turnOffOverlay = () => changeVisibility(false);
+  const openPreview = event => {
+    navigation.navigate("Map", { preview: event })
+  }
 
   EventData.get({}, snapshot => {
     eventList = [];
     snapshot.forEach(doc => eventList.push(doc.data()));
     setEventSet(eventList);
   });
-
-  const eventModal = (
-    <Modal
-      isVisible={visible}
-      style={styles.view}
-      onBackdropPress={turnOffOverlay}
-      onBackButtonPress={turnOffOverlay}
-      swipeDirection="down"
-      onSwipeComplete={turnOffOverlay}
-    >
-      <EventDetails event={eventDetails} />
-    </Modal>
-  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -54,19 +44,20 @@ export default function Map() {
           longitudeDelta: 0.0211
         }}
       >
-        {eventSet.map(event => (
+        {eventSet.map((event,index) => (
           <MapView.Marker
+            key={index}
             coordinate={{
               latitude: event.coordinates.latitude,
               longitude: event.coordinates.longitude
             }}
-            onPress={() => toggleOverlay(event)}
+            onPress={() => openPreview(event)}
           >
             <Marker type={event.category} onChange={changeVisibility}></Marker>
           </MapView.Marker>
         ))}
       </MapView>
-      {eventModal}
+      
     </View>
   );
 }
