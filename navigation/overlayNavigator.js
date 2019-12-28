@@ -16,6 +16,29 @@ const customRouter = {
   getStateForAction: (action, lastState) => {
     const state = HeaderNavigator.router.getStateForAction(action, lastState)
     state.params = action.params
+
+    let map, event, zoom
+    // preview event
+    if (state.params && state.params.map) {
+      map = state.params.map
+      event = state.params.preview
+      zoom = 2
+    }
+    //remove event preview
+    else if (lastState && lastState.params && lastState.params.map && (!state.params || ! state.params.map)) {
+      map = lastState.params.map
+      event = lastState.params.preview
+      zoom = -2
+    }
+    map.getCamera().then(camera => {
+      map.animateCamera({
+        center: {
+          latitude: event.coordinates.latitude,
+          longitude: event.coordinates.longitude
+        },
+        zoom: camera.zoom + zoom
+      }, { duration: 300 })
+    })
     return state
   }
 }

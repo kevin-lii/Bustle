@@ -20,10 +20,10 @@ export default function Map({ navigation }) {
     setEvent(event);
     changeVisibility(!visible);
   }
-
+  let map = React.createRef()
   const turnOffOverlay = () => changeVisibility(false);
   const openPreview = event => {
-    navigation.navigate("Map", { preview: event })
+    navigation.navigate("Map", { preview: event, map: map.current })
   }
 
   EventData.get({}, snapshot => {
@@ -35,14 +35,16 @@ export default function Map({ navigation }) {
   return (
     <View style={{ flex: 1 }}>
       <MapView
+        ref={map}
         provider={PROVIDER_GOOGLE}
-        style={{ flex: 1, borderColor: "black", borderWidth: 1 }}
+        style={{ flex: 1 }}
         initialRegion={{
           latitude: 37.86835,
           longitude: -122.265,
           latitudeDelta: 0.0461,
           longitudeDelta: 0.0211
         }}
+        showsPointsOfInterest={false}
       >
         {eventSet.map((event,index) => (
           <MapView.Marker
