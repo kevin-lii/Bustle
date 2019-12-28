@@ -30,15 +30,16 @@ const customRouter = {
       event = lastState.params.preview
       zoom = -2
     }
-    map.getCamera().then(camera => {
-      map.animateCamera({
-        center: {
-          latitude: event.coordinates.latitude,
-          longitude: event.coordinates.longitude
-        },
-        zoom: camera.zoom + zoom
-      }, { duration: 300 })
-    })
+    if (map)
+      map.getCamera().then(camera => {
+        map.animateCamera({
+          center: {
+            latitude: event.coordinates.latitude,
+            longitude: event.coordinates.longitude
+          },
+          zoom: camera.zoom + zoom
+        }, { duration: 300 })
+      })
     return state
   }
 }
