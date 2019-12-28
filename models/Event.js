@@ -48,7 +48,7 @@ export default class EventData {
     }
 
     static async remove(event) {
-        console.log(event)
+        await firestore().collection('events').doc(event.id).delete()
     }
 
     static async create(userID, data, events) {

@@ -30,5 +30,11 @@ export default StyleSheet.create({
   },
   popupTitle: {
     fontSize: 40
+  },
+  info: {
+    paddingLeft: 10
+  },
+  infoText: {
+    fontSize: 15
   }
 });

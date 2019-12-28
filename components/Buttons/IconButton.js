@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { TouchableNativeFeedback, View } from 'react-native'
 
 import Icons from '../Image/Icons'
 import { Theme } from '../../constants'
@@ -12,7 +12,7 @@ const iconContainer = {
 }
 
 export default ({ size, icon, color, onPress }) => (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableNativeFeedback onPress={onPress}>
         <View style={iconContainer}>
             <Icons 
                 type={Theme.icon}
@@ -20,6 +20,6 @@ export default ({ size, icon, color, onPress }) => (
                 icon={icon}
                 color={color || Theme.primary}/>
         </View>
-    </TouchableWithoutFeedback>
+    </TouchableNativeFeedback>
 )
 

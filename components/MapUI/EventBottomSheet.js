@@ -16,6 +16,7 @@ export default function({ type, event, ...props }) {
 
   const date = moment(event.date.toDate()).format('MMM Do, YYYY')
   const time = moment(event.time.toDate()).format('h:mm a')
+  const location = event.location ? event.location.description : "See Map"
 
   if (loading)
     return (
@@ -27,10 +28,15 @@ export default function({ type, event, ...props }) {
     return (
       <View style={[styles.popup]}>
         <Text style={styles.popupTitle} >{event.name || "Event Name"}</Text>
-        <Text>Hosted by {host}</Text>
-        <Text>
-          <Icons type="Entypo" icon="calendar"></Icons>{time} on {date}
-        </Text>
+        <View style={styles.info}>
+          <Text style={styles.infoText}>Hosted by {host}</Text>
+          <Text style={styles.infoText}>
+            <Icons type="Entypo" icon="calendar" size={15}></Icons> {time} on {date}
+          </Text>
+          <Text style={styles.infoText}>
+            <Icons type="Fontisto" icon="map-marker" size={15}></Icons> {location}
+          </Text>
+        </View>
       </View>
     )
 }
