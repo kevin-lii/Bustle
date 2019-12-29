@@ -5,8 +5,9 @@ import moment from 'moment'
 import IconButton from '../Buttons/IconButton'
 import Events from "../../models/Event"
 import { Theme } from '../../constants'
+import { navigateEvent } from '../../utils'
 
-export default ({ children, event, navigation }) => (
+export default ({ children, event, navigation, map, trash }) => (
     <Card
         flex
         white50
@@ -32,9 +33,10 @@ export default ({ children, event, navigation }) => (
             </Text>
         </View>
         <View row spread width={80}>
-            <View><IconButton icon="map" size={30} 
-                    onPress={() => navigation.navigate('Map', { 'preview': event })}/></View>
-            <View><IconButton icon="trash" size={30} onPress={() => { Events.remove(event) }}/></View>
+            {map && <View><IconButton icon="map" size={30}
+                    onPress={() => navigateEvent(navigation, event)}/></View>}
+            {trash && <View><IconButton icon="trash" size={30}
+                    onPress={() => { Events.remove(event) }}/></View>}
         </View>
         
         {children} 

@@ -27,10 +27,17 @@ class MyEvents extends React.Component {
   }
 
   render() {
-    const events = this.state.eventList.map((event, index) => (
-        <EventDetail
-            event={event} navigation={this.props.navigation} key={index}/>
-    ))
+    let events
+    if (this.state.eventList.length > 0)
+        events = this.state.eventList.map((event, index) => (
+            <EventDetail
+                key={index}
+                event={event}
+                navigation={this.props.navigation}
+                map trash/>
+        ))
+    else
+        events = <Text>You have not hosted any events.</Text>
 
     return (
         <View style={styles.container}>

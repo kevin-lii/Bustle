@@ -6,6 +6,7 @@ import AddButton from "../components/Buttons/Add";
 import AddChoose from "../components/Buttons/AddChoose";
 import EventPreview from "../components/MapUI/EventBottomSheet"
 import Modal from "react-native-modal";
+import { navigateEvent } from "../utils"
 
 import CreateEvent from "../components/Form/EventCreate";
 
@@ -16,30 +17,6 @@ const customRouter = {
   getStateForAction: (action, lastState) => {
     const state = HeaderNavigator.router.getStateForAction(action, lastState)
     state.params = action.params
-
-    let map, event, zoom
-    // preview event
-    if (state.params && state.params.map) {
-      map = state.params.map
-      event = state.params.preview
-      zoom = 17
-    }
-    //remove event preview
-    else if (lastState && lastState.params && lastState.params.map && (!state.params || ! state.params.map)) {
-      map = lastState.params.map
-      event = lastState.params.preview
-      zoom = 15
-    }
-    if (map)
-      map.getCamera().then(camera => {
-        map.animateCamera({
-          center: {
-            latitude: event.coordinates.latitude,
-            longitude: event.coordinates.longitude
-          },
-          zoom
-        }, { duration: 300 })
-      })
     return state
   }
 }
@@ -70,7 +47,7 @@ export default class CustomNavigator extends React.Component {
       this.setState({ formVisible: false, form: -1, overlay: false });
 
     const params = navigation.state.params
-    const showModal = params != null && params.preview != null
+    const showModal = params != null && params.event != null
 
     return (
       <View style={styles.container}>
@@ -96,9 +73,9 @@ export default class CustomNavigator extends React.Component {
           animationOut="slideOutDown"
           coverScreen={false}
           hasBackdrop={false}
-          onSwipeComplete={() => navigation.navigate("Map", {})}
+          onSwipeComplete={() => navigateEvent(navigation, null)}
           swipeDirection="down">
-          <View>{showModal && <EventPreview event={params.preview} />}</View>
+          <View>{showModal && <EventPreview event={params.event} />}</View>
         </Modal>
 
         { (!this.state.formVisible && !showModal) && <AddButton toggleOverlay={toggleOverlay} /> }

@@ -3,6 +3,7 @@ import { Alert } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import Permissions from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
+import { NavigationActions } from "react-navigation";
 
 exports.categories = [
   "Social",
@@ -59,6 +60,14 @@ exports.checkPasswords = function(password, again) {
     throw new Error("Passwords do not match");
   }
 };
+
+exports.navigateEvent = function (navigation, event) {
+  navigation.dispatch(NavigationActions.navigate({
+      routeName: 'Map',
+      params: {event},
+      action: NavigationActions.navigate({routeName: 'Map', params: {event}})
+  }))
+}
 
 function sendEmailVerification(email) {}
 
