@@ -60,6 +60,13 @@ exports.checkPasswords = function(password, again) {
   }
 };
 
+exports.checkEmail = function(email) {
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if (!emailRegex.test(email)) {
+    throw new Error("Email improperly formatted");
+  }
+};
+
 function sendEmailVerification(email) {}
 
 function sendPhoneVerification(phone) {}

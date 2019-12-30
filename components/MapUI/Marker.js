@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 
 import Icons from "../Image/Icons";
-import EventDetails from "./EventBottomSheet";
 
 import styles from "./styles";
 
