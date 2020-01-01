@@ -14,8 +14,14 @@ export default StyleSheet.create({
     },
     formTitle: {
         marginTop: 5,
-        paddingLeft: 15,
-        paddingRight: 15
+        paddingRight: 15,
+        justifyContent: "space-between",
+        height: 30
+    },
+    icon: {
+        height: "120%",
+        width: 40,
+        backgroundColor: "transparent"
     },
     listItem: {
 

@@ -1,4 +1,4 @@
-package com.bustle;
+package co.bustleapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

@@ -17,12 +17,12 @@ export default StyleSheet.create({
         flex: 0
     },
     formContainer: {
-        position:'absolute',
-        height: '100%',
-        width: '100%',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'transparent',
-        bottom: 0
+        backgroundColor: 'transparent'
+    },
+    preview: {
+        justifyContent: "flex-end",
+        margin: 0
     }
 })

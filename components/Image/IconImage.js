@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, ImageBackground } from 'react-native'
+import { Theme } from '../../constants'
 
 export default ({source}) => (
     <ImageBackground 
@@ -9,7 +10,7 @@ export default ({source}) => (
     </ImageBackground>
 )
 
-const edge = 40
+const edge = 50
 
 const styles = StyleSheet.create({
     container: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     },
     image: {
         borderRadius: edge/2,
-        borderWidth: .1,
-        borderColor: 'black'
+        borderWidth: 2,
+        borderColor: Theme.secondary
     }
 })
