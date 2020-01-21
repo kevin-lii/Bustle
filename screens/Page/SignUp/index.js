@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { Alert, View, Text, TextField } from "react-native-ui-lib";
-import auth from "@react-native-firebase/auth";
+import { View, Text, TextField } from "react-native-ui-lib";
 
 import SecureText from "../../../components/Text/SecureInput";
 import { checkName, checkEmail, checkPasswords } from "../../../utils";
 import UserData from "../../../models/User";
 import ActionButton from "../../../components/Buttons/ActionButton";
 
-// import styles from "./styles";
+import styles from "./styles";
 
 export default function SignUp({ navigation }) {
   const [megaState, setMegaState] = useState({
@@ -22,10 +21,11 @@ export default function SignUp({ navigation }) {
   const submit = async () => {
     try {
       const stateCopy = Object.assign({}, megaState);
-      await UserData.create(stateCopy);
-      alert("hello");
+      delete stateCopy.firstName;
+      delete stateCopy.lastName;
+      await UserData.create(stateCopy, password);
     } catch (e) {
-      console.log("error");
+      console.log("Error: " + e.message);
     }
   };
 
@@ -35,7 +35,7 @@ export default function SignUp({ navigation }) {
       checkEmail(megaState.email);
       checkPasswords(password, passwordAgain);
       checkName(megaState.firstName, megaState.lastName);
-      await auth().createUserWithEmailAndPassword(megaState.email, password);
+      megaState.displayName = megaState.firstName + " " + megaState.lastName;
       submit();
     } catch (e) {
       handleError(e);
@@ -50,9 +50,8 @@ export default function SignUp({ navigation }) {
     setError("");
   }
 
-  async function facebookRegister() {}
   return (
-    <View flex spreads>
+    <View flex spreads style={styles.container}>
       <View flex centerV>
         <TextField
           placeholder="First name"
@@ -75,18 +74,12 @@ export default function SignUp({ navigation }) {
           placeholder="Re-enter password"
           onChange={setUpPasswordAgain}
         ></SecureText>
-        <Text>{error}</Text>
-        <ActionButton onPress={validateSubmission} text="Sign up" />
-
-        <ActionButton onPress={facebookRegister} text="Facebook" />
-
-        {/* <TextButton onPress={() => navigation.navigate("Login")} text="Login" /> */}
-
-        {/* <LoginButton onLoginFinished={facebookLogin} /> */}
-
-        {/* <TouchableOpacity onPress={googleLogin}>
-    <Text>Login</Text>
-  </TouchableOpacity> */}
+        <Text style={styles.error}>{error}</Text>
+        <ActionButton
+          onPress={validateSubmission}
+          text="Sign up"
+          style={styles.button}
+        />
       </View>
     </View>
   );

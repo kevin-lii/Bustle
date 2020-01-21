@@ -1,8 +1,9 @@
 import storage from "@react-native-firebase/storage";
-import firestore from "@react-native-firebase/firestore";
-import { GeoFirestore } from "geofirestore";
+import firestore, { firebase } from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 import { UserContext } from "../dataContainers/context";
+import { useContext } from "react";
 
 export default class UserData {
   constructor(data) {
@@ -21,22 +22,22 @@ export default class UserData {
     return query;
   }
 
-  static async create(data) {
-    const store = firestoxre();
-    data.photoURL =
-      "https://www.pinclipart.com/picdir/big/8-82428_profile-clipart-generic-user-gender-neutral-head-icon.png";
+  static async create(data, password) {
+    const store = firestore();
+    data.photoURL = "";
     data.phone = "";
     data.directChats = [];
     data.events = [];
     data.groups = [];
     data.invitations = [];
-    alert("hello");
-    // await store.collection("users").add({ name: "kevin" });
-    // alert("pushed");
-    await store.collection("users");
-    // .doc()
-    // .set(data);
-    alert("Finished");
+    auth()
+      .createUserWithEmailAndPassword(data.email, password)
+      .then(cred => {
+        return store
+          .collection("users")
+          .doc(cred.user.uid)
+          .set(data);
+      });
     console.log("pushed");
   }
 
@@ -54,6 +55,22 @@ export default class UserData {
       .collection("users")
       .doc(userID)
       .update(data);
+  }
+  static async joinEvent(userID, eventID) {
+    await firestore()
+      .collection("users")
+      .doc(userID)
+      .update({ events: firebase.firestore.FieldValue.arrayUnion(eventID) });
+    // await firestore()
+    //   .collection("events")
+    //   .doc(eventID)
+    //   .update({ invited: firebase.firestore.FieldValue.arrayUnion(userID) });
+  }
+  static async leaveEvent(userID, eventID) {
+    await firestore()
+      .collection("users")
+      .doc(userID)
+      .update({ events: firebase.firestore.FieldValue.arrayRemove(eventID) });
   }
 }
 

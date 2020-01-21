@@ -5,13 +5,17 @@
   "scripts": {
     "start": "react-native start",
     "run:android": "react-native run-android",
-    "run:ios": "react-native run-ios --simulator=\"iPhone X\"",
+    "run:ios": "react-native run-ios",
     "build:apk": "cd android && ./gradlew assembleRelease",
+    "build:bundle": "cd android && ./gradlew bundleRelease",
     "test": "jest",
     "prepare": "patch-package"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^0.1.1",
     "@react-native-community/async-storage": "^1.6.1",
+    "@react-native-community/datetimepicker": "^2.1.0",
+    "@react-native-community/masked-view": "^0.1.5",
     "@react-native-firebase/app": "^0.5.4",
     "@react-native-firebase/auth": "^0.5.4",
     "@react-native-firebase/firestore": "^0.5.4",
@@ -19,6 +23,7 @@
     "geofirestore": "^3.3.1",
     "meaningful-string": "^1.2.1",
     "moment": "^2.24.0",
+    "points-cluster": "^0.1.4",
     "react": "16.8.6",
     "react-native": "0.60.4",
     "react-native-drawer-layout": "^2.0.0",
@@ -32,9 +37,13 @@
     "react-native-modal": "^11.5.3",
     "react-native-permissions": "^1.2.0",
     "react-native-reanimated": "^1.2.0",
-    "react-native-ui-lib": "^3.36.0",
+    "react-native-safe-area-context": "^0.6.2",
+    "react-native-ui-lib": "^3.41.0",
     "react-native-vector-icons": "^6.6.0",
-    "react-navigation": "^3.12.0",
+    "react-navigation": "^4.0.10",
+    "react-navigation-drawer": "^2.3.3",
+    "react-navigation-stack": "^2.0.12",
+    "react-navigation-tabs": "^2.7.0",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
@@ -49,5 +58,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }

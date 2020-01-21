@@ -1,65 +1,193 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, TouchableWithoutFeedback } from "react-native";
+import React, { Component } from "react";
+import { View } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import Modal from "react-native-modal";
+import supercluster from "points-cluster";
 
 import Marker from "../../../components/MapUI/Marker";
-import EventDetails from "../../../components/MapUI/EventBottomSheet";
-
-import styles from "./styles";
-
+import ClusterMarker from "../../../components/MapUI/ClusterMarker";
+import { navigateEvent } from "../../../utils";
 import EventData from "../../../models/Event";
-import firestore from "@react-native-firebase/firestore";
 
-export default function Map({ navigation }) {
-  const [eventSet, setEventSet] = useState([]);
-  const [eventDetails, setEvent] = useState(null);
-  const [visible, changeVisibility] = useState(false);
+export default class Map extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { events: [], clusters: [], zoom: null };
+    this.map = React.createRef();
 
-  function toggleOverlay(event) {
-    setEvent(event);
-    changeVisibility(!visible);
+    EventData.get({}, snapshot => {
+      if (snapshot != this.state.events) {
+        this.setState({ events: snapshot });
+        snapshot.forEach(doc => {
+          const geoPoint = doc.data().coordinates;
+          this.eventLoc.push({
+            lng: geoPoint.longitude,
+            lat: geoPoint.latitude,
+            ...doc.data(),
+            id: doc.id
+          });
+        });
+      }
+    });
+
+    this.props.navigation.addListener("didFocus", payload => {
+      const eventFocus = payload.state.event;
+      if (eventFocus)
+        this.focusPoint({
+          latitude: eventFocus.coordinates.latitude,
+          longitude: eventFocus.coordinates.longitude
+        });
+    });
+    this.eventLoc = [];
   }
-  let map = React.createRef()
-  const turnOffOverlay = () => changeVisibility(false);
-  const openPreview = event => {
-    navigation.navigate("Map", { preview: event, map: map.current })
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.navigation.state.params) return;
+
+    const eventFocus = this.props.navigation.state.params.event;
+    const prevEvent =
+      prevProps.navigation.state.params &&
+      prevProps.navigation.state.params.event;
+    if (eventFocus)
+      this.focusPoint({
+        latitude: eventFocus.coordinates.latitude,
+        longitude: eventFocus.coordinates.longitude
+      });
+    else if (prevEvent) {
+      this.unFocus();
+    }
   }
 
-  EventData.get({}, snapshot => {
-    eventList = [];
-    snapshot.forEach(doc => eventList.push(doc.data()));
-    setEventSet(eventList);
-  });
+  focusPoint(center) {
+    this.map.current.animateCamera(
+      {
+        center,
+        zoom: 17
+      },
+      { duration: 300 }
+    );
+  }
 
-  return (
-    <View style={{ flex: 1 }}>
-      <MapView
-        ref={map}
-        provider={PROVIDER_GOOGLE}
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: 37.86835,
-          longitude: -122.265,
-          latitudeDelta: 0.0461,
-          longitudeDelta: 0.0211
-        }}
-        showsPointsOfInterest={false}
-      >
-        {eventSet.map((event,index) => (
+  unFocus() {
+    this.map.current.getCamera().then(camera => {
+      this.map.current.animateCamera(
+        {
+          center: camera.center,
+          zoom: 15
+        },
+        { duration: 300 }
+      );
+    });
+  }
+
+  getClusters = ({ camera, bounds }) => {
+    const cluster = supercluster(this.eventLoc, {
+      minZoom: 0,
+      maxZoom: 20,
+      radius: 60
+    });
+    return cluster({
+      bounds,
+      zoom: Math.ceil(camera.zoom)
+    });
+  };
+
+  createClusters = () => {
+    this.map.current.getCamera().then(camera => {
+      if (camera.zoom != this.state.zoom) {
+        this.map.current.getMapBoundaries().then(bounds => {
+          if (bounds) {
+            bounds.se = {
+              lat: bounds.southWest.latitude,
+              lng: bounds.northEast.longitude
+            };
+            bounds.nw = {
+              lat: bounds.northEast.latitude,
+              lng: bounds.southWest.longitude
+            };
+          }
+          this.setState({
+            clusters: bounds
+              ? this.getClusters({
+                  camera: camera,
+                  bounds: bounds
+                }).map(({ wx, wy, numPoints, points }) => ({
+                  lat: wy,
+                  lng: wx,
+                  numPoints,
+                  points,
+                  id: `${numPoints}_${points[0].id}`
+                }))
+              : []
+          });
+        });
+      }
+    });
+  };
+
+  render() {
+    const { navigation } = this.props;
+
+    const openPreview = event => {
+      navigateEvent({ navigation, event, events: null });
+    };
+
+    const openListView = events => {
+      navigateEvent({ navigation, event: null, events });
+    };
+
+    const markers = [];
+    this.state.clusters.forEach(cluster => {
+      if (cluster.numPoints == 1) {
+        const event = cluster.points[0];
+        markers.push(
           <MapView.Marker
-            key={index}
+            key={event.id}
             coordinate={{
               latitude: event.coordinates.latitude,
               longitude: event.coordinates.longitude
             }}
             onPress={() => openPreview(event)}
           >
-            <Marker type={event.category} onChange={changeVisibility}></Marker>
+            <Marker type={event.category}></Marker>
           </MapView.Marker>
-        ))}
-      </MapView>
-      
-    </View>
-  );
+        );
+      } else {
+        markers.push(
+          <MapView.Marker
+            key={cluster.id}
+            coordinate={{
+              latitude: cluster.lat,
+              longitude: cluster.lng
+            }}
+            onPress={() => openListView(cluster.points)}
+          >
+            <ClusterMarker count={cluster.numPoints}></ClusterMarker>
+          </MapView.Marker>
+        );
+      }
+    });
+
+    return (
+      <View style={{ flex: 1 }}>
+        <MapView
+          ref={this.map}
+          provider={PROVIDER_GOOGLE}
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: 37.86835,
+            longitude: -122.265,
+            latitudeDelta: 0.0461,
+            longitudeDelta: 0.0211
+          }}
+          onRegionChangeComplete={this.createClusters}
+          onMapReady={this.createClusters}
+          showsPointsOfInterest={false}
+          showsBuildings={false}
+          showsCompass={false}
+        >
+          {markers}
+        </MapView>
+      </View>
+    );
+  }
 }

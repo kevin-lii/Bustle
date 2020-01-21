@@ -25,7 +25,7 @@ export default StyleSheet.create({
     borderColor: Theme.secondary,
     borderWidth: 2,
     borderBottomWidth: 0,
-    height: 200,
+    height: 400,
     padding: Theme.margin
   },
   popupTitle: {
@@ -35,6 +35,50 @@ export default StyleSheet.create({
     paddingLeft: 10
   },
   infoText: {
-    fontSize: 15
+    fontSize: 15,
+    marginRight: 1,
+    marginBottom: 7.5
+  },
+  countText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white"
+  },
+  scrollView: {
+    position: "absolute",
+    bottom: 30,
+    left: 0,
+    right: 0,
+    paddingVertical: 10
+  },
+  endPadding: {
+    paddingRight: width - CARD_WIDTH
+  },
+  card: {
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#FFF",
+    marginHorizontal: 10,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 2, y: -2 },
+    height: CARD_HEIGHT,
+    width: CARD_WIDTH,
+    overflow: "hidden"
+  },
+  cardImage: {
+    flex: 3,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center"
+  },
+  textContent: {
+    flex: 1
+  },
+  cardtitle: {
+    fontSize: 12,
+    marginTop: 5,
+    fontWeight: "bold"
   }
 });

@@ -1,6 +1,13 @@
 import React from "react";
 import { View, TextField } from "react-native-ui-lib";
-import { Alert, ScrollView, TouchableWithoutFeedback } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Text,
+  Platform
+} from "react-native";
 
 import FormCard from "../Window/FormCard";
 import FormGroup from "./FormGroup";
@@ -8,9 +15,10 @@ import FormHeader from "./FormHeader";
 import TextButton from "../Buttons/TextButton";
 import styles from "./styles";
 import { Theme } from "../../constants";
-
+import { categories, categoriesIcon } from "../../utils";
 import EventData from "../../models/Event";
 import { UserContext } from "../../dataContainers/context";
+import IconButton from "../Buttons/IconButton";
 
 export default class EventCreate extends React.Component {
   static contextType = UserContext;
@@ -27,25 +35,40 @@ export default class EventCreate extends React.Component {
       category: "Social",
       open: true,
       isPrivate: false,
-      image: null
+      image: null,
+      scrollViewWidth: 0,
+      currentXOffset: 0,
+      confirmed: false
     };
   }
 
   render() {
     const submit = async () => {
       try {
+        this.setState({ confirmed: true });
         const stateCopy = Object.assign({}, this.state);
+        delete stateCopy.confirmed;
         delete stateCopy.overlayContent;
+        delete stateCopy.scrollViewWidth;
+        delete stateCopy.currentXOffset;
         await EventData.create(
           this.context.uid,
           stateCopy,
           this.context.events
         );
+        await EventData.get({ host: this.context.uid }, snapshot => {
+          const tempEventList = [];
+          snapshot.forEach(doc => {
+            tempEventList.push({ ...doc.data(), id: doc.id });
+          });
+          this.context.updateHostedEvents(tempEventList);
+        });
 
         this.props.close();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
+        this.setState({ confirmed: false });
       }
     };
 
@@ -75,14 +98,44 @@ export default class EventCreate extends React.Component {
       imgText = "Add Image";
     }
 
+    const handleScroll = event => {
+      newXOffset = event.nativeEvent.contentOffset.x;
+      this.setState({ currentXOffset: newXOffset });
+    };
+
+    const leftArrow = () => {
+      eachItemOffset = this.state.scrollViewWidth / 2;
+      _currentXOffset = this.state.currentXOffset - eachItemOffset;
+      this.refs.scrollView.scrollTo({
+        x: _currentXOffset,
+        y: 0,
+        animated: true
+      });
+    };
+
+    const rightArrow = () => {
+      eachItemOffset = this.state.scrollViewWidth / 2; // Divide by 8 for 8 items
+      _currentXOffset = this.state.currentXOffset + eachItemOffset;
+      this.refs.scrollView.scrollTo({
+        x: _currentXOffset,
+        y: 0,
+        animated: true
+      });
+    };
+
     return (
-      <FormCard height={500} width={"90%"}>
+      <FormCard height={600} width={"95%"}>
         <FormHeader
           icon="close-a"
           title="Create Event"
           onPress={this.props.close}
           headerRight={
-            <TextButton text={"Create"} onPress={validateSubmission} primary />
+            <TextButton
+              text={"Create"}
+              disabled={this.state.confirmed}
+              onPress={validateSubmission}
+              primary
+            />
           }
         />
         <ScrollView
@@ -144,6 +197,68 @@ export default class EventCreate extends React.Component {
               setValue={o => this.setState({ open: o })}
             />
           )}
+
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center"
+            }}
+          >
+            <IconButton
+              touchStyle={{
+                alignItems: "flex-start",
+                paddingTop: 20,
+                marginRight: 15,
+                marginLeft: 3
+              }}
+              onPress={leftArrow}
+              icon="ios-arrow-back"
+            />
+            <ScrollView
+              contentContainerStyle={{
+                alignItems: "center"
+              }}
+              horizontal
+              pagingEnabled={true}
+              ref="scrollView"
+              onContentSizeChange={(w, h) =>
+                this.setState({ scrollViewWidth: w })
+              }
+              scrollEventThrottle={16}
+              scrollEnabled={false}
+              onScroll={handleScroll}
+              showsHorizontalScrollIndicator={false}
+              style={{ height: 75 }}
+            >
+              {categories.map(category => (
+                <View
+                  center
+                  key={category}
+                  style={{ marginRight: 8, marginLeft: 7.5 }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({ category: category });
+                    }}
+                  >
+                    {categoriesIcon(category)}
+                  </TouchableOpacity>
+                  <Text>{category}</Text>
+                </View>
+              ))}
+            </ScrollView>
+            <IconButton
+              touchStyle={{
+                alignItems: "flex-start",
+                paddingTop: 20,
+                marginLeft: 15,
+                marginRight: 3
+              }}
+              onPress={rightArrow}
+              icon="ios-arrow-forward"
+            />
+          </View>
 
           <View style={{ height: 15 }}></View>
           <TextButton text={imgText} style={styles.imgButton} />

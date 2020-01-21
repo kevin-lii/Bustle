@@ -5,9 +5,9 @@ import Foundation from "react-native-vector-icons/Foundation";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/Ionicons";
-import Fontisto from 'react-native-vector-icons/Fontisto'
+import Fontisto from "react-native-vector-icons/Fontisto";
 
-import { Theme } from '../../constants'
+import { Theme } from "../../constants";
 
 export default function Icons({
   type,
@@ -64,13 +64,17 @@ export default function Icons({
           color={color}
         ></MaterialIcons>
       );
+    case "FontAwesome5":
     case "FontAwesome":
-      <FontAwesome
-        name={uponChange ? icon : iconOff}
-        onPress={onPress}
-        size={size}
-        color={color}
-      ></FontAwesome>;
+    case "Font":
+      return (
+        <FontAwesome
+          name={uponChange ? icon : iconOff}
+          onPress={onPress}
+          size={size}
+          color={color}
+        ></FontAwesome>
+      );
     case "Ionicons":
     default:
       return (
