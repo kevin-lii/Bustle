@@ -24,6 +24,7 @@ export default class EventCreate extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
+    this.scrollView = React.createRef();
 
     this.state = {
       overlayContent: false,
@@ -106,7 +107,7 @@ export default class EventCreate extends React.Component {
     const leftArrow = () => {
       eachItemOffset = this.state.scrollViewWidth / 2;
       _currentXOffset = this.state.currentXOffset - eachItemOffset;
-      this.refs.scrollView.scrollTo({
+      this.scrollView.current.scrollTo({
         x: _currentXOffset,
         y: 0,
         animated: true
@@ -116,7 +117,7 @@ export default class EventCreate extends React.Component {
     const rightArrow = () => {
       eachItemOffset = this.state.scrollViewWidth / 2; // Divide by 8 for 8 items
       _currentXOffset = this.state.currentXOffset + eachItemOffset;
-      this.refs.scrollView.scrollTo({
+      this.scrollView.current.scrollTo({
         x: _currentXOffset,
         y: 0,
         animated: true
@@ -124,7 +125,7 @@ export default class EventCreate extends React.Component {
     };
 
     return (
-      <FormCard height={600} width={"95%"}>
+      <FormCard height={550} width={"90%"}>
         <FormHeader
           icon="close-a"
           title="Create Event"
@@ -221,7 +222,7 @@ export default class EventCreate extends React.Component {
               }}
               horizontal
               pagingEnabled={true}
-              ref="scrollView"
+              ref={this.scrollView}
               onContentSizeChange={(w, h) =>
                 this.setState({ scrollViewWidth: w })
               }
@@ -229,7 +230,7 @@ export default class EventCreate extends React.Component {
               scrollEnabled={false}
               onScroll={handleScroll}
               showsHorizontalScrollIndicator={false}
-              style={{ height: 75 }}
+              style={{ height: 50, marginTop: 10 }}
             >
               {categories.map(category => (
                 <View

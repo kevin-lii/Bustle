@@ -32,8 +32,7 @@ export default class CustomNavigator extends React.Component {
         ? this.props.navigation.params.preview
         : {},
       formVisible: false,
-      form: -1,
-      events: this
+      form: -1
     };
   }
 
@@ -49,10 +48,9 @@ export default class CustomNavigator extends React.Component {
     const closeForm = () =>
       this.setState({ formVisible: false, form: -1, overlay: false });
     const params = navigation.state.params;
-    const showEventModal = params != null && params.event != null;
+    const showEventModal =
+      params != null && params.event != null && params.events == null;
     const showEventListModal = params != null && params.events != null;
-    console.log(showEventListModal);
-    console.log(showEventModal);
     return (
       <View style={styles.container}>
         <HeaderNavigator navigation={navigation} {...props} />
@@ -83,7 +81,11 @@ export default class CustomNavigator extends React.Component {
             navigateEvent({ navigation, event: null, events: null })
           }
           onBackButtonPress={() =>
-            navigateEvent({ navigation, event: null, events: null })
+            navigateEvent({
+              navigation,
+              event: null,
+              events: null
+            })
           }
           swipeDirection="down"
         >
@@ -108,9 +110,19 @@ export default class CustomNavigator extends React.Component {
           swipeDirection="down"
         >
           <View>
-            {showEventListModal && (
-              <EventsList eventList={params.events} {...props} />
-            )}
+            {showEventListModal ? (
+              <EventsList
+                eventList={params.events}
+                navigateTo={event => {
+                  navigateEvent({
+                    navigation,
+                    event,
+                    events: params.events
+                  });
+                }}
+                {...props}
+              />
+            ) : null}
           </View>
         </Modal>
 

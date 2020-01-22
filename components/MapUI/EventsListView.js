@@ -1,114 +1,112 @@
 import React from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  Animated,
-  Image,
-  Dimensions
-} from "react-native";
+import { View, Text, ScrollView, SafeAreaView, Dimensions } from "react-native";
 import { withNavigation } from "react-navigation";
 
-import Icons from "../Image/Icons";
-import EventDetail from "../Window/EventDetailCard";
+import IconButton from "../Buttons/IconButton";
 import { UserContext } from "../../dataContainers/context";
 
 import styles from "./styles";
 
+const { width, height } = Dimensions.get("window");
+
+const CARD_HEIGHT = height / 3;
+const CARD_WIDTH = 225;
+
+const marginWidth = (width - CARD_WIDTH - 140) / 2;
+
 class EventListView extends React.Component {
   static contextType = UserContext;
+  constructor(props) {
+    super(props);
+    this.scrollView = React.createRef();
+    this.state = {
+      scrollViewWidth: 0,
+      index: 0
+    };
+    this.props.navigateTo(this.props.eventList[0]);
+  }
 
-  componentDidMount() {
-    this.index = 0;
-    this.animation = new Animated.Value(0);
-    this.animation.addListener(({ value }) => {
-      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= this.state.markers.length) {
-        index = this.state.markers.length - 1;
-      }
-      if (index <= 0) {
-        index = 0;
-      }
-
-      clearTimeout(this.regionTimeout);
-      this.regionTimeout = setTimeout(() => {
-        if (this.index !== index) {
-          this.index = index;
-          const { coordinate } = this.state.markers[index];
-          this.map.animateToRegion(
-            {
-              ...coordinate,
-              latitudeDelta: this.state.region.latitudeDelta,
-              longitudeDelta: this.state.region.longitudeDelta
-            },
-            350
-          );
-        }
-      }, 10);
-    });
+  componentDidUpdate(prevProp, prevState) {
+    if (prevProp.eventList != this.props.eventList) {
+      // const index = this.props.eventList.length - 1;
+      const index = 0;
+      this.setState({ index });
+      this.scrollView.current.scrollTo({
+        x: index * 245,
+        y: 0,
+        animated: true
+      });
+    } else if (prevState.index !== this.state.index)
+      this.props.navigateTo(this.props.eventList[this.state.index]);
   }
 
   render() {
-    const { eventList, navigation, ...props } = this.props;
-    const { width, height } = Dimensions.get("window");
-    const CARD_HEIGHT = height / 4;
-    const CARD_WIDTH = CARD_HEIGHT - 50;
+    const { eventList } = this.props;
+    const leftArrow = () => {
+      _currentXOffset = (this.state.index - 1) * 245;
+      this.scrollView.current.scrollTo({
+        x: _currentXOffset,
+        y: 0,
+        animated: true
+      });
+      this.setState(prevState => ({
+        index: prevState.index > 0 ? prevState.index - 1 : 0
+      }));
+    };
 
-    let events;
-    events = eventList.map((event, index) => (
-      <EventDetail
-        key={index}
-        event={event}
-        navigation={navigation}
-        map
-        trash
-        {...props}
-      />
-    ));
+    const rightArrow = () => {
+      _currentXOffset = (this.state.index + 1) * 245;
+      this.scrollView.current.scrollTo({
+        x: _currentXOffset,
+        y: 0,
+        animated: true
+      });
+      this.setState(prevState => ({
+        index:
+          prevState.index < eventList.length - 1
+            ? prevState.index + 1
+            : eventList.length - 1
+      }));
+    };
+    console.log(this.state.index);
     return (
-      <SafeAreaView style={styles.popup}>
-        {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View
-            style={{
-              alignSelf: "flex-end",
-              marginRight: 25,
-              marginTop: 20
-            }}
-          ></View>
-          <Text style={styles.title}>My Events</Text>
-          {events}
-        </ScrollView> */}
-        <Animated.ScrollView
+      <SafeAreaView>
+        <IconButton
+          touchStyle={{
+            position: "absolute",
+            bottom: 30 + CARD_HEIGHT / 2,
+            left: 20
+          }}
+          onPress={leftArrow}
+          icon="ios-arrow-back"
+        />
+
+        <ScrollView
           horizontal
           scrollEventThrottle={1}
           showsHorizontalScrollIndicator={false}
+          pagingEnabled={true}
+          onContentSizeChange={(w, h) => this.setState({ scrollViewWidth: w })}
+          ref={this.scrollView}
           snapToInterval={CARD_WIDTH}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: this.animation
-                  }
-                }
-              }
-            ],
-            { useNativeDriver: true }
-          )}
           style={styles.scrollView}
-          contentContainerStyle={styles.endPadding}
         >
           {eventList.map((event, index) => (
-            <View style={styles.card} key={index}>
-              <Image
-                source={event.image}
-                style={styles.cardImage}
-                resizeMode="cover"
-              />
+            <View
+              style={[
+                styles.card,
+                {
+                  height: CARD_HEIGHT,
+                  width: CARD_WIDTH,
+                  marginLeft: index == 0 ? marginWidth + 20 : 0,
+                  marginRight: index == eventList.length - 1 ? marginWidth : 20
+                }
+              ]}
+              key={index}
+            >
               <View style={styles.textContent}>
                 <Text numberOfLines={1} style={styles.cardtitle}>
-                  {event.title}
+                  {event.name}
                 </Text>
                 <Text numberOfLines={1} style={styles.cardDescription}>
                   {event.description}
@@ -116,7 +114,16 @@ class EventListView extends React.Component {
               </View>
             </View>
           ))}
-        </Animated.ScrollView>
+        </ScrollView>
+        <IconButton
+          touchStyle={{
+            position: "absolute",
+            bottom: 30 + CARD_HEIGHT / 2,
+            right: 20
+          }}
+          onPress={rightArrow}
+          icon="ios-arrow-forward"
+        />
       </SafeAreaView>
     );
   }

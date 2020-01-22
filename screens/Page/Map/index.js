@@ -13,9 +13,10 @@ export default class Map extends Component {
     super(props);
     this.state = { events: [], clusters: [], zoom: null };
     this.map = React.createRef();
-
+    this.eventLoc = [];
     EventData.get({}, snapshot => {
       if (snapshot != this.state.events) {
+        this.eventLoc = [];
         this.setState({ events: snapshot });
         snapshot.forEach(doc => {
           const geoPoint = doc.data().coordinates;
@@ -27,17 +28,10 @@ export default class Map extends Component {
           });
         });
       }
+      if (this.map.current) {
+        this.createClusters();
+      }
     });
-
-    this.props.navigation.addListener("didFocus", payload => {
-      const eventFocus = payload.state.event;
-      if (eventFocus)
-        this.focusPoint({
-          latitude: eventFocus.coordinates.latitude,
-          longitude: eventFocus.coordinates.longitude
-        });
-    });
-    this.eventLoc = [];
   }
 
   componentDidUpdate(prevProps) {
@@ -132,7 +126,7 @@ export default class Map extends Component {
     };
 
     const openListView = events => {
-      navigateEvent({ navigation, event: null, events });
+      navigateEvent({ navigation, event: events[0], events });
     };
 
     const markers = [];

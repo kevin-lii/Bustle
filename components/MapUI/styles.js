@@ -25,7 +25,7 @@ export default StyleSheet.create({
     borderColor: Theme.secondary,
     borderWidth: 2,
     borderBottomWidth: 0,
-    height: 400,
+    height: 275,
     padding: Theme.margin
   },
   popupTitle: {
@@ -46,13 +46,9 @@ export default StyleSheet.create({
   },
   scrollView: {
     position: "absolute",
-    bottom: 30,
-    left: 0,
-    right: 0,
-    paddingVertical: 10
-  },
-  endPadding: {
-    paddingRight: width - CARD_WIDTH
+    bottom: 50,
+    left: 50,
+    right: 50
   },
   card: {
     padding: 10,
@@ -63,8 +59,6 @@ export default StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.3,
     shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
     overflow: "hidden"
   },
   cardImage: {

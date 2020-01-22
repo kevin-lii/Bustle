@@ -49,7 +49,9 @@ export default class EventBottomSheet extends React.Component {
     else
       return (
         <View style={[styles.popup]}>
-          <Text style={styles.popupTitle}>{event.name || "Event Name"}</Text>
+          <Text numberOfLines={2} style={styles.popupTitle}>
+            {event.name || "Event Name"}
+          </Text>
           <View style={styles.info}>
             <View
               style={{
@@ -60,7 +62,9 @@ export default class EventBottomSheet extends React.Component {
               }}
               spread
             >
-              <Text style={styles.infoText}>Hosted by {this.state.host} </Text>
+              <Text numberOfLines={1} style={styles.infoText}>
+                Hosted by {this.state.host}{" "}
+              </Text>
               <Avatar
                 photoURL={this.state.photoURL}
                 init={this.state.initials}
@@ -70,11 +74,11 @@ export default class EventBottomSheet extends React.Component {
                 marginTop={25}
               />
             </View>
-            <Text style={styles.infoText}>
+            <Text numberOfLines={1} style={styles.infoText}>
               <Icons type="Entypo" icon="calendar" size={15}></Icons> {time} on{" "}
               {date}
             </Text>
-            <Text style={styles.infoText}>
+            <Text numberOfLines={1} style={styles.infoText}>
               <Icons type="Fontisto" icon="map-marker" size={15}></Icons>{" "}
               {location}
             </Text>

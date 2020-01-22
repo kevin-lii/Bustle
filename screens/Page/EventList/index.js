@@ -20,9 +20,9 @@ const Event = ({ navigation, ...props }) => {
 
   const changeContext = eventID => {
     user.updateHostedEvents(hostedEvents.filter(item => item.id !== eventID));
-    const temp = joinedEvents.filter(item => item.id !== eventID);
+    const temp = events.joinedEvents.filter(item => item.id !== eventID);
     user.updateJoinedEvents(temp.map(item => item.id));
-    setJoinedEvents(temp);
+    setEvents({ joinedEvents: temp, ...events });
   };
 
   useEffect(() => {
@@ -44,11 +44,10 @@ const Event = ({ navigation, ...props }) => {
       }
     });
     navigation.addListener("willFocus", () => {
-      console.log("listener");
       EventData.get({}, snapshot => {
         if (
           snapshot != events.eventCheck ||
-          user.events != joinedEvents.map(item => item.id)
+          user.events != events.joinedEvents.map(item => item.id)
         ) {
           const tempEventList = [];
           const tempJoinedEvents = [];
@@ -63,7 +62,6 @@ const Event = ({ navigation, ...props }) => {
             eventCheck: snapshot
           });
           setLoaded(true);
-          console.log("listenerDone");
         }
       });
     });
