@@ -4,9 +4,9 @@ require_relative '../node_modules/@react-native-firebase/app/pod_config'
 
 target 'Bustle' do
   # Pods for Bustle
-  pod 'React', :path => '../node_modules/react-native/' :subspecs => [
-    'RCTGeolocation',
-  ]
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKCoreKit', :modular_headers => true
+  pod 'React', :path => '../node_modules/react-native'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
   pod 'React-fishhook', :path => '../node_modules/react-native/Libraries/fishhook'
@@ -28,17 +28,28 @@ target 'Bustle' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker/RNDateTimePicker.podspec'
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  
+
+
   # React Native Maps dependencies
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 
-  # pod 'Firebase/Storage', '~> 6.3.0'
-  
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  pod 'Firebase/Core', '~> 6.13.0'
+  pod 'Firebase/Auth', '~> 6.13.0'
+  pod 'Firebase/Firestore', '~> 6.13.0'
+  pod 'Firebase/Functions', '~> 6.13.0'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
+  pod 'ReactNativeUiLib', :path => '../node_modules/react-native-ui-lib'
+
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
   target 'BustleTests' do
     inherit! :search_paths

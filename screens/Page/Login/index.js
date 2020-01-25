@@ -1,60 +1,122 @@
-import React, { useState } from 'react'
-import { Alert, View, TouchableOpacity, Text, TextInput } from 'react-native'
-import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
-import auth from '@react-native-firebase/auth';
+import React, { useState } from "react";
+import { Platform } from "react-native";
+import { View, Text, TextField } from "react-native-ui-lib";
+import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
+import auth from "@react-native-firebase/auth";
+// import appleAuth, {
+//   AppleButton,
+//   AppleAuthRequestScope,
+//   AppleAuthRequestOperation
+// } from "@invertase/react-native-apple-authentication";
+
+import ActionButton from "../../../components/Buttons/ActionButton";
+import SecureText from "../../../components/Text/SecureInput";
+
+import styles from "./styles";
 
 export default function Login({ navigation }) {
-    const [email, setEmail] = useState('a@ol.com');
-    const [password, setPassword] = useState('tester');
-    const [error, setError] = useState('')
+  const [email, setEmail] = useState("a@ol.com");
+  const [password, setPassword] = useState("tester");
+  const [error, setError] = useState("");
 
-    async function emailLogin() {
-        try {
-            await auth().signInWithEmailAndPassword(email, password);
-        } catch (e) {
-            handleError(e)
-        }
+  async function emailLogin() {
+    try {
+      resetError();
+      await auth().signInWithEmailAndPassword(email, password);
+    } catch (e) {
+      handleError(e);
+    }
+  }
+
+  async function facebookLogin() {
+    const result = await LoginManager.logInWithPermissions([
+      "public_profile",
+      "email"
+    ]);
+    resetError();
+    if (result.isCancelled) {
+      setError("Login cancelled");
     }
 
-    async function facebookLogin() {
-        const result = await LoginManager.logInWithPermissions(['public_profile', 'email'])
-        if (result.isCancelled) {
-            setError('Login cancelled')
-        }
-
-        if (error) {
-            handleError(e)
-        } else if (result.isCancelled) {
-            setError('Cancelled')
-        } else {
-            const token = await AccessToken.getCurrentAccessToken()
-            const credential = auth.FacebookAuthProvider.credential(token.accessToken)
-            auth().signInWithCredential(credential)
-        }
+    if (error) {
+      handleError(e);
+    } else if (result.isCancelled) {
+      setError("Cancelled");
+    } else {
+      const token = await AccessToken.getCurrentAccessToken();
+      const credential = auth.FacebookAuthProvider.credential(
+        token.accessToken
+      );
+      try {
+        auth().signInWithCredential(credential);
+      } catch (e) {
+        handleError(e);
+      }
     }
+  }
 
-    function handleError(e) {
-        setError(e.message)
-    }
+  function handleError(e) {
+    setError(e.message);
+  }
 
-    return (
-        <View style={ {flex: 1, justifyContent: 'center', alignContent: 'center'} }>
-            {/* <TextInput placeholder='Email' onChangeText={ text => setEmail(text) }></TextInput>
-            <TextInput placeholder='Password' onChangeText={ text => setPassword(text) }></TextInput>
-            <Text>{error}</Text>
-            <TouchableOpacity onPress={ emailLogin }>
-                <Text>Login</Text>
-            </TouchableOpacity> */}
+  function resetError() {
+    setError("");
+  }
 
-            <TouchableOpacity onPress={ facebookLogin }>
-                <Text>Facebook Login</Text>
-            </TouchableOpacity>
+  // async function onAppleButtonPress() {
+  //   // performs login reques
+  //   const appleAuthRequestResponse = await appleAuth.performRequest({
+  //     requestedOperation: AppleAuthRequestOperation.LOGIN,
+  //     requestedScopes: [
+  //       AppleAuthRequestScope.EMAIL,
+  //       AppleAuthRequestScope.FULL_NAME
+  //     ]
+  //   });
+  //   if (appleAuthRequestResponse.identityToken) {
+  //     // 3). create a Firebase `AppleAuthProvider` credential
+  //     const appleCredential = auth.AppleAuthProvider.credential(
+  //       appleAuthRequestResponse.identityToken,
+  //       appleAuthRequestResponse.nonce
+  //     );
+  //     auth().signInWithCredential(appleCredential);
+  //   }
+  // }
 
-            {/* <LoginButton onLoginFinished={ facebookLogin } /> */}
-
-            {/* <TouchableOpacity onPress={ googleLogin }>
-                <Text>Login</Text>
-            </TouchableOpacity> */}
+  return (
+    <View flex spread style={styles.container}>
+      <View flex centerV>
+        <View centerV style={styles.input}>
+          <TextField
+            placeholder="Email"
+            onChangeText={text => setEmail(text)}
+          ></TextField>
         </View>
-    )
+        <SecureText placeholder="Password" onChange={setPassword}></SecureText>
+        <Text style={{ color: "red" }}>{error}</Text>
+      </View>
+
+      <View flex centerV>
+        <View style={styles.button}>
+          <ActionButton onPress={emailLogin} text="Login" />
+        </View>
+
+        <View style={styles.button}>
+          <ActionButton primary onPress={facebookLogin} text="Facebook Login" />
+        </View>
+
+        {/* {Platform.OS === "ios" && (
+          <View>
+            <AppleButton onPress={() => onAppleButtonPress()} />
+          </View>
+        )} */}
+
+        <View style={styles.button}>
+          <ActionButton
+            onPress={() => navigation.navigate("SignUp")}
+            text="Sign Up"
+          />
+        </View>
+      </View>
+    </View>
+  );
 }
