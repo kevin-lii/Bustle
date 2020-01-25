@@ -22,18 +22,19 @@ export default StyleSheet.create({
     backgroundColor: "#FFF",
     borderTopLeftRadius: Theme.borderRadius,
     borderTopRightRadius: Theme.borderRadius,
-    borderColor: Theme.secondary,
-    borderWidth: 2,
-    borderBottomWidth: 0,
     height: 275,
-    padding: Theme.margin
+    shadowColor: "#000",
+    shadowRadius: 5,
+    elevation: 5,
+    shadowOpacity: 0.8,
+    shadowOffset: { x: 0, y: 2 },
+    padding: 5,
+    color: Theme.primary
   },
   popupTitle: {
-    fontSize: 40
+    fontSize: 30
   },
-  info: {
-    paddingLeft: 10
-  },
+  info: {},
   infoText: {
     fontSize: 15,
     marginRight: 1,
@@ -46,7 +47,7 @@ export default StyleSheet.create({
   },
   scrollView: {
     position: "absolute",
-    bottom: 50,
+    bottom: 70,
     left: 50,
     right: 50
   },

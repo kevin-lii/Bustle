@@ -5,7 +5,7 @@ import supercluster from "points-cluster";
 
 import Marker from "../../../components/MapUI/Marker";
 import ClusterMarker from "../../../components/MapUI/ClusterMarker";
-import { navigateEvent } from "../../../utils";
+import { navigateEvent, customMap } from "../../../utils";
 import EventData from "../../../models/Event";
 
 export default class Map extends Component {
@@ -167,6 +167,7 @@ export default class Map extends Component {
           ref={this.map}
           provider={PROVIDER_GOOGLE}
           style={{ flex: 1 }}
+          customMapStyle={customMap}
           initialRegion={{
             latitude: 37.86835,
             longitude: -122.265,

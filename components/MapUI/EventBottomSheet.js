@@ -49,6 +49,17 @@ export default class EventBottomSheet extends React.Component {
     else
       return (
         <View style={[styles.popup]}>
+          <View
+            style={{
+              borderBottomColor: "#666666",
+              alignSelf: "center",
+              borderBottomWidth: 3,
+              width: "20%",
+              marginTop: 5,
+              marginBottom: 10
+            }}
+          />
+
           <Text numberOfLines={2} style={styles.popupTitle}>
             {event.name || "Event Name"}
           </Text>
@@ -83,7 +94,7 @@ export default class EventBottomSheet extends React.Component {
               {location}
             </Text>
             {!this.state.user.events.includes(event.id) ? (
-              <View style={{ width: 30, marginTop: 10 }}>
+              <View style={{ width: "33%", marginTop: 10 }}>
                 <Button
                   text="Join"
                   onPress={async () => {
@@ -101,23 +112,35 @@ export default class EventBottomSheet extends React.Component {
                 ></Button>
               </View>
             ) : (
-              <View style={{ width: 30, marginTop: 10 }}>
-                <Button
-                  text="Leave"
-                  onPress={async () => {
-                    await UserData.leaveEvent(this.state.user.uid, event.id);
-                    const remaining = this.state.user.events.filter(
-                      item => item != event.id
-                    );
-                    await this.state.user.updateJoinedEvents(remaining);
-                    this.state.user.events = remaining;
-                    this.setState({
-                      user: this.state.user
-                    });
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    width: "33%",
+                    marginTop: 10,
+                    marginRight: 5
                   }}
-                  disabled={event.host === this.state.user.uid}
-                  primary
-                ></Button>
+                >
+                  <Button
+                    text="Leave"
+                    onPress={async () => {
+                      await UserData.leaveEvent(this.state.user.uid, event.id);
+                      const remaining = this.state.user.events.filter(
+                        item => item != event.id
+                      );
+                      await this.state.user.updateJoinedEvents(remaining);
+                      this.state.user.events = remaining;
+                      this.setState({
+                        user: this.state.user
+                      });
+                    }}
+                    disabled={event.host === this.state.user.uid}
+                    primary
+                  ></Button>
+                </View>
+                <Text style={{ color: "green" }}>
+                  <Icons type="Feather" icon="check-circle" color="green" /> You
+                  are currently going
+                </Text>
               </View>
             )}
           </View>

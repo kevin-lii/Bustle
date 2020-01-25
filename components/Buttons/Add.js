@@ -1,8 +1,8 @@
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native-ui-lib";
+import { View, TouchableOpacity, Image } from "react-native-ui-lib";
 import Icon from "react-native-vector-icons/Fontisto";
 
-import Image from "../Image/IconImage";
+import Vector from "../Image/Icons/Vector.png";
 
 import styles from "./styles";
 
@@ -12,8 +12,7 @@ export default ({ toggleOverlay }) => (
     onPress={toggleOverlay}
   >
     <View center>
-      <Icon name="plus-a" size={20} />
-      {/* <Image></Image> */}
+      <Image source={Vector} />
     </View>
   </TouchableOpacity>
 );

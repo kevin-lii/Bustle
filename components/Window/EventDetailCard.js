@@ -38,7 +38,7 @@ export default ({
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ marginRight: 15 }}>
-          {categoriesIcon(event.category, "black", 30)}
+          {categoriesIcon({ type: event.category, color: "black", size: 30 })}
         </View>
         <View>
           <Text

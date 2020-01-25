@@ -229,7 +229,7 @@ export default class EventCreate extends React.Component {
               scrollEnabled={false}
               onScroll={handleScroll}
               showsHorizontalScrollIndicator={false}
-              style={{ height: 50, marginTop: 10 }}
+              style={{ height: 60, marginTop: 10 }}
             >
               {categories.map(category => (
                 <View
@@ -241,10 +241,15 @@ export default class EventCreate extends React.Component {
                     onPress={() => {
                       this.setState({ category: category });
                     }}
+                    style={{ height: 25 }}
                   >
-                    {categoriesIcon(category)}
+                    {categoriesIcon({
+                      type: category,
+                      color:
+                        this.state.category == category ? "grey" : Theme.primary
+                    })}
                   </TouchableOpacity>
-                  <Text>{category}</Text>
+                  <Text style={{ color: Theme.primary }}>{category}</Text>
                 </View>
               ))}
             </ScrollView>

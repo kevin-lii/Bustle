@@ -68,13 +68,12 @@ class EventListView extends React.Component {
             : eventList.length - 1
       }));
     };
-    console.log(this.state.index);
     return (
       <SafeAreaView>
         <IconButton
           touchStyle={{
             position: "absolute",
-            bottom: 30 + CARD_HEIGHT / 2,
+            bottom: 50 + CARD_HEIGHT / 2,
             left: 20
           }}
           onPress={leftArrow}
@@ -118,7 +117,7 @@ class EventListView extends React.Component {
         <IconButton
           touchStyle={{
             position: "absolute",
-            bottom: 30 + CARD_HEIGHT / 2,
+            bottom: 50 + CARD_HEIGHT / 2,
             right: 20
           }}
           onPress={rightArrow}

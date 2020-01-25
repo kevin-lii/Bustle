@@ -6,7 +6,7 @@ import { categoriesIcon } from "../../utils";
 import styles from "./styles";
 
 export default function({ type, ...props }) {
-  const icon = categoriesIcon(type, "white");
+  const icon = categoriesIcon({ type, color: "white" });
 
   return <View style={styles.marker}>{icon}</View>;
 }
