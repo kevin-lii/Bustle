@@ -114,13 +114,15 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.bustle"
+        applicationId "co.bustleapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
+        vectorDrawables.useSupportLibrary = true
         
     }
+
     splits {
         abi {
             reset()
@@ -136,6 +138,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
@@ -144,7 +154,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -174,10 +184,16 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-safe-area-context')
     implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-ui-lib')
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation project(':react-native-safe-area-context')
+    implementation project(':react-native-datetimepicker')
+    implementation project(':react-native-geolocation-service')
 
     // JSC from node_modules
     if (useIntlJsc) {

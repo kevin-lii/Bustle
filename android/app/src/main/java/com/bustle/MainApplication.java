@@ -1,4 +1,4 @@
-package com.bustle;
+package co.bustleapp;
 
 import android.app.Application;
 
@@ -15,6 +15,8 @@ import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.wix.reactnativeuilib.highlighterview.HighlighterViewPackage;
 import com.wix.reactnativeuilib.textinput.TextInputDelKeyHandlerPackage;
 import com.wix.reactnativeuilib.wheelpicker.WheelPickerPackage;
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
+import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
 
 import java.util.List;
 

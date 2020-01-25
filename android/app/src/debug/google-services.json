@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "797486470835",
+    "firebase_url": "https://bustleapp-35fe0.firebaseio.com",
+    "project_id": "bustleapp",
+    "storage_bucket": "bustleapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797486470835:android:39d5fbd69373e45cc3c2c6",
+        "android_client_info": {
+          "package_name": "co.bustleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797486470835-jvvgs2eabvcn2r9ftvdu1hidh3jhmcah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxepphslOkmR5lo9TdJp8XkBZCcjLm-jQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797486470835-jvvgs2eabvcn2r9ftvdu1hidh3jhmcah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

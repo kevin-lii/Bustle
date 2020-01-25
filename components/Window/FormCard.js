@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, Card } from 'react-native-ui-lib'
+import { Theme } from '../../constants'
 
 export default ({ children, height, padded }) => (
     <Card
         white40
-        borderRadius={12}
+        borderRadius={Theme.borderRadius}
         
         height={height}
         width={340}
