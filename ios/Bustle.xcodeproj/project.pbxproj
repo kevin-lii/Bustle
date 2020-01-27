@@ -26,8 +26,7 @@
 		4859AD5023CAAA270022DD03 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4923CAAA270022DD03 /* Roboto-Black.ttf */; };
 		4859AD5123CAAA270022DD03 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4A23CAAA270022DD03 /* Roboto-Bold.ttf */; };
 		4859AD5223CAAA270022DD03 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4B23CAAA270022DD03 /* Roboto-Italic.ttf */; };
-		4865484723C18E610034E14F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4865484623C18E610034E14F /* GoogleService-Info.plist */; };
-		4865484823C18E7A0034E14F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4865484623C18E610034E14F /* GoogleService-Info.plist */; };
+		4869FA7B23DD872100C9C161 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4869FA7A23DD872100C9C161 /* GoogleService-Info.plist */; };
 		F33F99A720CAF9BBAEEC2425 /* libPods-Bustle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F13A018C3C3418A2B3EFC26 /* libPods-Bustle.a */; };
 /* End PBXBuildFile section */
 
@@ -78,8 +77,8 @@
 		4859AD4923CAAA270022DD03 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Black.ttf"; path = "../android/app/src/main/assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
 		4859AD4A23CAAA270022DD03 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Bold.ttf"; path = "../android/app/src/main/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		4859AD4B23CAAA270022DD03 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Italic.ttf"; path = "../android/app/src/main/assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
-		4865484623C18E610034E14F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		489545F123D0CFD100149D17 /* BustleRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = BustleRelease.entitlements; path = Bustle/BustleRelease.entitlements; sourceTree = "<group>"; };
+		4869FA7A23DD872100C9C161 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		488DBFD223DCEE12005BA60B /* BustleRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = BustleRelease.entitlements; path = Bustle/BustleRelease.entitlements; sourceTree = "<group>"; };
 		4F13A018C3C3418A2B3EFC26 /* libPods-Bustle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Bustle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		528AA073667BCB72EBA5578B /* libPods-BustleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BustleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		53390D64F2DD4FD75BCE246F /* Pods-Bustle-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bustle-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Bustle-tvOS/Pods-Bustle-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -161,9 +160,9 @@
 		13B07FAE1A68108700A75B9A /* Bustle */ = {
 			isa = PBXGroup;
 			children = (
+				4869FA7A23DD872100C9C161 /* GoogleService-Info.plist */,
+				488DBFD223DCEE12005BA60B /* BustleRelease.entitlements */,
 				5E35B1E323DAC09F00950073 /* Bustle.entitlements */,
-				489545F123D0CFD100149D17 /* BustleRelease.entitlements */,
-				4865484623C18E610034E14F /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -418,7 +417,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4865484823C18E7A0034E14F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,9 +431,9 @@
 				4859AD4E23CAAA270022DD03 /* Roboto-Medium.ttf in Resources */,
 				4859AD5123CAAA270022DD03 /* Roboto-Bold.ttf in Resources */,
 				4859AD4D23CAAA270022DD03 /* Roboto-Regular.ttf in Resources */,
+				4869FA7B23DD872100C9C161 /* GoogleService-Info.plist in Resources */,
 				4859AD5223CAAA270022DD03 /* Roboto-Italic.ttf in Resources */,
 				4859AD4C23CAAA270022DD03 /* Roboto-Light.ttf in Resources */,
-				4865484723C18E610034E14F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -819,7 +817,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.BustleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bustle.app;
 				PRODUCT_NAME = Bustle;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -830,7 +828,7 @@
 			baseConfigurationReference = D6FE3A309635288F128C42BB /* Pods-Bustle.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
-				CODE_SIGN_ENTITLEMENTS = Bustle/Bustle.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Bustle/BustleRelease.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8BVJY6B499;
 				HEADER_SEARCH_PATHS = (
@@ -844,7 +842,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.BustleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bustle.app;
 				PRODUCT_NAME = Bustle;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

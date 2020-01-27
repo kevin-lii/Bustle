@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Platform } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
-import auth from "@react-native-firebase/auth";
-// import appleAuth, {
-//   AppleButton,
-//   AppleAuthRequestScope,
-//   AppleAuthRequestOperation
-// } from "@invertase/react-native-apple-authentication";
+import auth, { firebase } from "@react-native-firebase/auth";
+import appleAuth, {
+  AppleButton,
+  AppleAuthRequestScope,
+  AppleAuthRequestOperation
+} from "@invertase/react-native-apple-authentication";
 
 import ActionButton from "../../../components/Buttons/ActionButton";
 import SecureText from "../../../components/Text/SecureInput";
@@ -63,24 +63,31 @@ export default function Login({ navigation }) {
     setError("");
   }
 
-  // async function onAppleButtonPress() {
-  //   // performs login reques
-  //   const appleAuthRequestResponse = await appleAuth.performRequest({
-  //     requestedOperation: AppleAuthRequestOperation.LOGIN,
-  //     requestedScopes: [
-  //       AppleAuthRequestScope.EMAIL,
-  //       AppleAuthRequestScope.FULL_NAME
-  //     ]
-  //   });
-  //   if (appleAuthRequestResponse.identityToken) {
-  //     // 3). create a Firebase `AppleAuthProvider` credential
-  //     const appleCredential = auth.AppleAuthProvider.credential(
-  //       appleAuthRequestResponse.identityToken,
-  //       appleAuthRequestResponse.nonce
-  //     );
-  //     auth().signInWithCredential(appleCredential);
-  //   }
-  // }
+  async function onAppleButtonPress() {
+    // performs login reques
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: AppleAuthRequestOperation.LOGIN,
+      requestedScopes: [
+        AppleAuthRequestScope.EMAIL,
+        AppleAuthRequestScope.FULL_NAME
+      ]
+    });
+    const { identityToken, nonce } = appleAuthRequestResponse;
+    // alert(identityToken);
+    if (identityToken) {
+      const appleCredential = await auth.AppleAuthProvider.credential(
+        identityToken,
+        nonce
+      );
+      alert(appleCredential.providerId);
+      console.log(appleCredential);
+      try {
+        await firebase.auth().signInWithCredential(appleCredential);
+      } catch (e) {
+        handleError(e);
+      }
+    }
+  }
 
   return (
     <View flex spread style={styles.container}>
@@ -104,11 +111,11 @@ export default function Login({ navigation }) {
           <ActionButton primary onPress={facebookLogin} text="Facebook Login" />
         </View>
 
-        {/* {Platform.OS === "ios" && (
-          <View>
-            <AppleButton onPress={() => onAppleButtonPress()} />
-          </View>
-        )} */}
+        {Platform.OS === "ios" && (
+
+          <ActionButton primary onPress={() => onAppleButtonPress()} text="Apple Login" />
+
+        )}
 
         <View style={styles.button}>
           <ActionButton

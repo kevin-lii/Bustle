@@ -51,6 +51,8 @@ target 'Bustle' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'RNAppleAuthentication', :path => '../node_modules/@invertase/react-native-apple-authentication'
+
   target 'BustleTests' do
     inherit! :search_paths
     # Pods for testing

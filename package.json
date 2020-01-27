@@ -12,6 +12,7 @@
     "prepare": "patch-package"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^0.1.1",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/masked-view": "^0.1.5",
