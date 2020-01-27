@@ -45,12 +45,6 @@ export default StyleSheet.create({
     fontSize: 20,
     color: "white"
   },
-  scrollView: {
-    position: "absolute",
-    bottom: 70,
-    left: 50,
-    right: 50
-  },
   card: {
     padding: 10,
     elevation: 2,
@@ -71,9 +65,12 @@ export default StyleSheet.create({
   textContent: {
     flex: 1
   },
-  cardtitle: {
-    fontSize: 12,
+  cardTitle: {
+    fontSize: 20,
     marginTop: 5,
     fontWeight: "bold"
+  },
+  cardDescription: {
+    fontSize: 15
   }
 });

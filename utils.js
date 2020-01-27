@@ -7,6 +7,7 @@ import Geolocation from "react-native-geolocation-service";
 import { NavigationActions } from "react-navigation";
 
 import Icons from "./components/Image/Icons";
+import { Theme } from "./constants";
 
 exports.categories = [
   "Social",
@@ -19,7 +20,7 @@ exports.categories = [
   "Service"
 ];
 
-exports.categoriesIcon = ({ type, color, size }) => {
+exports.categoriesIcon = ({ type, color = Theme.primary, size }) => {
   let iconSize;
   switch (type) {
     case "Dining":
