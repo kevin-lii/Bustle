@@ -32,7 +32,7 @@
     "react-native-google-places-autocomplete": "^1.3.9",
     "react-native-image-picker": "^1.1.0",
     "react-native-maps": "0.25.0",
-    "react-native-modal": "^11.5.3",
+    "react-native-modal": "https://github.com/kevin-lii/react-native-modal/tarball/master",
     "react-native-permissions": "^1.2.0",
     "react-native-reanimated": "^1.2.0",
     "react-native-safe-area-context": "^0.6.2",
