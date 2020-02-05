@@ -1,51 +1,35 @@
-import React from "react";
+import React, { Component } from "react";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { withNavigation } from "react-navigation";
 
 import Icons from "../../../components/Image/Icons";
 import EventDetail from "../../../components/Window/EventDetailCard";
-import { UserContext } from "../../../dataContainers/context";
+import { getHostedEvents } from "../../../store/actions";
 
 import styles from "./styles";
+import { connect } from "react-redux";
 
-class MyEvents extends React.Component {
-  static contextType = UserContext;
-  state = { hostedEvents: this.context.hostedEvents };
-
+class MyEvents extends Component {
   componentDidMount() {
-    this.setState({ hostedEvents: this.context.hostedEvents });
-    this.props.navigation.addListener("willFocus", () => {
-      if (this.state.hostedEvents.length != this.context.hostedEvents.length) {
-        this.setState({ hostedEvents: this.context.hostedEvents });
-      }
-    });
+    this.props.getHostedEvents();
   }
 
   render() {
-    const { navigation, ...props } = this.props;
-    const changeContext = eventID => {
-      this.context.updateHostedEvents(
-        this.state.hostedEvents.filter(item => item.id !== eventID)
-      );
-      this.context.updateJoinedEvents(
-        this.context.events.filter(item => item !== eventID)
-      );
-      this.setState({ hostedEvents: this.context.hostedEvents });
-    };
+    const { navigation, hostedEvents } = this.props;
     let events;
-    if (this.state.hostedEvents.length > 0)
-      events = this.state.hostedEvents.map((event, index) => (
+    if (hostedEvents)
+      events = hostedEvents.map((event, index) => (
         <EventDetail
           key={index}
           event={event}
           navigation={navigation}
           map
           trash
-          changeContext={changeContext}
-          {...props}
+          {...this.props}
         />
       ));
     else events = <Text>You have not hosted any events.</Text>;
+
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -71,4 +55,13 @@ class MyEvents extends React.Component {
   }
 }
 
-export default withNavigation(MyEvents);
+export default withNavigation(
+  connect(
+    state => ({
+      hostedEvents: state.hostedEvents
+    }),
+    {
+      getHostedEvents
+    }
+  )(MyEvents)
+);

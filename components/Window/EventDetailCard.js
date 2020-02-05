@@ -8,15 +8,7 @@ import Events from "../../models/Event";
 import { Theme } from "../../constants";
 import { navigateEvent, categoriesIcon } from "../../utils";
 
-export default ({
-  children,
-  event,
-  navigation,
-  map,
-  edit,
-  trash,
-  changeContext
-}) => {
+export default ({ children, event, navigation, map, edit, trash }) => {
   return (
     <Card
       flex
@@ -63,7 +55,6 @@ export default ({
               size={30}
               onPress={() => {
                 Events.remove(event);
-                changeContext(event.id);
               }}
             />
           </View>
