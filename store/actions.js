@@ -24,7 +24,7 @@ export const login = () => dispatch => {
     } else {
       dispatch({
         type: actionTypes.UPDATE_USER,
-        user: null
+        user: {}
       });
     }
   });

@@ -17,18 +17,23 @@ class MyEvents extends Component {
   render() {
     const { navigation, hostedEvents } = this.props;
     let events;
-    if (hostedEvents)
-      events = hostedEvents.map((event, index) => (
-        <EventDetail
-          key={index}
-          event={event}
-          navigation={navigation}
-          map
-          trash
-          {...this.props}
-        />
-      ));
-    else events = <Text>You have not hosted any events.</Text>;
+
+    if (hostedEvents) {
+      if (hostedEvents.length > 0)
+        events = hostedEvents.map((event, index) => (
+          <EventDetail
+            key={index}
+            event={event}
+            navigation={navigation}
+            map
+            trash
+            {...this.props}
+          />
+        ));
+      else events = <Text>You have not hosted any events.</Text>;
+    } else {
+      events = <Text>Loading...</Text>;
+    }
 
     return (
       <SafeAreaView style={styles.container}>

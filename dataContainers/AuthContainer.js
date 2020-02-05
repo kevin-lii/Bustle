@@ -15,9 +15,9 @@ class AuthContainer extends Component {
 
   render() {
     const { user } = this.props;
-    if (typeof user === "undefined") return <Loading />;
+    if (!user) return <Loading />;
 
-    if (!user) return <LoginContainer />;
+    if (!user.uid) return <LoginContainer />;
 
     return (
       <UserContext.Provider value={user}>
