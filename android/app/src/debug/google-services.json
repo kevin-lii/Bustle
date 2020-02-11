@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:797486470835:android:39d5fbd69373e45cc3c2c6",
         "android_client_info": {
-          "package_name": "co.bustleapp"
+          "package_name": "co.bustleapp.debug"
         }
       },
       "oauth_client": [
