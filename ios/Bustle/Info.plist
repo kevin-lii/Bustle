@@ -30,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>5</string>
 	<key>FacebookAppID</key>
 	<string>693482281095289</string>
 	<key>FacebookDisplayName</key>
@@ -57,33 +57,32 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like access to your contacts</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to have constant access to your bluetooth devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like access to your bluetooth</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like access to your calendar</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your camera to upload event and profile photos</string>
+	<key>NSContactsUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like access to your contacts</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to have constant access to your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your location to record the location of an event</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your microphone (for videos) to take event videos</string>
+	<key>NSMotionUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like detect your motion</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to your photo gallery to upload event and profile photos</string>
-  <key>NSContactsUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like access to your contacts</string>
-  <key>NSCalendarsUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like access to your calendar</string>
-  <key>NSBluetoothPeripheralUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like access to your bluetooth</string>
-  <key>NSAppleMusicUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like access to your contacts</string>
-  <key>NSMotionUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like detect your motion</string>
-  <key>NSSpeechRecognitionUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like recognize your speech</string>
-  <key>NSLocationAlwaysUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like to have constant access to your location</string>
-  <key>NSBluetoothAlwaysUsageDescription</key>
-  <string>$(PRODUCT_NAME) would like to have constant access to your bluetooth devices</string>
-  
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like recognize your speech</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Italic.ttf</string>
@@ -120,6 +119,8 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

@@ -1,18 +1,20 @@
 import React from "react";
 import { View, Text, ScrollView, SafeAreaView, Dimensions } from "react-native";
 import { withNavigation } from "react-navigation";
+import Modal from "react-native-modal";
+import moment from "moment";
 
-import IconButton from "../Buttons/IconButton";
 import { UserContext } from "../../dataContainers/context";
+import { categoriesIcon } from "../../utils";
 
 import styles from "./styles";
 
 const { width, height } = Dimensions.get("window");
 
 const CARD_HEIGHT = height / 3;
-const CARD_WIDTH = 225;
+const CARD_WIDTH = 250;
 
-const marginWidth = (width - CARD_WIDTH - 140) / 2;
+const marginWidth = (width - CARD_WIDTH - 40) / 2;
 
 class EventListView extends React.Component {
   static contextType = UserContext;
@@ -20,111 +22,124 @@ class EventListView extends React.Component {
     super(props);
     this.scrollView = React.createRef();
     this.state = {
-      scrollViewWidth: 0,
-      index: 0
+      scrollOffset: 0.1
     };
-    this.props.navigateTo(this.props.eventList[0]);
   }
 
   componentDidUpdate(prevProp, prevState) {
     if (prevProp.eventList != this.props.eventList) {
-      // const index = this.props.eventList.length - 1;
-      const index = 0;
-      this.setState({ index });
+      const scrollOffset = 0.1;
+      this.setState({ scrollOffset });
       this.scrollView.current.scrollTo({
-        x: index * 245,
+        x: scrollOffset,
         y: 0,
         animated: true
       });
-    } else if (prevState.index !== this.state.index)
-      this.props.navigateTo(this.props.eventList[this.state.index]);
+      this.props.navigateTo({
+        event: this.props.eventList[0],
+        events: this.props.eventList
+      });
+    } else {
+      let index = Math.floor(this.state.scrollOffset / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+      if (index >= this.props.eventList) {
+        index = this.props.eventList - 1;
+      }
+      if (index <= 0) {
+        index = 0;
+      }
+      let prevIndex = Math.floor(prevState.scrollOffset / CARD_WIDTH + 0.3);
+      if (prevIndex >= this.props.eventList) {
+        prevIndex = this.props.eventList - 1;
+      }
+      if (prevIndex <= 0) {
+        prevIndex = 0;
+      }
+      if (prevIndex !== index)
+        this.props.navigateTo({
+          event: this.props.eventList[index],
+          events: this.props.eventList
+        });
+    }
   }
 
   render() {
     const { eventList } = this.props;
-    const leftArrow = () => {
-      _currentXOffset = (this.state.index - 1) * 245;
-      this.scrollView.current.scrollTo({
-        x: _currentXOffset,
-        y: 0,
-        animated: true
-      });
-      this.setState(prevState => ({
-        index: prevState.index > 0 ? prevState.index - 1 : 0
-      }));
-    };
 
-    const rightArrow = () => {
-      _currentXOffset = (this.state.index + 1) * 245;
-      this.scrollView.current.scrollTo({
-        x: _currentXOffset,
-        y: 0,
-        animated: true
+    const handleOnScroll = event => {
+      const offset =
+        event.nativeEvent.contentOffset.x > 0.1
+          ? event.nativeEvent.contentOffset.x
+          : 0.1;
+      this.setState({
+        scrollOffset: offset
       });
-      this.setState(prevState => ({
-        index:
-          prevState.index < eventList.length - 1
-            ? prevState.index + 1
-            : eventList.length - 1
-      }));
     };
-    console.log(this.state.index);
+    const handleScrollTo = p => {
+      if (this.scrollView.current) {
+        this.scrollView.current.scrollTo(p);
+      }
+    };
     return (
-      <SafeAreaView>
-        <IconButton
-          touchStyle={{
-            position: "absolute",
-            bottom: 30 + CARD_HEIGHT / 2,
-            left: 20
-          }}
-          onPress={leftArrow}
-          icon="ios-arrow-back"
-        />
-
-        <ScrollView
-          horizontal
-          scrollEventThrottle={1}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled={true}
-          onContentSizeChange={(w, h) => this.setState({ scrollViewWidth: w })}
-          ref={this.scrollView}
-          snapToInterval={CARD_WIDTH}
-          style={styles.scrollView}
+      <Modal
+        propagateSwipe
+        scrollHorizontal
+        scrollTo={handleScrollTo}
+        scrollOffset={this.state.scrollOffset}
+        isVisible={this.props.show}
+        style={{ justifyContent: "flex-end", margin: 0 }}
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        coverScreen={false}
+        hasBackdrop={false}
+        swipeThreshold={20}
+        onSwipeComplete={() =>
+          this.props.navigateTo({ event: null, events: null })
+        }
+        onBackButtonPress={() =>
+          this.props.navigateTo({ event: null, events: null })
+        }
+        swipeDirection={["down"]}
+      >
+        <SafeAreaView
+          style={{ backgroundColor: "transparent", height: CARD_HEIGHT + 80 }}
         >
-          {eventList.map((event, index) => (
-            <View
-              style={[
-                styles.card,
-                {
-                  height: CARD_HEIGHT,
-                  width: CARD_WIDTH,
-                  marginLeft: index == 0 ? marginWidth + 20 : 0,
-                  marginRight: index == eventList.length - 1 ? marginWidth : 20
-                }
-              ]}
-              key={index}
-            >
-              <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>
-                  {event.name}
-                </Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>
-                  {event.description}
-                </Text>
+          <ScrollView
+            horizontal
+            scrollEventThrottle={16}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            ref={this.scrollView}
+            onScroll={handleOnScroll}
+            snapToInterval={CARD_WIDTH + 20}
+          >
+            {eventList.map((event, index) => (
+              <View
+                style={[
+                  styles.card,
+                  {
+                    height: CARD_HEIGHT,
+                    width: CARD_WIDTH,
+                    marginLeft: index == 0 ? marginWidth + 20 : 0,
+                    marginRight:
+                      index == eventList.length - 1 ? marginWidth : 20
+                  }
+                ]}
+                key={index}
+              >
+                <View style={styles.textContent}>
+                  <Text numberOfLines={2} style={styles.cardTitle}>
+                    {categoriesIcon({ type: event.category })} {event.name}
+                  </Text>
+                  <Text numberOfLines={1} style={styles.cardDescription}>
+                    {moment(event.time.toDate()).format("h:mm a")} on{" "}
+                    {moment(event.date.toDate()).format("MMM Do, YYYY")}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ))}
-        </ScrollView>
-        <IconButton
-          touchStyle={{
-            position: "absolute",
-            bottom: 30 + CARD_HEIGHT / 2,
-            right: 20
-          }}
-          onPress={rightArrow}
-          icon="ios-arrow-forward"
-        />
-      </SafeAreaView>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
     );
   }
 }

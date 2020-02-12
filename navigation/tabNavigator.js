@@ -28,6 +28,9 @@ export default createBottomTabNavigator(
         }
       }
     }),
+    tabBarOptions: {
+      activeTintColor: "#1C004B"
+    },
     initialRouteName: "Map"
   }
 );

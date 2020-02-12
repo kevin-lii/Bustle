@@ -8,12 +8,14 @@ export default StyleSheet.create({
   button: {
     position: "absolute",
     backgroundColor: "white",
-    shadowRadius: 5,
     flex: 1,
     justifyContent: "center",
     alignContent: "center",
-    borderColor: "black",
-    borderWidth: 1
+    shadowColor: "#000",
+    shadowRadius: 4,
+    elevation: 2,
+    shadowOpacity: 0.5,
+    shadowOffset: { x: 0, y: -5 }
   },
   addButton: {
     bottom: bottom,

@@ -31,7 +31,6 @@ target 'Bustle' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker/RNDateTimePicker.podspec'
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
-  pod 'RNGoogleSignin', path: '../node_modules/react-native-google-signin'
   
 
 
@@ -41,14 +40,12 @@ target 'Bustle' do
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
 
-  pod 'Firebase/Core', '~> 6.8.1'
-  pod 'Firebase/Auth', '~> 6.8.1'
-  pod 'Firebase/Firestore', '~> 6.8.1'
-  pod 'Firebase/Functions', '~> 6.8.1'
+  pod 'Firebase/Core', '~> 6.13.0'
+  pod 'Firebase/Auth', '~> 6.13.0'
+  pod 'Firebase/Firestore', '~> 6.13.0'
+  pod 'Firebase/Functions', '~> 6.13.0'
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
-
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
   pod 'ReactNativeUiLib', :path => '../node_modules/react-native-ui-lib'
 

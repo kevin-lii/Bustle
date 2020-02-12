@@ -38,7 +38,6 @@ export default class CustomNavigator extends React.Component {
 
   render() {
     const { navigation, ...props } = this.props;
-
     const toggleOverlay = () =>
       this.setState({
         overlay: !this.state.overlay,
@@ -47,6 +46,7 @@ export default class CustomNavigator extends React.Component {
 
     const closeForm = () =>
       this.setState({ formVisible: false, form: -1, overlay: false });
+
     const params = navigation.state.params;
     const showEventModal =
       params != null && params.event != null && params.events == null;
@@ -94,38 +94,20 @@ export default class CustomNavigator extends React.Component {
           </View>
         </Modal>
 
-        <Modal
-          isVisible={showEventListModal}
-          style={styles.preview}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          coverScreen={false}
-          hasBackdrop={false}
-          onSwipeComplete={() =>
-            navigateEvent({ navigation, event: null, events: null })
-          }
-          onBackButtonPress={() =>
-            navigateEvent({ navigation, event: null, events: null })
-          }
-          swipeDirection="down"
-        >
-          <View>
-            {showEventListModal ? (
-              <EventsList
-                eventList={params.events}
-                navigateTo={event => {
-                  navigateEvent({
-                    navigation,
-                    event,
-                    events: params.events
-                  });
-                }}
-                {...props}
-              />
-            ) : null}
-          </View>
-        </Modal>
-
+        {showEventListModal ? (
+          <EventsList
+            show={showEventListModal}
+            eventList={params.events}
+            navigateTo={({ event, events }) => {
+              navigateEvent({
+                navigation,
+                event,
+                events
+              });
+            }}
+            {...props}
+          />
+        ) : null}
         {!this.state.formVisible && !showEventModal && !showEventListModal && (
           <AddButton toggleOverlay={toggleOverlay} />
         )}

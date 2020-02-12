@@ -32,20 +32,34 @@ export default ({ type, label, value, setValue, overlay }) => {
   else initialText = "Now";
 
   const [text, setText] = useState(initialText);
+  let tempDate = new Date();
+
+  const confirmDate = () => {
+    overlay(null);
+    if (type == "date") {
+      setText(moment(tempDate).format("MMM Do, YYYY"));
+    } else if (type === "clock") {
+      setText(moment(tempDate).format("h:mm a"));
+    }
+    setValue(tempDate);
+  };
 
   const setEventDate = (event, newDate) => {
-    overlay(null);
-    if (event.type != "dismissed") {
-      newDate = newDate || value || new Date();
-      if (type == "date") {
-        setText(moment(newDate).format("MMM Do, YYYY"));
-        setValue(newDate);
-      } else if (type === "clock") {
-        setText(moment(newDate).format("h:mm a"));
+    if (Platform.OS == "android") {
+      overlay(null);
+      if (event.type != "dismissed") {
+        if (type == "date") {
+          setText(moment(newDate).format("MMM Do, YYYY"));
+        } else if (type === "clock") {
+          setText(moment(newDate).format("h:mm a"));
+        }
         setValue(newDate);
       }
+    } else {
+      if (newDate && tempDate != newDate) tempDate = newDate;
     }
   };
+
   const toggleSize = 30;
 
   let formField;
@@ -54,14 +68,50 @@ export default ({ type, label, value, setValue, overlay }) => {
       <TextButton
         text={text}
         onPress={async () => {
+          modal = true;
           await overlay(
-            <DateTimePicker
-              value={value || new Date()}
-              mode={type == "clock" ? "time" : "date"}
-              is24Hour={false}
-              display="default"
-              onChange={setEventDate}
-            />
+            Platform.OS == "ios" ? (
+              <View
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 12,
+                  width: "100%"
+                }}
+              >
+                <View
+                  style={{
+                    justifyContent: "flex-end",
+                    alignItems: "flex-end",
+                    borderBottomColor: "grey",
+                    borderBottomWidth: 0.5,
+                    padding: 15
+                  }}
+                >
+                  <TouchableOpacity>
+                    <Text style={{ color: "blue" }} onPress={confirmDate}>
+                      Done
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ marginTop: 20, marginBottom: 20 }}>
+                  <DateTimePicker
+                    value={value || new Date()}
+                    mode={type == "clock" ? "time" : "date"}
+                    is24Hour={false}
+                    display="default"
+                    onChange={setEventDate}
+                  />
+                </View>
+              </View>
+            ) : (
+              <DateTimePicker
+                value={value || new Date()}
+                mode={type == "clock" ? "time" : "date"}
+                is24Hour={false}
+                display="default"
+                onChange={setEventDate}
+              />
+            )
           );
         }}
       />

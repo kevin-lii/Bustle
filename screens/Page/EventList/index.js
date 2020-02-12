@@ -5,6 +5,7 @@ import { withNavigation } from "react-navigation";
 import EventData from "../../../models/Event";
 import EventDetail from "../../../components/Window/EventDetailCard";
 import { UserContext } from "../../../dataContainers/context";
+import Icons from "../../../components/Image/Icons";
 
 import styles from "./styles";
 
@@ -72,7 +73,10 @@ const Event = ({ navigation, ...props }) => {
   if (events.joinedEvents.length > 0)
     joined = (
       <View>
-        <Text style={styles.subtitle}>Joined Events</Text>
+        <Text style={[styles.subtitle, { alignItems: "center" }]}>
+          Joined Events{" "}
+          <Icons type="Feather" icon="check-circle" color="green" size={20} />
+        </Text>
         {events.joinedEvents
           // .sort((a, b) => b.date - a.date)
           .map((event, index) => {

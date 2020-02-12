@@ -3,6 +3,11 @@ import { Platform } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
 import auth from "@react-native-firebase/auth";
+// import appleAuth, {
+//   AppleButton,
+//   AppleAuthRequestScope,
+//   AppleAuthRequestOperation
+// } from "@invertase/react-native-apple-authentication";
 
 import ActionButton from "../../../components/Buttons/ActionButton";
 import SecureText from "../../../components/Text/SecureInput";
@@ -50,8 +55,6 @@ export default function Login({ navigation }) {
     }
   }
 
-  async function appleLogin() {}
-
   function handleError(e) {
     setError(e.message);
   }
@@ -59,6 +62,25 @@ export default function Login({ navigation }) {
   function resetError() {
     setError("");
   }
+
+  // async function onAppleButtonPress() {
+  //   // performs login reques
+  //   const appleAuthRequestResponse = await appleAuth.performRequest({
+  //     requestedOperation: AppleAuthRequestOperation.LOGIN,
+  //     requestedScopes: [
+  //       AppleAuthRequestScope.EMAIL,
+  //       AppleAuthRequestScope.FULL_NAME
+  //     ]
+  //   });
+  //   if (appleAuthRequestResponse.identityToken) {
+  //     // 3). create a Firebase `AppleAuthProvider` credential
+  //     const appleCredential = auth.AppleAuthProvider.credential(
+  //       appleAuthRequestResponse.identityToken,
+  //       appleAuthRequestResponse.nonce
+  //     );
+  //     auth().signInWithCredential(appleCredential);
+  //   }
+  // }
 
   return (
     <View flex spread style={styles.container}>
@@ -82,11 +104,11 @@ export default function Login({ navigation }) {
           <ActionButton primary onPress={facebookLogin} text="Facebook Login" />
         </View>
 
-        {Platform.OS === "ios" && (
-          <View style={styles.button}>
-            <ActionButton primary onPress={appleLogin} text="Apple Login" />
+        {/* {Platform.OS === "ios" && (
+          <View>
+            <AppleButton onPress={() => onAppleButtonPress()} />
           </View>
-        )}
+        )} */}
 
         <View style={styles.button}>
           <ActionButton
