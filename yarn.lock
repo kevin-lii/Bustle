@@ -950,11 +950,6 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@invertase/react-native-apple-authentication@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@invertase/react-native-apple-authentication/-/react-native-apple-authentication-0.1.1.tgz#af25238debbdac3482e5a4bdac5df3b3d9e4b5ca"
-  integrity sha512-VFoWtXRgLCb57RrxCDdHIwMx0i8FPOIhfj5ta/r1BFg9NDZh8PfO9/KB5WFtV/jQWnpJtiyYz35LLafeMjZGPg==
-
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -1271,34 +1266,34 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.6.tgz#c7f2ac187c1f25aa8c30d11baa8f4398eca3bb84"
   integrity sha512-PpMoeXwPUoldCRKDuSi+zK5rT+sJTW6ri6RdGPkSKRzU77Q1d9IaR0O5IKvBj0XSdL3p+dcOa05gk35aGDffBQ==
 
-"@react-native-firebase/app-types@0.5.4":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-0.5.4.tgz#1d28976e7af0b4b462420a92f113264955803ee5"
-  integrity sha512-5lDqyJUWSXXjQeMuBN2J8k4G7/EThA0LHLliXAk85Q+BjD0xIzdAH8w62dGARjRQwF6T7ICiNPVbjVkvVWrveg==
+"@react-native-firebase/app-types@6.3.2":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.3.2.tgz#49be37c332d020b45ead4ffb1708d839d76c6751"
+  integrity sha512-POY3EwNvo0bswEBxMdl7ZDVMS+22N5kyrWKozRXDp+1VtNoKanmJJq8j5OML7aiPClLm2cw6baVn/x0+Lc7XPA==
 
-"@react-native-firebase/app@^0.5.4":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-0.5.4.tgz#9fac7f1bccc4e88079b09fd91a0180be1ec85d92"
-  integrity sha512-l7cWDSI/WCQMBhaCAyjOo6f8gVEiu9OihIQETGwRMKGwVInVJXSNe2RvOxuI9If19OVW3JOp5LsJsaOY/Qj0kA==
+"@react-native-firebase/app@^6.2.0":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-6.3.2.tgz#069aea7a0b30997779f5906c2f4229262b18cb91"
+  integrity sha512-UQVM1tb4b1uf5sKeNCz9B9jowAlS8kXFz8dVQ9wYdqpR7eb+N8xtEocEgX+RDHdiTTEOmEJACUiRfUln+I0dsg==
   dependencies:
-    "@react-native-firebase/app-types" "0.5.4"
+    "@react-native-firebase/app-types" "6.3.2"
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
-"@react-native-firebase/auth@^0.5.4":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-0.5.4.tgz#b5f7617c7e2f45eb718d0a49dd2d42c4ddba77dc"
-  integrity sha512-tI8sTwHmoxheiUTKe6ep66FpchOfd3mqbA/IwVG2EmhltQrc3zwgXLGR5HkkBm2c6urM9FnwHyB37Yw0RGl2Kg==
+"@react-native-firebase/auth@^6.2.0":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/auth/-/auth-6.3.2.tgz#34d209b7a191ac6fdca0a21d9dea79def92daf6d"
+  integrity sha512-sRDgL3oh5bkLQLdZvbgafmd7mUEjdgFnSdDKrgelD44DVmgu4w7zxb+HPuS8OFYVh5WrGfgjUmzl777pnuewcg==
 
-"@react-native-firebase/firestore@^0.5.4":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-0.5.4.tgz#f7cd21562d0f7103c7efc6a8e5307148d05a7eec"
-  integrity sha512-BpJZnjUUKpWJqqjc0JC/qtMvC8HcZHXY7wX2xxl/PswaXXsSHGGRsNuuGGva1UyP0W6L4+jCx21Ny7FuGZC0Ig==
+"@react-native-firebase/firestore@^6.2.0":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-6.3.2.tgz#f86633fc3d30a26dd952c4372db853e877f6a3dc"
+  integrity sha512-rmRHbCLPT52cc7BfUZ8uqQ2qZwmYm4yRmxGYSqYd4iOsAd7xpKfb8gQ/uV9TY1E3QdTST2apahRGe6x3bgsBIg==
 
-"@react-native-firebase/storage@^0.5.4":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-0.5.4.tgz#9d9e9fc3aac910e9c7ab7a34096eaf54d78708a1"
-  integrity sha512-yS99Sd7XrAwi5JXv/KZHWKBD060E1VfWYnXuYen1c34dz5GOLAqwyyI5yXKAM6suB5guVHnrSdvYJ4MaTiuXsQ==
+"@react-native-firebase/storage@^6.2.0":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-6.3.2.tgz#27dcb102990148cc3549fce6f2e3088062a7f6ab"
+  integrity sha512-lD/V+eAK4lGh0e61wEdwKW8HX5BPrXO3rBOuNfPca0qdOrWQ5/5LrA2PE5b8rK/5FI1pAnJNjpqRLC2j6BliKw==
 
 "@react-navigation/core@^3.5.1":
   version "3.5.1"
@@ -6503,10 +6498,9 @@ react-native-maps@0.25.0:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
   integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
 
-react-native-modal@^11.5.3:
+"react-native-modal@https://github.com/kevin-lii/react-native-modal/tarball/master":
   version "11.5.3"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.3.tgz#28b4c761680a165eaf1d2c0fb08e272c0191b39f"
-  integrity sha512-U6RghSkZUZ6c0LHMbwAnVscEwGoI58eXfBstVs18t50miV0GmLcJhIOu5OND+SDGVkBQFiGFRu/pTUJaA7wfGw==
+  resolved "https://github.com/kevin-lii/react-native-modal/tarball/master#61836897e61f5dc2b88fdf5f3281491dd2e9075c"
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"

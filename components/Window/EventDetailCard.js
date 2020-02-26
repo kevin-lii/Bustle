@@ -5,7 +5,7 @@ import moment from "moment";
 import IconButton from "../Buttons/IconButton";
 import Events from "../../models/Event";
 import { Theme } from "../../constants";
-import { navigateEvent } from "../../utils";
+import { navigateEvent, categoriesIcon } from "../../utils";
 
 export default ({ children, event, navigation, map, trash }) => (
   <Card
@@ -42,28 +42,6 @@ export default ({ children, event, navigation, map, trash }) => (
           {event.time && moment(event.time.toDate()).format("h:mm a")} on{" "}
           {event.date && moment(event.date.toDate()).format("MMM Do, YYYY")}
         </Text>
-        <View row spread width={80}>
-          {map && (
-            <View>
-              <IconButton
-                icon="map"
-                size={30}
-                onPress={() => navigateEvent(navigation, event)}
-              />
-            </View>
-          )}
-          {trash && (
-            <View>
-              <IconButton
-                icon="trash"
-                size={30}
-                onPress={() => {
-                  Events.remove(event);
-                }}
-              />
-            </View>
-          )}
-        </View>
       </View>
       <View style={{ flexDirection: "row-reverse" }} spread width={80}>
         {trash && (

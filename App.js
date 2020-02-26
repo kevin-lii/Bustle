@@ -7,6 +7,7 @@
  */
 
 import React from "react";
+import { Text } from "react-native";
 
 import AuthContainer from "./dataContainers/AuthContainer";
 import { Provider } from "react-redux";
