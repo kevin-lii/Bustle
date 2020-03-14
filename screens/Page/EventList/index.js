@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Text, ScrollView, SafeAreaView, View } from "react-native";
 import { withNavigation } from "react-navigation";
 
-import EventData from "../../../models/Event";
+import EventModel from "../../../models/Event";
 import EventDetail from "../../../components/Window/EventDetailCard";
 import { UserContext } from "../../../dataContainers/context";
 import Icons from "../../../components/Image/Icons";
@@ -19,15 +19,8 @@ const Event = ({ navigation, ...props }) => {
   });
   const [loaded, setLoaded] = useState(false);
 
-  const changeContext = eventID => {
-    user.updateHostedEvents(hostedEvents.filter(item => item.id !== eventID));
-    const temp = events.joinedEvents.filter(item => item.id !== eventID);
-    user.updateJoinedEvents(temp.map(item => item.id));
-    setEvents({ joinedEvents: temp, ...events });
-  };
-
   useEffect(() => {
-    EventData.get({}, snapshot => {
+    EventModel.get({}, snapshot => {
       if (snapshot != events.eventCheck) {
         const tempEventList = [];
         const tempJoinedEvents = [];
@@ -45,7 +38,7 @@ const Event = ({ navigation, ...props }) => {
       }
     });
     navigation.addListener("willFocus", () => {
-      EventData.get({}, snapshot => {
+      EventModel.get({}, snapshot => {
         if (
           snapshot != events.eventCheck ||
           user.events != events.joinedEvents.map(item => item.id)
@@ -87,7 +80,6 @@ const Event = ({ navigation, ...props }) => {
                 navigation={navigation}
                 map
                 trash={user.uid === event.host}
-                changeContext={changeContext}
                 {...props}
               />
             );

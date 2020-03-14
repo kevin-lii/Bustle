@@ -3,7 +3,7 @@ import { View, Text, Card } from "react-native-ui-lib";
 import moment from "moment";
 
 import IconButton from "../Buttons/IconButton";
-import Events from "../../models/Event";
+import EventModel from "../../models/Event";
 import { Theme } from "../../constants";
 import { navigateEvent, categoriesIcon } from "../../utils";
 
@@ -51,7 +51,7 @@ export default ({ children, event, navigation, map, trash }) => (
               type="Entypo"
               size={30}
               onPress={() => {
-                Events.remove(event);
+                EventModel.remove(event);
               }}
             />
           </View>

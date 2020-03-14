@@ -15,7 +15,7 @@ import TextButton from "../Buttons/TextButton";
 import styles from "./styles";
 import { Theme } from "../../constants";
 import { categories, categoriesIcon } from "../../utils";
-import EventData from "../../models/Event";
+import EventModel from "../../models/Event";
 import { UserContext } from "../../dataContainers/context";
 import IconButton from "../Buttons/IconButton";
 
@@ -51,19 +51,11 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        await EventData.create(
+        await EventModel.create(
           this.context.uid,
           stateCopy,
           this.context.events
         );
-        await EventData.get({ host: this.context.uid }, snapshot => {
-          const tempEventList = [];
-          snapshot.forEach(doc => {
-            tempEventList.push({ ...doc.data(), id: doc.id });
-          });
-          this.context.updateHostedEvents(tempEventList);
-        });
-
         this.props.close();
       } catch (e) {
         console.log(e);

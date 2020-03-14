@@ -1,6 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-import EventData from "../models/Event";
+import EventModel from "../models/Event";
 
 export const actionTypes = {
   UPDATE_USER: "update user",
@@ -32,7 +32,7 @@ export const login = () => dispatch => {
 
 export const getHostedEvents = () => (dispatch, getState) => {
   const { user } = getState();
-  EventData.get({ host: user.uid }, snapshot => {
+  EventModel.get({ host: user.uid }, snapshot => {
     const hostedEvents = [];
     snapshot.forEach(doc => {
       hostedEvents.push({ ...doc.data(), id: doc.id });
@@ -45,7 +45,7 @@ export const getHostedEvents = () => (dispatch, getState) => {
 };
 
 export const getEvents = (filters = {}) => dispatch => {
-  EventData.get(filters, snapshot => {
+  EventModel.get(filters, snapshot => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,
       events: snapshot

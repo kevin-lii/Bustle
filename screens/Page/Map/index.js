@@ -6,7 +6,7 @@ import supercluster from "points-cluster";
 import Marker from "../../../components/MapUI/Marker";
 import ClusterMarker from "../../../components/MapUI/ClusterMarker";
 import { navigateEvent, customMap } from "../../../utils";
-import EventData from "../../../models/Event";
+import EventModel from "../../../models/Event";
 
 export default class Map extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ export default class Map extends Component {
     this.state = { events: [], clusters: [], zoom: null };
     this.map = React.createRef();
     this.eventLoc = [];
-    EventData.get({}, snapshot => {
+    EventModel.get({}, snapshot => {
       if (snapshot != this.state.events) {
         this.eventLoc = [];
         this.setState({ events: snapshot });

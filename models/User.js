@@ -22,25 +22,6 @@ export default class UserData {
     return query;
   }
 
-  static async create(data, password) {
-    const store = firestore();
-    data.photoURL = "";
-    data.phone = "";
-    data.directChats = [];
-    data.events = [];
-    data.groups = [];
-    data.invitations = [];
-    auth()
-      .createUserWithEmailAndPassword(data.email, password)
-      .then(cred => {
-        return store
-          .collection("users")
-          .doc(cred.user.uid)
-          .set(data);
-      });
-    console.log("pushed");
-  }
-
   static async update(userID, data) {
     const store = firestore();
     if (data.image) {
@@ -61,11 +42,8 @@ export default class UserData {
       .collection("users")
       .doc(userID)
       .update({ events: firebase.firestore.FieldValue.arrayUnion(eventID) });
-    // await firestore()
-    //   .collection("events")
-    //   .doc(eventID)
-    //   .update({ invited: firebase.firestore.FieldValue.arrayUnion(userID) });
   }
+
   static async leaveEvent(userID, eventID) {
     await firestore()
       .collection("users")

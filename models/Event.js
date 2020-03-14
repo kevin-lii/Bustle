@@ -28,8 +28,10 @@ import { UserContext } from "../dataContainers/context";
 // photoURL
 // }
 
-export default class EventData {
-  constructor() {}
+export default class EventModel {
+  constructor(data) {
+    this.data = data;
+  }
 
   static async get(filters, func) {
     const store = firestore();
@@ -87,32 +89,33 @@ export default class EventData {
       // data.position = geo.point(loc.coords.latitude,loc.coords.longitude)
     }
 
-    //1. create chat
-    const chat = await store.collection("chats").add({ createdAt: new Date() });
-    data.chatID = chat.id;
-    console.log("chat created");
+    try {
+      await store.runTransaction(async t => {
+        //1. upload image
+        if (data.image) {
+          const ref = storage().ref(data.type + "/" + data.host);
+          const image = await ref.putFile(data.image.path);
+          data.photoURL = image.fullPath;
+          delete data.image;
+        } else {
+          data.photoURL = "";
+        }
 
-    //2. upload image
-    if (data.image) {
-      const ref = storage().ref(data.type + "/" + data.host);
-      const image = await ref.putFile(data.image.path);
-      data.photoURL = image.fullPath;
-      delete data.image;
-    } else {
-      data.photoURL = "";
+        //2.upload event
+        const eventRef = await geofirestore.collection("events").add(data);
+
+        //3.denormed update user
+        events.push(eventRef.id);
+        await store
+          .collection("users")
+          .doc(userID)
+          .update({ events: events });
+      });
+    } catch {
+      console.log("Failed to upload event");
+      //Add error toast
     }
-
-    //3.upload event
-    const eventRef = await geofirestore.collection("events").add(data);
-    console.log("pushed");
-
-    //4.denormed update
-    events.push(eventRef.id);
-    await store
-      .collection("users")
-      .doc(userID)
-      .update({ events: events });
   }
 }
 
-EventData.contextType = UserContext;
+EventModel.contextType = UserContext;
