@@ -3,7 +3,7 @@ import { Button, View, Text } from "react-native-ui-lib";
 
 import { Theme } from "../../constants";
 
-export default ({ primary, secondary, text, onPress, disabled }) => (
+export default ({ primary, secondary, text, onPress, disabled, style }) => (
   <Button
     label={text}
     color={primary ? "white" : Theme.primary}
@@ -14,5 +14,6 @@ export default ({ primary, secondary, text, onPress, disabled }) => (
     borderRadius={10}
     onPress={onPress}
     disabled={disabled}
+    style={style}
   />
 );

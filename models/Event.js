@@ -1,8 +1,10 @@
 import { getLocation } from "../utils";
 
-import storage from "@react-native-firebase/storage";
+import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
+import { firebase as fire } from '@react-native-firebase/functions';
 import { GeoFirestore } from "geofirestore";
+import uuid from 'uuid/v4';
 
 import { UserContext } from "../dataContainers/context";
 
@@ -29,7 +31,7 @@ import { UserContext } from "../dataContainers/context";
 // }
 
 export default class EventData {
-  constructor() {}
+  constructor() { }
 
   static async get(filters, func) {
     const store = firestore();
@@ -38,32 +40,41 @@ export default class EventData {
     let query = geofirestore.collection("events");
     if (filters.active) query = query.where("ended", "==", false);
     if (filters.host) query = query.where("host", "==", filters.host);
-    query.onSnapshot(func);
+    if (func) query.onSnapshot(func);
   }
 
+  static async getCollection() {
+    return firestore().collection("events");
+  }
+
+
   static async remove(event) {
+    // const deletePhoto = fire.functions().httpsCallable("deletePhoto");
+    const deleteEvent = fire.functions().httpsCallable("deleteEvent");
     await firestore()
-      .collection("users")
-      .doc(event.host)
-      .update({
-        events: firebase.firestore.FieldValue.arrayRemove(event.id)
+      .collection("events")
+      .doc(event.id)
+      .delete().catch(function (error) {
+        console.error("Error removing document: ", error);
       });
     await firestore()
       .collection("chats")
       .doc(event.chatID)
       .delete();
-    await firestore()
-      .collection("events")
-      .doc(event.id)
-      .delete();
+    if (event.photoURL)
+      await f.storage().refFromURL(event.photoURL).delete();
+    await deletePhoto({ eventID: event.id, photoURL: event.photoURL });
+    for (let count; count < event.invited; count++) {
+      const userID = event.invited[count];
+      await deleteEvent({ uid: userID, eventID: event.id });
+    }
   }
 
   static async create(userID, data, events) {
+    // const uploadPhoto = fire.functions().httpsCallable("uploadPhoto");
     if (!data.name) throw new Error("Name not provided");
-
     const store = firestore();
     const geofirestore = new GeoFirestore(store);
-    // const geo = geofirex.init(firebase())
 
     const now = new Date();
     data.createdAt = now;
@@ -74,17 +85,21 @@ export default class EventData {
     data.ended = false;
     data.invited = [userID];
 
+    const loc = await getLocation();
     if (data.location) {
       const { lat, lng } = data.location.geometry.location;
-      data.coordinates = new firestore.GeoPoint(lat, lng);
-      // data.position = geo.point(lat,lng)
+      const distanceAway = Math.sqrt(Math.pow(69.1 * (lat - loc.coords.latitude), 2) +
+        Math.pow(69.1 * (loc.coords.longitude - lng) * Math.cos(lat / 57.3), 2));
+      if (distanceAway > 50) {
+        throw new Error("Location is out of range. Please select a location that is within 50 miles")
+      } else {
+        data.coordinates = new firestore.GeoPoint(lat, lng);
+      }
     } else {
-      const loc = await getLocation();
       data.coordinates = new firestore.GeoPoint(
         loc.coords.latitude,
         loc.coords.longitude
       );
-      // data.position = geo.point(loc.coords.latitude,loc.coords.longitude)
     }
 
     //1. create chat
@@ -94,14 +109,27 @@ export default class EventData {
 
     //2. upload image
     if (data.image) {
-      const ref = storage().ref(data.type + "/" + data.host);
-      const image = await ref.putFile(data.image.path);
-      data.photoURL = image.fullPath;
-      delete data.image;
-    } else {
-      data.photoURL = "";
+      const fileName = `${uuid()}`;
+      console.log(fileName);
+      await f.storage()
+        .ref(`events/${data.category}/${fileName}`)
+        .put(data.image, { customMetadata: { 'uid': userID, 'eventID': event.id } })
+        .on(
+          f.storage.TaskEvent.STATE_CHANGED,
+          async snapshot => {
+            if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+              const photoURL = await snapshot.ref.getDownloadURL();
+              // await uploadPhoto({ eventID: event.id, photoURL: photoURL });
+            }
+          },
+          error => {
+            unsubscribe();
+            alert('Sorry, Try again.');
+          }
+        );
     }
-
+    data.photoURL = data.image;
+    delete data.image;
     //3.upload event
     const eventRef = await geofirestore.collection("events").add(data);
     console.log("pushed");
@@ -112,6 +140,44 @@ export default class EventData {
       .collection("users")
       .doc(userID)
       .update({ events: events });
+
+  }
+  static async update(eventID, data) {
+    // const deletePhoto = fire.functions().httpsCallable("deletePhoto");
+    // const uploadPhoto = fire.functions().httpsCallable("uploadPhoto");
+    if (!data.name) throw new Error("Name not provided");
+    if (data.location) {
+      const loc = await getLocation();
+      const { lat, lng } = data.location.geometry.location;
+      const distanceAway = Math.sqrt(Math.pow(69.1 * (lat - loc.coords.latitude), 2) +
+        Math.pow(69.1 * (loc.coords.longitude - lng) * Math.cos(lat / 57.3), 2));
+      if (distanceAway > 50) {
+        throw new Error("Location is out of range. Please select a location that is within 50 miles")
+      }
+    }
+    const store = firestore();
+    const geofirestore = new GeoFirestore(store);
+    if (data.image) {
+      if (data.photoURL)
+        await f.storage().refFromURL(event.photoURL).delete();
+      //   await deletePhoto({ eventID: event.id, photoURL: event.photoURL });
+      const fileName = `${uuid()}`;
+      await f.storage()
+        .ref(`events/${data.category}/${fileName}`)
+        .put(data.image, { customMetadata: { 'uid': data.host, 'eventID': event.id } })
+        .on(
+          f.storage.TaskEvent.STATE_CHANGED,
+          async snapshot => {
+            if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+              const photoURL = await snapshot.ref.getDownloadURL();
+              // await uploadPhoto({ eventID: event.id, photoURL: photoURL });
+            }
+          }
+        );
+    }
+    data.photoURL = data.image;
+    delete data.image;
+    await geofirestore.collection("events").doc(eventID).update(data);
   }
 }
 

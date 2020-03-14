@@ -5,13 +5,11 @@ import { Theme } from "../../../constants";
 export default StyleSheet.create({
   container: {
     display: "flex",
-    height: "100%",
-    marginRight: 5,
-    marginLeft: 5
+    height: "100%"
   },
   title: {
     color: Theme.primary,
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: "bold",
     marginTop: 30,
     marginBottom: 20,
@@ -35,5 +33,14 @@ export default StyleSheet.create({
     width: 40,
     height: "100%",
     right: 0
+  },
+  scrollView: {
+    paddingLeft: 5,
+    paddingRight: 5
+  },
+  formContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent"
   }
 });

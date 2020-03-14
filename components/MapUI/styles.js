@@ -20,9 +20,7 @@ export default StyleSheet.create({
   },
   popup: {
     backgroundColor: "#FFF",
-    borderTopLeftRadius: Theme.borderRadius,
-    borderTopRightRadius: Theme.borderRadius,
-    height: 275,
+    height: "100%",
     shadowColor: "#000",
     shadowRadius: 5,
     elevation: 5,
@@ -32,13 +30,31 @@ export default StyleSheet.create({
     color: Theme.primary
   },
   popupTitle: {
-    fontSize: 30
+    fontSize: 35,
+    fontWeight: "bold"
   },
-  info: {},
+  handlerContainer: {
+    alignSelf: 'center',
+    height: 20,
+    width: 20,
+    flexDirection: 'row'
+  },
+  handlerBar: {
+    backgroundColor: '#D1D1D6',
+    top: 5,
+    borderRadius: 3,
+    height: 5,
+    width: 19,
+    margin: 0
+  },
   infoText: {
-    fontSize: 15,
+    fontSize: 17,
     marginRight: 1,
     marginBottom: 7.5
+  },
+  infoTextLast: {
+    fontSize: 17,
+    marginRight: 1,
   },
   countText: {
     fontWeight: "bold",
@@ -57,10 +73,7 @@ export default StyleSheet.create({
     overflow: "hidden"
   },
   cardImage: {
-    flex: 3,
-    width: "100%",
-    height: "100%",
-    alignSelf: "center"
+    borderRadius: 5
   },
   textContent: {
     flex: 1
@@ -72,5 +85,5 @@ export default StyleSheet.create({
   },
   cardDescription: {
     fontSize: 15
-  }
+  },
 });

@@ -13,6 +13,5 @@ export default StyleSheet.create({
     fontSize: 18,
     alignContent: "center",
     textAlign: "center",
-    color: "black"
   }
 });

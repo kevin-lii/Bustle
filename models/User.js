@@ -1,9 +1,9 @@
 import storage from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
+import { firebase as fire } from '@react-native-firebase/functions';
 import auth from "@react-native-firebase/auth";
 
 import { UserContext } from "../dataContainers/context";
-import { useContext } from "react";
 
 export default class UserData {
   constructor(data) {
@@ -23,21 +23,14 @@ export default class UserData {
   }
 
   static async create(data, password) {
-    const store = firestore();
-    data.photoURL = "";
-    data.phone = "";
-    data.directChats = [];
-    data.events = [];
-    data.groups = [];
-    data.invitations = [];
     auth()
       .createUserWithEmailAndPassword(data.email, password)
-      .then(cred => {
-        return store
-          .collection("users")
-          .doc(cred.user.uid)
-          .set(data);
-      });
+      .then(async (cred) => {
+        const emailAuth = fire.functions().httpsCallable("emailAuth");
+        await emailAuth({ displayName: data.displayName }).then(result => {
+          console.log(result);
+        })
+      })
     console.log("pushed");
   }
 
@@ -57,20 +50,20 @@ export default class UserData {
       .update(data);
   }
   static async joinEvent(userID, eventID) {
+    const joinEvent = fire.functions().httpsCallable("joinEvent");
     await firestore()
       .collection("users")
       .doc(userID)
       .update({ events: firebase.firestore.FieldValue.arrayUnion(eventID) });
-    // await firestore()
-    //   .collection("events")
-    //   .doc(eventID)
-    //   .update({ invited: firebase.firestore.FieldValue.arrayUnion(userID) });
+    joinEvent({ uid: userID, eventID });
   }
   static async leaveEvent(userID, eventID) {
+    const leaveEvent = fire.functions().httpsCallable("leaveEvent");
     await firestore()
       .collection("users")
       .doc(userID)
       .update({ events: firebase.firestore.FieldValue.arrayRemove(eventID) });
+    leaveEvent({ uid: userID, eventID });
   }
 }
 

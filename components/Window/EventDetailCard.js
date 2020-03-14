@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { View, Text, Card } from "react-native-ui-lib";
 import moment from "moment";
 
 import IconButton from "../Buttons/IconButton";
-import { UserContext } from "../../dataContainers/context";
 import Events from "../../models/Event";
 import { Theme } from "../../constants";
 import { navigateEvent, categoriesIcon } from "../../utils";
@@ -38,7 +37,7 @@ export default ({
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ marginRight: 15 }}>
-          {categoriesIcon({ type: event.category, color: "black", size: 30 })}
+          {categoriesIcon({ type: event.category, size: 30 })}
         </View>
         <View>
           <Text
@@ -56,20 +55,30 @@ export default ({
       </View>
       <View style={{ flexDirection: "row-reverse" }} spread width={80}>
         {trash && (
-          <View>
+          <View style={{ margin: 3 }}>
             <IconButton
               icon="trash"
               type="Entypo"
               size={30}
-              onPress={() => {
-                Events.remove(event);
+              onPress={async () => {
+                await Events.remove(event);
                 changeContext(event.id);
+
               }}
             />
           </View>
         )}
+        {edit && <View style={{ margin: 3 }}>
+          <IconButton
+            icon="pencil"
+            type="Entypo"
+            size={30}
+            onPress={() => {
+              edit(event);
+            }}
+          /></View>}
         {map && (
-          <View>
+          <View style={{ margin: 3 }}>
             <IconButton
               icon="map"
               type="Entypo"
@@ -79,7 +88,6 @@ export default ({
           </View>
         )}
       </View>
-
       {children}
     </Card>
   );

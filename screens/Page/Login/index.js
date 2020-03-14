@@ -4,7 +4,6 @@ import { View, Text, TextField } from "react-native-ui-lib";
 import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
 import auth, { firebase } from "@react-native-firebase/auth";
 import appleAuth, {
-  AppleButton,
   AppleAuthRequestScope,
   AppleAuthRequestOperation
 } from "@invertase/react-native-apple-authentication";
@@ -73,14 +72,11 @@ export default function Login({ navigation }) {
       ]
     });
     const { identityToken, nonce } = appleAuthRequestResponse;
-    // alert(identityToken);
     if (identityToken) {
       const appleCredential = await auth.AppleAuthProvider.credential(
         identityToken,
         nonce
       );
-      alert(appleCredential.providerId);
-      console.log(appleCredential);
       try {
         await firebase.auth().signInWithCredential(appleCredential);
       } catch (e) {
@@ -111,10 +107,8 @@ export default function Login({ navigation }) {
           <ActionButton primary onPress={facebookLogin} text="Facebook Login" />
         </View>
 
-        {Platform.OS === "ios" && (
-
+        {Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 13 && (
           <ActionButton primary onPress={() => onAppleButtonPress()} text="Apple Login" />
-
         )}
 
         <View style={styles.button}>

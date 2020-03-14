@@ -13,7 +13,10 @@ export default createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         headerLeft: () => (
-          <Text style={{ fontWeight: "bold", fontSize: 30, color: "black" }}>
+          <Text style={{
+            fontSize: 30,
+            fontWeight: "bold",
+          }}>
             Settings
           </Text>
         ),

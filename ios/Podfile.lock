@@ -453,6 +453,10 @@ PODS:
     - Firebase/Firestore (~> 6.13.0)
     - React
     - RNFBApp
+  - RNFBFunctions (6.2.0):
+    - Firebase/Functions (~> 6.13.0)
+    - React
+    - RNFBApp
   - RNFBStorage (6.2.0):
     - Firebase/Core (~> 6.13.0)
     - Firebase/Storage (~> 6.13.0)
@@ -511,6 +515,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
+  - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -621,6 +626,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/auth"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
+  RNFBFunctions:
+    :path: "../node_modules/@react-native-firebase/functions"
   RNFBStorage:
     :path: "../node_modules/@react-native-firebase/storage"
   RNGestureHandler:
@@ -697,12 +704,13 @@ SPEC CHECKSUMS:
   RNFBApp: 5b215aacc09105a1761de31b9a0eb2abcce06253
   RNFBAuth: 61673c0d38ce225c315e7be13a1b494904baedd2
   RNFBFirestore: 5de4ae898df51a3ecc16a45db15019836c5cec87
+  RNFBFunctions: 04ab4f777106d8a20ed1c9c2116f24014c23d61a
   RNFBStorage: 336c47daa7ba460fcac8b61054f68130c618cfaa
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   yoga: c2c050f6ae6e222534760cc82f559b89214b67e2
 
-PODFILE CHECKSUM: 9dc995691635133f2289c24ce226e483841f7641
+PODFILE CHECKSUM: e0948a7f38535bb57b0c45c34bccdfebd29ae1de
 
 COCOAPODS: 1.8.4

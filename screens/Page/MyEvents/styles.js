@@ -1,20 +1,15 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "../../../constants";
 
 export default StyleSheet.create({
   container: {
     display: "flex",
     height: "100%",
-    marginRight: 5,
-    marginLeft: 5
   },
   title: {
-    color: Theme.primary,
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 20,
     marginLeft: 2
   },
   iconContainer: {
@@ -27,5 +22,14 @@ export default StyleSheet.create({
     width: 40,
     height: "100%",
     right: 0
+  },
+  scrollView: {
+    paddingLeft: 5,
+    paddingRight: 5
+  },
+  formContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "transparent"
   }
 });

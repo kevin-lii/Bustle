@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import {
   Platform,
-  DatePickerAndroid,
-  DatePickerIOS,
-  TimePickerAndroid,
   TouchableWithoutFeedback
 } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -31,9 +28,12 @@ export default ({ type, label, value, setValue, overlay }) => {
   else if (type == "map-marker-alt") initialText = "Here";
   else initialText = "Now";
 
-  const [text, setText] = useState(initialText);
-  let tempDate = new Date();
 
+
+  const [text, setText] = useState(initialText);
+  let tempDate;
+  if (type == "clock" || type == "date")
+    tempDate = value || new Date();
   const confirmDate = () => {
     overlay(null);
     if (type == "date") {
@@ -104,14 +104,14 @@ export default ({ type, label, value, setValue, overlay }) => {
                 </View>
               </View>
             ) : (
-              <DateTimePicker
-                value={value || new Date()}
-                mode={type == "clock" ? "time" : "date"}
-                is24Hour={false}
-                display="default"
-                onChange={setEventDate}
-              />
-            )
+                <DateTimePicker
+                  value={value || new Date()}
+                  mode={type == "clock" ? "time" : "date"}
+                  is24Hour={false}
+                  display="default"
+                  onChange={setEventDate}
+                />
+              )
           );
         }}
       />
@@ -182,13 +182,13 @@ export default ({ type, label, value, setValue, overlay }) => {
         </View>
       </TouchableWithoutFeedback>
     ) : (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Anyone may join{"\t"}</Text>
-          <Icon name="toggle-off" size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
-    );
+        <TouchableWithoutFeedback onPress={() => setValue(!value)}>
+          <View row centerV>
+            <Text>Anyone may join{"\t"}</Text>
+            <Icon name="toggle-off" size={toggleSize} />
+          </View>
+        </TouchableWithoutFeedback>
+      );
   } else if (type == "shield") {
     formField = value ? (
       <TouchableWithoutFeedback onPress={() => setValue(!value)}>
@@ -198,13 +198,13 @@ export default ({ type, label, value, setValue, overlay }) => {
         </View>
       </TouchableWithoutFeedback>
     ) : (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Guests can't invite{"\t"}</Text>
-          <Icon name="toggle-off" size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
-    );
+        <TouchableWithoutFeedback onPress={() => setValue(!value)}>
+          <View row centerV>
+            <Text>Guests can't invite{"\t"}</Text>
+            <Icon name="toggle-off" size={toggleSize} />
+          </View>
+        </TouchableWithoutFeedback>
+      );
   } else if (type == "paper-plane") {
     formField = value ? (
       <TouchableWithoutFeedback onPress={() => setValue(!value)}>
@@ -214,13 +214,13 @@ export default ({ type, label, value, setValue, overlay }) => {
         </View>
       </TouchableWithoutFeedback>
     ) : (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Don't {"\t"}</Text>
-          <Icon name="toggle-off" size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
-    );
+        <TouchableWithoutFeedback onPress={() => setValue(!value)}>
+          <View row centerV>
+            <Text>Don't {"\t"}</Text>
+            <Icon name="toggle-off" size={toggleSize} />
+          </View>
+        </TouchableWithoutFeedback>
+      );
   }
   // location, choose current or enter an address
   // event status, conditional invite

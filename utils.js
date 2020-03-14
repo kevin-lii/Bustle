@@ -81,13 +81,13 @@ exports.categoriesIcon = ({ type, color = Theme.primary, size }) => {
   }
 };
 
-exports.createChat = async function() {
+exports.createChat = async function () {
   firestore()
     .collection("chats")
     .doc("{messages: []}");
 };
 
-exports.getLocation = async function() {
+exports.getLocation = async function () {
   let locationPermission = await Permissions.check("location");
   if (locationPermission == "undetermined")
     locationPermission = await Permissions.request("location");
@@ -106,35 +106,37 @@ exports.getLocation = async function() {
     );
   });
 };
-exports.checkName = function(first, last) {
+exports.checkName = function (first, last) {
   const nameRegex = /([A-Z]){1}\w+/;
   if (!nameRegex.test(first) || !nameRegex.test(last)) {
     throw new Error("Name improperly formatted");
   }
 };
 
-exports.checkPhoneNumber = function(number) {
+exports.checkPhoneNumber = function (number) {
   const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$/;
   if (!phoneRegex.test(number)) {
     throw new Error("Improper phone number");
   }
 };
 
-exports.checkPasswords = function(password, again) {
+exports.checkPasswords = function (password, again) {
   if (password === "" || again === "" || password !== again) {
     throw new Error("Passwords do not match");
   }
 };
 
-exports.checkEmail = function(email) {
-  // const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const emailRegex = /^\w+([\.-]?\w+)*@berkeley\.edu$/;
+exports.checkEmail = function (email) {
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const berkeleyEmailRegex = /^\w+([\.-]?\w+)*@berkeley\.edu$/;
   if (!emailRegex.test(email)) {
     throw new Error("Email improperly formatted");
+  } else if (!berkeleyEmailRegex.test(email)) {
+    throw new Error("Please use a @berkeley.edu email to register");
   }
 };
 
-exports.navigateEvent = function({ navigation, event, events }) {
+exports.navigateEvent = function ({ navigation, event, events }) {
   navigation.dispatch(
     NavigationActions.navigate({
       routeName: "Map",
@@ -468,6 +470,6 @@ exports.customMap = [
   }
 ];
 
-function sendEmailVerification(email) {}
+function sendEmailVerification(email) { }
 
-function sendPhoneVerification(phone) {}
+function sendPhoneVerification(phone) { }
