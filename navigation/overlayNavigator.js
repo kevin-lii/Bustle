@@ -1,11 +1,11 @@
 import React from "react";
 import { View } from "react-native";
+import Modal from "react-native-modal";
 
 import HeaderNavigator from "./headerNavigator";
 import AddButton from "../components/Buttons/Add";
 import EventsList from "../components/MapUI/EventsListView";
 import EventPreview from "../components/MapUI/EventBottomSheet";
-import Modal from "react-native-modal";
 import { navigateEvent } from "../utils";
 
 import CreateEvent from "../components/Form/EventCreate";
@@ -51,6 +51,7 @@ export default class CustomNavigator extends React.Component {
     const showEventModal =
       params != null && params.event != null && params.events == null;
     const showEventListModal = params != null && params.events != null;
+
     return (
       <View style={styles.container}>
         <HeaderNavigator navigation={navigation} {...props} />
@@ -70,29 +71,19 @@ export default class CustomNavigator extends React.Component {
           <CreateEvent close={closeForm} {...props} />
         </Modal>
 
-        <Modal
-          isVisible={showEventModal}
-          style={styles.preview}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          coverScreen={false}
-          hasBackdrop={false}
-          onSwipeComplete={() =>
-            navigateEvent({ navigation, event: null, events: null })
-          }
-          onBackButtonPress={() =>
-            navigateEvent({
-              navigation,
-              event: null,
-              events: null
-            })
-          }
-          swipeDirection="down"
-        >
-          <View>
-            {showEventModal && <EventPreview event={params.event} {...props} />}
-          </View>
-        </Modal>
+        {showEventModal ? (
+          <EventPreview
+            event={params.event}
+            navigateTo={({ event, events }) => {
+              navigateEvent({
+                navigation,
+                event,
+                events
+              });
+            }}
+            {...props}
+          />
+        ) : null}
 
         {showEventListModal ? (
           <EventsList

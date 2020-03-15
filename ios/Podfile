@@ -47,9 +47,8 @@ target 'Bustle' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
-  pod 'ReactNativeUiLib', :path => '../node_modules/react-native-ui-lib'
 
-  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
   target 'BustleTests' do
     inherit! :search_paths

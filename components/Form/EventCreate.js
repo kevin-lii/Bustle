@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
+import ImagePicker from "react-native-image-picker";
 
 import FormCard from "../Window/FormCard";
 import FormGroup from "./FormGroup";
@@ -24,18 +25,18 @@ export default class EventCreate extends React.Component {
   constructor(props) {
     super(props);
     this.scrollView = React.createRef();
-
+    //Changed to support edit
     this.state = {
       overlayContent: false,
-      name: "",
-      description: "",
-      date: null,
-      time: null,
-      location: null,
-      category: "Social",
-      open: true,
-      isPrivate: false,
-      image: null,
+      name: props.event ? props.event.name : "",
+      description: props.event ? props.event.description : "",
+      date: props.event ? props.event.date.toDate() : null,
+      time: props.event ? props.event.time.toDate() : null,
+      location: props.event ? props.event.location : null,
+      category: props.event ? props.event.category : "Social",
+      open: props.event ? props.event.open : true,
+      isPrivate: props.event ? props.event.isPrivate : false,
+      image: props.event ? props.event.photoURL : "",
       scrollViewWidth: 0,
       currentXOffset: 0,
       confirmed: false
@@ -64,8 +65,27 @@ export default class EventCreate extends React.Component {
       }
     };
 
+    const edit = async () => {
+      try {
+        this.setState({ confirmed: true });
+        const stateCopy = Object.assign({}, this.state);
+        delete stateCopy.confirmed;
+        delete stateCopy.overlayContent;
+        delete stateCopy.scrollViewWidth;
+        delete stateCopy.currentXOffset;
+        await EventData.update(this.props.event.id, stateCopy);
+        if (this.props.update) this.props.update();
+        this.props.close();
+      } catch (e) {
+        console.log(e);
+        Alert.alert("Error", e.message);
+        this.setState({ confirmed: false });
+      }
+    };
+
     const validateSubmission = () => {
-      submit();
+      if (this.props.event) edit();
+      else submit();
     };
 
     setOverlayContent = content => this.setState({ overlayContent: content });
@@ -82,13 +102,32 @@ export default class EventCreate extends React.Component {
     );
 
     let imgText;
-    if (this.state.image) {
-      const strStart = this.state.image.path.lastIndexOf("/") + 1;
-      imgText =
-        this.state.image.path.substring(strStart, strStart + 15) + "...";
-    } else {
-      imgText = "Add Image";
-    }
+    // if (this.state.image) {
+    //   const strStart = this.state.image.path.lastIndexOf("/") + 1;
+    //   imgText =
+    //     this.state.image.path.substring(strStart, strStart + 15) + "...";
+    // } else {
+    imgText = "Add Image";
+    // }
+
+    const pickImage = () => {
+      ImagePicker.showImagePicker(
+        {
+          title: "Select Image",
+          storageOptions: {
+            skipBackup: true,
+            path: "images"
+          }
+        },
+        response => {
+          if (response.didCancel) console.log("Canceled");
+          else if (response.error) Alert.alert("Error", response.error);
+          else {
+            this.setState({ image: response.uri });
+          }
+        }
+      );
+    };
 
     const handleScroll = event => {
       newXOffset = event.nativeEvent.contentOffset.x;
@@ -119,11 +158,11 @@ export default class EventCreate extends React.Component {
       <FormCard height={550} width={"90%"}>
         <FormHeader
           icon="close-a"
-          title="Create Event"
+          title={this.props.event ? "Edit Event" : "Create Event"}
           onPress={this.props.close}
           headerRight={
             <TextButton
-              text={"Create"}
+              text={this.props.event ? "Edit" : "Create"}
               disabled={this.state.confirmed}
               onPress={validateSubmission}
               primary
@@ -258,7 +297,11 @@ export default class EventCreate extends React.Component {
           </View>
 
           <View style={{ height: 15 }}></View>
-          <TextButton text={imgText} style={styles.imgButton} />
+          <TextButton
+            text={imgText}
+            style={styles.imgButton}
+            onPress={pickImage}
+          />
           <View style={{ height: 15 }}></View>
 
           <TextField

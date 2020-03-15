@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View } from "react-native";
+import { PermissionsAndroid } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import supercluster from "points-cluster";
 
@@ -77,7 +77,7 @@ export default class Map extends Component {
     const cluster = supercluster(this.eventLoc, {
       minZoom: 0,
       maxZoom: 20,
-      radius: 60
+      radius: 40
     });
     return cluster({
       bounds,
@@ -86,6 +86,9 @@ export default class Map extends Component {
   };
 
   createClusters = () => {
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    );
     this.map.current.getCamera().then(camera => {
       if (camera.zoom != this.state.zoom) {
         this.map.current.getMapBoundaries().then(bounds => {
@@ -162,27 +165,27 @@ export default class Map extends Component {
     });
 
     return (
-      <View style={{ flex: 1 }}>
-        <MapView
-          ref={this.map}
-          provider={PROVIDER_GOOGLE}
-          style={{ flex: 1 }}
-          customMapStyle={customMap}
-          initialRegion={{
-            latitude: 37.86835,
-            longitude: -122.265,
-            latitudeDelta: 0.0461,
-            longitudeDelta: 0.0211
-          }}
-          onRegionChangeComplete={this.createClusters}
-          onMapReady={this.createClusters}
-          showsPointsOfInterest={false}
-          showsBuildings={false}
-          showsCompass={false}
-        >
-          {markers}
-        </MapView>
-      </View>
+      <MapView
+        ref={this.map}
+        provider={PROVIDER_GOOGLE}
+        style={{ flex: 1 }}
+        customMapStyle={customMap}
+        initialRegion={{
+          latitude: 37.86835,
+          longitude: -122.265,
+          latitudeDelta: 0.0461,
+          longitudeDelta: 0.0211
+        }}
+        onRegionChangeComplete={this.createClusters}
+        onMapReady={this.createClusters}
+        showsBuildings={false}
+        showsCompass={false}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        followUserLocation={true}
+      >
+        {markers}
+      </MapView>
     );
   }
 }

@@ -1,9 +1,9 @@
 import storage from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
+import { firebase as fire } from "@react-native-firebase/functions";
 import auth from "@react-native-firebase/auth";
 
 import { UserContext } from "../dataContainers/context";
-import { useContext } from "react";
 
 export default class UserData {
   constructor(data) {
@@ -38,17 +38,21 @@ export default class UserData {
       .update(data);
   }
   static async joinEvent(userID, eventID) {
+    const joinEvent = fire.functions().httpsCallable("joinEvent");
     await firestore()
       .collection("users")
       .doc(userID)
       .update({ events: firebase.firestore.FieldValue.arrayUnion(eventID) });
+    joinEvent({ uid: userID, eventID });
   }
 
   static async leaveEvent(userID, eventID) {
+    const leaveEvent = fire.functions().httpsCallable("leaveEvent");
     await firestore()
       .collection("users")
       .doc(userID)
       .update({ events: firebase.firestore.FieldValue.arrayRemove(eventID) });
+    leaveEvent({ uid: userID, eventID });
   }
 }
 

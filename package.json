@@ -12,12 +12,14 @@
     "prepare": "patch-package"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^0.1.1",
     "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/masked-view": "^0.1.5",
     "@react-native-firebase/app": "^6.2.0",
     "@react-native-firebase/auth": "^6.2.0",
     "@react-native-firebase/firestore": "^6.2.0",
+    "@react-native-firebase/functions": "^6.2.0",
     "@react-native-firebase/storage": "^6.2.0",
     "geofirestore": "^3.3.1",
     "meaningful-string": "^1.2.1",
@@ -34,7 +36,7 @@
     "react-native-maps": "0.25.0",
     "react-native-modal": "https://github.com/kevin-lii/react-native-modal/tarball/master",
     "react-native-permissions": "^1.2.0",
-    "react-native-reanimated": "^1.2.0",
+    "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.6.2",
     "react-native-ui-lib": "^3.41.0",
     "react-native-vector-icons": "^6.6.0",
@@ -45,6 +47,7 @@
     "react-redux": "^7.1.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.18",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

@@ -1,5 +1,13 @@
 import React from "react";
-import { View, Text, ScrollView, SafeAreaView, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Image
+} from "react-native";
 import { withNavigation } from "react-navigation";
 import Modal from "react-native-modal";
 import moment from "moment";
@@ -40,14 +48,14 @@ class EventListView extends React.Component {
         events: this.props.eventList
       });
     } else {
-      let index = Math.floor(this.state.scrollOffset / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+      let index = Math.floor(this.state.scrollOffset / (CARD_WIDTH + 20)); // animate 30% away from landing on the next item
       if (index >= this.props.eventList) {
         index = this.props.eventList - 1;
       }
       if (index <= 0) {
         index = 0;
       }
-      let prevIndex = Math.floor(prevState.scrollOffset / CARD_WIDTH + 0.3);
+      let prevIndex = Math.floor(prevState.scrollOffset / (CARD_WIDTH + 20));
       if (prevIndex >= this.props.eventList) {
         prevIndex = this.props.eventList - 1;
       }
@@ -91,7 +99,7 @@ class EventListView extends React.Component {
         animationOut="slideOutDown"
         coverScreen={false}
         hasBackdrop={false}
-        swipeThreshold={20}
+        swipeThreshold={10}
         onSwipeComplete={() =>
           this.props.navigateTo({ event: null, events: null })
         }
@@ -109,7 +117,7 @@ class EventListView extends React.Component {
             showsHorizontalScrollIndicator={false}
             pagingEnabled
             ref={this.scrollView}
-            onScroll={handleOnScroll}
+            onScrollEndDrag={handleOnScroll}
             snapToInterval={CARD_WIDTH + 20}
           >
             {eventList.map((event, index) => (
@@ -126,15 +134,23 @@ class EventListView extends React.Component {
                 ]}
                 key={index}
               >
-                <View style={styles.textContent}>
-                  <Text numberOfLines={2} style={styles.cardTitle}>
-                    {categoriesIcon({ type: event.category })} {event.name}
-                  </Text>
-                  <Text numberOfLines={1} style={styles.cardDescription}>
-                    {moment(event.time.toDate()).format("h:mm a")} on{" "}
-                    {moment(event.date.toDate()).format("MMM Do, YYYY")}
-                  </Text>
-                </View>
+                <TouchableWithoutFeedback
+                  onPress={() => this.props.navigateTo({ event, events: null })}
+                >
+                  <View style={styles.textContent}>
+                    <Image
+                      style={{ height: "75%" }}
+                      source={{ uri: event.photoURL }}
+                    ></Image>
+                    <Text numberOfLines={1} style={styles.cardTitle}>
+                      {categoriesIcon({ type: event.category })} {event.name}
+                    </Text>
+                    <Text numberOfLines={1} style={styles.cardDescription}>
+                      {moment(event.time.toDate()).format("h:mm a")} on{" "}
+                      {moment(event.date.toDate()).format("MMM Do, YYYY")}
+                    </Text>
+                  </View>
+                </TouchableWithoutFeedback>
               </View>
             ))}
           </ScrollView>

@@ -12,7 +12,6 @@ export default StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     alignContent: "center",
-    textAlign: "center",
-    color: "black"
+    textAlign: "center"
   }
 });

@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
-import {
-  Platform,
-  DatePickerAndroid,
-  DatePickerIOS,
-  TimePickerAndroid,
-  TouchableWithoutFeedback
-} from "react-native";
+import { Platform, TouchableWithoutFeedback } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Icon from "react-native-vector-icons/Fontisto";
 import moment from "moment";
@@ -32,8 +26,8 @@ export default ({ type, label, value, setValue, overlay }) => {
   else initialText = "Now";
 
   const [text, setText] = useState(initialText);
-  let tempDate = new Date();
-
+  let tempDate;
+  if (type == "clock" || type == "date") tempDate = value || new Date();
   const confirmDate = () => {
     overlay(null);
     if (type == "date") {

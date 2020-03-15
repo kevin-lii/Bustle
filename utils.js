@@ -106,6 +106,18 @@ exports.getLocation = async function() {
     );
   });
 };
+
+exports.validateLocation() = function(loc, lat, lng) {
+  const distanceAway = Math.sqrt(
+    Math.pow(69.1 * (lat - loc.coords.latitude), 2) +
+      Math.pow(69.1 * (loc.coords.longitude - lng) * Math.cos(lat / 57.3), 2)
+  );
+  if (distanceAway > 50)
+    throw new Error(
+      "Location is out of range. Please select a location that is within 50 miles"
+    );
+};
+
 exports.checkName = function(first, last) {
   const nameRegex = /([A-Z]){1}\w+/;
   if (!nameRegex.test(first) || !nameRegex.test(last)) {
@@ -127,10 +139,12 @@ exports.checkPasswords = function(password, again) {
 };
 
 exports.checkEmail = function(email) {
-  // const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  const emailRegex = /^\w+([\.-]?\w+)*@berkeley\.edu$/;
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const berkeleyEmailRegex = /^\w+([\.-]?\w+)*@berkeley\.edu$/;
   if (!emailRegex.test(email)) {
     throw new Error("Email improperly formatted");
+  } else if (!berkeleyEmailRegex.test(email)) {
+    throw new Error("Please use a @berkeley.edu email to register");
   }
 };
 
