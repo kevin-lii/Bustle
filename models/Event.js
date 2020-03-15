@@ -30,7 +30,7 @@ import { UserContext } from "../dataContainers/context";
 // photoURL
 // }
 
-export default class EventData {
+export default class EventModel {
   constructor() {}
 
   static async get(filters, func) {

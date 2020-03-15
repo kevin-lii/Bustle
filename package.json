@@ -33,6 +33,7 @@
     "react-native-gesture-handler": "^1.4.1",
     "react-native-google-places-autocomplete": "^1.3.9",
     "react-native-google-signin": "^2.0.0",
+    "react-native-image-picker": "^2.3.1",
     "react-native-maps": "0.25.0",
     "react-native-modal": "https://github.com/kevin-lii/react-native-modal/tarball/master",
     "react-native-permissions": "^1.2.0",
@@ -45,9 +46,9 @@
     "react-navigation-stack": "^2.0.12",
     "react-navigation-tabs": "^2.7.0",
     "react-redux": "^7.1.3",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.19",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.18",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

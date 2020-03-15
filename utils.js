@@ -107,7 +107,7 @@ exports.getLocation = async function() {
   });
 };
 
-exports.validateLocation() = function(loc, lat, lng) {
+exports.validateLocation = function(loc, lat, lng) {
   const distanceAway = Math.sqrt(
     Math.pow(69.1 * (lat - loc.coords.latitude), 2) +
       Math.pow(69.1 * (loc.coords.longitude - lng) * Math.cos(lat / 57.3), 2)
