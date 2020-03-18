@@ -52,10 +52,6 @@ export default StyleSheet.create({
     marginRight: 1,
     marginBottom: 7.5
   },
-  infoTextLast: {
-    fontSize: 17,
-    marginRight: 1
-  },
   countText: {
     fontWeight: "bold",
     fontSize: 20,

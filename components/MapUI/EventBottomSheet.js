@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { View, Text, SafeAreaView, Image } from "react-native";
+import React from "react";
+import { View, Text, SafeAreaView, Dimensions } from "react-native";
 import moment from "moment";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
@@ -40,7 +40,6 @@ export default class EventBottomSheet extends React.Component {
 
   render() {
     const { event, navigateTo } = this.props;
-    console.log(event.photoURL);
     const date = moment(event.date.toDate()).format("MMM Do, YYYY");
     const time = moment(event.time.toDate()).format("h:mm a");
     const location = event.location ? event.location.description : "See Map";
@@ -100,16 +99,6 @@ export default class EventBottomSheet extends React.Component {
         outputRange: [1, -0.4],
         extrapolate: Animated.Extrapolate.CLAMP
       });
-      const animatedButtonSize = Animated.interpolate(fall, {
-        inputRange: [0, 0.7],
-        outputRange: [33, 100].slice().reverse(),
-        extrapolate: Animated.Extrapolate.CLAMP
-      });
-      const animatedContentHeight = Animated.interpolate(fall, {
-        inputRange: [0, 0.7],
-        outputRange: event.photoURL ? [55, -9] : [75, -15],
-        extrapolate: Animated.Extrapolate.CLAMP
-      });
       const animateHeight = outputRange => {
         return Animated.interpolate(fall, {
           inputRange: [0, 0.7],
@@ -118,26 +107,39 @@ export default class EventBottomSheet extends React.Component {
         });
       };
       return (
-        <Animated.View style={{ marginTop: animateHeight([15, 5]) }}>
+        <Animated.View>
           <Animated.ScrollView
-            style={{ height: Animated.concat(animatedContentHeight, "%") }}
+            style={{
+              height: Animated.concat(
+                event.photoURL
+                  ? animateHeight([55, -10])
+                  : animateHeight([75, -15]),
+                "%"
+              ),
+              marginTop: 7.5
+            }}
           >
-            <Animated.Text
-              style={[
-                styles.infoTextLast,
-                {
-                  opacity: animatedContentOpacity,
-                  lineHeight: animateHeight([20, 0])
-                }
-              ]}
-            >
-              {event.description}
-            </Animated.Text>
+            {event.description ? (
+              <Animated.Text
+                style={[
+                  styles.infoText,
+                  {
+                    marginBottom: 0,
+                    opacity: animatedContentOpacity,
+                    lineHeight: animateHeight([20, 0])
+                  }
+                ]}
+              >
+                {event.description}
+              </Animated.Text>
+            ) : null}
           </Animated.ScrollView>
           <Animated.View
             style={{
-              width: Animated.concat(animatedButtonSize, "%"),
-              marginTop: 1
+              width: Animated.concat(
+                animateHeight([33, 100].slice().reverse()),
+                "%"
+              )
             }}
           >
             {!this.state.user.events.includes(event.id) ? (
@@ -190,11 +192,13 @@ export default class EventBottomSheet extends React.Component {
         outputRange: [1, -0.2],
         extrapolate: Animated.Extrapolate.CLAMP
       });
-      const animatedContentHeight = Animated.interpolate(fall, {
-        inputRange: [0, 0.7],
-        outputRange: [30, -4],
-        extrapolate: Animated.Extrapolate.CLAMP
-      });
+      const animateHeight = outputRange => {
+        return Animated.interpolate(fall, {
+          inputRange: [0, 0.7],
+          outputRange: outputRange,
+          extrapolate: Animated.Extrapolate.CLAMP
+        });
+      };
       return (
         <Animated.Image
           overflow="hidden"
@@ -202,7 +206,7 @@ export default class EventBottomSheet extends React.Component {
             styles.cardImage,
             {
               opacity: animatedContentOpacity,
-              height: Animated.concat(animatedContentHeight, "%")
+              height: Animated.concat(animateHeight([30, -4]), "%")
             }
           ]}
           source={{ uri: event.photoURL }}
@@ -250,61 +254,11 @@ export default class EventBottomSheet extends React.Component {
                 <Icons type="Entypo" icon="calendar" size={15}></Icons> {time}{" "}
                 on {date}
               </Text>
-              <Text numberOfLines={1} style={styles.infoTextLast}>
+              <Text numberOfLines={1} style={styles.infoText}>
                 <Icons type="Fontisto" icon="map-marker" size={15}></Icons>{" "}
                 {location}
               </Text>
               {renderExtended()}
-              {/* {!this.state.user.events.includes(event.id) ? (
-                <View style={{ width: "33%", marginTop: 10 }}>
-                  <Button
-                    text="Join"
-                    onPress={async () => {
-                      await UserData.joinEvent(this.state.user.uid, event.id);
-                      eventList.push(event.id);
-                      await this.state.user.updateJoinedEvents(eventList);
-                      this.setState({
-                        user: {
-                          events: eventList,
-                          ...this.state.user
-                        }
-                      });
-                    }}
-                    primary
-                  ></Button>
-                </View>
-              ) : (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <View
-                      style={{
-                        width: "33%",
-                        marginTop: 10,
-                        marginRight: 5
-                      }}
-                    >
-                      <Button
-                        text="Leave"
-                        onPress={async () => {
-                          await UserData.leaveEvent(this.state.user.uid, event.id);
-                          const remaining = this.state.user.events.filter(
-                            item => item != event.id
-                          );
-                          await this.state.user.updateJoinedEvents(remaining);
-                          this.state.user.events = remaining;
-                          this.setState({
-                            user: this.state.user
-                          });
-                        }}
-                        disabled={event.host === this.state.user.uid}
-                        primary
-                      ></Button>
-                    </View>
-                    <Text style={{ color: "green" }}>
-                      <Icons type="Feather" icon="check-circle" color="green" /> You
-                      are currently going
-                </Text>
-                  </View>
-                )} */}
             </View>
           </SafeAreaView>
         );
@@ -312,11 +266,10 @@ export default class EventBottomSheet extends React.Component {
     return (
       <BottomSheet
         ref={bs}
-        snapPoints={[0, 300, "100%"]}
+        snapPoints={[Dimensions.get("window").height, 300, 0]}
         initialSnap={1}
         renderContent={renderContent}
         enabledContentTapInteraction={false}
-        enabledBottomInitialAnimation
         callbackNode={fall}
         callbackThreshold={0.1}
         borderRadius={Theme.borderRadius}
