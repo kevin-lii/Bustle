@@ -2,39 +2,45 @@ import React, { Component } from "react";
 import { PermissionsAndroid } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import supercluster from "points-cluster";
+import { connect } from "react-redux";
+import _ from "lodash";
 
 import Marker from "../../../components/MapUI/Marker";
 import ClusterMarker from "../../../components/MapUI/ClusterMarker";
 import { navigateEvent, customMap } from "../../../utils";
-import EventModel from "../../../models/Event";
+import { getEvents } from "../../../store/actions";
 
-export default class Map extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = { events: [], clusters: [], zoom: null };
     this.map = React.createRef();
     this.eventLoc = [];
-    EventModel.get({}, snapshot => {
-      if (snapshot != this.state.events) {
-        this.eventLoc = [];
-        this.setState({ events: snapshot });
-        snapshot.forEach(doc => {
-          const geoPoint = doc.data().coordinates;
-          this.eventLoc.push({
-            lng: geoPoint.longitude,
-            lat: geoPoint.latitude,
-            ...doc.data(),
-            id: doc.id
-          });
-        });
-      }
-      if (this.map.current) {
-        this.createClusters();
-      }
-    });
+  }
+
+  componentDidMount() {
+    this.props.getEvents();
   }
 
   componentDidUpdate(prevProps) {
+    if (!_.isEqual(_.sortBy(this.state.events), _.sortBy(this.props.events))) {
+      this.eventLoc = [];
+      this.setState({ events: this.props.events });
+      this.props.events.forEach(event => {
+        const geoPoint = event.data().coordinates;
+        this.eventLoc.push({
+          lng: geoPoint.longitude,
+          lat: geoPoint.latitude,
+          ...event.data(),
+          id: event.id
+        });
+      });
+
+      if (this.map.current) {
+        this.createClusters();
+      }
+    }
+
     if (!this.props.navigation.state.params) return;
 
     const eventFocus = this.props.navigation.state.params.event;
@@ -189,3 +195,12 @@ export default class Map extends Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+    events: state.events
+  }),
+  {
+    getEvents
+  }
+)(Map);
