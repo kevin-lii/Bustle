@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import { PermissionsAndroid } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import supercluster from "points-cluster";
 import { connect } from "react-redux";
 import _ from "lodash";
 
 import Marker from "../../../components/MapUI/Marker";
 import ClusterMarker from "../../../components/MapUI/ClusterMarker";
-import { navigateEvent, customMap } from "../../../global/utils";
+import MapEventUtils from "./MapEventUtils";
+import { bindAll, navigateEvent } from "../../../global/utils";
+import { customMap } from "../../../global/constants";
 import { getEvents } from "../../../store/actions";
 
 class Map extends Component {
@@ -16,6 +16,8 @@ class Map extends Component {
     this.state = { events: [], clusters: [], zoom: null };
     this.map = React.createRef();
     this.eventLoc = [];
+
+    bindAll(this, MapEventUtils);
   }
 
   componentDidMount() {
@@ -56,76 +58,6 @@ class Map extends Component {
       this.unFocus();
     }
   }
-
-  focusPoint(center) {
-    this.map.current.animateCamera(
-      {
-        center,
-        zoom: 17
-      },
-      { duration: 300 }
-    );
-  }
-
-  unFocus() {
-    this.map.current.getCamera().then(camera => {
-      this.map.current.animateCamera(
-        {
-          center: camera.center,
-          zoom: 15
-        },
-        { duration: 300 }
-      );
-    });
-  }
-
-  getClusters = ({ camera, bounds }) => {
-    const cluster = supercluster(this.eventLoc, {
-      minZoom: 0,
-      maxZoom: 20,
-      radius: 40
-    });
-    return cluster({
-      bounds,
-      zoom: Math.ceil(camera.zoom)
-    });
-  };
-
-  createClusters = () => {
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-    );
-    this.map.current.getCamera().then(camera => {
-      if (camera.zoom != this.state.zoom) {
-        this.map.current.getMapBoundaries().then(bounds => {
-          if (bounds) {
-            bounds.se = {
-              lat: bounds.southWest.latitude,
-              lng: bounds.northEast.longitude
-            };
-            bounds.nw = {
-              lat: bounds.northEast.latitude,
-              lng: bounds.southWest.longitude
-            };
-          }
-          this.setState({
-            clusters: bounds
-              ? this.getClusters({
-                  camera: camera,
-                  bounds: bounds
-                }).map(({ wx, wy, numPoints, points }) => ({
-                  lat: wy,
-                  lng: wx,
-                  numPoints,
-                  points,
-                  id: `${numPoints}_${points[0].id}`
-                }))
-              : []
-          });
-        });
-      }
-    });
-  };
 
   render() {
     const { navigation } = this.props;

@@ -3,7 +3,7 @@ import { View, Text, TextField } from "react-native-ui-lib";
 
 import SecureText from "../../../components/Text/SecureInput";
 import { checkName, checkEmail, checkPasswords } from "../../../global/utils";
-import UserData from "../../../models/User";
+import UserModel from "../../../models/User";
 import ActionButton from "../../../components/Buttons/ActionButton";
 
 import styles from "./styles";
@@ -23,7 +23,7 @@ export default function SignUp({ navigation }) {
       const stateCopy = Object.assign({}, megaState);
       delete stateCopy.firstName;
       delete stateCopy.lastName;
-      await UserData.create(stateCopy, password);
+      await UserModel.create(stateCopy, password);
     } catch (e) {
       console.log("Error: " + e.message);
     }

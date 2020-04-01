@@ -13,7 +13,7 @@ import Modal from "react-native-modal";
 import moment from "moment";
 
 import { UserContext } from "../../dataContainers/context";
-import { categoriesIcon } from "../../global/utils";
+import CategoriesIcon from "../Image/CategoriesIcon";
 
 import styles from "./styles";
 
@@ -143,7 +143,8 @@ class EventListView extends React.Component {
                       source={{ uri: event.photoURL }}
                     ></Image>
                     <Text numberOfLines={1} style={styles.cardTitle}>
-                      {categoriesIcon({ type: event.category })} {event.name}
+                      <CategoriesIcon type={event.category} />
+                      {event.name}
                     </Text>
                     <Text numberOfLines={1} style={styles.cardDescription}>
                       {moment(event.time.toDate()).format("h:mm a")} on{" "}

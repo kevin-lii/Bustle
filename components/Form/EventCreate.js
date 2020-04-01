@@ -15,7 +15,7 @@ import FormHeader from "./FormHeader";
 import TextButton from "../Buttons/TextButton";
 import styles from "./styles";
 import { Theme } from "../../global/constants";
-import { categories, categoriesIcon } from "../../global/utils";
+import CategoriesIcon from "../Image/CategoriesIcon";
 import EventModel from "../../models/Event";
 import { UserContext } from "../../dataContainers/context";
 import IconButton from "../Buttons/IconButton";
@@ -274,11 +274,12 @@ export default class EventCreate extends React.Component {
                     }}
                     style={{ height: 25 }}
                   >
-                    {categoriesIcon({
-                      type: category,
-                      color:
+                    <CategoriesIcon
+                      type={category}
+                      color={
                         this.state.category == category ? "grey" : Theme.primary
-                    })}
+                      }
+                    />
                   </TouchableOpacity>
                   <Text style={{ color: Theme.primary }}>{category}</Text>
                 </View>
