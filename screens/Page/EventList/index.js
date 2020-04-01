@@ -17,7 +17,7 @@ export default class Event extends React.Component {
     this.state = {
       hostedEvents: [],
       joinedEvents: [],
-      editEvent: null,
+      editEvent: false,
       limit: 7,
       lastVisible: null,
       complete: false
@@ -27,7 +27,7 @@ export default class Event extends React.Component {
   componentDidMount() {
     this.retrieveInitialData();
     this.props.navigation.addListener("willFocus", async () => {
-      const collection = await EventData.getCollection();
+      const collection = await EventModel.getCollection();
       if (this.state.complete) {
         console.log("update");
         const host = await collection
@@ -81,7 +81,7 @@ export default class Event extends React.Component {
 
   retrieveInitialData = async () => {
     try {
-      const collection = await EventData.getCollection();
+      const collection = await EventModel.getCollection();
       const host = await collection
         .where("d.host", "==", this.context.uid)
         .orderBy("d.date", "desc")
@@ -125,7 +125,7 @@ export default class Event extends React.Component {
       if (!this.state.complete) {
         let tempHost = [];
         this.loading = true;
-        const collection = await EventData.getCollection();
+        const collection = await EventModel.getCollection();
         if (!this.state.joinedEvents.length) {
           const host = await collection
             .where("d.host", "==", this.context.uid)

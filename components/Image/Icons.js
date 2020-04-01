@@ -7,7 +7,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 
-import { Theme } from "../../constants";
+import { Theme } from "../../global/constants";
 
 export default function Icons({
   type,

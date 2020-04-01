@@ -10,7 +10,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import TextButton from "../Buttons/TextButton";
 import styles from "./styles";
 
-import { placesKey, Theme } from "../../constants";
+import { Theme } from "../../global/constants";
+import { placesKey } from "../../global/secrets";
 
 const locationMaxLen = 15;
 

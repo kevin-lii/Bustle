@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 
-import { categoriesIcon } from "../../utils";
+import { categoriesIcon } from "../../global/utils";
 
 import styles from "./styles";
 

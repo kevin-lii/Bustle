@@ -13,7 +13,7 @@ import AuthContainer from "./dataContainers/AuthContainer";
 import { Provider } from "react-redux";
 
 import store from "./store";
-import { Theme } from "./constants";
+import { Theme } from "./global/constants";
 
 export default () => {
   const oldRender = Text.render;

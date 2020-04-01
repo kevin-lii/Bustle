@@ -4,8 +4,8 @@ import moment from "moment";
 
 import IconButton from "../Buttons/IconButton";
 import Events from "../../models/Event";
-import { Theme } from "../../constants";
-import { navigateEvent, categoriesIcon } from "../../utils";
+import { Theme } from "../../global/constants";
+import { navigateEvent, categoriesIcon } from "../../global/utils";
 
 export default ({ children, event, navigation, map, edit, trash }) => {
   return (

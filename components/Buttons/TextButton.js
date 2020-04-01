@@ -2,7 +2,7 @@ import React from "react";
 import { Button, View, Text } from "react-native-ui-lib";
 
 import styles from "./styles";
-import { Theme } from "../../constants";
+import { Theme } from "../../global/constants";
 
 export default ({ primary, secondary, text, onPress, disabled }) => (
   <Button

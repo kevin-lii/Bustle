@@ -7,7 +7,7 @@ import _ from "lodash";
 
 import Marker from "../../../components/MapUI/Marker";
 import ClusterMarker from "../../../components/MapUI/ClusterMarker";
-import { navigateEvent, customMap } from "../../../utils";
+import { navigateEvent, customMap } from "../../../global/utils";
 import { getEvents } from "../../../store/actions";
 
 class Map extends Component {

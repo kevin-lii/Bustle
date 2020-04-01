@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextField } from "react-native-ui-lib";
 
 import SecureText from "../../../components/Text/SecureInput";
-import { checkName, checkEmail, checkPasswords } from "../../../utils";
+import { checkName, checkEmail, checkPasswords } from "../../../global/utils";
 import UserData from "../../../models/User";
 import ActionButton from "../../../components/Buttons/ActionButton";
 

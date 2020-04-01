@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 
 import Icons from "../Image/Icons";
-import { Theme } from "../../constants";
+import { Theme } from "../../global/constants";
 
 const iconContainer = {
   height: "100%",

@@ -1,4 +1,4 @@
-import { getLocation, validateLocation } from "../utils";
+import { getLocation, validateLocation } from "../global/utils";
 
 import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";

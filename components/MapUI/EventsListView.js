@@ -13,7 +13,7 @@ import Modal from "react-native-modal";
 import moment from "moment";
 
 import { UserContext } from "../../dataContainers/context";
-import { categoriesIcon } from "../../utils";
+import { categoriesIcon } from "../../global/utils";
 
 import styles from "./styles";
 

@@ -2,11 +2,12 @@ import React from "react";
 import { Alert } from "react-native";
 
 import firestore from "@react-native-firebase/firestore";
+import functions from "@react-native-firebase/functions";
 import Permissions from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 import { NavigationActions } from "react-navigation";
 
-import Icons from "./components/Image/Icons";
+import Icons from "../components/Image/Icons";
 import { Theme } from "./constants";
 
 exports.categories = [
@@ -159,6 +160,10 @@ exports.navigateEvent = function({ navigation, event, events }) {
       })
     })
   );
+};
+
+exports.getEndpoint = function(fn) {
+  return functions().httpsCallable(fn);
 };
 
 exports.customMap = [

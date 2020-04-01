@@ -6,7 +6,7 @@ import HeaderNavigator from "./headerNavigator";
 import AddButton from "../components/Buttons/Add";
 import EventsList from "../components/MapUI/EventsListView";
 import EventPreview from "../components/MapUI/EventBottomSheet";
-import { navigateEvent } from "../utils";
+import { navigateEvent } from "../global/utils";
 
 import CreateEvent from "../components/Form/EventCreate";
 

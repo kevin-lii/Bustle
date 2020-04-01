@@ -14,8 +14,8 @@ import FormGroup from "./FormGroup";
 import FormHeader from "./FormHeader";
 import TextButton from "../Buttons/TextButton";
 import styles from "./styles";
-import { Theme } from "../../constants";
-import { categories, categoriesIcon } from "../../utils";
+import { Theme } from "../../global/constants";
+import { categories, categoriesIcon } from "../../global/utils";
 import EventModel from "../../models/Event";
 import { UserContext } from "../../dataContainers/context";
 import IconButton from "../Buttons/IconButton";
@@ -73,7 +73,7 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        await EventData.update(this.props.event.id, stateCopy);
+        await EventModel.update(this.props.event.id, stateCopy);
         if (this.props.update) this.props.update();
         this.props.close();
       } catch (e) {

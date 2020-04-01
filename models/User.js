@@ -1,15 +1,16 @@
 import storage from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
-import { firebase as fire } from "@react-native-firebase/functions";
 import auth from "@react-native-firebase/auth";
 
 import { UserContext } from "../dataContainers/context";
+import { endpoints } from "../global/constants";
+import { getEndpoint } from "../global/utils";
 
-export default class UserData {
+export default class UserModel {
   constructor(data) {
     if (!data.displayName) throw new Error("Name not provided");
 
-    this.data = data;
+    Object.assign(this, data);
   }
 
   static async get(userID) {
@@ -20,6 +21,14 @@ export default class UserData {
       .get();
 
     return query;
+  }
+
+  static async create(data, password) {
+    const userCredential = await auth().createUserWithEmailAndPassword(
+      data.email,
+      password
+    );
+    getEndpoint(endpoints.EMAIL_AUTH)(data);
   }
 
   static async update(userID, data) {
@@ -56,4 +65,4 @@ export default class UserData {
   }
 }
 
-UserData.contextType = UserContext;
+UserModel.contextType = UserContext;

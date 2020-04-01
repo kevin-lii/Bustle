@@ -10,7 +10,7 @@ import UserData from "../../models/User";
 import Avatar from "../Header/HeaderRight";
 import { UserContext } from "../../dataContainers/context";
 import Button from "../Buttons/ActionButton";
-import { Theme } from "../../constants";
+import { Theme } from "../../global/constants";
 
 export default class EventBottomSheet extends React.Component {
   static contextType = UserContext;
