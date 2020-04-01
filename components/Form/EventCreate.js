@@ -13,12 +13,13 @@ import FormCard from "../Window/FormCard";
 import FormGroup from "./FormGroup";
 import FormHeader from "./FormHeader";
 import TextButton from "../Buttons/TextButton";
-import styles from "./styles";
-import { Theme } from "../../global/constants";
 import CategoriesIcon from "../Image/CategoriesIcon";
 import EventModel from "../../models/Event";
 import { UserContext } from "../../dataContainers/context";
 import IconButton from "../Buttons/IconButton";
+
+import styles from "./styles";
+import { Theme, categories } from "../../global/constants";
 
 export default class EventCreate extends React.Component {
   static contextType = UserContext;
@@ -245,6 +246,7 @@ export default class EventCreate extends React.Component {
               }}
               onPress={leftArrow}
               icon="ios-arrow-back"
+              type="Ionicons"
             />
             <ScrollView
               contentContainerStyle={{
@@ -262,28 +264,26 @@ export default class EventCreate extends React.Component {
               showsHorizontalScrollIndicator={false}
               style={{ height: 60, marginTop: 10 }}
             >
-              {categories.map(category => (
-                <View
-                  center
-                  key={category}
-                  style={{ marginRight: 8, marginLeft: 7.5 }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({ category: category });
-                    }}
-                    style={{ height: 25 }}
+              {categories.map(category => {
+                color = this.state.category == category ? Theme.primary : null;
+                return (
+                  <View
+                    center
+                    key={category}
+                    style={{ marginRight: 8, marginLeft: 7.5 }}
                   >
-                    <CategoriesIcon
-                      type={category}
-                      color={
-                        this.state.category == category ? "grey" : Theme.primary
-                      }
-                    />
-                  </TouchableOpacity>
-                  <Text style={{ color: Theme.primary }}>{category}</Text>
-                </View>
-              ))}
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({ category: category });
+                      }}
+                      style={{ height: 25 }}
+                    >
+                      <CategoriesIcon type={category} color={color} />
+                    </TouchableOpacity>
+                    <Text style={{ color }}>{category}</Text>
+                  </View>
+                );
+              })}
             </ScrollView>
             <IconButton
               touchStyle={{
@@ -294,6 +294,7 @@ export default class EventCreate extends React.Component {
               }}
               onPress={rightArrow}
               icon="ios-arrow-forward"
+              type="Ionicons"
             />
           </View>
 

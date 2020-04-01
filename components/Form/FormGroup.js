@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
-import { Platform, TouchableWithoutFeedback } from "react-native";
+import { Platform } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import Icon from "react-native-vector-icons/Fontisto";
+import Icon from "../Image/Icons";
+
 import moment from "moment";
 import uuid from "uuid/v4";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
+import ToggleSwitch from "./ToggleSwitch";
 import TextButton from "../Buttons/TextButton";
 import styles from "./styles";
 
-import { Theme } from "../../global/constants";
 import { placesKey } from "../../global/secrets";
 
 const locationMaxLen = 15;
@@ -56,6 +57,7 @@ export default ({ type, label, value, setValue, overlay }) => {
   };
 
   const toggleSize = 30;
+  const onToggle = () => setValue(!value);
 
   let formField;
   if (type == "date" || type == "clock") {
@@ -159,7 +161,7 @@ export default ({ type, label, value, setValue, overlay }) => {
               debounce={300}
               renderLeftButton={() => (
                 <TouchableOpacity center onPress={() => overlay()}>
-                  <Icon name="arrow-left" />
+                  <Icon icon="arrow-left" />
                   {/* <Text>Back</Text> */}
                 </TouchableOpacity>
               )}
@@ -169,52 +171,34 @@ export default ({ type, label, value, setValue, overlay }) => {
       />
     );
   } else if (type == "user-secret") {
-    formField = value ? (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV spread>
-          <Text>Invite Only{"\t"}</Text>
-          <Icon name="toggle-on" color={Theme.secondary} size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
-    ) : (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Anyone may join{"\t"}</Text>
-          <Icon name="toggle-off" size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
+    formField = (
+      <ToggleSwitch
+        size={toggleSize}
+        state={value}
+        onText="Invite Only"
+        offText="Anyone may join"
+        onToggle={onToggle}
+      />
     );
   } else if (type == "shield") {
-    formField = value ? (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Guests can invite{"\t"}</Text>
-          <Icon name="toggle-on" color={Theme.secondary} size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
-    ) : (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Guests can't invite{"\t"}</Text>
-          <Icon name="toggle-off" size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
+    formField = (
+      <ToggleSwitch
+        size={toggleSize}
+        state={value}
+        onText="Guests can invite"
+        offText="Guests can't invite"
+        onToggle={onToggle}
+      />
     );
   } else if (type == "paper-plane") {
-    formField = value ? (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Do{"\t"}</Text>
-          <Icon name="toggle-on" color={Theme.secondary} size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
-    ) : (
-      <TouchableWithoutFeedback onPress={() => setValue(!value)}>
-        <View row centerV>
-          <Text>Don't {"\t"}</Text>
-          <Icon name="toggle-off" size={toggleSize} />
-        </View>
-      </TouchableWithoutFeedback>
+    formField = (
+      <ToggleSwitch
+        size={toggleSize}
+        state={value}
+        onText="Do"
+        offText="Don't"
+        onToggle={onToggle}
+      />
     );
   }
   // location, choose current or enter an address
@@ -223,7 +207,9 @@ export default ({ type, label, value, setValue, overlay }) => {
   return (
     <View style={styles.formGroup} centerV spread row>
       <View row centerV>
-        <Icon name={type} style={{ margin: 5 }} />
+        <View style={{ margin: 5 }}>
+          <Icon icon={type} />
+        </View>
         <Text>{label}</Text>
       </View>
       {formField}

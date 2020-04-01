@@ -7,17 +7,6 @@ import Permissions from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 import { NavigationActions } from "react-navigation";
 
-exports.categories = [
-  "Social",
-  "Dining",
-  "Drinks",
-  "Business",
-  "Athletic",
-  "Learn",
-  "Spiritual",
-  "Service"
-];
-
 exports.bindAll = function(thisArg, obj) {
   for (const key of Object.keys(obj)) {
     thisArg[key] = obj[key].bind(thisArg);

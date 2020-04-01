@@ -10,7 +10,7 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import { Theme } from "../../global/constants";
 
 export default function Icons({
-  type,
+  type = Theme.icon,
   icon,
   iconOff,
   uponChange,

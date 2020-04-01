@@ -16,6 +16,17 @@ exports.endpoints = {
   EMAIL_AUTH: "emailAuth"
 };
 
+exports.categories = [
+  "Social",
+  "Dining",
+  "Drinks",
+  "Business",
+  "Athletic",
+  "Learn",
+  "Spiritual",
+  "Service"
+];
+
 exports.customMap = [
   {
     featureType: "all",

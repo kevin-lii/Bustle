@@ -26,7 +26,14 @@ export default ({ type, color = Theme.primary, size }) => {
       );
     case "Athletic":
       iconSize = size ? size : 25;
-      return <Icons icon="ios-basketball" color={color} size={iconSize} />;
+      return (
+        <Icons
+          icon="ios-basketball"
+          color={color}
+          size={iconSize}
+          type="Ionicons"
+        />
+      );
     case "Learn":
       iconSize = size ? size : 25;
       return (
