@@ -1,24 +1,30 @@
-import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { createStackNavigator, withNavigation } from 'react-navigation'
+import React from "react";
+import { createStackNavigator } from "react-navigation-stack";
 
-import TabNavigator from './tabNavigator'
+import TabNavigator from "./tabNavigator";
 
-import { UserContext } from '../dataContainers/context'
+import HeaderLeft from "../components/Header/HeaderLeft";
+import HeaderRight from "../components/Header/HeaderRight";
 
-import HeaderLeft from '../components/Header/HeaderLeft'
-import HeaderRight from '../components/Header/HeaderRight'
-
-import Map from '../screens/Page/Map'
-
-export default createStackNavigator({
+export default createStackNavigator(
+  {
     TabNavigator
-}, {
+  },
+  {
     defaultNavigationOptions: ({ navigation }) => {
-        return {
-            headerLeft: <HeaderLeft />,
-            headerRight: <HeaderRight navigation={navigation} />,
-            headerTransparent: true
-        }
+      return {
+        headerTitle: () => null,
+        headerLeft: () => <HeaderLeft />,
+        headerRight: () => (
+          <HeaderRight
+            nav={() => navigation.openDrawer()}
+            headerTop={20}
+            hasBorder
+            useUser
+          />
+        ),
+        headerTransparent: true
+      };
     }
-})
+  }
+);

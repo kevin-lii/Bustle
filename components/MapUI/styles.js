@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "../../constants";
+import { Theme } from "../../global/constants";
 
 export default StyleSheet.create({
   marker: {
@@ -20,21 +20,66 @@ export default StyleSheet.create({
   },
   popup: {
     backgroundColor: "#FFF",
-    borderTopLeftRadius: Theme.borderRadius,
-    borderTopRightRadius: Theme.borderRadius,
-    borderColor: Theme.secondary,
-    borderWidth: 2,
-    borderBottomWidth: 0,
-    height: 200,
-    padding: Theme.margin
+    height: "100%",
+    shadowColor: "#000",
+    shadowRadius: 5,
+    elevation: 5,
+    shadowOpacity: 0.8,
+    shadowOffset: { x: 0, y: 2 },
+    padding: 5,
+    color: Theme.primary
   },
   popupTitle: {
-    fontSize: 40
+    fontSize: 35,
+    fontWeight: "bold"
   },
-  info: {
-    paddingLeft: 10
+  handlerContainer: {
+    alignSelf: "center",
+    height: 20,
+    width: 20,
+    flexDirection: "row"
+  },
+  handlerBar: {
+    backgroundColor: "#D1D1D6",
+    top: 5,
+    borderRadius: 3,
+    height: 5,
+    width: 19,
+    margin: 0
   },
   infoText: {
+    fontSize: 17,
+    marginRight: 1,
+    marginBottom: 7.5
+  },
+  countText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white"
+  },
+  card: {
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#FFF",
+    marginHorizontal: 10,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 2, y: -2 },
+    overflow: "hidden"
+  },
+  cardImage: {
+    borderRadius: 5
+  },
+  textContent: {
+    flex: 1
+  },
+  cardTitle: {
+    fontSize: 20,
+    marginTop: 5,
+    fontWeight: "bold"
+  },
+  cardDescription: {
     fontSize: 15
   }
 });

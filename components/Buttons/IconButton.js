@@ -1,25 +1,35 @@
-import React from 'react'
-import { TouchableNativeFeedback, View } from 'react-native'
+import React from "react";
+import { TouchableOpacity, View } from "react-native";
 
-import Icons from '../Image/Icons'
-import { Theme } from '../../constants'
+import Icons from "../Image/Icons";
+import { Theme } from "../../global/constants";
 
 const iconContainer = {
-    height: "100%",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center"
-}
+  height: "100%",
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "center"
+};
 
-export default ({ size, icon, color, onPress }) => (
-    <TouchableNativeFeedback onPress={onPress}>
-        <View style={iconContainer}>
-            <Icons 
-                type={Theme.icon}
-                size={size || 30}
-                icon={icon}
-                color={color || Theme.primary}/>
-        </View>
-    </TouchableNativeFeedback>
-)
-
+export default ({
+  size,
+  icon,
+  color,
+  type,
+  onPress,
+  touchStyle,
+  iconStyle
+}) => (
+  <TouchableOpacity onPress={onPress} style={touchStyle}>
+    <View style={iconContainer}>
+      <Icons
+        type={Theme.icon}
+        size={size || 30}
+        icon={icon}
+        type={type}
+        color={color || Theme.primary}
+        style={iconStyle}
+      />
+    </View>
+  </TouchableOpacity>
+);

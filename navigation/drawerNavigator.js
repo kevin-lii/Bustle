@@ -1,18 +1,18 @@
 import React from "react";
-import { View, ScrollView, Text, TouchableOpacity } from "react-native";
+import { ScrollView, Text, TouchableHighlight } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import {
   createDrawerNavigator,
-  DrawerItems,
-  SafeAreaView,
-  withNavigation
-} from "react-navigation";
+  DrawerNavigatorItems
+} from "react-navigation-drawer";
 import auth from "@react-native-firebase/auth";
 
 import Invites from "../screens/Page/Invites";
-import MyEvents from "../screens/Page/MyEvents"
 import Profile from "./profileNavigator";
-
+import Settings from "./settingNavigator";
 import OverlayNavigator from "./overlayNavigator";
+
+import styles from "./styles";
 
 const CustomDrawerContentComponent = props => (
   <ScrollView>
@@ -20,10 +20,14 @@ const CustomDrawerContentComponent = props => (
       style={{ flex: 1 }}
       forceInset={{ top: "always", horizontal: "never" }}
     >
-      <DrawerItems {...props} />
-      <TouchableOpacity onPress={async () => await auth().signOut()}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
+      <DrawerNavigatorItems {...props} />
+      <TouchableHighlight
+        activeOpacity={0.4}
+        underlayColor="rgba(0, 0, 0, 0.4)"
+        onPress={async () => await auth().signOut()}
+      >
+        <Text style={styles.drawerText}>Logout</Text>
+      </TouchableHighlight>
     </SafeAreaView>
   </ScrollView>
 );
@@ -31,13 +35,14 @@ const CustomDrawerContentComponent = props => (
 export default createDrawerNavigator(
   {
     Map: OverlayNavigator,
-    "My Events": MyEvents,
+    // "My Events": MyEvents,
     // Profile
+    Settings
   },
   {
     drawerPosition: "right",
     drawerType: "front",
-    overlayColor: "grey",
+    overlayColor: "rgba(0, 0, 0, 0.7)",
     drawerWidth: 200,
     contentComponent: CustomDrawerContentComponent
   }

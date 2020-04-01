@@ -1,56 +1,91 @@
 import React from "react";
 import { View, TextField } from "react-native-ui-lib";
-import { Alert, ScrollView, TouchableWithoutFeedback } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Text
+} from "react-native";
+import ImagePicker from "react-native-image-picker";
 
 import FormCard from "../Window/FormCard";
 import FormGroup from "./FormGroup";
 import FormHeader from "./FormHeader";
 import TextButton from "../Buttons/TextButton";
 import styles from "./styles";
-import { Theme } from "../../constants";
-
-import EventData from "../../models/Event";
+import { Theme } from "../../global/constants";
+import { categories, categoriesIcon } from "../../global/utils";
+import EventModel from "../../models/Event";
 import { UserContext } from "../../dataContainers/context";
+import IconButton from "../Buttons/IconButton";
 
 export default class EventCreate extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
-
+    this.scrollView = React.createRef();
+    //Changed to support edit
     this.state = {
       overlayContent: false,
-      name: "",
-      description: "",
-      date: null,
-      time: null,
-      location: null,
-      category: "Social",
-      open: true,
-      isPrivate: false,
-      image: null
+      name: props.event ? props.event.name : "",
+      description: props.event ? props.event.description : "",
+      date: props.event ? props.event.date.toDate() : null,
+      time: props.event ? props.event.time.toDate() : null,
+      location: props.event ? props.event.location : null,
+      category: props.event ? props.event.category : "Social",
+      open: props.event ? props.event.open : true,
+      isPrivate: props.event ? props.event.isPrivate : false,
+      image: props.event ? props.event.photoURL : "",
+      scrollViewWidth: 0,
+      currentXOffset: 0,
+      confirmed: false
     };
   }
 
   render() {
     const submit = async () => {
       try {
+        this.setState({ confirmed: true });
         const stateCopy = Object.assign({}, this.state);
+        delete stateCopy.confirmed;
         delete stateCopy.overlayContent;
-        await EventData.create(
+        delete stateCopy.scrollViewWidth;
+        delete stateCopy.currentXOffset;
+        await EventModel.create(
           this.context.uid,
           stateCopy,
           this.context.events
         );
-
         this.props.close();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
+        this.setState({ confirmed: false });
+      }
+    };
+
+    const edit = async () => {
+      try {
+        this.setState({ confirmed: true });
+        const stateCopy = Object.assign({}, this.state);
+        delete stateCopy.confirmed;
+        delete stateCopy.overlayContent;
+        delete stateCopy.scrollViewWidth;
+        delete stateCopy.currentXOffset;
+        await EventModel.update(this.props.event.id, stateCopy);
+        if (this.props.update) this.props.update();
+        this.props.close();
+      } catch (e) {
+        console.log(e);
+        Alert.alert("Error", e.message);
+        this.setState({ confirmed: false });
       }
     };
 
     const validateSubmission = () => {
-      submit();
+      if (this.props.event) edit();
+      else submit();
     };
 
     setOverlayContent = content => this.setState({ overlayContent: content });
@@ -67,22 +102,71 @@ export default class EventCreate extends React.Component {
     );
 
     let imgText;
-    if (this.state.image) {
-      const strStart = this.state.image.path.lastIndexOf("/") + 1;
-      imgText =
-        this.state.image.path.substring(strStart, strStart + 15) + "...";
-    } else {
-      imgText = "Add Image";
-    }
+    // if (this.state.image) {
+    //   const strStart = this.state.image.path.lastIndexOf("/") + 1;
+    //   imgText =
+    //     this.state.image.path.substring(strStart, strStart + 15) + "...";
+    // } else {
+    imgText = "Add Image";
+    // }
+
+    const pickImage = () => {
+      ImagePicker.showImagePicker(
+        {
+          title: "Select Image",
+          storageOptions: {
+            skipBackup: true,
+            path: "images"
+          }
+        },
+        response => {
+          if (response.didCancel) console.log("Canceled");
+          else if (response.error) Alert.alert("Error", response.error);
+          else {
+            this.setState({ image: response.uri });
+          }
+        }
+      );
+    };
+
+    const handleScroll = event => {
+      newXOffset = event.nativeEvent.contentOffset.x;
+      this.setState({ currentXOffset: newXOffset });
+    };
+
+    const leftArrow = () => {
+      eachItemOffset = this.state.scrollViewWidth / 2;
+      _currentXOffset = this.state.currentXOffset - eachItemOffset;
+      this.scrollView.current.scrollTo({
+        x: _currentXOffset,
+        y: 0,
+        animated: true
+      });
+    };
+
+    const rightArrow = () => {
+      eachItemOffset = this.state.scrollViewWidth / 2; // Divide by 8 for 8 items
+      _currentXOffset = this.state.currentXOffset + eachItemOffset;
+      this.scrollView.current.scrollTo({
+        x: _currentXOffset,
+        y: 0,
+        animated: true
+      });
+    };
 
     return (
-      <FormCard height={500} width={"90%"}>
+      <FormCard height={550} width={"90%"}>
         <FormHeader
           icon="close-a"
-          title="Create Event"
+          title={this.props.event ? "Edit Event" : "Create Event"}
           onPress={this.props.close}
           headerRight={
-            <TextButton text={"Create"} onPress={validateSubmission} primary />
+            <TextButton
+              text={this.props.event ? "Edit" : "Create"}
+              disabled={this.state.confirmed}
+              onPress={validateSubmission}
+              primary
+            />
           }
         />
         <ScrollView
@@ -145,8 +229,79 @@ export default class EventCreate extends React.Component {
             />
           )}
 
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "center"
+            }}
+          >
+            <IconButton
+              touchStyle={{
+                alignItems: "flex-start",
+                paddingTop: 20,
+                marginRight: 15,
+                marginLeft: 3
+              }}
+              onPress={leftArrow}
+              icon="ios-arrow-back"
+            />
+            <ScrollView
+              contentContainerStyle={{
+                alignItems: "center"
+              }}
+              horizontal
+              pagingEnabled={true}
+              ref={this.scrollView}
+              onContentSizeChange={(w, h) =>
+                this.setState({ scrollViewWidth: w })
+              }
+              scrollEventThrottle={16}
+              scrollEnabled={false}
+              onScroll={handleScroll}
+              showsHorizontalScrollIndicator={false}
+              style={{ height: 60, marginTop: 10 }}
+            >
+              {categories.map(category => (
+                <View
+                  center
+                  key={category}
+                  style={{ marginRight: 8, marginLeft: 7.5 }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({ category: category });
+                    }}
+                    style={{ height: 25 }}
+                  >
+                    {categoriesIcon({
+                      type: category,
+                      color:
+                        this.state.category == category ? "grey" : Theme.primary
+                    })}
+                  </TouchableOpacity>
+                  <Text style={{ color: Theme.primary }}>{category}</Text>
+                </View>
+              ))}
+            </ScrollView>
+            <IconButton
+              touchStyle={{
+                alignItems: "flex-start",
+                paddingTop: 20,
+                marginLeft: 15,
+                marginRight: 3
+              }}
+              onPress={rightArrow}
+              icon="ios-arrow-forward"
+            />
+          </View>
+
           <View style={{ height: 15 }}></View>
-          <TextButton text={imgText} style={styles.imgButton} />
+          <TextButton
+            text={imgText}
+            style={styles.imgButton}
+            onPress={pickImage}
+          />
           <View style={{ height: 15 }}></View>
 
           <TextField

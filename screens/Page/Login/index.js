@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Alert, View, TouchableOpacity, Text, TextField } from "react-native-ui-lib";
+import { Platform } from "react-native";
+import { View, Text, TextField } from "react-native-ui-lib";
 import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
-import auth from "@react-native-firebase/auth";
+import auth, { firebase } from "@react-native-firebase/auth";
+import appleAuth, {
+  AppleAuthRequestScope,
+  AppleAuthRequestOperation
+} from "@invertase/react-native-apple-authentication";
 
 import ActionButton from "../../../components/Buttons/ActionButton";
 import SecureText from "../../../components/Text/SecureInput";
 
-import styles from './styles'
+import styles from "./styles";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("a@ol.com");
@@ -41,7 +46,11 @@ export default function Login({ navigation }) {
       const credential = auth.FacebookAuthProvider.credential(
         token.accessToken
       );
-      auth().signInWithCredential(credential);
+      try {
+        auth().signInWithCredential(credential);
+      } catch (e) {
+        handleError(e);
+      }
     }
   }
 
@@ -53,30 +62,65 @@ export default function Login({ navigation }) {
     setError("");
   }
 
+  async function onAppleButtonPress() {
+    // performs login reques
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: AppleAuthRequestOperation.LOGIN,
+      requestedScopes: [
+        AppleAuthRequestScope.EMAIL,
+        AppleAuthRequestScope.FULL_NAME
+      ]
+    });
+    const { identityToken, nonce } = appleAuthRequestResponse;
+    if (identityToken) {
+      const appleCredential = await auth.AppleAuthProvider.credential(
+        identityToken,
+        nonce
+      );
+      try {
+        await firebase.auth().signInWithCredential(appleCredential);
+      } catch (e) {
+        handleError(e);
+      }
+    }
+  }
+
   return (
     <View flex spread style={styles.container}>
       <View flex centerV>
-        <View centerV style={styles.input}><TextField
-          placeholder="Email"
-          onChangeText={text => setEmail(text)}
-        ></TextField></View>
+        <View centerV style={styles.input}>
+          <TextField
+            placeholder="Email"
+            onChangeText={text => setEmail(text)}
+          ></TextField>
+        </View>
         <SecureText placeholder="Password" onChange={setPassword}></SecureText>
-        <Text>{error}</Text>
+        <Text style={{ color: "red" }}>{error}</Text>
       </View>
 
       <View flex centerV>
-        <View style={styles.button}><ActionButton
-          onPress={emailLogin}
-          text="Login" /></View>
+        <View style={styles.button}>
+          <ActionButton onPress={emailLogin} text="Login" />
+        </View>
 
-        <View style={styles.button}><ActionButton
-          primary
-          onPress={facebookLogin} 
-          text="Facebook Login" /></View>
+        <View style={styles.button}>
+          <ActionButton primary onPress={facebookLogin} text="Facebook Login" />
+        </View>
 
-        <View style={styles.button}><ActionButton
-          onPress={() => navigation.navigate("SignUp")}
-          text="Sign Up"/></View>
+        {Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 13 && (
+          <ActionButton
+            primary
+            onPress={() => onAppleButtonPress()}
+            text="Apple Login"
+          />
+        )}
+
+        <View style={styles.button}>
+          <ActionButton
+            onPress={() => navigation.navigate("SignUp")}
+            text="Sign Up"
+          />
+        </View>
       </View>
     </View>
   );

@@ -1,27 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { Alert, View, TouchableOpacity, Text, TextField } from "react-native-ui-lib";
-import auth from "@react-native-firebase/auth";
+import React, { useState } from "react";
+import { View, Text, TextField } from "react-native-ui-lib";
 
-import TextButton from "../../../components/Buttons/TextButton";
 import SecureText from "../../../components/Text/SecureInput";
-import { checkName, checkPhoneNumber, checkPasswords } from "../../../utils";
+import { checkName, checkEmail, checkPasswords } from "../../../global/utils";
+import UserData from "../../../models/User";
+import ActionButton from "../../../components/Buttons/ActionButton";
+
+import styles from "./styles";
 
 export default function SignUp({ navigation }) {
-  const [email, setUpEmail] = useState("");
+  const [megaState, setMegaState] = useState({
+    email: "",
+    firstName: "",
+    lastName: ""
+  });
   const [password, setUpPassword] = useState("");
   const [passwordAgain, setUpPasswordAgain] = useState("");
-  const [firstName, setUpFirstName] = useState("");
-  const [lastName, setUpLastName] = useState("");
-  const [phoneNumber, setUpPhoneNumber] = useState("");
   const [error, setError] = useState("");
 
-  async function register() {
+  const submit = async () => {
     try {
-      checkPhoneNumber(phoneNumber);
-      checkName(firstName, lastName);
+      const stateCopy = Object.assign({}, megaState);
+      delete stateCopy.firstName;
+      delete stateCopy.lastName;
+      await UserData.create(stateCopy, password);
+    } catch (e) {
+      console.log("Error: " + e.message);
+    }
+  };
+
+  async function validateSubmission() {
+    resetError();
+    try {
+      checkEmail(megaState.email);
       checkPasswords(password, passwordAgain);
-      resetError();
-      await auth().createUserWithEmailAndPassword(email, password);
+      checkName(megaState.firstName, megaState.lastName);
+      megaState.displayName = megaState.firstName + " " + megaState.lastName;
+      submit();
     } catch (e) {
       handleError(e);
     }
@@ -35,44 +50,37 @@ export default function SignUp({ navigation }) {
     setError("");
   }
 
-  async function facebookRegister() {}
   return (
-    <View >
-      <TextField
-        placeholder="First name"
-        onChangeText={text => setUpFirstName(text)}
-      ></TextField>
-      <TextField
-        placeholder="Last name"
-        onChangeText={text => setUpLastName(text)}
-      ></TextField>
-      <TextField
-        placeholder="Email"
-        onChangeText={text => setUpEmail(text)}
-        textContentType="emailAddress"
-      ></TextField>
-      <TextField
-        placeholder="Phone number"
-        onChangeText={text => setUpPhoneNumber(text)}
-        textContentType="telephoneNumber"
-      ></TextField>
-      <SecureText placeholder="Password" onChange={setUpPassword}></SecureText>
-      <SecureText
-        placeholder="Re-enter password"
-        onChange={setUpPasswordAgain}
-      ></SecureText>
-      <Text>{error}</Text>
-      <TextButton onPress={register} text="Sign up" />
-
-      <TextButton onPress={facebookRegister} text="Facebook" />
-
-      {/* <TextButton onPress={() => navigation.navigate("Login")} text="Login" /> */}
-
-      {/* <LoginButton onLoginFinished={facebookLogin} /> */}
-
-      {/* <TouchableOpacity onPress={googleLogin}>
-    <Text>Login</Text>
-  </TouchableOpacity> */}
+    <View flex spreads style={styles.container}>
+      <View flex centerV>
+        <TextField
+          placeholder="First name"
+          onChangeText={text => setMegaState({ ...megaState, firstName: text })}
+        ></TextField>
+        <TextField
+          placeholder="Last name"
+          onChangeText={text => setMegaState({ ...megaState, lastName: text })}
+        ></TextField>
+        <TextField
+          placeholder="Email"
+          onChangeText={text => setMegaState({ ...megaState, email: text })}
+          textContentType="emailAddress"
+        ></TextField>
+        <SecureText
+          placeholder="Password"
+          onChange={setUpPassword}
+        ></SecureText>
+        <SecureText
+          placeholder="Re-enter password"
+          onChange={setUpPasswordAgain}
+        ></SecureText>
+        <Text style={styles.error}>{error}</Text>
+        <ActionButton
+          onPress={validateSubmission}
+          text="Sign up"
+          style={styles.button}
+        />
+      </View>
     </View>
   );
 }
