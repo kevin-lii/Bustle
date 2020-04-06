@@ -5,7 +5,8 @@ import _ from "lodash";
 
 import Marker from "../../../components/MapUI/Marker";
 import ClusterMarker from "../../../components/MapUI/ClusterMarker";
-import MapEventUtils from "./MapEventUtils";
+import MapEventPartial from "./MapEventPartial";
+import MapForumsPartial from "./MapForumsPartial";
 import { bindAll, navigateEvent } from "../../../global/utils";
 import { customMap } from "../../../global/constants";
 import { getEvents } from "../../../store/actions";
@@ -17,7 +18,8 @@ class Map extends Component {
     this.map = React.createRef();
     this.eventLoc = [];
 
-    bindAll(this, MapEventUtils);
+    bindAll(this, MapEventPartial);
+    bindAll(this, MapForumsPartial);
   }
 
   componentDidMount() {
@@ -26,21 +28,7 @@ class Map extends Component {
 
   componentDidUpdate(prevProps) {
     if (!_.isEqual(_.sortBy(this.state.events), _.sortBy(this.props.events))) {
-      this.eventLoc = [];
-      this.setState({ events: this.props.events });
-      this.props.events.forEach(event => {
-        const geoPoint = event.data().coordinates;
-        this.eventLoc.push({
-          lng: geoPoint.longitude,
-          lat: geoPoint.latitude,
-          ...event.data(),
-          id: event.id
-        });
-      });
-
-      if (this.map.current) {
-        this.createClusters();
-      }
+      this.regenClusters();
     }
 
     if (!this.props.navigation.state.params) return;

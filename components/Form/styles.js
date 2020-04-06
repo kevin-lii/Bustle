@@ -33,6 +33,9 @@ export default StyleSheet.create({
   formGroup: {
     height: 35
   },
-  imgButton: {},
-  listItem: {}
+  toggleContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

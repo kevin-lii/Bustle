@@ -2,21 +2,21 @@ import React, { useContext } from "react";
 import { Avatar, Colors } from "react-native-ui-lib";
 
 import { UserContext } from "../../dataContainers/context";
+import { Theme } from "../../global/constants";
+
+import globalStyles from "../../global/styles";
 
 export default function({
   photoURL,
   init,
   nav,
   size,
-  marginTop,
-  marginRight,
-  marginBottom,
+  marginTop = 30,
+  marginRight = 20,
+  marginBottom = 0,
   hasBorder,
   useUser
 }) {
-  const marginT = marginTop ? marginTop : 30;
-  const marginR = marginRight ? marginRight : 30;
-  const marginB = marginBottom ? marginBottom : 0;
   const user = useContext(UserContext);
   let photo;
   if (photoURL) {
@@ -41,14 +41,17 @@ export default function({
   return (
     <Avatar
       onPress={nav}
-      containerStyle={{
-        marginTop: marginT,
-        marginRight: marginR,
-        marginBottom: marginB,
-        borderWidth: 2,
-        borderColor: hasBorder && Colors.orange20,
-        overflow: "hidden"
-      }}
+      containerStyle={[
+        {
+          marginTop,
+          marginRight,
+          marginBottom,
+          borderWidth: hasBorder ? 1 : 0,
+          borderColor: Theme.primary,
+          overflow: "hidden"
+        },
+        globalStyles.overlayElementShadow
+      ]}
       imageStyle={{
         justifyContent: "center",
         flex: 1,

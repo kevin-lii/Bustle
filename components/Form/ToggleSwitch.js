@@ -6,6 +6,7 @@ import Icon from "../Image/Icons";
 import { Theme } from "../../global/constants";
 
 export default ({
+  color = Theme.secondary,
   size = 50,
   state = false,
   onText = "",
@@ -23,7 +24,7 @@ export default ({
           icon="toggle-on"
           iconOff="toggle-off"
           uponChange={state}
-          color={state ? Theme.secondary : null}
+          color={state ? color : null}
           size={size}
         />
       </View>

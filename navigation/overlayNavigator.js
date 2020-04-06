@@ -11,6 +11,7 @@ import { navigateEvent } from "../global/utils";
 import CreateEvent from "../components/Form/EventCreate";
 
 import styles from "./styles";
+import IconToggleSwitch from "../components/Form/IconToggleSwitch";
 
 const customRouter = {
   ...HeaderNavigator.router,
@@ -32,7 +33,8 @@ export default class CustomNavigator extends React.Component {
         ? this.props.navigation.params.preview
         : {},
       formVisible: false,
-      form: -1
+      form: -1,
+      showForums: false
     };
   }
 
@@ -46,6 +48,8 @@ export default class CustomNavigator extends React.Component {
 
     const closeForm = () =>
       this.setState({ formVisible: false, form: -1, overlay: false });
+
+    const onSwitchToggle = state => this.setState({ showForums: state });
 
     const params = navigation.state.params;
     const showEventModal =
@@ -100,7 +104,17 @@ export default class CustomNavigator extends React.Component {
           />
         ) : null}
         {!this.state.formVisible && !showEventModal && !showEventListModal && (
-          <AddButton toggleOverlay={toggleOverlay} />
+          <View style={styles.buttons}>
+            <AddButton toggleOverlay={toggleOverlay} />
+            <View style={{ marginTop: 10 }}>
+              <IconToggleSwitch
+                onToggle={onSwitchToggle}
+                isOn={this.state.showForums}
+                icon="map"
+                offIcon="comments"
+              />
+            </View>
+          </View>
         )}
       </View>
     );

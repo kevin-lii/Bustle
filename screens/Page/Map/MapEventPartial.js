@@ -38,7 +38,6 @@ export default {
   },
 
   createClusters: function() {
-    console.log("request", this, this.map);
     PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
     );
@@ -72,5 +71,22 @@ export default {
         });
       }
     });
+  },
+  regenClusters: function() {
+    this.eventLoc = [];
+    this.setState({ events: this.props.events });
+    this.props.events.forEach(event => {
+      const geoPoint = event.data().coordinates;
+      this.eventLoc.push({
+        lng: geoPoint.longitude,
+        lat: geoPoint.latitude,
+        ...event.data(),
+        id: event.id
+      });
+    });
+
+    if (this.map.current) {
+      this.createClusters();
+    }
   }
 };
