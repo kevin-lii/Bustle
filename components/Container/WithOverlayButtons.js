@@ -37,7 +37,7 @@ export default ({
               }
             />
           )}
-          <AddButton onPress={() => setExpanded(!expanded)} />
+          <AddButton onPress={() => navigation.navigate("modal")} />
           {onToggle && (
             <View style={{ marginTop: 10 }}>
               <IconToggleSwitch

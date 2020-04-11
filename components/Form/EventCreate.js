@@ -156,11 +156,11 @@ export default class EventCreate extends React.Component {
     };
 
     return (
-      <FormCard height={550} width={"90%"}>
+      <React.Fragment>
         <FormHeader
           icon="close-a"
           title={this.props.event ? "Edit Event" : "Create Event"}
-          onPress={this.props.close}
+          onPress={this.props.onClose}
           headerRight={
             <TextButton
               text={this.props.event ? "Edit" : "Create"}
@@ -322,7 +322,7 @@ export default class EventCreate extends React.Component {
         {this.state.overlayContent && (
           <Overlay>{this.state.overlayContent}</Overlay>
         )}
-      </FormCard>
+      </React.Fragment>
     );
   }
 }

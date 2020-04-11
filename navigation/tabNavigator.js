@@ -41,14 +41,11 @@ export default function TabNavigator({ route }) {
   const { state } = route;
   const nestedRoute = state?.routes[state.index];
   let showTabs = true;
-  console.log("render", nestedRoute);
   if (nestedRoute?.name === "map") {
-    const mapRoute = nestedRoute.state.routes[nestedRoute.state.index];
-    console.log(mapRoute);
+    const mapRoute = nestedRoute.state?.routes[nestedRoute.state.index];
     showTabs = mapRoute?.name !== "event" && mapRoute?.name !== "eventlist";
   }
 
-  console.log(showTabs);
   return (
     <Tab.Navigator
       initialRouteName="map"

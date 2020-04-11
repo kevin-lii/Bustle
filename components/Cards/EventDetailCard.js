@@ -6,7 +6,7 @@ import IconButton from "../Buttons/IconButton";
 import CategoriesIcon from "../Image/CategoriesIcon";
 import Events from "../../models/Event";
 import { Theme } from "../../global/constants";
-import { navigateEvent } from "../../global/utils";
+import { navigatePath } from "../../global/utils";
 
 export default ({ children, event, navigation, map, edit, trash }) => {
   return (
@@ -74,10 +74,10 @@ export default ({ children, event, navigation, map, edit, trash }) => {
         {map && (
           <View style={{ margin: 3 }}>
             <IconButton
-              icon="map"
-              type="Entypo"
+              icon="map-marker-alt"
+              type="Fontisto"
               size={30}
-              onPress={() => navigateEvent({ navigation, event, events: null })}
+              onPress={() => navigatePath(navigation, "map/event", { event })}
             />
           </View>
         )}

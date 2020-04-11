@@ -81,10 +81,12 @@ exports.checkEmail = function(email) {
 
 exports.navigatePath = function(navigation, path, params) {
   const routes = path.split("/");
-  const allParams = {};
+  const allParams = { screen: routes[1] };
   let current = allParams;
-  for (let i = 1; i < routes.length; i++) current.params = { screen: path[i] };
-  current = current.params;
+  for (let i = 2; i < routes.length; i++) {
+    current.params = { screen: routes[i] };
+    current = current.params;
+  }
   current.params = params;
   navigation.navigate(routes[0], routes.length > 1 ? allParams : params);
 };
