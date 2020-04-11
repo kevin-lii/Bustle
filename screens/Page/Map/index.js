@@ -3,18 +3,23 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { connect } from "react-redux";
 import _ from "lodash";
 
+import WithOverlayButtons from "../../../components/Container/WithOverlayButtons";
+import WithOverlayCard from "../../../components/Container/WithOverlayCard";
 import Marker from "../../../components/MapUI/Marker";
 import ClusterMarker from "../../../components/MapUI/ClusterMarker";
 import MapEventPartial from "./MapEventPartial";
 import MapForumsPartial from "./MapForumsPartial";
-import { bindAll, navigateEvent } from "../../../global/utils";
+import { bindAll } from "../../../global/utils";
 import { customMap } from "../../../global/constants";
 import { getEvents } from "../../../store/actions";
 
 class Map extends Component {
   constructor(props) {
     super(props);
-    this.state = { events: [], clusters: [], zoom: null };
+    this.state = {
+      clusters: [],
+      zoom: null
+    };
     this.map = React.createRef();
     this.eventLoc = [];
 
@@ -27,35 +32,39 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!_.isEqual(_.sortBy(this.state.events), _.sortBy(this.props.events))) {
+    const { route } = this.props;
+    if (
+      prevProps &&
+      !_.isEqual(_.sortBy(prevProps.events), _.sortBy(this.props.events))
+    ) {
       this.regenClusters();
     }
 
-    if (!this.props.navigation.state.params) return;
-
-    const eventFocus = this.props.navigation.state.params.event;
-    const prevEvent =
-      prevProps.navigation.state.params &&
-      prevProps.navigation.state.params.event;
-    if (eventFocus)
+    const eventFocus = route.params?.event;
+    const prevEvent = prevProps.route.params?.event;
+    if (eventFocus) {
       this.focusPoint({
         latitude: eventFocus.coordinates.latitude,
         longitude: eventFocus.coordinates.longitude
       });
-    else if (prevEvent) {
+      return;
+    }
+    if (prevEvent) {
       this.unFocus();
     }
   }
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, route } = this.props;
 
     const openPreview = event => {
-      navigateEvent({ navigation, event, events: null });
+      navigation.push("event", { event });
     };
-
     const openListView = events => {
-      navigateEvent({ navigation, event: events[0], events });
+      navigation.push("eventlist", { event: events[0], events });
+    };
+    const handleToggle = state => {
+      navigation.push(state ? "forums" : "events");
     };
 
     const markers = [];
@@ -91,27 +100,36 @@ class Map extends Component {
     });
 
     return (
-      <MapView
-        ref={this.map}
-        provider={PROVIDER_GOOGLE}
-        style={{ flex: 1 }}
-        customMapStyle={customMap}
-        initialRegion={{
-          latitude: 37.86835,
-          longitude: -122.265,
-          latitudeDelta: 0.0461,
-          longitudeDelta: 0.0211
-        }}
-        onRegionChangeComplete={this.createClusters}
-        onMapReady={this.createClusters}
-        showsBuildings={false}
-        showsCompass={false}
-        showsUserLocation={true}
-        showsMyLocationButton={true}
-        followUserLocation={true}
-      >
-        {markers}
-      </MapView>
+      <WithOverlayCard navigation={navigation} route={route}>
+        <WithOverlayButtons
+          navigation={navigation}
+          route={route}
+          toggleState={route.name === "forums"}
+          onToggle={handleToggle}
+        >
+          <MapView
+            ref={this.map}
+            provider={PROVIDER_GOOGLE}
+            style={{ flex: 1 }}
+            customMapStyle={customMap}
+            initialRegion={{
+              latitude: 37.86835,
+              longitude: -122.265,
+              latitudeDelta: 0.0461,
+              longitudeDelta: 0.0211
+            }}
+            onRegionChangeComplete={this.createClusters}
+            onMapReady={this.createClusters}
+            showsBuildings={false}
+            showsCompass={false}
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+            followUserLocation={true}
+          >
+            {markers}
+          </MapView>
+        </WithOverlayButtons>
+      </WithOverlayCard>
     );
   }
 }

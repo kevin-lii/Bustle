@@ -74,7 +74,6 @@ export default {
   },
   regenClusters: function() {
     this.eventLoc = [];
-    this.setState({ events: this.props.events });
     this.props.events.forEach(event => {
       const geoPoint = event.data().coordinates;
       this.eventLoc.push({

@@ -1,7 +1,12 @@
-import React from 'react'
-import { Alert, View, Text, TouchableOpacity } from 'react-native'
-import { createAppContainer } from "react-navigation";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 
-import DrawerNavigator from './drawerNavigator'
+import DrawerNavigator from "./drawerNavigator";
 
-export default createAppContainer(DrawerNavigator);
+export default function Navigation() {
+  return (
+    <NavigationContainer>
+      <DrawerNavigator />
+    </NavigationContainer>
+  );
+}

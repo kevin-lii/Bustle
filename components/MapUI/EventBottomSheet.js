@@ -39,7 +39,7 @@ export default class EventBottomSheet extends React.Component {
   }
 
   render() {
-    const { event, navigateTo } = this.props;
+    const { event, onClose } = this.props;
     const date = moment(event.date.toDate()).format("MMM Do, YYYY");
     const time = moment(event.time.toDate()).format("h:mm a");
     const location = event.location ? event.location.description : "See Map";
@@ -273,7 +273,7 @@ export default class EventBottomSheet extends React.Component {
         callbackNode={fall}
         callbackThreshold={0.1}
         borderRadius={Theme.borderRadius}
-        onCloseEnd={() => navigateTo({ event: null, events: null })}
+        onCloseEnd={onClose}
       />
     );
   }

@@ -3,7 +3,7 @@ import { Text, FlatList, SafeAreaView, View } from "react-native";
 import Modal from "react-native-modal";
 
 import EventModel from "../../../models/Event";
-import EventDetail from "../../../components/Window/EventDetailCard";
+import EventDetail from "../../../components/Cards/EventDetailCard";
 import { UserContext } from "../../../dataContainers/context";
 import Icons from "../../../components/Image/Icons";
 import EditEvent from "../../../components/Form/EventCreate";

@@ -3,7 +3,7 @@ import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { withNavigation } from "react-navigation";
 
 import Icons from "../../../components/Image/Icons";
-import EventDetail from "../../../components/Window/EventDetailCard";
+import EventDetail from "../../../components/Cards/EventDetailCard";
 import { getHostedEvents } from "../../../store/actions";
 
 import styles from "./styles";

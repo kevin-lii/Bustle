@@ -5,7 +5,6 @@ import firestore from "@react-native-firebase/firestore";
 import functions from "@react-native-firebase/functions";
 import Permissions from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
-import { NavigationActions } from "react-navigation";
 
 exports.bindAll = function(thisArg, obj) {
   for (const key of Object.keys(obj)) {
@@ -80,17 +79,14 @@ exports.checkEmail = function(email) {
   }
 };
 
-exports.navigateEvent = function({ navigation, event, events }) {
-  navigation.dispatch(
-    NavigationActions.navigate({
-      routeName: "Map",
-      params: { event, events },
-      action: NavigationActions.navigate({
-        routeName: "Map",
-        params: { event, events }
-      })
-    })
-  );
+exports.navigatePath = function(navigation, path, params) {
+  const routes = path.split("/");
+  const allParams = {};
+  let current = allParams;
+  for (let i = 1; i < routes.length; i++) current.params = { screen: path[i] };
+  current = current.params;
+  current.params = params;
+  navigation.navigate(routes[0], routes.length > 1 ? allParams : params);
 };
 
 exports.getEndpoint = function(fn) {

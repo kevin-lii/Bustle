@@ -15,19 +15,11 @@ export default StyleSheet.create({
     height: bigEdge,
     width: bigEdge
   },
-  eventButton: {
-    bottom: 133,
-    right: 30,
+  smallButton: {
     borderRadius: smallEdge / 2,
     height: smallEdge,
-    width: smallEdge
-  },
-  groupButton: {
-    bottom: 73,
-    right: 30,
-    borderRadius: smallEdge / 2,
-    height: smallEdge,
-    width: smallEdge
+    width: smallEdge,
+    marginLeft: 20
   },
   categoryButton: {
     justifyContent: "center",

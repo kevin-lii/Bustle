@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
 
-import FormCard from "../Window/FormCard";
+import FormCard from "../Cards/FormCard";
 import FormGroup from "./FormGroup";
 import FormHeader from "./FormHeader";
 import TextButton from "../Buttons/TextButton";

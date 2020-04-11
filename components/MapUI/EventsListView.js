@@ -8,7 +8,6 @@ import {
   TouchableWithoutFeedback,
   Image
 } from "react-native";
-import { withNavigation } from "react-navigation";
 import Modal from "react-native-modal";
 import moment from "moment";
 
@@ -24,7 +23,7 @@ const CARD_WIDTH = 250;
 
 const marginWidth = (width - CARD_WIDTH - 40) / 2;
 
-class EventListView extends React.Component {
+export default class EventListView extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
@@ -93,7 +92,7 @@ class EventListView extends React.Component {
         scrollHorizontal
         scrollTo={handleScrollTo}
         scrollOffset={this.state.scrollOffset}
-        isVisible={this.props.show}
+        isVisible={true}
         style={{ justifyContent: "flex-end", margin: 0 }}
         animationIn="slideInUp"
         animationOut="slideOutDown"
@@ -160,5 +159,3 @@ class EventListView extends React.Component {
     );
   }
 }
-
-export default withNavigation(EventListView);

@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const bottom = Platform.OS === "ios" ? 90 : 65;
 
 export default StyleSheet.create({
-  // HEADER
   container: {
     flex: 1
   },
@@ -24,9 +23,26 @@ export default StyleSheet.create({
     fontWeight: "bold",
     color: "black"
   },
-  buttons: {
+  floatingHeader: {
     position: "absolute",
-    bottom: bottom,
-    right: 20
+    top: 30,
+    left: 0,
+    right: 0
+  },
+  headerLeft: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "flex-start"
+  },
+  headerRight: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "flex-end"
   }
 });

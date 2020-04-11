@@ -9,7 +9,7 @@ import globalStyles from "../../global/styles";
 export default function({
   photoURL,
   init,
-  nav,
+  onPress,
   size,
   marginTop = 30,
   marginRight = 20,
@@ -40,7 +40,7 @@ export default function({
 
   return (
     <Avatar
-      onPress={nav}
+      onPress={onPress}
       containerStyle={[
         {
           marginTop,

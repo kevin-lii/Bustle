@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, ScrollView, Linking, SafeAreaView, View } from "react-native";
-import { useHeaderHeight } from "react-navigation-stack";
+import { useHeaderHeight } from "@react-navigation/stack";
 
 import Icons from "../../../../components/Image/Icons";
 
@@ -16,7 +16,7 @@ export default function({ navigation }) {
             icon="close-a"
             type="Fontisto"
             size={25}
-            onPress={() => navigation.navigate("Settings")}
+            onPress={() => navigation.goBack()}
           />
         </View>
         <View style={{ marginTop: headerHeight }}>

@@ -1,49 +1,43 @@
 import React from "react";
-import { ScrollView, Text, TouchableHighlight } from "react-native";
-import { SafeAreaView } from "react-navigation";
 import {
   createDrawerNavigator,
-  DrawerNavigatorItems
-} from "react-navigation-drawer";
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem
+} from "@react-navigation/drawer";
+
 import auth from "@react-native-firebase/auth";
 
 import Invites from "../screens/Page/Invites";
 import Profile from "./profileNavigator";
 import Settings from "./settingNavigator";
-import OverlayNavigator from "./overlayNavigator";
+import TabNavigator from "./tabNavigator";
 
-import styles from "./styles";
+const Drawer = createDrawerNavigator();
 
-const CustomDrawerContentComponent = props => (
-  <ScrollView>
-    <SafeAreaView
-      style={{ flex: 1 }}
-      forceInset={{ top: "always", horizontal: "never" }}
-    >
-      <DrawerNavigatorItems {...props} />
-      <TouchableHighlight
-        activeOpacity={0.4}
-        underlayColor="rgba(0, 0, 0, 0.4)"
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Log Out"
         onPress={async () => await auth().signOut()}
-      >
-        <Text style={styles.drawerText}>Logout</Text>
-      </TouchableHighlight>
-    </SafeAreaView>
-  </ScrollView>
-);
+      />
+    </DrawerContentScrollView>
+  );
+}
 
-export default createDrawerNavigator(
-  {
-    Map: OverlayNavigator,
-    // "My Events": MyEvents,
-    // Profile
-    Settings
-  },
-  {
-    drawerPosition: "right",
-    drawerType: "front",
-    overlayColor: "rgba(0, 0, 0, 0.7)",
-    drawerWidth: 200,
-    contentComponent: CustomDrawerContentComponent
-  }
-);
+export default function DrawerNavigator() {
+  return (
+    <Drawer.Navigator
+      drawerContent={CustomDrawerContent}
+      drawerPosition="right"
+      drawerType="front"
+      drawerWidth={200}
+      overlayColor="rgba(0, 0, 0, 0.7)"
+    >
+      <Drawer.Screen name="content" component={TabNavigator} />
+      <Drawer.Screen name="settings" component={Settings} />
+    </Drawer.Navigator>
+  );
+}
