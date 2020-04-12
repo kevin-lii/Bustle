@@ -6,7 +6,6 @@ const smallEdge = 50;
 export default StyleSheet.create({
   button: {
     backgroundColor: "white",
-    flex: 1,
     justifyContent: "center",
     alignContent: "center"
   },
@@ -18,8 +17,7 @@ export default StyleSheet.create({
   smallButton: {
     borderRadius: smallEdge / 2,
     height: smallEdge,
-    width: smallEdge,
-    marginLeft: 20
+    width: smallEdge
   },
   categoryButton: {
     justifyContent: "center",

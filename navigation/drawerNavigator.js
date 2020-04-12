@@ -36,8 +36,20 @@ export default function DrawerNavigator() {
       drawerWidth={200}
       overlayColor="rgba(0, 0, 0, 0.7)"
     >
-      <Drawer.Screen name="content" component={TabNavigator} />
-      <Drawer.Screen name="settings" component={Settings} />
+      <Drawer.Screen
+        name="content"
+        component={TabNavigator}
+        options={{
+          title: "Home"
+        }}
+      />
+      <Drawer.Screen
+        name="settings"
+        component={Settings}
+        options={{
+          title: "Settings"
+        }}
+      />
     </Drawer.Navigator>
   );
 }

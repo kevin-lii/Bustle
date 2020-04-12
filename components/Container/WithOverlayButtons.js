@@ -25,19 +25,20 @@ export default ({
         <View style={styles.buttons}>
           {expanded && (
             <AddWithOptions
-              primaryIcon={<Icons icon="map-marker-alt" />}
+              primaryIcon="map-marker-alt"
               primaryLabel="Event"
               onPressPrimary={() =>
                 navigation.navigate("modal", { form: FormTypes.EVENT_CREATE })
               }
-              secondaryIcon={<Icons icon="comment" />}
+              secondaryIcon="comment"
               secondaryLabel="Post"
               onPressPrimary={() =>
                 navigation.navigate("modal", { form: FormTypes.POST_CREATE })
               }
+              containerStyle={styles.optionButtons}
             />
           )}
-          <AddButton onPress={() => navigation.navigate("modal")} />
+          <AddButton onPress={() => setExpanded(!expanded)} />
           {onToggle && (
             <View style={{ marginTop: 10 }}>
               <IconToggleSwitch
@@ -61,5 +62,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: bottom,
     right: 20
+  },
+  optionButtons: {
+    bottom: bottom + 110,
+    right: 6,
+    position: "absolute"
   }
 });

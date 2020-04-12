@@ -3,6 +3,8 @@ import { View, TouchableOpacity, Text } from "react-native-ui-lib";
 import { StyleSheet } from "react-native";
 
 import styles from "./styles";
+import globalStyles from "../../global/styles";
+import IconButton from "./IconButton";
 
 export default ({
   primaryIcon,
@@ -10,20 +12,39 @@ export default ({
   secondaryIcon,
   secondaryLabel,
   onPressPrimary,
-  onPressSecondary
+  onPressSecondary,
+  containerStyle
 }) => (
-  <View flex spread style={{ height: 120 }}>
-    <View>
+  <View
+    flex
+    spread
+    style={[{ height: 110, alignItems: "flex-end" }, containerStyle]}
+  >
+    <View row centerV spread style={{ width: 90 }}>
       <Text>{secondaryLabel}</Text>
-      <TouchableOpacity style={styles.smallButton} onPress={onPressSecondary}>
-        {secondaryIcon}
-      </TouchableOpacity>
+      <IconButton
+        touchStyle={[
+          styles.button,
+          styles.smallButton,
+          globalStyles.overlayElementShadow
+        ]}
+        onPress={onPressSecondary}
+        icon={secondaryIcon}
+        size={20}
+      />
     </View>
-    <View>
+    <View row centerV spread style={{ width: 90 }}>
       <Text>{primaryLabel}</Text>
-      <TouchableOpacity style={styles.smallButton} onPress={onPressPrimary}>
-        {primaryIcon}
-      </TouchableOpacity>
+      <IconButton
+        touchStyle={[
+          styles.button,
+          styles.smallButton,
+          globalStyles.overlayElementShadow
+        ]}
+        onPress={onPressPrimary}
+        icon={primaryIcon}
+        size={20}
+      />
     </View>
   </View>
 );
