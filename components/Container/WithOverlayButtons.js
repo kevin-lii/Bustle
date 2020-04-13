@@ -32,7 +32,7 @@ export default ({
               }
               secondaryIcon="comment"
               secondaryLabel="Post"
-              onPressPrimary={() =>
+              onPressSecondary={() =>
                 navigation.navigate("modal", { form: FormTypes.POST_CREATE })
               }
               containerStyle={styles.optionButtons}

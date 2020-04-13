@@ -58,7 +58,7 @@ export default class EventCreate extends React.Component {
           stateCopy,
           this.context.events
         );
-        this.props.close();
+        this.props.onClose();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
@@ -76,7 +76,7 @@ export default class EventCreate extends React.Component {
         delete stateCopy.currentXOffset;
         await EventModel.update(this.props.event.id, stateCopy);
         if (this.props.update) this.props.update();
-        this.props.close();
+        this.props.onClose();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
