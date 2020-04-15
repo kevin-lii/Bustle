@@ -5,7 +5,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import Icon from "../Image/Icons";
 
 import moment from "moment";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import ToggleSwitch from "./ToggleSwitch";
@@ -72,7 +72,7 @@ export default ({ type, label, value, setValue, overlay }) => {
                 style={{
                   backgroundColor: "white",
                   borderRadius: 12,
-                  width: "100%"
+                  width: "100%",
                 }}
               >
                 <View
@@ -81,7 +81,7 @@ export default ({ type, label, value, setValue, overlay }) => {
                     alignItems: "flex-end",
                     borderBottomColor: "grey",
                     borderBottomWidth: 0.5,
-                    padding: 15
+                    padding: 15,
                   }}
                 >
                   <TouchableOpacity>
@@ -125,7 +125,7 @@ export default ({ type, label, value, setValue, overlay }) => {
               autoFocus={true}
               returnKeyType={"search"}
               fetchDetails={true}
-              renderDescription={row => row.description}
+              renderDescription={(row) => row.description}
               onPress={(data, details = null) => {
                 setValue(Object.assign(data, details));
                 setText(data.description.substring(0, locationMaxLen) + "...");
@@ -135,7 +135,7 @@ export default ({ type, label, value, setValue, overlay }) => {
                 container: {
                   backgroundColor: "white",
                   borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12
+                  borderTopRightRadius: 12,
                 },
                 textInputContainer: {
                   width: "100%",
@@ -143,20 +143,20 @@ export default ({ type, label, value, setValue, overlay }) => {
                   borderTopRightRadius: 12,
                   borderWidth: 0,
                   backgroundColor: "transparent",
-                  paddingLeft: 15
+                  paddingLeft: 15,
                 },
                 description: {
-                  fontWeight: "bold"
-                }
+                  fontWeight: "bold",
+                },
               }}
               query={{
                 key: placesKey,
                 sessiontoken: uuid(),
-                language: "en"
+                language: "en",
               }}
               nearbyPlacesAPI="GooglePlacesSearch"
               GooglePlacesDetailsQuery={{
-                fields: ["formatted_address", "geometry"]
+                fields: ["formatted_address", "geometry"],
               }}
               debounce={300}
               renderLeftButton={() => (

@@ -33,9 +33,6 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // additional non auto detected packages can still be added here:
-      packages.add(new HighlighterViewPackage());
-      packages.add(new TextInputDelKeyHandlerPackage());
-      packages.add(new WheelPickerPackage());
 
       return packages;
     }

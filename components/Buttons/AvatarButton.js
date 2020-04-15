@@ -6,7 +6,7 @@ import { Theme } from "../../global/constants";
 
 import globalStyles from "../../global/styles";
 
-export default function({
+export default function ({
   photoURL,
   init,
   onPress,
@@ -15,7 +15,7 @@ export default function({
   marginRight = 10,
   marginBottom = 0,
   hasBorder,
-  useUser
+  useUser,
 }) {
   const user = useContext(UserContext);
   let photo;
@@ -32,7 +32,7 @@ export default function({
   } else if (useUser && user && user.displayName && !photo) {
     initials = user.displayName
       .split(" ")
-      .map(name => name.charAt(0))
+      .map((name) => name.charAt(0))
       .join("");
   } else {
     initials = "";
@@ -48,9 +48,9 @@ export default function({
           marginBottom,
           borderWidth: hasBorder ? 1 : 0,
           borderColor: Theme.primary,
-          overflow: "hidden"
+          overflow: "hidden",
         },
-        globalStyles.overlayElementShadow
+        globalStyles.overlayElementShadow,
       ]}
       imageStyle={{
         justifyContent: "center",
@@ -58,9 +58,9 @@ export default function({
         width: null,
         height: null,
         resizeMode: "contain",
-        overflow: "hidden"
+        overflow: "hidden",
       }}
-      imageSource={{ uri: photo }}
+      source={{ uri: photo }}
       label={initials}
       size={size}
       backgroundColor={photo ? Colors.white : Colors.yellow60}

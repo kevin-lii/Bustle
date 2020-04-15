@@ -2,7 +2,7 @@ import React from "react";
 import {
   createNavigatorFactory,
   useNavigationBuilder,
-  TabRouter
+  TabRouter,
 } from "@react-navigation/native";
 import { BottomTabView, Ta } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Fontisto";
@@ -22,7 +22,7 @@ function CustomNavigator({
     initialRouteName,
     backBehavior,
     children,
-    screenOptions
+    screenOptions,
   });
 
   return (
@@ -48,10 +48,10 @@ export default function TabNavigator({ route }) {
 
   return (
     <Tab.Navigator
-      initialRouteName="map"
+      initialRouteName="feed"
       tabBarOptions={{
         activeTintColor: "#1C004B",
-        showLabel: false
+        showLabel: false,
       }}
     >
       <Tab.Screen
@@ -60,7 +60,7 @@ export default function TabNavigator({ route }) {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name={"nav-icon-list"} size={size} color={color} />
-          )
+          ),
         }}
       />
       <Tab.Screen
@@ -70,7 +70,7 @@ export default function TabNavigator({ route }) {
           tabBarIcon: ({ color, size }) => (
             <Icon name={"earth"} size={size} color={color} />
           ),
-          tabBarVisible: showTabs
+          tabBarVisible: showTabs,
         }}
       />
       <Tab.Screen
@@ -79,7 +79,7 @@ export default function TabNavigator({ route }) {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name={"ticket"} size={size} color={color} />
-          )
+          ),
         }}
       />
     </Tab.Navigator>
