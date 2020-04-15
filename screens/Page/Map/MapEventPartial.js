@@ -2,6 +2,10 @@ import React from "react";
 import { PermissionsAndroid } from "react-native";
 import supercluster from "points-cluster";
 
+import MapView from "react-native-maps";
+import Marker from "../../../components/MapUI/Marker";
+import ClusterMarker from "../../../components/MapUI/ClusterMarker";
+
 export default {
   focusPoint: function(center) {
     this.map.current.animateCamera(
@@ -87,5 +91,44 @@ export default {
     if (this.map.current) {
       this.createClusters();
     }
+  },
+  generateMarkers: function() {
+    const openPreview = event => {
+      this.props.navigation.push("event", { event });
+    };
+    const openListView = events => {
+      this.props.navigation.push("eventlist", { event: events[0], events });
+    };
+
+    return this.state.clusters.map(cluster => {
+      if (cluster.numPoints == 1) {
+        const event = cluster.points[0];
+        return (
+          <MapView.Marker
+            key={event.id}
+            coordinate={{
+              latitude: event.coordinates.latitude,
+              longitude: event.coordinates.longitude
+            }}
+            onPress={() => openPreview(event)}
+          >
+            <Marker type={event.category}></Marker>
+          </MapView.Marker>
+        );
+      } else {
+        return (
+          <MapView.Marker
+            key={cluster.id}
+            coordinate={{
+              latitude: cluster.lat,
+              longitude: cluster.lng
+            }}
+            onPress={() => openListView(cluster.points)}
+          >
+            <ClusterMarker count={cluster.numPoints}></ClusterMarker>
+          </MapView.Marker>
+        );
+      }
+    });
   }
 };

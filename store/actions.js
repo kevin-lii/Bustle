@@ -1,10 +1,12 @@
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import EventModel from "../models/Event";
+import PostModel from "../models/Post";
 
 export const actionTypes = {
   UPDATE_USER: "update user",
   UPDATE_EVENTS: "event update",
+  UPDATE_POSTS: "post update",
   UPDATE_HOSTED_EVENTS: "hosted event update"
 };
 
@@ -49,6 +51,15 @@ export const getEvents = (filters = {}) => dispatch => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,
       events: snapshot
+    });
+  });
+};
+
+export const getPosts = (filters = {}) => dispatch => {
+  PostModel.get(filters, snapshot => {
+    dispatch({
+      type: actionTypes.UPDATE_POSTS,
+      posts: snapshot
     });
   });
 };

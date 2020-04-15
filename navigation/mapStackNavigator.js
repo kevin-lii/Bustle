@@ -8,7 +8,7 @@ import {
 import MapScreen from "../screens/Page/Map";
 
 import HeaderLeft from "../components/Header/HeaderLeft";
-import HeaderRight from "../components/Header/HeaderRight";
+import HeaderRight from "../components/Buttons/AvatarButton";
 import { View } from "react-native-ui-lib";
 
 import styles from "./styles";

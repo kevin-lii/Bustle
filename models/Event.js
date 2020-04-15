@@ -36,8 +36,11 @@ export default class EventModel {
   static async get(filters, func) {
     const store = firestore();
     const geofirestore = new GeoFirestore(store);
-    // const query = store.collection('events').orderBy('g').startAt(5)
     let query = geofirestore.collection("events");
+    query = query.near({
+      center: new firestore.GeoPoint(37.86835, -122.265),
+      radius: 1000
+    });
     if (filters.active) query = query.where("ended", "==", false);
     if (filters.host) query = query.where("host", "==", filters.host);
     if (func) query.onSnapshot(func);
@@ -57,16 +60,12 @@ export default class EventModel {
       .catch(function(error) {
         console.error("Error removing document: ", error);
       });
-    await firestore()
-      .collection("chats")
-      .doc(event.chatID)
-      .delete();
     if (event.photoURL)
       await f
         .storage()
         .refFromURL(event.photoURL)
         .delete();
-    await deletePhoto({ eventID: event.id, photoURL: event.photoURL });
+    // await deletePhoto({ eventID: event.id, photoURL: event.photoURL });
     for (let count; count < event.invited; count++) {
       const userID = event.invited[count];
       await deleteEvent({ uid: userID, eventID: event.id });

@@ -7,7 +7,7 @@ import {
 import { BottomTabView, Ta } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Fontisto";
 
-import FeedScreen from "../screens/Page/Feed";
+import FeedNavigator from "./feedStackNavigator";
 import MapNavigator from "./mapStackNavigator";
 import EventListScreen from "../screens/Page/EventList";
 
@@ -56,7 +56,7 @@ export default function TabNavigator({ route }) {
     >
       <Tab.Screen
         name="feed"
-        component={FeedScreen}
+        component={FeedNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name={"nav-icon-list"} size={size} color={color} />

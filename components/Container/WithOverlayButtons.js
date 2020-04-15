@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
   buttons: {
     position: "absolute",
     bottom: bottom,
-    right: 20
+    right: 10
   },
   optionButtons: {
     bottom: bottom + 110,
-    right: 6,
+    right: 4,
     position: "absolute"
   }
 });

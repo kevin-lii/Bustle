@@ -6,6 +6,11 @@ const events = (state, action) => {
   return state || null;
 };
 
+const posts = (state, action) => {
+  if (action.type === actionTypes.UPDATE_POSTS) return action.posts;
+  return state || null;
+};
+
 const hostedEvents = (state, action) => {
   if (action.type === actionTypes.UPDATE_HOSTED_EVENTS)
     return action.hostedEvents;

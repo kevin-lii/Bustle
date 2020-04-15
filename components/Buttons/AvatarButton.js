@@ -11,8 +11,8 @@ export default function({
   init,
   onPress,
   size,
-  marginTop = 30,
-  marginRight = 20,
+  marginTop = 20,
+  marginRight = 10,
   marginBottom = 0,
   hasBorder,
   useUser

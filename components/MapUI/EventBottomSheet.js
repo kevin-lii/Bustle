@@ -7,7 +7,7 @@ import Animated from "react-native-reanimated";
 import Icons from "../Image/Icons";
 import styles from "./styles";
 import UserData from "../../models/User";
-import Avatar from "../Header/HeaderRight";
+import Avatar from "../Buttons/AvatarButton";
 import { UserContext } from "../../dataContainers/context";
 import Button from "../Buttons/ActionButton";
 import { Theme } from "../../global/constants";
