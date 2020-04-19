@@ -4,10 +4,10 @@ import {
   Alert,
   ScrollView,
   TouchableWithoutFeedback,
-  TouchableOpacity,
-  Text
+  Text,
 } from "react-native";
 import ImagePicker from "react-native-image-picker";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import FormCard from "../Cards/FormCard";
 import FormGroup from "./FormGroup";
@@ -40,7 +40,7 @@ export default class EventCreate extends React.Component {
       image: props.event ? props.event.photoURL : "",
       scrollViewWidth: 0,
       currentXOffset: 0,
-      confirmed: false
+      confirmed: false,
     };
   }
 
@@ -89,7 +89,7 @@ export default class EventCreate extends React.Component {
       else submit();
     };
 
-    setOverlayContent = content => this.setState({ overlayContent: content });
+    setOverlayContent = (content) => this.setState({ overlayContent: content });
 
     const Overlay = ({ children }) => (
       <View center style={styles.formOverlay}>
@@ -117,10 +117,10 @@ export default class EventCreate extends React.Component {
           title: "Select Image",
           storageOptions: {
             skipBackup: true,
-            path: "images"
-          }
+            path: "images",
+          },
         },
-        response => {
+        (response) => {
           if (response.didCancel) console.log("Canceled");
           else if (response.error) Alert.alert("Error", response.error);
           else {
@@ -130,7 +130,7 @@ export default class EventCreate extends React.Component {
       );
     };
 
-    const handleScroll = event => {
+    const handleScroll = (event) => {
       newXOffset = event.nativeEvent.contentOffset.x;
       this.setState({ currentXOffset: newXOffset });
     };
@@ -141,7 +141,7 @@ export default class EventCreate extends React.Component {
       this.scrollView.current.scrollTo({
         x: _currentXOffset,
         y: 0,
-        animated: true
+        animated: true,
       });
     };
 
@@ -151,7 +151,7 @@ export default class EventCreate extends React.Component {
       this.scrollView.current.scrollTo({
         x: _currentXOffset,
         y: 0,
-        animated: true
+        animated: true,
       });
     };
 
@@ -173,12 +173,12 @@ export default class EventCreate extends React.Component {
         <ScrollView
           style={{
             paddingLeft: 15,
-            paddingRight: 15
+            paddingRight: 15,
           }}
         >
           <TextField
             value={this.state.name}
-            onChangeText={text => this.setState({ name: text })}
+            onChangeText={(text) => this.setState({ name: text })}
             containerStyle={{}}
             floatingPlaceholder
             placeholder="Title"
@@ -194,7 +194,7 @@ export default class EventCreate extends React.Component {
             type="date"
             label="Date"
             value={this.state.date}
-            setValue={d => this.setState({ date: d })}
+            setValue={(d) => this.setState({ date: d })}
             overlay={setOverlayContent}
           />
 
@@ -202,7 +202,7 @@ export default class EventCreate extends React.Component {
             type="clock"
             label="Time"
             value={this.state.time}
-            setValue={t => this.setState({ time: t })}
+            setValue={(t) => this.setState({ time: t })}
             overlay={setOverlayContent}
           />
 
@@ -210,7 +210,7 @@ export default class EventCreate extends React.Component {
             type="map-marker-alt"
             label="Location"
             value={this.state.location}
-            setValue={l => this.setState({ location: l })}
+            setValue={(l) => this.setState({ location: l })}
             overlay={setOverlayContent}
           />
 
@@ -218,7 +218,7 @@ export default class EventCreate extends React.Component {
             type="user-secret"
             label="Type"
             value={this.state.isPrivate}
-            setValue={p => this.setState({ isPrivate: p })}
+            setValue={(p) => this.setState({ isPrivate: p })}
           />
 
           {this.state.isPrivate && (
@@ -226,7 +226,7 @@ export default class EventCreate extends React.Component {
               type="shield"
               label={"Open Invite"}
               value={this.state.open}
-              setValue={o => this.setState({ open: o })}
+              setValue={(o) => this.setState({ open: o })}
             />
           )}
 
@@ -234,7 +234,7 @@ export default class EventCreate extends React.Component {
             style={{
               flex: 1,
               flexDirection: "row",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             <IconButton
@@ -242,7 +242,7 @@ export default class EventCreate extends React.Component {
                 alignItems: "flex-start",
                 paddingTop: 20,
                 marginRight: 15,
-                marginLeft: 3
+                marginLeft: 3,
               }}
               onPress={leftArrow}
               icon="ios-arrow-back"
@@ -250,21 +250,19 @@ export default class EventCreate extends React.Component {
             />
             <ScrollView
               contentContainerStyle={{
-                alignItems: "center"
+                alignItems: "center",
               }}
               horizontal
-              pagingEnabled={true}
               ref={this.scrollView}
               onContentSizeChange={(w, h) =>
                 this.setState({ scrollViewWidth: w })
               }
               scrollEventThrottle={16}
-              scrollEnabled={false}
               onScroll={handleScroll}
               showsHorizontalScrollIndicator={false}
               style={{ height: 60, marginTop: 10 }}
             >
-              {categories.map(category => {
+              {categories.map((category) => {
                 color = this.state.category == category ? Theme.primary : null;
                 return (
                   <View
@@ -290,7 +288,7 @@ export default class EventCreate extends React.Component {
                 alignItems: "flex-start",
                 paddingTop: 20,
                 marginLeft: 15,
-                marginRight: 3
+                marginRight: 3,
               }}
               onPress={rightArrow}
               icon="ios-arrow-forward"
@@ -313,7 +311,7 @@ export default class EventCreate extends React.Component {
             placeholder="Description"
             multiline
             floatOnFocus
-            onChangeText={text => this.setState({ description: text })}
+            onChangeText={(text) => this.setState({ description: text })}
             color={Theme.primary}
             floatingPlaceholderColor={Theme.primary}
             underlineColor={Theme.primary}

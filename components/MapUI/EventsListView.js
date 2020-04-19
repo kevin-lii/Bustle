@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   Dimensions,
   TouchableWithoutFeedback,
-  Image
+  Image,
 } from "react-native";
 import Modal from "react-native-modal";
 import moment from "moment";
@@ -18,8 +18,8 @@ import styles from "./styles";
 
 const { width, height } = Dimensions.get("window");
 
-const CARD_HEIGHT = height / 3;
-const CARD_WIDTH = 250;
+const CARD_HEIGHT = (5 * height) / 12;
+const CARD_WIDTH = width * 0.7;
 
 const marginWidth = (width - CARD_WIDTH - 40) / 2;
 
@@ -29,7 +29,7 @@ export default class EventListView extends React.Component {
     super(props);
     this.scrollView = React.createRef();
     this.state = {
-      scrollOffset: 0.1
+      scrollOffset: 0.1,
     };
   }
 
@@ -40,11 +40,11 @@ export default class EventListView extends React.Component {
       this.scrollView.current.scrollTo({
         x: scrollOffset,
         y: 0,
-        animated: true
+        animated: true,
       });
-      this.props.navigateTo({
+      this.props.navigation.push("eventlist", {
         event: this.props.eventList[0],
-        events: this.props.eventList
+        events: this.props.eventList,
       });
     } else {
       let index = Math.floor(this.state.scrollOffset / (CARD_WIDTH + 20)); // animate 30% away from landing on the next item
@@ -62,9 +62,9 @@ export default class EventListView extends React.Component {
         prevIndex = 0;
       }
       if (prevIndex !== index)
-        this.props.navigateTo({
+        this.props.navigation.push("eventlist", {
           event: this.props.eventList[index],
-          events: this.props.eventList
+          events: this.props.eventList,
         });
     }
   }
@@ -72,16 +72,16 @@ export default class EventListView extends React.Component {
   render() {
     const { eventList } = this.props;
 
-    const handleOnScroll = event => {
+    const handleOnScroll = (event) => {
       const offset =
         event.nativeEvent.contentOffset.x > 0.1
           ? event.nativeEvent.contentOffset.x
           : 0.1;
       this.setState({
-        scrollOffset: offset
+        scrollOffset: offset,
       });
     };
-    const handleScrollTo = p => {
+    const handleScrollTo = (p) => {
       if (this.scrollView.current) {
         this.scrollView.current.scrollTo(p);
       }
@@ -99,16 +99,12 @@ export default class EventListView extends React.Component {
         coverScreen={false}
         hasBackdrop={false}
         swipeThreshold={10}
-        onSwipeComplete={() =>
-          this.props.navigateTo({ event: null, events: null })
-        }
-        onBackButtonPress={() =>
-          this.props.navigateTo({ event: null, events: null })
-        }
-        swipeDirection={["down"]}
+        onSwipeComplete={this.props.onClose}
+        onBackButtonPress={this.props.onClose}
+        swipeDirection={"down"}
       >
         <SafeAreaView
-          style={{ backgroundColor: "transparent", height: CARD_HEIGHT + 80 }}
+          style={{ backgroundColor: "transparent", height: CARD_HEIGHT + 10 }}
         >
           <ScrollView
             horizontal
@@ -128,13 +124,16 @@ export default class EventListView extends React.Component {
                     width: CARD_WIDTH,
                     marginLeft: index == 0 ? marginWidth + 20 : 0,
                     marginRight:
-                      index == eventList.length - 1 ? marginWidth : 20
-                  }
+                      index == eventList.length - 1 ? marginWidth : 20,
+                  },
                 ]}
                 key={index}
               >
                 <TouchableWithoutFeedback
-                  onPress={() => this.props.navigateTo({ event, events: null })}
+                  onPress={() => {
+                    this.props.onClose();
+                    this.props.navigation.push("event", { event });
+                  }}
                 >
                   <View style={styles.textContent}>
                     <Image

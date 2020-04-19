@@ -124,7 +124,7 @@ export default class EventModel {
     if (data.location) {
       const loc = await getLocation();
       const { lat, lng } = data.location.geometry.location;
-      validateLocation();
+      validateLocation(loc, lat, lng);
     }
     const store = firestore();
     const geofirestore = new GeoFirestore(store);

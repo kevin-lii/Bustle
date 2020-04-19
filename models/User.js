@@ -1,5 +1,6 @@
 import storage from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
+import { firebase as fire } from "@react-native-firebase/functions";
 import auth from "@react-native-firebase/auth";
 
 import { UserContext } from "../dataContainers/context";
@@ -15,10 +16,7 @@ export default class UserModel {
 
   static async get(userID) {
     const store = firestore();
-    const query = store
-      .collection("users")
-      .doc(userID)
-      .get();
+    const query = store.collection("users").doc(userID).get();
 
     return query;
   }
@@ -41,10 +39,7 @@ export default class UserModel {
     } else {
       data.photoURL = "";
     }
-    await store
-      .collection("users")
-      .doc(userID)
-      .update(data);
+    await store.collection("users").doc(userID).update(data);
   }
   static async joinEvent(userID, eventID) {
     const joinEvent = fire.functions().httpsCallable("joinEvent");

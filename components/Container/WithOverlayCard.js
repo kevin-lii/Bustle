@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native-ui-lib";
 
 import EventsList from "../MapUI/EventsListView";
@@ -16,9 +16,8 @@ export default ({ navigation, route, children }) => {
       {route.name === "eventlist" && (
         <EventsList
           eventList={params.events}
-          navigateTo={params => {
-            navigation.replace("eventlist", params);
-          }}
+          navigation={navigation}
+          onClose={() => navigation.pop()}
         />
       )}
     </View>
