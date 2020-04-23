@@ -8,6 +8,8 @@ import FormTypes from "../Form/FormTypes";
 import IconToggleSwitch from "../Form/IconToggleSwitch";
 import AddButton from "../Buttons/AddButton";
 
+import { navigatePath } from "../../global/utils";
+
 export default ({
   navigation,
   route,
@@ -28,19 +30,24 @@ export default ({
               primaryIcon="map-marker-alt"
               primaryLabel="Event"
               onPressPrimary={() =>
-                navigation.navigate("modal", { form: FormTypes.EVENT_CREATE })
+                navigatePath(navigation, `modal/${FormTypes.EVENT_CREATE}`)
               }
               secondaryIcon="comment"
               secondaryLabel="Post"
               onPressSecondary={() =>
-                navigation.navigate("modal", { form: FormTypes.POST_CREATE })
+                navigatePath(navigation, `modal/${FormTypes.POST_CREATE}`)
               }
               containerStyle={styles.optionButtons}
             />
           )}
           <AddButton
             onState={toggleState}
-            onPress={() => navigation.navigate("modal")}
+            onPressOn={() =>
+              navigatePath(navigation, `modal/${FormTypes.POST_CREATE}`)
+            }
+            onPressOff={() =>
+              navigatePath(navigation, `modal/${FormTypes.EVENT_CREATE}`)
+            }
           />
           {onToggle && (
             <View style={{ marginTop: 10 }}>

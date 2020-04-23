@@ -5,10 +5,10 @@ import styles from "./styles";
 import globalStyles from "../../global/styles";
 import Icons from "../Image/Icons";
 
-export default ({ onPress, onState }) => (
+export default ({ onPressOn, onPressOff, onState }) => (
   <TouchableOpacity
     style={[styles.button, styles.addButton, globalStyles.overlayElementShadow]}
-    onPress={onPress}
+    onPress={onState ? onPressOn : onPressOff}
   >
     <View center>
       <Icons

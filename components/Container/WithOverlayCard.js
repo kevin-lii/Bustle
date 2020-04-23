@@ -17,7 +17,7 @@ export default ({ navigation, route, children }) => {
         <EventsList
           eventList={params.events}
           navigation={navigation}
-          onClose={() => navigation.pop()}
+          onClose={() => navigation.goBack()}
         />
       )}
     </View>

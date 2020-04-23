@@ -82,7 +82,7 @@ class Map extends Component {
             showsBuildings={false}
             showsCompass={false}
             showsUserLocation={true}
-            showsMyLocationButton={true}
+            showsMyLocationButton={false}
             toolbarEnabled={false}
             followUserLocation={true}
           >

@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import DrawerNavigator from "./drawerNavigator";
-import ModalScreen from "../screens/Page/Modal";
+import ModalNavigator from "./modalNavigator";
 
 const Stack = createStackNavigator();
 
@@ -34,7 +34,7 @@ export default function RootNavigator() {
       }}
     >
       <Stack.Screen name="main" component={DrawerNavigator} />
-      <Stack.Screen name="modal" component={ModalScreen} />
+      <Stack.Screen name="modal" component={ModalNavigator} />
     </Stack.Navigator>
   );
 }

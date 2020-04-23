@@ -9,17 +9,17 @@ import {
 import ImagePicker from "react-native-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import FormCard from "../Cards/FormCard";
-import FormGroup from "./FormGroup";
-import FormHeader from "./FormHeader";
-import TextButton from "../Buttons/TextButton";
-import CategoriesIcon from "../Image/CategoriesIcon";
-import EventModel from "../../models/Event";
-import { UserContext } from "../../dataContainers/context";
-import IconButton from "../Buttons/IconButton";
+import FormCard from "../../../components/Cards/FormCard";
+import FormGroup from "../../../components/Form/FormGroup";
+import FormHeader from "../../../components/Header/FormHeader";
+import TextButton from "../../../components/Buttons/TextButton";
+import CategoriesIcon from "../../../components/Image/CategoriesIcon";
+import EventModel from "../../../models/Event";
+import { UserContext } from "../../../dataContainers/context";
+import IconButton from "../../../components/Buttons/IconButton";
 
-import styles from "./styles";
-import { Theme, categories } from "../../global/constants";
+import styles from "../../../components/Form/styles";
+import { Theme, categories } from "../../../global/constants";
 
 export default class EventCreate extends React.Component {
   static contextType = UserContext;
@@ -45,6 +45,8 @@ export default class EventCreate extends React.Component {
   }
 
   render() {
+    const { navigation, route } = this.props;
+
     const submit = async () => {
       try {
         this.setState({ confirmed: true });
@@ -74,7 +76,7 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        await EventModel.update(this.props.event.id, stateCopy);
+        await EventModel.update(route.params?.event.id, stateCopy);
         if (this.props.update) this.props.update();
         this.props.onClose();
       } catch (e) {
@@ -85,7 +87,7 @@ export default class EventCreate extends React.Component {
     };
 
     const validateSubmission = () => {
-      if (this.props.event) edit();
+      if (route.params?.event) edit();
       else submit();
     };
 
@@ -156,32 +158,23 @@ export default class EventCreate extends React.Component {
     };
 
     return (
-      <React.Fragment>
+      <View>
         <FormHeader
-          icon="close-a"
-          title={this.props.event ? "Edit Event" : "Create Event"}
-          onPress={this.props.onClose}
-          headerRight={
-            <TextButton
-              text={this.props.event ? "Edit" : "Create"}
-              disabled={this.state.confirmed}
-              onPress={validateSubmission}
-              primary
-            />
-          }
+          onClose={navigation.goBack}
+          onSubmit={validateSubmission}
+          submitText={route.params?.event ? "Update" : "Create"}
+          disabled={this.state.confirmed}
         />
         <ScrollView
-          style={{
-            paddingLeft: 15,
-            paddingRight: 15,
-          }}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingHorizontal: 15 }}
         >
           <TextField
             value={this.state.name}
             onChangeText={(text) => this.setState({ name: text })}
             containerStyle={{}}
             floatingPlaceholder
-            placeholder="Title"
+            placeholder="Event Name"
             validate={"required"}
             errorMessage={"Required field!"}
             floatOnFocus
@@ -320,7 +313,7 @@ export default class EventCreate extends React.Component {
         {this.state.overlayContent && (
           <Overlay>{this.state.overlayContent}</Overlay>
         )}
-      </React.Fragment>
+      </View>
     );
   }
 }

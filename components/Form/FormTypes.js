@@ -1,5 +1,5 @@
 export default {
-  EVENT_CREATE: "event_create",
-  EVENT_EDIT: "event_edit",
-  POST_CREATE: "post_create"
+  EVENT_CREATE: "eventcreate",
+  EVENT_EDIT: "eventedit",
+  POST_CREATE: "postcreate",
 };

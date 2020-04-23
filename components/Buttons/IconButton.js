@@ -6,7 +6,9 @@ import { Theme } from "../../global/constants";
 
 const iconContainer = {
   alignItems: "center",
-  justifyContent: "center"
+  justifyContent: "center",
+  height: "100%",
+  width: "100%",
 };
 
 export default ({
@@ -16,7 +18,7 @@ export default ({
   type,
   onPress,
   touchStyle,
-  iconStyle
+  iconStyle,
 }) => (
   <TouchableOpacity onPress={onPress} style={touchStyle}>
     <View style={iconContainer}>

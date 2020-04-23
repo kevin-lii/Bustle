@@ -4,7 +4,7 @@ import moment from "moment";
 
 import IconButton from "../Buttons/IconButton";
 import CategoriesIcon from "../Image/CategoriesIcon";
-import Events from "../../models/Event";
+import EventModel from "../../models/Event";
 import { Theme } from "../../global/constants";
 import { navigatePath } from "../../global/utils";
 
@@ -24,8 +24,8 @@ export default ({ children, event, navigation, map, edit, trash }) => {
           borderWidth: 2,
           padding: 10,
           justifyContent: "space-between",
-          alignItems: "center"
-        }
+          alignItems: "center",
+        },
       ]}
     >
       <View style={{ flexDirection: "row", alignItems: "center" }}>
