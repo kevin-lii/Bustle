@@ -4,9 +4,11 @@ import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
 import { firebase as fire } from "@react-native-firebase/functions";
 import { GeoFirestore } from "geofirestore";
+import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
 import { UserContext } from "../dataContainers/context";
+// import { getDefaultImage } from "../global/utils";
 
 // Event Class:
 // {
@@ -51,7 +53,6 @@ export default class EventModel {
   }
 
   static async remove(event) {
-    // const deletePhoto = fire.functions().httpsCallable("deletePhoto");
     const deleteEvent = fire.functions().httpsCallable("deleteEvent");
     await firestore()
       .collection("events")
@@ -61,7 +62,6 @@ export default class EventModel {
         console.error("Error removing document: ", error);
       });
     if (event.photoURL) await f.storage().refFromURL(event.photoURL).delete();
-    // await deletePhoto({ eventID: event.id, photoURL: event.photoURL });
     for (let count; count < event.invited; count++) {
       const userID = event.invited[count];
       await deleteEvent({ uid: userID, eventID: event.id });
@@ -96,18 +96,16 @@ export default class EventModel {
     await store.runTransaction(async (t) => {
       // upload image
       if (data.image) {
-        const fileName = `${event.id}`;
+        const fileName = `${uuid()}`;
         const snapshot = await f
           .storage()
           .ref(`events/${data.category}/${fileName}`)
-          .put(data.image, {
-            customMetadata: { uid: userID, eventID: event.id },
-          })
+          .put(data.image)
           .then();
         data.photoURL = snapshot.ref.getDownloadURL();
+        data.photoID = fileName;
         delete data.image;
       }
-
       // upload event
       const eventRef = await geofirestore.collection("events").add(data);
 
@@ -118,8 +116,6 @@ export default class EventModel {
   }
 
   static async update(eventID, data) {
-    // const deletePhoto = fire.functions().httpsCallable("deletePhoto");
-    // const uploadPhoto = fire.functions().httpsCallable("uploadPhoto");
     if (!data.name) throw new Error("Name not provided");
     if (data.location) {
       const loc = await getLocation();
@@ -128,26 +124,32 @@ export default class EventModel {
     }
     const store = firestore();
     const geofirestore = new GeoFirestore(store);
-    if (data.image) {
-      if (data.photoURL) await f.storage().refFromURL(event.photoURL).delete();
-      //   await deletePhoto({ eventID: event.id, photoURL: event.photoURL });
-      const fileName = `${uuid()}`;
-      await f
-        .storage()
-        .ref(`events/${data.category}/${fileName}`)
-        .put(data.image, {
-          customMetadata: { uid: data.host, eventID: event.id },
-        })
-        .on(f.storage.TaskEvent.STATE_CHANGED, async (snapshot) => {
-          if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-            const photoURL = await snapshot.ref.getDownloadURL();
-            // await uploadPhoto({ eventID: event.id, photoURL: photoURL });
-          }
-        });
-    }
-    data.photoURL = data.image;
-    delete data.image;
-    await geofirestore.collection("events").doc(eventID).update(data);
+    await store.runTransaction(async (t) => {
+      if (data.image) {
+        if (data.photoURL) {
+          await f.storage().refFromURL(data.photoURL).delete();
+        }
+        const fileName = `${uuid()}`;
+        await f
+          .storage()
+          .ref(`events/${data.category}/${fileName}`)
+          // .put(data.image, {
+          //   customMetadata: { uid: data.host, eventID: event.id }
+          // })
+          // .on(f.storage.TaskEvent.STATE_CHANGED, async snapshot => {
+          //   if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+          //     const photoURL = await snapshot.ref.getDownloadURL();
+          //     // await uploadPhoto({ eventID: event.id, photoURL: photoURL });
+          //   }
+          // });
+          .put(data.image)
+          .then();
+        data.photoURL = snapshot.ref.getDownloadURL();
+        data.photoID = fileName;
+        delete data.image;
+      }
+      await geofirestore.collection("events").doc(eventID).update(data);
+    });
   }
 }
 

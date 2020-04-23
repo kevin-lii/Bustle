@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Card } from "react-native-ui-lib";
+import { View, Text, Card, Image } from "react-native-ui-lib";
 import moment from "moment";
 
 import IconButton from "../Buttons/IconButton";
@@ -11,7 +11,6 @@ import { navigatePath } from "../../global/utils";
 export default ({ children, event, navigation, map, edit, trash }) => {
   return (
     <Card
-      flex
       white50
       borderRadius={12}
       row
@@ -24,11 +23,14 @@ export default ({ children, event, navigation, map, edit, trash }) => {
           borderWidth: 2,
           padding: 10,
           justifyContent: "space-between",
-          alignItems: "center"
-        }
+          alignItems: "center",
+        },
       ]}
     >
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View>
+        <Image source={{ uri: "" }}></Image>
+      </View>
+      <View flex style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ marginRight: 15 }}>
           <CategoriesIcon type={event.category} size={30} />
         </View>

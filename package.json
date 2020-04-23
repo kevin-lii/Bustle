@@ -38,6 +38,7 @@
     "react-native-fbsdk": "1.1.2",
     "react-native-geolocation-service": "4.0.0",
     "react-native-gesture-handler": "1.6.1",
+    "react-native-get-random-values": "^1.4.0",
     "react-native-google-places-autocomplete": "1.4.1",
     "react-native-google-signin": "2.1.1",
     "react-native-image-picker": "2.3.1",
@@ -64,7 +65,6 @@
     "jest": "25.3.0",
     "metro-react-native-babel-preset": "0.59.0",
     "patch-package": "6.2.2",
-    "prettier": "2.0.4",
     "pretty-quick": "2.0.1",
     "react-test-renderer": "16.13.1"
   },

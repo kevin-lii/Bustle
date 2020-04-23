@@ -34,38 +34,41 @@ export default class EventListView extends React.Component {
   }
 
   componentDidUpdate(prevProp, prevState) {
+    const scrollOffset = 0.1;
     if (prevProp.eventList != this.props.eventList) {
-      const scrollOffset = 0.1;
       this.setState({ scrollOffset });
       this.scrollView.current.scrollTo({
         x: scrollOffset,
         y: 0,
         animated: true,
       });
+      this.props.navigation.pop();
       this.props.navigation.push("eventlist", {
         event: this.props.eventList[0],
         events: this.props.eventList,
       });
     } else {
-      let index = Math.floor(this.state.scrollOffset / (CARD_WIDTH + 20)); // animate 30% away from landing on the next item
-      if (index >= this.props.eventList) {
-        index = this.props.eventList - 1;
+      let index = Math.floor(this.state.scrollOffset / CARD_WIDTH + 0.25);
+      if (index >= this.props.eventList.length) {
+        index = this.props.eventList.length - 1;
       }
       if (index <= 0) {
         index = 0;
       }
-      let prevIndex = Math.floor(prevState.scrollOffset / (CARD_WIDTH + 20));
-      if (prevIndex >= this.props.eventList) {
-        prevIndex = this.props.eventList - 1;
+      let prevIndex = Math.floor(prevState.scrollOffset / CARD_WIDTH + 0.25);
+      if (prevIndex >= this.props.eventList.length) {
+        prevIndex = this.props.eventList.length - 1;
       }
       if (prevIndex <= 0) {
         prevIndex = 0;
       }
-      if (prevIndex !== index)
+      if (prevIndex !== index) {
+        this.props.navigation.pop();
         this.props.navigation.push("eventlist", {
           event: this.props.eventList[index],
           events: this.props.eventList,
         });
+      }
     }
   }
 
@@ -89,7 +92,6 @@ export default class EventListView extends React.Component {
     return (
       <Modal
         propagateSwipe
-        scrollHorizontal
         scrollTo={handleScrollTo}
         scrollOffset={this.state.scrollOffset}
         isVisible={true}
@@ -98,7 +100,7 @@ export default class EventListView extends React.Component {
         animationOut="slideOutDown"
         coverScreen={false}
         hasBackdrop={false}
-        swipeThreshold={10}
+        swipeThreshold={5}
         onSwipeComplete={this.props.onClose}
         onBackButtonPress={this.props.onClose}
         swipeDirection={"down"}
@@ -112,7 +114,7 @@ export default class EventListView extends React.Component {
             showsHorizontalScrollIndicator={false}
             pagingEnabled
             ref={this.scrollView}
-            onScrollEndDrag={handleOnScroll}
+            onScroll={handleOnScroll}
             snapToInterval={CARD_WIDTH + 20}
           >
             {eventList.map((event, index) => (
@@ -131,7 +133,7 @@ export default class EventListView extends React.Component {
               >
                 <TouchableWithoutFeedback
                   onPress={() => {
-                    this.props.onClose();
+                    this.props.navigation.pop();
                     this.props.navigation.push("event", { event });
                   }}
                 >
