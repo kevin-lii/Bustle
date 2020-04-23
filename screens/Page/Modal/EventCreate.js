@@ -55,11 +55,7 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        await EventModel.create(
-          this.context.uid,
-          stateCopy,
-          this.context.events
-        );
+        EventModel.create(this.context.uid, stateCopy, this.context.events);
         this.props.onClose();
       } catch (e) {
         console.log(e);
@@ -76,7 +72,7 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        await EventModel.update(route.params?.event.id, stateCopy);
+        EventModel.update(route.params?.event.id, stateCopy);
         if (this.props.update) this.props.update();
         this.props.onClose();
       } catch (e) {

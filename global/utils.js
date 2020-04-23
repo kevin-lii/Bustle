@@ -1,9 +1,8 @@
 import React from "react";
-import { Alert } from "react-native";
-
+import { Alert, Platform } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import functions from "@react-native-firebase/functions";
-import Permissions from "react-native-permissions";
+import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 
 exports.bindAll = function (thisArg, obj) {
@@ -17,11 +16,21 @@ exports.createChat = async function () {
 };
 
 exports.getLocation = async function () {
-  let locationPermission = await Permissions.check("location");
-  if (locationPermission == "undetermined")
-    locationPermission = await Permissions.request("location");
+  let locationPermission = await check(
+    Platform.select({
+      ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    })
+  );
+  if (locationPermission == "denied")
+    locationPermission = await request(
+      Platform.select({
+        android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      })
+    );
 
-  if (locationPermission != "authorized")
+  if (locationPermission != "granted")
     return Alert.alert(
       "Enable Location",
       "Please enable location permissions in app settings to continue"
