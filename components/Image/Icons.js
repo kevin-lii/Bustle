@@ -6,6 +6,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
+import Custom from "./Icons/index";
 
 import { Theme } from "../../global/constants";
 
@@ -13,16 +14,20 @@ export default function Icons({
   type = Theme.icon,
   icon,
   iconOff,
-  uponChange,
+  onChange,
   size,
   color = Theme.primary,
-  onPress
+  onPress,
 }) {
   switch (type) {
+    case "Custom":
+      return (
+        <Custom color={color} size={size} name={onChange ? icon : iconOff} />
+      );
     case "Fontisto":
       return (
         <Fontisto
-          name={uponChange ? icon : iconOff}
+          name={onChange ? icon : iconOff}
           onPress={onPress}
           size={size}
           color={color}
@@ -31,7 +36,7 @@ export default function Icons({
     case "Entypo":
       return (
         <Entypo
-          name={uponChange ? icon : iconOff}
+          name={onChange ? icon : iconOff}
           onPress={onPress}
           size={size}
           color={color}
@@ -40,7 +45,7 @@ export default function Icons({
     case "Feather":
       return (
         <Feather
-          name={uponChange ? icon : iconOff}
+          name={onChange ? icon : iconOff}
           onPress={onPress}
           size={size}
           color={color}
@@ -49,7 +54,7 @@ export default function Icons({
     case "Foundation":
       return (
         <Foundation
-          name={uponChange ? icon : iconOff}
+          name={onChange ? icon : iconOff}
           onPress={onPress}
           size={size}
           color={color}
@@ -58,7 +63,7 @@ export default function Icons({
     case "MaterialIcons":
       return (
         <MaterialIcons
-          name={uponChange ? icon : iconOff}
+          name={onChange ? icon : iconOff}
           onPress={onPress}
           size={size}
           color={color}
@@ -69,7 +74,7 @@ export default function Icons({
     case "Font":
       return (
         <FontAwesome
-          name={uponChange ? icon : iconOff}
+          name={onChange ? icon : iconOff}
           onPress={onPress}
           size={size}
           color={color}
@@ -79,7 +84,7 @@ export default function Icons({
     default:
       return (
         <Icon
-          name={uponChange ? icon : iconOff}
+          name={onChange ? icon : iconOff}
           onPress={onPress}
           size={size}
           color={color}
@@ -89,5 +94,5 @@ export default function Icons({
 }
 
 Icons.defaultProps = {
-  uponChange: true
+  onChange: true,
 };

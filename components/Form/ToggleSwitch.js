@@ -11,7 +11,7 @@ export default ({
   state = false,
   onText = "",
   offText = "",
-  onToggle = () => {}
+  onToggle = () => {},
 }) => {
   return (
     <TouchableWithoutFeedback onPress={onToggle}>
@@ -23,7 +23,7 @@ export default ({
         <Icon
           icon="toggle-on"
           iconOff="toggle-off"
-          uponChange={state}
+          onChange={state}
           color={state ? color : null}
           size={size}
         />
