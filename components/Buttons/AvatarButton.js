@@ -16,6 +16,7 @@ export default function ({
   marginBottom = 0,
   hasBorder,
   useUser,
+  shadow = true,
 }) {
   const user = useContext(UserContext);
   let photo;
@@ -50,7 +51,7 @@ export default function ({
           borderColor: Theme.primary,
           overflow: "hidden",
         },
-        globalStyles.overlayElementShadow,
+        shadow ? globalStyles.overlayElementShadow : null,
       ]}
       imageStyle={{
         justifyContent: "center",

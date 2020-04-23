@@ -13,7 +13,7 @@ export default ({
   route,
   onToggle,
   toggleState = false,
-  children
+  children,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -38,7 +38,10 @@ export default ({
               containerStyle={styles.optionButtons}
             />
           )}
-          <AddButton onPress={() => setExpanded(!expanded)} />
+          <AddButton
+            onState={toggleState}
+            onPress={() => navigation.navigate("modal")}
+          />
           {onToggle && (
             <View style={{ marginTop: 10 }}>
               <IconToggleSwitch
@@ -61,11 +64,11 @@ const styles = StyleSheet.create({
   buttons: {
     position: "absolute",
     bottom: bottom,
-    right: 10
+    right: 10,
   },
   optionButtons: {
     bottom: bottom + 110,
     right: 4,
-    position: "absolute"
-  }
+    position: "absolute",
+  },
 });

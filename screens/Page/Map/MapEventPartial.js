@@ -41,8 +41,8 @@ export default {
     });
   },
 
-  createClusters: function () {
-    getLocation();
+  createClusters: async function () {
+    await getLocation();
     this.map.current.getCamera().then((camera) => {
       if (camera.zoom != this.state.zoom) {
         this.map.current.getMapBoundaries().then((bounds) => {

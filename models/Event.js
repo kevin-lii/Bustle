@@ -97,12 +97,14 @@ export default class EventModel {
       // upload image
       if (data.image) {
         const fileName = `${uuid()}`;
-        const snapshot = await f
+        await f
           .storage()
           .ref(`events/${data.category}/${fileName}`)
-          .put(data.image)
-          .then();
-        data.photoURL = snapshot.ref.getDownloadURL();
+          .putFile(data.image);
+        data.photoURL = await f
+          .storage()
+          .ref(`events/${data.category}/${fileName}`)
+          .getDownloadURL();
         data.photoID = fileName;
         delete data.image;
       }

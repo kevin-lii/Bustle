@@ -22,7 +22,7 @@ exports.getLocation = async function () {
       android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
     })
   );
-  if (locationPermission == "unavailable")
+  if (locationPermission == "denied")
     locationPermission = await request(
       Platform.select({
         android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,

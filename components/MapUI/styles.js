@@ -77,9 +77,6 @@ export default StyleSheet.create({
     shadowOffset: { x: 2, y: -2 },
     overflow: "hidden",
   },
-  cardImage: {
-    borderRadius: 5,
-  },
   textContent: {
     flex: 1,
   },

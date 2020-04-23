@@ -45,9 +45,10 @@ class EventBottomSheet extends React.Component {
     const time = moment(event.time.toDate()).format("h:mm a");
     const location = event.location ? event.location.description : "See Map";
     const fall = this.state.fall;
+    const screenHeight = Dimensions.get("window").height;
     const bs = React.createRef();
     const sizeProportion = 300 / Dimensions.get("window").height;
-    const animateHeight = (outputRange) => {
+    const animateTransform = (outputRange) => {
       return Animated.interpolate(fall, {
         inputRange: [0, sizeProportion],
         outputRange: outputRange,
@@ -56,7 +57,7 @@ class EventBottomSheet extends React.Component {
     };
     const animatedContentOpacity = Animated.interpolate(fall, {
       inputRange: [0, sizeProportion],
-      outputRange: [1, (sizeProportion - 1) * 2],
+      outputRange: [1, 0],
       extrapolate: Animated.Extrapolate.CLAMP,
     });
 
@@ -71,7 +72,7 @@ class EventBottomSheet extends React.Component {
                 left: -7.5,
                 transform: [
                   {
-                    rotate: Animated.concat(animateHeight([0.3, 0]), "rad"),
+                    rotate: Animated.concat(animateTransform([0.3, 0]), "rad"),
                   },
                 ],
               },
@@ -85,7 +86,7 @@ class EventBottomSheet extends React.Component {
                 right: -7.5,
                 transform: [
                   {
-                    rotate: Animated.concat(animateHeight([-0.3, 0]), "rad"),
+                    rotate: Animated.concat(animateTransform([-0.3, 0]), "rad"),
                   },
                 ],
               },
@@ -99,12 +100,10 @@ class EventBottomSheet extends React.Component {
       return (
         <Animated.ScrollView
           style={{
-            height: Animated.concat(
-              event.photoURL
-                ? animateHeight([42.5, -10])
-                : animateHeight([72.5, -17]),
-              "%"
-            ),
+            height: event.photoURL
+              ? animateTransform([screenHeight * 0.4, 0])
+              : animateTransform([screenHeight * 0.7, 0]),
+
             marginTop: 7.5,
           }}
         >
@@ -115,7 +114,7 @@ class EventBottomSheet extends React.Component {
                 {
                   marginBottom: 0,
                   opacity: animatedContentOpacity,
-                  lineHeight: animateHeight([20, 0]),
+                  lineHeight: animateTransform([20, 0]),
                 },
               ]}
             >
@@ -134,7 +133,8 @@ class EventBottomSheet extends React.Component {
             styles.cardImage,
             {
               opacity: animatedContentOpacity,
-              height: Animated.concat(animateHeight([30, -10]), "%"),
+              height: animateTransform([screenHeight * 0.3, 0]),
+              padding: 0,
             },
           ]}
           source={{ uri: event.photoURL }}
@@ -152,98 +152,111 @@ class EventBottomSheet extends React.Component {
         );
       else
         return (
-          <SafeAreaView style={styles.popup}>
-            {renderHandler()}
-            <View style={{ padding: event.photoURL ? 0 : 10 }}>
+          <SafeAreaView>
+            <Animated.View
+              style={[
+                styles.popup,
+                {
+                  borderRadius: animateTransform([0, Theme.borderRadius]),
+                },
+              ]}
+            >
+              {renderHandler()}
               {event.photoURL ? renderImage() : null}
-              <Text numberOfLines={2} style={styles.popupTitle}>
-                {event.name || "Event Name"}
-              </Text>
-              <View style={styles.info}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginTop: -30,
-                    marginBottom: -30,
-                  }}
-                  spread
-                >
+              <Animated.View
+                style={{
+                  padding: 15,
+                  paddingTop: event.photoURL ? animateTransform([5, 15]) : 15,
+                }}
+              >
+                <Text numberOfLines={2} style={styles.popupTitle}>
+                  {event.name || "Event Name"}
+                </Text>
+                <View style={styles.info}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginTop: -30,
+                      marginBottom: -30,
+                    }}
+                    spread
+                  >
+                    <Text numberOfLines={1} style={styles.infoText}>
+                      Hosted by {this.state.host}{" "}
+                    </Text>
+                    <Avatar
+                      photoURL={this.state.avatarPhotoURL}
+                      init={this.state.initials}
+                      size={30}
+                      marginBottom={30}
+                      marginRight={0}
+                      marginTop={25}
+                    />
+                  </View>
                   <Text numberOfLines={1} style={styles.infoText}>
-                    Hosted by {this.state.host}{" "}
+                    <Icons type="Entypo" icon="calendar" size={15}></Icons>{" "}
+                    {time} on {date}
                   </Text>
-                  <Avatar
-                    photoURL={this.state.avatarPhotoURL}
-                    init={this.state.initials}
-                    size={30}
-                    marginBottom={30}
-                    marginRight={0}
-                    marginTop={25}
-                  />
+                  <Text numberOfLines={1} style={styles.infoText}>
+                    <Icons type="Fontisto" icon="map-marker" size={15}></Icons>{" "}
+                    {location}
+                  </Text>
+                  {renderExtended()}
+                  <Animated.View
+                    style={{
+                      width: Animated.concat(
+                        animateTransform([33, 100].slice().reverse()),
+                        "%"
+                      ),
+                    }}
+                  >
+                    {!user.events.includes(event.id) ? (
+                      <Button
+                        text="Join"
+                        onPress={async () => {
+                          UserData.joinEvent(user.uid, event.id);
+                          let eventList = user.events;
+                          eventList.push(event.id);
+                          user.events = eventList;
+                        }}
+                        primary
+                      />
+                    ) : (
+                      <Button
+                        text="Leave"
+                        onPress={async () => {
+                          UserData.leaveEvent(user.uid, event.id);
+                          const remaining = user.events.filter(
+                            (item) => item != event.id
+                          );
+                          user.events = remaining;
+                        }}
+                        disabled={event.host === user.uid}
+                        primary
+                      />
+                      //   <Text style={{ color: "green" }}>
+                      //     <Icons type="Feather" icon="check-circle" color="green" /> You
+                      //     are currently going
+                      // </Text>
+                      // </Animated.View>
+                    )}
+                  </Animated.View>
                 </View>
-                <Text numberOfLines={1} style={styles.infoText}>
-                  <Icons type="Entypo" icon="calendar" size={15}></Icons> {time}{" "}
-                  on {date}
-                </Text>
-                <Text numberOfLines={1} style={styles.infoText}>
-                  <Icons type="Fontisto" icon="map-marker" size={15}></Icons>{" "}
-                  {location}
-                </Text>
-                {renderExtended()}
-                <Animated.View
-                  style={{
-                    width: Animated.concat(
-                      animateHeight([33, 100].slice().reverse()),
-                      "%"
-                    ),
-                  }}
-                >
-                  {!user.events.includes(event.id) ? (
-                    <Button
-                      text="Join"
-                      onPress={async () => {
-                        UserData.joinEvent(user.uid, event.id);
-                        let eventList = user.events;
-                        eventList.push(event.id);
-                        user.events = eventList;
-                      }}
-                      primary
-                    />
-                  ) : (
-                    <Button
-                      text="Leave"
-                      onPress={async () => {
-                        UserData.leaveEvent(user.uid, event.id);
-                        const remaining = user.events.filter(
-                          (item) => item != event.id
-                        );
-                        user.events = remaining;
-                      }}
-                      disabled={event.host === user.uid}
-                      primary
-                    />
-                    //   <Text style={{ color: "green" }}>
-                    //     <Icons type="Feather" icon="check-circle" color="green" /> You
-                    //     are currently going
-                    // </Text>
-                    // </View>
-                  )}
-                </Animated.View>
-              </View>
-            </View>
+              </Animated.View>
+            </Animated.View>
           </SafeAreaView>
         );
     };
     return (
       <BottomSheet
         ref={bs}
-        snapPoints={[Dimensions.get("window").height, 300, 0]}
+        snapPoints={[screenHeight, 300, 0]}
         initialSnap={1}
         renderContent={renderContent}
         enabledContentTapInteraction={false}
         callbackNode={fall}
         callbackThreshold={0.1}
-        borderRadius={Theme.borderRadius}
         onCloseEnd={onClose}
       />
     );

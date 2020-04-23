@@ -2,23 +2,13 @@ exports.initialMap = {
   latitude: 37.86835,
   longitude: -122.265,
   latitudeDelta: 0.0461,
-  longitudeDelta: 0.0211
+  longitudeDelta: 0.0211,
 };
 
 exports.forumRegions = [
   {
-    name: "Downtown",
-    coordinates: [
-      { latitude: 37.869774, longitude: -122.265768 }, // oxford st
-      { latitude: 37.868741, longitude: -122.266186 }, // oxford st
-      { latitude: 37.864264, longitude: -122.265244 }, //bottom right
-      { latitude: 37.863066, longitude: -122.274376 }, //bottom left
-      { latitude: 37.87303, longitude: -122.275448 }, //top left
-      { latitude: 37.874165, longitude: -122.266286 } //top right
-    ]
-  },
-  {
     name: "Campus",
+    id: "ucb_main",
     coordinates: [
       { latitude: 37.869774, longitude: -122.265768 }, // oxford st
       { latitude: 37.868741, longitude: -122.266186 }, // oxford st
@@ -31,11 +21,24 @@ exports.forumRegions = [
       { latitude: 37.871225, longitude: -122.249568 }, //stadium
       { latitude: 37.874347, longitude: -122.252291 }, // foothill
       { latitude: 37.875651, longitude: -122.255402 }, //top right
-      { latitude: 37.874165, longitude: -122.266286 } //top left
-    ]
+      { latitude: 37.874165, longitude: -122.266286 }, //top left
+    ],
+  },
+  {
+    name: "Downtown",
+    id: "ucb_downtown",
+    coordinates: [
+      { latitude: 37.869774, longitude: -122.265768 }, // oxford st
+      { latitude: 37.868741, longitude: -122.266186 }, // oxford st
+      { latitude: 37.864264, longitude: -122.265244 }, //bottom right
+      { latitude: 37.863066, longitude: -122.274376 }, //bottom left
+      { latitude: 37.87303, longitude: -122.275448 }, //top left
+      { latitude: 37.874165, longitude: -122.266286 }, //top right
+    ],
   },
   {
     name: "Frat Row",
+    id: "ucb_fratrow",
     inactive: true,
     coordinates: [
       { latitude: 37.869326, longitude: -122.254591 }, //top left
@@ -43,11 +46,12 @@ exports.forumRegions = [
       { latitude: 37.869156, longitude: -122.252177 }, // ihouse
       { latitude: 37.869389, longitude: -122.250174 }, // ihouse
       { latitude: 37.866007, longitude: -122.249566 }, //bottom right
-      { latitude: 37.865705, longitude: -122.253893 } //bottom left
-    ]
+      { latitude: 37.865705, longitude: -122.253893 }, //bottom left
+    ],
   },
   {
     name: "Southside",
+    id: "ucb_southside",
     coordinates: [
       { latitude: 37.867844, longitude: -122.265997 }, //top left
       { latitude: 37.864264, longitude: -122.265244 }, //downtown corner
@@ -62,18 +66,19 @@ exports.forumRegions = [
       { latitude: 37.866007, longitude: -122.249566 }, //clark kerr
       { latitude: 37.869389, longitude: -122.250174 }, // ihouse
       { latitude: 37.869156, longitude: -122.252177 }, // ihouse
-      { latitude: 37.869631, longitude: -122.252249 } // ihouse + top right
-    ]
+      { latitude: 37.869631, longitude: -122.252249 }, // ihouse + top right
+    ],
   },
   {
     name: "Northside",
+    id: "ucb_northside",
     coordinates: [
       { latitude: 37.873327, longitude: -122.273199 }, //bottom left
       { latitude: 37.881461, longitude: -122.274097 }, //top left
       { latitude: 37.883554, longitude: -122.257861 }, //top right
-      { latitude: 37.875651, longitude: -122.255402 } //bottom right
-    ]
-  }
+      { latitude: 37.875651, longitude: -122.255402 }, //bottom right
+    ],
+  },
 ];
 
 exports.customMap = [
@@ -82,317 +87,317 @@ exports.customMap = [
     elementType: "labels.text.fill",
     stylers: [
       {
-        color: "#7c93a3"
+        color: "#7c93a3",
       },
       {
-        lightness: "-10"
-      }
-    ]
+        lightness: "-10",
+      },
+    ],
   },
   {
     featureType: "administrative.country",
     elementType: "geometry",
     stylers: [
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "administrative.country",
     elementType: "geometry.stroke",
     stylers: [
       {
-        color: "#a0a4a5"
-      }
-    ]
+        color: "#a0a4a5",
+      },
+    ],
   },
   {
     featureType: "administrative.province",
     elementType: "geometry.stroke",
     stylers: [
       {
-        color: "#62838e"
-      }
-    ]
+        color: "#62838e",
+      },
+    ],
   },
   {
     featureType: "landscape",
     elementType: "geometry.fill",
     stylers: [
       {
-        color: "#dde3e3"
-      }
-    ]
+        color: "#dde3e3",
+      },
+    ],
   },
   {
     featureType: "landscape.man_made",
     elementType: "geometry.stroke",
     stylers: [
       {
-        color: "#3f4a51"
+        color: "#3f4a51",
       },
       {
-        weight: "0.30"
-      }
-    ]
+        weight: "0.30",
+      },
+    ],
   },
   {
     featureType: "poi",
     elementType: "all",
     stylers: [
       {
-        visibility: "simplified"
-      }
-    ]
+        visibility: "simplified",
+      },
+    ],
   },
   {
     featureType: "poi",
     elementType: "labels.text.fill",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi",
     elementType: "labels.icon",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.attraction",
     elementType: "all",
     stylers: [
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "poi.attraction",
     elementType: "labels.text.fill",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.attraction",
     elementType: "labels.icon",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.business",
     elementType: "all",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.government",
     elementType: "all",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.medical",
     elementType: "labels.text.fill",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.park",
     elementType: "all",
     stylers: [
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "poi.place_of_worship",
     elementType: "all",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.school",
     elementType: "all",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.sports_complex",
     elementType: "all",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.sports_complex",
     elementType: "labels.text.fill",
     stylers: [
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "poi.sports_complex",
     elementType: "labels.icon",
     stylers: [
       {
-        visibility: "on"
+        visibility: "on",
       },
       {
-        color: "#c0c0c8"
-      }
-    ]
+        color: "#c0c0c8",
+      },
+    ],
   },
   {
     featureType: "road",
     elementType: "all",
     stylers: [
       {
-        saturation: "-100"
+        saturation: "-100",
       },
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "road",
     elementType: "geometry.stroke",
     stylers: [
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "road.highway",
     elementType: "geometry.fill",
     stylers: [
       {
-        color: "#bbcacf"
-      }
-    ]
+        color: "#bbcacf",
+      },
+    ],
   },
   {
     featureType: "road.highway",
     elementType: "geometry.stroke",
     stylers: [
       {
-        lightness: "0"
+        lightness: "0",
       },
       {
-        color: "#bbcacf"
+        color: "#bbcacf",
       },
       {
-        weight: "0.50"
-      }
-    ]
+        weight: "0.50",
+      },
+    ],
   },
   {
     featureType: "road.highway",
     elementType: "labels",
     stylers: [
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "road.highway",
     elementType: "labels.text",
     stylers: [
       {
-        visibility: "on"
-      }
-    ]
+        visibility: "on",
+      },
+    ],
   },
   {
     featureType: "road.highway.controlled_access",
     elementType: "geometry.fill",
     stylers: [
       {
-        color: "#ffffff"
-      }
-    ]
+        color: "#ffffff",
+      },
+    ],
   },
   {
     featureType: "road.highway.controlled_access",
     elementType: "geometry.stroke",
     stylers: [
       {
-        color: "#a9b4b8"
-      }
-    ]
+        color: "#a9b4b8",
+      },
+    ],
   },
   {
     featureType: "road.arterial",
     elementType: "labels.icon",
     stylers: [
       {
-        invert_lightness: true
+        invert_lightness: true,
       },
       {
-        saturation: "-7"
+        saturation: "-7",
       },
       {
-        lightness: "3"
+        lightness: "3",
       },
       {
-        gamma: "1.80"
+        gamma: "1.80",
       },
       {
-        weight: "0.01"
-      }
-    ]
+        weight: "0.01",
+      },
+    ],
   },
   {
     featureType: "transit",
     elementType: "all",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "water",
     elementType: "geometry.fill",
     stylers: [
       {
-        color: "#a3c7df"
-      }
-    ]
-  }
+        color: "#a3c7df",
+      },
+    ],
+  },
 ];

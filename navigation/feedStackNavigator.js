@@ -4,17 +4,16 @@ import {
   StackRouter,
   createNavigatorFactory,
 } from "@react-navigation/native";
-import { StackView } from "@react-navigation/stack";
+import { Text, TouchableOpacity, View } from "react-native-ui-lib";
+import { StyleSheet } from "react-native";
 
 import WithOverlayButtons from "../components/Container/WithOverlayButtons";
 import FeedScreen from "../screens/Page/Feed";
-
-import HeaderLeft from "../components/Header/HeaderLeft";
-import HeaderRight from "../components/Buttons/AvatarButton";
-import { View } from "react-native-ui-lib";
-
-import styles from "./styles";
+import Icons from "../components/Image/Icons";
 import FeedHeader from "../components/Header/FeedHeader";
+
+import { forumRegions } from "../global/mapconfig";
+import { Theme } from "../global/constants";
 
 function CustomStackNavigator({
   initialRouteName,
@@ -34,15 +33,26 @@ function CustomStackNavigator({
 
   const route = state.routes[state.index];
 
-  const headerRight = (
-    <HeaderRight
-      onPress={() => navigation.openDrawer()}
-      hasBorder
-      useUser
-      marginTop={2}
-      marginRight={8}
-      size={40}
-    />
+  const forumIndex = forumRegions.findIndex(
+    (region) => region.id === route.params?.region
+  );
+  const items = forumRegions
+    .filter((region) => !region.inactive)
+    .map((region) => ({
+      id: region.id,
+      text: region.name,
+      onPress: () => navigation.push("forums", { region: region.id }),
+    }));
+  const headerLeft = (
+    <TouchableOpacity onPress={() => {}}>
+      <View row centerV style={styles.label}>
+        <Icons icon="map-marker-alt" size={15} color={Theme.secondary} />
+        <Text style={styles.text}>
+          {items[forumIndex]?.text || items[0].text}
+        </Text>
+        {/* <Icons type="MaterialIcons" icon="pencil" size={23} color={Theme.secondary}/> */}
+      </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -52,7 +62,7 @@ function CustomStackNavigator({
       toggleState={route.name === "forums"}
       onToggle={handleToggle}
     >
-      <FeedHeader right={headerRight} />
+      <FeedHeader navigation={navigation} component={headerLeft} />
       <FeedScreen navigation={navigation} route={route} />
     </WithOverlayButtons>
   );
@@ -69,3 +79,18 @@ export default function FeedStackNavigator() {
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  label: {
+    height: "100%",
+    marginLeft: 10,
+    alignItems: "center",
+  },
+  text: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: Theme.secondary,
+    marginRight: 10,
+    marginLeft: 5,
+  },
+});

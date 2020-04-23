@@ -16,7 +16,7 @@ class Map extends Component {
     super(props);
     this.state = {
       clusters: [],
-      zoom: null
+      zoom: null,
     };
     this.map = React.createRef();
     this.eventLoc = [];
@@ -43,7 +43,7 @@ class Map extends Component {
     if (eventFocus) {
       this.focusPoint({
         latitude: eventFocus.coordinates.latitude,
-        longitude: eventFocus.coordinates.longitude
+        longitude: eventFocus.coordinates.longitude,
       });
       return;
     }
@@ -55,7 +55,7 @@ class Map extends Component {
   render() {
     const { navigation, route } = this.props;
 
-    const handleToggle = state => {
+    const handleToggle = (state) => {
       navigation.push(state ? "forums" : "events");
     };
 
@@ -83,6 +83,7 @@ class Map extends Component {
             showsCompass={false}
             showsUserLocation={true}
             showsMyLocationButton={true}
+            toolbarEnabled={false}
             followUserLocation={true}
           >
             {mapContent}
@@ -94,10 +95,10 @@ class Map extends Component {
 }
 
 export default connect(
-  state => ({
-    events: state.events
+  (state) => ({
+    events: state.events,
   }),
   {
-    getEvents
+    getEvents,
   }
 )(Map);

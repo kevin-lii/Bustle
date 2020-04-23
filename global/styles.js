@@ -4,8 +4,8 @@ export default StyleSheet.create({
   overlayElementShadow: {
     shadowColor: "#000",
     shadowRadius: 4,
-    elevation: 10,
+    elevation: 3,
     shadowOpacity: 0.5,
-    shadowOffset: { x: 0, y: -5 }
-  }
+    shadowOffset: { x: 0, y: -5 },
+  },
 });
