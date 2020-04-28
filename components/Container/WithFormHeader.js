@@ -4,9 +4,9 @@ import { ScrollView } from "react-native";
 
 import FormHeader from "../Header/FormHeader";
 
-export default ({ children, onClose, onSubmit, submitText }) => (
+export default (props) => (
   <View>
-    <FormHeader onClose={onClose} onSubmit={onSubmit} submitText={submitText} />
-    <ScrollView style={{ paddingHorizontal: 15 }}>{children}</ScrollView>
+    <FormHeader {...props} />
+    <ScrollView style={{ paddingHorizontal: 15 }}>{props.children}</ScrollView>
   </View>
 );

@@ -13,10 +13,6 @@ exports.Theme = {
   icon: "Fontisto",
 };
 
-exports.endpoints = {
-  EMAIL_AUTH: "emailAuth",
-};
-
 exports.categories = [
   "Social",
   "Dining",

@@ -81,6 +81,12 @@ exports.forumRegions = [
   },
 ];
 
+exports.regionByID = {};
+exports.forumRegions.forEach(
+  (region) => (exports.regionByID[region.id] = region)
+);
+Object.freeze(exports.regionByID);
+
 exports.customMap = [
   {
     featureType: "all",

@@ -11,7 +11,7 @@ export default ({ navigation, component }) => (
       globalStyles.overlayElementShadow,
     ]}
   >
-    <View absL style={{ height: "100%" }}>
+    <View absL centerV style={{ height: "100%", left: 10 }}>
       {component}
     </View>
     <View absR style={{ height: "100%" }}>

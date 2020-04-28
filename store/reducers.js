@@ -18,12 +18,18 @@ const hostedEvents = (state, action) => {
 };
 
 const user = (state, action) => {
-  if (action.type === actionTypes.UPDATE_USER) return action.user;
+  if (action.type === actionTypes.UPDATE_USER) {
+    return Object.assign({ ...state }, action.user);
+  }
+  if (action.type === actionTypes.LOGOUT) {
+    return {};
+  }
   return state || null;
 };
 
 export default combineReducers({
   events,
+  posts,
   hostedEvents,
-  user
+  user,
 });

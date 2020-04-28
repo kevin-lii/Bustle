@@ -7,13 +7,21 @@ import IconButton from "../Buttons/IconButton";
 
 import { Theme } from "../../global/constants";
 
-export default ({ title, submitText, onSubmit, onClose, disabled = false }) => (
+export default ({
+  title,
+  header,
+  submitText,
+  onSubmit,
+  onClose,
+  disabled = false,
+}) => (
   <View row style={styles.container}>
     <View center style={{ height: "100%" }}>
       <IconButton size={20} icon="close-a" onPress={onClose} />
     </View>
     <View center>
-      <Text style={styles.text}>{title}</Text>
+      {header}
+      {title && <Text style={styles.text}>{title}</Text>}
     </View>
     <View center style={{ height: "100%" }}>
       <TextButton

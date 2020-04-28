@@ -7,8 +7,6 @@ import { Theme } from "../../global/constants";
 const iconContainer = {
   alignItems: "center",
   justifyContent: "center",
-  height: "100%",
-  width: "100%",
 };
 
 export default ({

@@ -4,16 +4,13 @@ import {
   StackRouter,
   createNavigatorFactory,
 } from "@react-navigation/native";
-import { Text, TouchableOpacity, View } from "react-native-ui-lib";
-import { StyleSheet } from "react-native";
 
 import WithOverlayButtons from "../components/Container/WithOverlayButtons";
 import FeedScreen from "../screens/Page/Feed";
-import Icons from "../components/Image/Icons";
 import FeedHeader from "../components/Header/FeedHeader";
 
 import { forumRegions } from "../global/mapconfig";
-import { Theme } from "../global/constants";
+import LocationLabel from "../components/Buttons/LocationLabel";
 
 function CustomStackNavigator({
   initialRouteName,
@@ -33,9 +30,6 @@ function CustomStackNavigator({
 
   const route = state.routes[state.index];
 
-  const forumIndex = forumRegions.findIndex(
-    (region) => region.id === route.params?.region
-  );
   const items = forumRegions
     .filter((region) => !region.inactive)
     .map((region) => ({
@@ -44,15 +38,11 @@ function CustomStackNavigator({
       onPress: () => navigation.push("forums", { region: region.id }),
     }));
   const headerLeft = (
-    <TouchableOpacity onPress={() => {}}>
-      <View row centerV style={styles.label}>
-        <Icons icon="map-marker-alt" size={15} color={Theme.secondary} />
-        <Text style={styles.text}>
-          {items[forumIndex]?.text || items[0].text}
-        </Text>
-        {/* <Icons type="MaterialIcons" icon="pencil" size={23} color={Theme.secondary}/> */}
-      </View>
-    </TouchableOpacity>
+    <LocationLabel
+      regionID={route.params?.region || items[0].id}
+      onPress={() => {}}
+      size="large"
+    />
   );
 
   return (
@@ -79,18 +69,3 @@ export default function FeedStackNavigator() {
     </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  label: {
-    height: "100%",
-    marginLeft: 10,
-    alignItems: "center",
-  },
-  text: {
-    fontWeight: "bold",
-    fontSize: 20,
-    color: Theme.secondary,
-    marginRight: 10,
-    marginLeft: 5,
-  },
-});

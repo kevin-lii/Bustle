@@ -1,16 +1,21 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import auth from "@react-native-firebase/auth";
+import { connect } from "react-redux";
 
 import DrawerNavigator from "./drawerNavigator";
 import ModalNavigator from "./modalNavigator";
 
 const Stack = createStackNavigator();
 
-export default function RootNavigator() {
+function RootNavigator({ user }) {
+  const newUser = !auth().currentUser.displayName || user.newUser;
+
   return (
     <Stack.Navigator
       headerMode="none"
       mode="modal"
+      initialRouteName={newUser ? "modal" : "main"}
       screenOptions={{
         cardStyle: { backgroundColor: "transparent" },
         cardOverlayEnabled: true,
@@ -38,3 +43,10 @@ export default function RootNavigator() {
     </Stack.Navigator>
   );
 }
+
+export default connect(
+  (state) => ({
+    user: state.user,
+  }),
+  {}
+)(RootNavigator);

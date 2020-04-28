@@ -2,8 +2,9 @@ import { getLocation, validateLocation } from "../global/utils";
 
 import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 import { firebase as fire } from "@react-native-firebase/functions";
-import { GeoFirestore } from "geofirestore";
+import { GeoFirestore, GeoTransaction } from "geofirestore";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
@@ -68,19 +69,20 @@ export default class EventModel {
     }
   }
 
-  static async create(userID, data, events) {
+  static async create(user, data) {
     if (!data.name) throw new Error("Name not provided");
     const store = firestore();
     const geofirestore = new GeoFirestore(store);
 
-    const now = new Date();
+    const now = firebase.firestore.FieldValue.serverTimestamp();
     data.createdAt = now;
     data.date = data.date || now;
     data.time = data.time || now;
 
-    data.host = userID;
+    data.host = user;
     data.ended = false;
-    data.invited = [userID];
+    data.invited = {};
+    data.invited[user.uid] = true;
 
     const loc = await getLocation();
     if (data.location) {
@@ -93,7 +95,9 @@ export default class EventModel {
         loc.coords.longitude
       );
     }
-    await store.runTransaction(async (t) => {
+
+    await geofirestore.runTransaction(async (t) => {
+      const transaction = new GeoTransaction(t);
       // upload image
       if (data.image) {
         const fileName = `${uuid()}`;
@@ -108,12 +112,21 @@ export default class EventModel {
         data.photoID = fileName;
         delete data.image;
       }
+      const eventRef = store.collection("events").doc();
       // upload event
-      const eventRef = await geofirestore.collection("events").add(data);
+      transaction.set(eventRef, data);
 
-      // denormed update on user
-      events.push(eventRef.id);
-      await store.collection("users").doc(userID).update({ events: events });
+      // // denormed update on user
+      return transaction.native.update(
+        store
+          .collection("users")
+          .doc(user.uid)
+          .collection("private")
+          .doc("profile"),
+        {
+          events: firestore.FieldValue.arrayUnion(eventRef.id),
+        }
+      );
     });
   }
 
@@ -150,7 +163,7 @@ export default class EventModel {
         data.photoID = fileName;
         delete data.image;
       }
-      await geofirestore.collection("events").doc(eventID).update(data);
+      return geofirestore.collection("events").doc(eventID).update(data);
     });
   }
 }

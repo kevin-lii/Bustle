@@ -1,7 +1,6 @@
 import React from "react";
 import { Alert, Platform } from "react-native";
 import firestore from "@react-native-firebase/firestore";
-import functions from "@react-native-firebase/functions";
 import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 
@@ -56,9 +55,21 @@ exports.validateLocation = function (loc, lat, lng) {
     );
 };
 
-exports.checkName = function (first, last) {
+exports.getDefaultRegionID = function () {
+  return "ucb_main";
+};
+
+exports.getNameInitials = function (displayName) {
+  return displayName
+    .split(" ")
+    .map((name) => name.charAt(0))
+    .join("")
+    .toUpperCase();
+};
+
+exports.checkName = function (name) {
   const nameRegex = /([A-Z]){1}\w+/;
-  if (!nameRegex.test(first) || !nameRegex.test(last)) {
+  if (!nameRegex.test(name)) {
     throw new Error("Name improperly formatted");
   }
 };
@@ -96,10 +107,6 @@ exports.navigatePath = function (navigation, path, params = {}) {
   }
   current.params = params;
   navigation.navigate(routes[0], routes.length > 1 ? allParams : params);
-};
-
-exports.getEndpoint = function (fn) {
-  return functions().httpsCallable(fn);
 };
 
 function sendEmailVerification(email) {}

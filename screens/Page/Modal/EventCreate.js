@@ -55,8 +55,15 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        EventModel.create(this.context.uid, stateCopy, this.context.events);
-        this.props.onClose();
+        EventModel.create(
+          {
+            uid: this.context.uid,
+            displayName: this.context.displayName,
+            photoURL: this.context.photoURL,
+          },
+          stateCopy
+        );
+        navigation.goBack();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
@@ -73,8 +80,7 @@ export default class EventCreate extends React.Component {
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
         EventModel.update(route.params?.event.id, stateCopy);
-        if (this.props.update) this.props.update();
-        this.props.onClose();
+        navigation.goBack();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
@@ -87,7 +93,8 @@ export default class EventCreate extends React.Component {
       else submit();
     };
 
-    setOverlayContent = (content) => this.setState({ overlayContent: content });
+    const setOverlayContent = (content) =>
+      this.setState({ overlayContent: content });
 
     const Overlay = ({ children }) => (
       <View center style={styles.formOverlay}>
@@ -252,7 +259,8 @@ export default class EventCreate extends React.Component {
               style={{ height: 60, marginTop: 10 }}
             >
               {categories.map((category) => {
-                color = this.state.category == category ? Theme.primary : null;
+                const color =
+                  this.state.category == category ? Theme.primary : null;
                 return (
                   <View
                     center
