@@ -170,7 +170,11 @@ export default class EventCreate extends React.Component {
         />
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{ paddingHorizontal: 15 }}
+          style={{
+            paddingHorizontal: 15,
+            backgroundColor: "white",
+            height: "100%",
+          }}
         >
           <TextField
             value={this.state.name}

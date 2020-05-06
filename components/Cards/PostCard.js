@@ -1,23 +1,34 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Text, View } from "react-native-ui-lib";
-import Voter from "./components/Voter";
-import PostHeader from "./components/PostHeader";
+import { useNavigation } from "@react-navigation/native";
 
-export default ({ postID, text, author, votes, regionID, ...rest }) => (
-  <View style={styles.container}>
-    <View row style={styles.topContent}>
-      <View style={styles.mainContent}>
-        <PostHeader {...author} regionID={regionID} />
-        <Text>{text}</Text>
+import Voter from "./components/Voter";
+import PostHeader from "./components/LocationHeader";
+import PostFooter from "./components/PostFooter";
+
+export default ({ post, postID, footer = true }) => {
+  const navigation = useNavigation();
+  const { text, author, votes, regionID, createdAt, replyCount } = post;
+
+  return (
+    <View style={styles.container}>
+      <View row style={styles.topContent}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("post", { post, postID })}
+          style={{ flex: 1 }}
+        >
+          <PostHeader time={createdAt} regionID={regionID} />
+          <Text style={styles.text}>{text}</Text>
+        </TouchableOpacity>
+        <View center style={{ height: "100%" }}>
+          <Voter postID={postID} votes={votes} />
+        </View>
       </View>
-      <View center style={{ height: "100%" }}>
-        <Voter postID={postID} votes={votes} />
-      </View>
+      {footer && <PostFooter author={author} totalComments={replyCount || 0} />}
     </View>
-    <View row style={styles.bottomBar}></View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -31,10 +42,8 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "space-between",
   },
-  bottomBar: {
-    height: 30,
-    width: "100%",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    justifyContent: "space-between",
+  text: {
+    fontSize: 18,
+    paddingTop: 5,
   },
 });

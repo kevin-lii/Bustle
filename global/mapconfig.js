@@ -5,87 +5,60 @@ exports.initialMap = {
   longitudeDelta: 0.0211,
 };
 
-exports.forumRegions = [
-  {
-    name: "Campus",
-    id: "ucb_main",
-    coordinates: [
-      { latitude: 37.869774, longitude: -122.265768 }, // oxford st
-      { latitude: 37.868741, longitude: -122.266186 }, // oxford st
-      { latitude: 37.867844, longitude: -122.265997 }, //bottom left
-      { latitude: 37.869631, longitude: -122.252249 }, // ihouse
-      { latitude: 37.869156, longitude: -122.252177 }, // ihouse
-      { latitude: 37.869441, longitude: -122.249724 }, // ihouse
-      { latitude: 37.870138, longitude: -122.249698 }, //stadium
-      { latitude: 37.870687, longitude: -122.249404 }, //stadium
-      { latitude: 37.871225, longitude: -122.249568 }, //stadium
-      { latitude: 37.874347, longitude: -122.252291 }, // foothill
-      { latitude: 37.875651, longitude: -122.255402 }, //top right
-      { latitude: 37.874165, longitude: -122.266286 }, //top left
-    ],
-  },
-  {
-    name: "Downtown",
-    id: "ucb_downtown",
-    coordinates: [
-      { latitude: 37.869774, longitude: -122.265768 }, // oxford st
-      { latitude: 37.868741, longitude: -122.266186 }, // oxford st
-      { latitude: 37.864264, longitude: -122.265244 }, //bottom right
-      { latitude: 37.863066, longitude: -122.274376 }, //bottom left
-      { latitude: 37.87303, longitude: -122.275448 }, //top left
-      { latitude: 37.874165, longitude: -122.266286 }, //top right
-    ],
-  },
-  {
-    name: "Frat Row",
-    id: "ucb_fratrow",
-    inactive: true,
-    coordinates: [
-      { latitude: 37.869326, longitude: -122.254591 }, //top left
-      { latitude: 37.869631, longitude: -122.252249 }, // ihouse
-      { latitude: 37.869156, longitude: -122.252177 }, // ihouse
-      { latitude: 37.869389, longitude: -122.250174 }, // ihouse
-      { latitude: 37.866007, longitude: -122.249566 }, //bottom right
-      { latitude: 37.865705, longitude: -122.253893 }, //bottom left
-    ],
-  },
-  {
-    name: "Southside",
-    id: "ucb_southside",
-    coordinates: [
-      { latitude: 37.867844, longitude: -122.265997 }, //top left
-      { latitude: 37.864264, longitude: -122.265244 }, //downtown corner
-      { latitude: 37.863362, longitude: -122.27209 }, //top left # 2
-      { latitude: 37.854285, longitude: -122.271082 }, //bottom left
-      { latitude: 37.854518, longitude: -122.269355 }, //ashby
-      { latitude: 37.855018, longitude: -122.268465 }, //ashby
-      { latitude: 37.85716, longitude: -122.252263 }, //ashby
-      { latitude: 37.857736, longitude: -122.250675 }, //ashby
-      { latitude: 37.858063, longitude: -122.245059 }, //bottom right
-      { latitude: 37.866166, longitude: -122.246743 }, //clark kerr
-      { latitude: 37.866007, longitude: -122.249566 }, //clark kerr
-      { latitude: 37.869389, longitude: -122.250174 }, // ihouse
-      { latitude: 37.869156, longitude: -122.252177 }, // ihouse
-      { latitude: 37.869631, longitude: -122.252249 }, // ihouse + top right
-    ],
-  },
-  {
-    name: "Northside",
-    id: "ucb_northside",
-    coordinates: [
-      { latitude: 37.873327, longitude: -122.273199 }, //bottom left
-      { latitude: 37.881461, longitude: -122.274097 }, //top left
-      { latitude: 37.883554, longitude: -122.257861 }, //top right
-      { latitude: 37.875651, longitude: -122.255402 }, //bottom right
-    ],
-  },
-];
-
-exports.regionByID = {};
-exports.forumRegions.forEach(
-  (region) => (exports.regionByID[region.id] = region)
-);
-Object.freeze(exports.regionByID);
+exports.forumPolygons = {
+  ucb_campus: [
+    { latitude: 37.869774, longitude: -122.265768 }, // oxford st
+    { latitude: 37.868741, longitude: -122.266186 }, // oxford st
+    { latitude: 37.867844, longitude: -122.265997 }, //bottom left
+    { latitude: 37.869631, longitude: -122.252249 }, // ihouse
+    { latitude: 37.869156, longitude: -122.252177 }, // ihouse
+    { latitude: 37.869441, longitude: -122.249724 }, // ihouse
+    { latitude: 37.870138, longitude: -122.249698 }, //stadium
+    { latitude: 37.870687, longitude: -122.249404 }, //stadium
+    { latitude: 37.871225, longitude: -122.249568 }, //stadium
+    { latitude: 37.874347, longitude: -122.252291 }, // foothill
+    { latitude: 37.875651, longitude: -122.255402 }, //top right
+    { latitude: 37.874165, longitude: -122.266286 }, //top left
+  ],
+  ucb_downtown: [
+    { latitude: 37.869774, longitude: -122.265768 }, // oxford st
+    { latitude: 37.868741, longitude: -122.266186 }, // oxford st
+    { latitude: 37.864264, longitude: -122.265244 }, //bottom right
+    { latitude: 37.863066, longitude: -122.274376 }, //bottom left
+    { latitude: 37.87303, longitude: -122.275448 }, //top left
+    { latitude: 37.874165, longitude: -122.266286 }, //top right
+  ],
+  ucb_fratrow: [
+    { latitude: 37.869326, longitude: -122.254591 }, //top left
+    { latitude: 37.869631, longitude: -122.252249 }, // ihouse
+    { latitude: 37.869156, longitude: -122.252177 }, // ihouse
+    { latitude: 37.869389, longitude: -122.250174 }, // ihouse
+    { latitude: 37.866007, longitude: -122.249566 }, //bottom right
+    { latitude: 37.865705, longitude: -122.253893 }, //bottom left
+  ],
+  ucb_southside: [
+    { latitude: 37.867844, longitude: -122.265997 }, //top left
+    { latitude: 37.864264, longitude: -122.265244 }, //downtown corner
+    { latitude: 37.863362, longitude: -122.27209 }, //top left # 2
+    { latitude: 37.854285, longitude: -122.271082 }, //bottom left
+    { latitude: 37.854518, longitude: -122.269355 }, //ashby
+    { latitude: 37.855018, longitude: -122.268465 }, //ashby
+    { latitude: 37.85716, longitude: -122.252263 }, //ashby
+    { latitude: 37.857736, longitude: -122.250675 }, //ashby
+    { latitude: 37.858063, longitude: -122.245059 }, //bottom right
+    { latitude: 37.866166, longitude: -122.246743 }, //clark kerr
+    { latitude: 37.866007, longitude: -122.249566 }, //clark kerr
+    { latitude: 37.869389, longitude: -122.250174 }, // ihouse
+    { latitude: 37.869156, longitude: -122.252177 }, // ihouse
+    { latitude: 37.869631, longitude: -122.252249 }, // ihouse + top right
+  ],
+  ucb_northside: [
+    { latitude: 37.873327, longitude: -122.273199 }, //bottom left
+    { latitude: 37.881461, longitude: -122.274097 }, //top left
+    { latitude: 37.883554, longitude: -122.257861 }, //top right
+    { latitude: 37.875651, longitude: -122.255402 }, //bottom right
+  ],
+};
 
 exports.customMap = [
   {

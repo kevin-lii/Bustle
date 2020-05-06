@@ -3,8 +3,12 @@ import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 exports.Theme = {
   primary: "#1c004b",
-  secondary: "#FFA45B",
+  secondary: "#FF7100",
   grey: "#bcbcbc",
+  blue: "#006EBE",
+  green: "#09BD09",
+  red: "#EE0C0C",
+  darkred: "#9F0D0D",
   deviceWidth: width,
   CARD_HEIGHT: height / 4,
   CARD_WIDTH: height / 4 - 50,
@@ -23,3 +27,5 @@ exports.categories = [
   "Spiritual",
   "Service",
 ];
+
+exports.anonymous = "anon";

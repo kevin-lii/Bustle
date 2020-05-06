@@ -50,7 +50,7 @@ export default StyleSheet.create({
   },
   handlerBar: {
     position: "absolute",
-    backgroundColor: "#D1D1D6",
+    backgroundColor: Theme.grey,
     top: 5,
     borderRadius: 3,
     height: 5,

@@ -17,7 +17,7 @@ export default ({
 }) => (
   <View row style={styles.container}>
     <View center style={{ height: "100%" }}>
-      <IconButton size={20} icon="close-a" onPress={onClose} />
+      <IconButton size={20} icon="close-a" onPress={onClose} fullSize />
     </View>
     <View center>
       {header}
@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
     height: 60,
     borderBottomColor: Theme.grey,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingHorizontal: 15,
+    paddingRight: 15,
+    paddingLeft: 5,
+    backgroundColor: "#f0f0f0",
   },
   text: {
     fontSize: 20,

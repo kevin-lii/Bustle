@@ -54,8 +54,8 @@ export default ({
               <IconToggleSwitch
                 onToggle={onToggle}
                 isOn={toggleState}
-                icon="map"
-                offIcon="comments"
+                offIcon="map-marker-alt"
+                icon="comments"
               />
             </View>
           )}

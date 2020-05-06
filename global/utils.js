@@ -4,6 +4,8 @@ import firestore from "@react-native-firebase/firestore";
 import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 
+import { defaultRegions } from "./forumconfig";
+
 exports.bindAll = function (thisArg, obj) {
   for (const key of Object.keys(obj)) {
     thisArg[key] = obj[key].bind(thisArg);
@@ -55,8 +57,12 @@ exports.validateLocation = function (loc, lat, lng) {
     );
 };
 
-exports.getDefaultRegionID = function () {
-  return "ucb_main";
+exports.getDefaultRegionID = function (zone) {
+  return defaultRegions[zone];
+};
+
+exports.getDefaultZone = function () {
+  return "ucb";
 };
 
 exports.getNameInitials = function (displayName) {

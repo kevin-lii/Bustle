@@ -6,6 +6,6 @@ const endpoints = {
 
 const getEndpoint = (fn) => functions().httpsCallable(fn);
 
-exports.votePost = function (postID, vote) {
-  getEndpoint(endpoints.VOTE_POST)({ postID, vote });
+exports.votePost = function (postID, vote, reply) {
+  getEndpoint(endpoints.VOTE_POST)({ postID, vote, reply });
 };

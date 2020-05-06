@@ -1,6 +1,8 @@
-import firestore from "@react-native-firebase/firestore";
+import firestore, { firebase } from "@react-native-firebase/firestore";
+import Geofirestore from "geofirestore";
 
-import { votePost } from "../global/functions";
+import { votePost, postReply } from "../global/functions";
+import { getDefaultZone } from "../global/utils";
 import UserModel from "./User";
 
 // Post Class: {
@@ -8,6 +10,7 @@ import UserModel from "./User";
 //   author
 //   createdAt
 //   regionID
+//   sectorID
 //   replies
 //   tags
 //   flags
@@ -29,29 +32,43 @@ export default class Post {
   static async create(author, data, parent = null) {
     if (!data.text) throw new Error("No text");
     data.author = author;
+    data.zone = getDefaultZone();
     data.createdAt = firestore.FieldValue.serverTimestamp();
     data.tags = data.tags || [];
     data.flags = 0;
     data.votes = 0;
     data.views = 0;
+    data.replyCount = 0;
+    console.log("data", data);
 
     await firestore().collection("posts").add(data);
   }
 
-  static async upvote(postID) {
-    await votePost(postID, true);
+  static async upvote(postID, reply = false) {
+    await votePost(postID, true, reply);
   }
 
-  static async downvote(postID) {
-    await votePost(postID, false);
+  static async downvote(postID, reply = false) {
+    await votePost(postID, false, reply);
   }
 
-  static async reply(postID, data) {
-    if (!data.text) throw new Error("No text");
-    await firestore()
+  static async subscribeReplies(postID, fn) {
+    firestore()
       .collection("posts")
       .doc(postID)
       .collection("replies")
-      .add(data);
+      .orderBy("createdAt", "asc")
+      .onSnapshot({
+        next: (snapshot) => fn(snapshot.docs),
+        error: console.log,
+      });
+  }
+
+  static async reply(postID, author, data) {
+    if (!data.text) throw new Error("No text");
+    data.author = author;
+    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    data.votes = 0;
+    firestore().collection("posts").doc(postID).collection("replies").add(data);
   }
 }

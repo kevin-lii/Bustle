@@ -5,8 +5,8 @@ import { ScrollView } from "react-native";
 import FormHeader from "../Header/FormHeader";
 
 export default (props) => (
-  <View>
+  <View style={{ height: "100%" }}>
     <FormHeader {...props} />
-    <ScrollView style={{ paddingHorizontal: 15 }}>{props.children}</ScrollView>
+    {props.children}
   </View>
 );

@@ -45,6 +45,11 @@ export default function TabNavigator({ route }) {
     const mapRoute = nestedRoute.state?.routes[nestedRoute.state.index];
     showTabs = mapRoute?.name !== "event" && mapRoute?.name !== "eventlist";
   }
+  if (nestedRoute?.name === "feed") {
+    const feedRoute = nestedRoute.state?.routes[nestedRoute.state.index];
+    showTabs = feedRoute?.name !== "post";
+  }
+  showTabs = showTabs && !route.params?.hideTabBar;
 
   return (
     <Tab.Navigator
@@ -52,6 +57,9 @@ export default function TabNavigator({ route }) {
       tabBarOptions={{
         activeTintColor: "#1C004B",
         showLabel: false,
+        tabStyle: {
+          backgroundColor: "#FFF",
+        },
       }}
     >
       <Tab.Screen
@@ -61,6 +69,7 @@ export default function TabNavigator({ route }) {
           tabBarIcon: ({ color, size }) => (
             <Icon name={"nav-icon-list"} size={size} color={color} />
           ),
+          tabBarVisible: showTabs,
         }}
       />
       <Tab.Screen

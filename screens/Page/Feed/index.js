@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import { FlatList } from "react-native";
 import { Card, Text, View } from "react-native-ui-lib";
 import { connect } from "react-redux";
 
 import { getEvents, getPosts } from "../../../store/actions";
-import { FlatList } from "react-native";
 import PostCard from "../../../components/Cards/PostCard";
+import WithOverlayButtons from "../../../components/Container/WithOverlayButtons";
 
 class Feed extends Component {
   constructor(props) {
@@ -20,16 +21,16 @@ class Feed extends Component {
       return <Text>Loading...</Text>;
     }
 
-    let content = [];
-    if (route.name === "forums") {
-      content = posts.map((post, index) => (
-        <PostCard {...post.data()} postID={post.id} key={index} />
-      ));
-    } else {
-      content = events.map((event) => <></>);
-    }
-
-    return <View>{content}</View>;
+    return (
+      <FlatList
+        data={posts}
+        renderItem={({ item, index }) => {
+          if (route.name === "forums")
+            return <PostCard post={item.data()} postID={item.id} key={index} />;
+          else return <></>;
+        }}
+      />
+    );
   }
 }
 

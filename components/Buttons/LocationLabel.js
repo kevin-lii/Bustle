@@ -5,18 +5,20 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import Icons from "../Image/Icons";
 
 import { Theme } from "../../global/constants";
-import { regionByID } from "../../global/mapconfig";
+import { regionByID, zonesByID } from "../../global/forumconfig";
+import { getDefaultZone } from "../../global/utils";
 
 export default ({
   onPress,
+  zone = getDefaultZone(),
   regionID,
   size = "small",
   pinIcon = true,
   editIcon = false,
 }) => {
-  const fontSize = size === "small" ? 13 : 20;
-  const iconSize = size === "small" ? 10 : 15;
-  const fontWeight = size === "small" ? "normal" : "bold";
+  const fontSize = size === "small" ? 15 : 24;
+  const iconSize = size === "small" ? 12 : 16;
+  const fontWeight = "bold";
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -31,15 +33,17 @@ export default ({
           </View>
         )}
         <Text style={[styles.text, { fontSize, fontWeight }]}>
-          {regionByID[regionID]?.name}
+          {regionByID[regionID]?.name || zonesByID[zone].name}
         </Text>
         {editIcon && (
-          <Icons
-            type="MaterialIcons"
-            icon="pencil"
-            size={iconSize + 7}
-            color={Theme.secondary}
-          />
+          <View marginL-5>
+            <Icons
+              type="Ionicons"
+              icon="ios-arrow-down"
+              size={iconSize}
+              color={Theme.secondary}
+            />
+          </View>
         )}
       </View>
     </TouchableOpacity>
