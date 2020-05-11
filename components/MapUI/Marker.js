@@ -5,6 +5,8 @@ import CategoriesIcon from "../Image/CategoriesIcon";
 
 import styles from "./styles";
 
+import { Theme } from "../../global/constants";
+
 export default function ({ photoURL, type }) {
   let image;
   if (photoURL) image = <Image source={{ uri: photoURL }}></Image>;
@@ -13,5 +15,14 @@ export default function ({ photoURL, type }) {
   }
 
   const icon = <CategoriesIcon type={type} color={"white"} />;
-  return <View style={styles.marker}>{icon}</View>;
+  return (
+    <View
+      style={{
+        ...styles.marker,
+        // backgroundColor:
+      }}
+    >
+      {icon}
+    </View>
+  );
 }

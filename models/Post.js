@@ -22,6 +22,8 @@ export default class Post {
   static async get(filters, next) {
     const store = firestore();
     let query = store.collection("posts");
+    if (filters.regionIDs && filters.regionIDs.length > 0)
+      query = query.where("regionID", "in", filters.regionIDs);
     if (next)
       query.onSnapshot({
         next,
@@ -39,7 +41,6 @@ export default class Post {
     data.votes = 0;
     data.views = 0;
     data.replyCount = 0;
-    console.log("data", data);
 
     await firestore().collection("posts").add(data);
   }

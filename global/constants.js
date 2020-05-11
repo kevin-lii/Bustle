@@ -9,6 +9,7 @@ exports.Theme = {
   green: "#09BD09",
   red: "#EE0C0C",
   darkred: "#9F0D0D",
+  defaultBackground: "#f0f0f0",
   deviceWidth: width,
   CARD_HEIGHT: height / 4,
   CARD_WIDTH: height / 4 - 50,
@@ -17,15 +18,6 @@ exports.Theme = {
   icon: "Fontisto",
 };
 
-exports.categories = [
-  "Social",
-  "Dining",
-  "Drinks",
-  "Business",
-  "Athletic",
-  "Learn",
-  "Spiritual",
-  "Service",
-];
+exports.categories = ["Social", "Business", "Athletic", "Learn", "Community"];
 
 exports.anonymous = "anon";

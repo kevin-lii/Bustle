@@ -1,25 +1,27 @@
 import React from "react";
 import { View, Text, Card, Image } from "react-native-ui-lib";
 import moment from "moment";
+import { useNavigation } from "@react-navigation/native";
 
 import IconButton from "../Buttons/IconButton";
 import CategoriesIcon from "../Image/CategoriesIcon";
 import { Theme } from "../../global/constants";
 import { navigatePath } from "../../global/utils";
 
-export default ({ children, event, navigation, map, edit, trash }) => {
+export default ({ children, event, map, edit, trash }) => {
+  const navigation = useNavigation();
+
   return (
     <Card
       white50
       borderRadius={12}
       width={"100%"}
-      containerStyle={[
-        {
-          marginBottom: 20,
-          borderColor: Theme.primary,
-          borderWidth: 2,
-        },
-      ]}
+      containerStyle={{
+        marginTop: 10,
+        marginBottom: 10,
+        borderColor: Theme.primary,
+        borderWidth: 2,
+      }}
     >
       <Image
         style={{

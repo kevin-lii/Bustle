@@ -161,7 +161,7 @@ export default class EventCreate extends React.Component {
     };
 
     return (
-      <View>
+      <View flex>
         <FormHeader
           onClose={navigation.goBack}
           onSubmit={validateSubmission}
@@ -187,7 +187,10 @@ export default class EventCreate extends React.Component {
             floatOnFocus
             color={Theme.primary}
             floatingPlaceholderColor={Theme.primary}
+            hideUnderline={false}
             underlineColor={Theme.primary}
+            useTopErrors={false}
+            rightIconSource={null}
           />
 
           <FormGroup

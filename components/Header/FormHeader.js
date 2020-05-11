@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingRight: 15,
     paddingLeft: 5,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: Theme.defaultBackground,
   },
   text: {
     fontSize: 20,

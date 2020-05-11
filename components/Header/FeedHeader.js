@@ -3,12 +3,14 @@ import { View } from "react-native-ui-lib";
 
 import globalStyles from "../../global/styles";
 import AvatarButton from "../Buttons/AvatarButton";
+import LocationLabel from "../Buttons/LocationLabel";
+import IconButton from "../Buttons/IconButton";
 
 import { forumRegions, zones } from "../../global/forumconfig";
 import { getDefaultZone } from "../../global/utils";
-import LocationLabel from "../Buttons/LocationLabel";
+import { Theme } from "../../global/constants";
 
-export default ({ navigation, route }) => {
+export default ({ navigation, regionID, setRegion, openFilters }) => {
   // const items = forumRegions
   //   .filter((region) => !region.inactive)
   //   .map((region) => ({
@@ -28,12 +30,24 @@ export default ({ navigation, route }) => {
       <View absL centerV style={{ height: "100%", left: 10 }}>
         <LocationLabel
           zone={getDefaultZone()}
-          regionID={route.params?.region}
-          onPress={() => {}}
+          regionID={regionID}
+          onPick={(values) =>
+            setRegion(values.filter((v) => v.value != null).map((v) => v.value))
+          }
+          pickerMode="MULTI"
           size="large"
         />
       </View>
-      <View absR style={{ height: "100%" }}>
+      <View absR row style={{ height: "100%" }}>
+        <View>
+          <IconButton
+            icon="filter"
+            onPress={openFilters}
+            size={20}
+            color={Theme.secondary}
+            fullSize
+          />
+        </View>
         <AvatarButton
           onPress={() => navigation.openDrawer()}
           hasBorder

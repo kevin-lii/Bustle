@@ -37,10 +37,16 @@ export default class UserModel {
 
     const store = firestore();
     const ref = store.collection("users").doc(uid);
-    let unsubscribe = ref.collection("public").doc("profile").onSnapshot(sub);
+    let unsubscribe = ref
+      .collection("public")
+      .doc("profile")
+      .onSnapshot(sub, console.log);
 
     if (uid === auth().currentUser?.uid) {
-      let unsub = ref.collection("private").doc("profile").onSnapshot(sub);
+      let unsub = ref
+        .collection("private")
+        .doc("profile")
+        .onSnapshot(sub, console.log);
       const unsub2 = unsubscribe;
       unsubscribe = () => {
         unsub2();

@@ -36,17 +36,21 @@ import { UserContext } from "../dataContainers/context";
 export default class EventModel {
   constructor() {}
 
-  static async get(filters, func) {
+  static async get(filters, onNext) {
     const store = firestore();
     const geofirestore = new GeoFirestore(store);
     let query = geofirestore.collection("events");
-    query = query.near({
-      center: new firestore.GeoPoint(37.86835, -122.265),
-      radius: 1000,
-    });
+
+    if (filters.host) query = query.where("host.uid", "==", filters.host);
+    if (filters.category)
+      query = query.where("category", "==", filters.category);
     if (filters.active) query = query.where("ended", "==", false);
-    if (filters.host) query = query.where("host", "==", filters.host);
-    if (func) query.onSnapshot(func);
+    if (filters.radius > 0)
+      query = query.near({
+        center: new firestore.GeoPoint(37.86835, -122.265),
+        radius: filters.radius,
+      });
+    if (onNext) query.onSnapshot(onNext, console.log);
   }
 
   static async getCollection() {
@@ -87,7 +91,7 @@ export default class EventModel {
     const loc = await getLocation();
     if (data.location) {
       const { lat, lng } = data.location.geometry.location;
-      validateLocation(loc, lat, lng);
+      // validateLocation(loc, lat, lng);
       data.coordinates = new firestore.GeoPoint(lat, lng);
     } else {
       data.coordinates = new firestore.GeoPoint(

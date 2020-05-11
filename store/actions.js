@@ -47,7 +47,7 @@ export const getHostedEvents = () => (dispatch, getState) => {
   });
 };
 
-export const getEvents = (filters = {}) => (dispatch) => {
+export const getEvents = (filters = { radius: 100 }) => (dispatch) => {
   EventModel.get(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,

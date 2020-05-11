@@ -44,9 +44,11 @@ export default ({ type, color = Theme.primary, size }) => {
           size={iconSize}
         />
       );
-    case "Spiritual":
+    case "Community":
       iconSize = size ? size : 20;
-      return <Icons type="Font" icon="cross" color={color} size={iconSize} />;
+      return (
+        <Icons type="Fontisto" icon="persons" color={color} size={iconSize} />
+      );
     case "Service":
       iconSize = size ? size : 25;
       return (

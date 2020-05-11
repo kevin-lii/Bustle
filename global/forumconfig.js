@@ -2,6 +2,7 @@ exports.zones = [
   {
     name: "UC Berkeley",
     id: "ucb",
+    regions: ["ucb_campus", "ucb_northside", "ucb_southside", "ucb_downtown"],
   },
 ];
 

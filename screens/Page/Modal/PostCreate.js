@@ -1,23 +1,24 @@
 import React, { useState, createRef } from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { View, TextArea } from "react-native-ui-lib";
+import { Text, View, TextArea } from "react-native-ui-lib";
+import { Picker } from "@react-native-community/picker";
 import { connect } from "react-redux";
 import { Value } from "react-native-reanimated";
 
-import WithFormHeader from "../../../components/Container/WithFormHeader";
-
 import PostModel from "../../../models/Post";
 import LocationLabel from "../../../components/Buttons/LocationLabel";
-
-import { getDefaultRegionID, getDefaultZone } from "../../../global/utils";
 import PillButton from "../../../components/Buttons/PillButton";
 import WithOverlayBottomSheet from "../../../components/Container/WithOverlayBottomSheet";
+import WithFormHeader from "../../../components/Container/WithFormHeader";
+
+import { getDefaultRegionID, getDefaultZone } from "../../../global/utils";
 
 const PostCreate = ({ navigation, route, user }) => {
   const [text, setText] = useState("");
   const zone = getDefaultZone();
   const [regionID, setRegionID] = useState(getDefaultRegionID(zone));
   const [tags, setTags] = useState([]);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const sheet = createRef();
 
@@ -40,19 +41,30 @@ const PostCreate = ({ navigation, route, user }) => {
   const pills = tags.map((tag, i) => <PillButton label={tag} key={i} />);
   pills.unshift(<PillButton label="+  Add Tag" key={0} />);
 
+  const sheetContent = (
+    <View row centerV>
+      <Text text50>Location: </Text>
+      <View flex></View>
+    </View>
+  );
+
   return (
-    <WithOverlayBottomSheet height={400} ref={sheet}>
+    <WithOverlayBottomSheet
+      navigation={navigation}
+      height={400}
+      ref={sheet}
+      sheetContent={sheetOpen ? sheetContent : null}
+    >
       <WithFormHeader
         onClose={navigation.goBack}
         onSubmit={handleSubmit}
         submitText="Post"
         header={
           <LocationLabel
-            onPress={() => sheet.current.snapTo(0)}
             zone={zone}
             regionID={regionID}
             size="large"
-            editIcon={true}
+            onPick={({ value }) => setRegionID(value)}
           />
         }
       >

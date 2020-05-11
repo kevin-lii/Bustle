@@ -20,7 +20,7 @@ export default ({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <View flex>
+    <View style={{ height: "100%" }}>
       {children}
 
       {route.name !== "event" && route.name !== "eventlist" && (
