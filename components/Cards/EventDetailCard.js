@@ -7,8 +7,9 @@ import IconButton from "../Buttons/IconButton";
 import CategoriesIcon from "../Image/CategoriesIcon";
 import { Theme } from "../../global/constants";
 import { navigatePath } from "../../global/utils";
+import CalendarToggle from "../Buttons/CalendarToggle";
 
-export default ({ children, event, map, edit, trash }) => {
+export default ({ children, event, map, edit, trash, rsvp }) => {
   const navigation = useNavigation();
 
   return (
@@ -96,6 +97,11 @@ export default ({ children, event, map, edit, trash }) => {
                 size={30}
                 onPress={() => navigatePath(navigation, "map/event", { event })}
               />
+            </View>
+          )}
+          {rsvp && (
+            <View style={{ margin: 3 }}>
+              <CalendarToggle selected={false} />
             </View>
           )}
         </View>

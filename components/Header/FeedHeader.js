@@ -44,7 +44,7 @@ export default ({ navigation, regionID, setRegion, openFilters }) => {
             icon="filter"
             onPress={openFilters}
             size={20}
-            color={Theme.secondary}
+            color={Theme.primary}
             fullSize
           />
         </View>

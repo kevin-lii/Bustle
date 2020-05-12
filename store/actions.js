@@ -8,6 +8,7 @@ export const actionTypes = {
   LOGOUT: "logout",
   UPDATE_USER: "update user",
   UPDATE_EVENTS: "event update",
+  FILTER_EVENTS: "filter events",
   UPDATE_POSTS: "post update",
   UPDATE_HOSTED_EVENTS: "hosted event update",
 };
@@ -47,7 +48,7 @@ export const getHostedEvents = () => (dispatch, getState) => {
   });
 };
 
-export const getEvents = (filters = { radius: 100 }) => (dispatch) => {
+export const getEvents = (filters = {}) => (dispatch) => {
   EventModel.get(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,
@@ -61,6 +62,15 @@ export const getPosts = (filters = {}) => (dispatch) => {
     dispatch({
       type: actionTypes.UPDATE_POSTS,
       posts: snapshot.docs,
+    });
+  });
+};
+export const setEventFilters = (filters = {}) => (dispatch) => {
+  EventModel.get(filters, (snapshot) => {
+    dispatch({
+      type: actionTypes.FILTER_EVENTS,
+      events: snapshot.docs,
+      filters,
     });
   });
 };

@@ -69,7 +69,7 @@ class Feed extends Component {
                   <EventDetailCard
                     event={item.data()}
                     navigation={navigation}
-                    map
+                    rsvp
                   />
                 );
             }}
