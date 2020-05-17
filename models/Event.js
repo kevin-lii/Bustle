@@ -42,8 +42,8 @@ export default class EventModel {
     let query = geofirestore.collection("events");
 
     if (filters.host) query = query.where("host.uid", "==", filters.host);
-    if (filters.category)
-      query = query.where("category", "==", filters.category);
+    if (filters.categories?.length)
+      query = query.where("category", "in", filters.categories);
     if (filters.active) query = query.where("ended", "==", false);
     if (filters.radius > 0)
       query = query.near({

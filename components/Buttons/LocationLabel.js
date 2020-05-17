@@ -39,7 +39,7 @@ export default ({
   );
 
   const getLabel = (value) => {
-    if (value instanceof Array) return value.map((v) => v.label).join(",");
+    if (value instanceof Array) return value.map((v) => v.label).join(", ");
     return value.label;
   };
 

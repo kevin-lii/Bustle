@@ -2,8 +2,17 @@ import { combineReducers } from "redux";
 import { actionTypes } from "./actions";
 
 const events = (state, action) => {
-  if (action.type === actionTypes.UPDATE_EVENTS) return action.events;
+  if (
+    action.type === actionTypes.UPDATE_EVENTS ||
+    action.type === actionTypes.FILTER_EVENTS
+  )
+    return action.events;
   return state || null;
+};
+
+const eventFilters = (state, action) => {
+  if (action.type === actionTypes.FILTER_EVENTS) return action.filters;
+  return state || {};
 };
 
 const posts = (state, action) => {
@@ -29,6 +38,7 @@ const user = (state, action) => {
 
 export default combineReducers({
   events,
+  eventFilters,
   posts,
   hostedEvents,
   user,

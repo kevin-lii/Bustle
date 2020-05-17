@@ -46,14 +46,16 @@ export default class WithOverlayBottomSheet extends Component {
     const { navigation, children, height, sheetContent } = this.props;
 
     return (
-      <View style={{ height: "100%", backgroundColor: "#2c2c2f" }}>
+      <View style={{ height: "100%" }}>
+        {children}
         <Animated.View
           style={{
-            opacity: Animated.add(0.1, Animated.multiply(this.node, 0.9)),
+            ...styles.overlay,
+            backgroundColor: "#2c2c2f",
+            opacity: Animated.sub(1, Animated.multiply(this.node, 0.9)),
           }}
-        >
-          {children}
-        </Animated.View>
+          pointerEvents="none"
+        ></Animated.View>
         {Boolean(sheetContent) && (
           <TouchableWithoutFeedback
             onPress={() => navigation.dispatch({ type: "CLOSE_SHEET" })}

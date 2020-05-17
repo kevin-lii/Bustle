@@ -119,17 +119,7 @@ export default function TabNavigator({ route }) {
         component={FeedNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name={"nav-icon-list"} size={size} color={color} />
-          ),
-          tabBarVisible: showTabs,
-        }}
-      />
-      <Tab.Screen
-        name="map"
-        component={MapNavigator}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name={"earth"} size={size} color={color} />
+            <Icon name="search" size={size} color={color} />
           ),
           tabBarVisible: showTabs,
         }}
@@ -139,7 +129,7 @@ export default function TabNavigator({ route }) {
         component={EventListScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name={"ticket"} size={size} color={color} />
+            <Icon name="date" size={size} color={color} />
           ),
         }}
       />
