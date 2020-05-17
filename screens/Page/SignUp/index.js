@@ -2,28 +2,21 @@ import React, { useState } from "react";
 import { View, Text, TextField } from "react-native-ui-lib";
 
 import SecureText from "../../../components/Text/SecureInput";
-import { checkName, checkEmail, checkPasswords } from "../../../global/utils";
+import { checkEmail, checkPasswords } from "../../../global/utils";
 import UserModel from "../../../models/User";
 import ActionButton from "../../../components/Buttons/ActionButton";
 
 import styles from "./styles";
 
 export default function SignUp({ navigation }) {
-  const [megaState, setMegaState] = useState({
-    email: "",
-    firstName: "",
-    lastName: ""
-  });
+  const [email, setEmail] = useState("");
   const [password, setUpPassword] = useState("");
   const [passwordAgain, setUpPasswordAgain] = useState("");
   const [error, setError] = useState("");
 
   const submit = async () => {
     try {
-      const stateCopy = Object.assign({}, megaState);
-      delete stateCopy.firstName;
-      delete stateCopy.lastName;
-      await UserModel.create(stateCopy, password);
+      await UserModel.create(email, password);
     } catch (e) {
       console.log("Error: " + e.message);
     }
@@ -32,10 +25,8 @@ export default function SignUp({ navigation }) {
   async function validateSubmission() {
     resetError();
     try {
-      checkEmail(megaState.email);
+      checkEmail(email);
       checkPasswords(password, passwordAgain);
-      checkName(megaState.firstName, megaState.lastName);
-      megaState.displayName = megaState.firstName + " " + megaState.lastName;
       submit();
     } catch (e) {
       handleError(e);
@@ -54,16 +45,8 @@ export default function SignUp({ navigation }) {
     <View flex spreads style={styles.container}>
       <View flex centerV>
         <TextField
-          placeholder="First name"
-          onChangeText={text => setMegaState({ ...megaState, firstName: text })}
-        ></TextField>
-        <TextField
-          placeholder="Last name"
-          onChangeText={text => setMegaState({ ...megaState, lastName: text })}
-        ></TextField>
-        <TextField
           placeholder="Email"
-          onChangeText={text => setMegaState({ ...megaState, email: text })}
+          onChangeText={setEmail}
           textContentType="emailAddress"
         ></TextField>
         <SecureText

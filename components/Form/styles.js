@@ -6,36 +6,32 @@ export default StyleSheet.create({
     height: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.7)",
     width: "100%",
-    borderRadius: 12
+    borderRadius: 12,
   },
   buttonRow: {
     marginTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   formTitle: {
     marginTop: 5,
     paddingRight: 15,
     justifyContent: "space-between",
-    height: 30
+    height: 30,
   },
   icon: {
     height: "120%",
     width: 40,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   fillerText: {
-    marginTop: 25
-  },
-  headerText: {
-    fontSize: 20,
-    color: "#1c004b"
+    marginTop: 25,
   },
   formGroup: {
-    height: 35
+    height: 35,
   },
   toggleContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });

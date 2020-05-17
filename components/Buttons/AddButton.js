@@ -1,19 +1,23 @@
 import React from "react";
 import { View, TouchableOpacity, Image } from "react-native-ui-lib";
-import Icon from "react-native-vector-icons/Fontisto";
-
-import Vector from "../Image/Icons/Vector.png";
 
 import styles from "./styles";
 import globalStyles from "../../global/styles";
+import Icons from "../Image/Icons";
 
-export default ({ onPress }) => (
+export default ({ onPressOn, onPressOff, onState }) => (
   <TouchableOpacity
     style={[styles.button, styles.addButton, globalStyles.overlayElementShadow]}
-    onPress={onPress}
+    onPress={onState ? onPressOn : onPressOff}
   >
     <View center>
-      <Image source={Vector} />
+      <Icons
+        type="Custom"
+        onChange={onState}
+        icon="post-plus"
+        iconOff="map-plus"
+        size={24}
+      />
     </View>
   </TouchableOpacity>
 );

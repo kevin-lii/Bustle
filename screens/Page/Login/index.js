@@ -5,7 +5,7 @@ import { LoginButton, AccessToken, LoginManager } from "react-native-fbsdk";
 import auth, { firebase } from "@react-native-firebase/auth";
 import appleAuth, {
   AppleAuthRequestScope,
-  AppleAuthRequestOperation
+  AppleAuthRequestOperation,
 } from "@invertase/react-native-apple-authentication";
 
 import ActionButton from "../../../components/Buttons/ActionButton";
@@ -30,7 +30,7 @@ export default function Login({ navigation }) {
   async function facebookLogin() {
     const result = await LoginManager.logInWithPermissions([
       "public_profile",
-      "email"
+      "email",
     ]);
     resetError();
     if (result.isCancelled) {
@@ -38,7 +38,7 @@ export default function Login({ navigation }) {
     }
 
     if (error) {
-      handleError(e);
+      handleError(error);
     } else if (result.isCancelled) {
       setError("Cancelled");
     } else {
@@ -68,8 +68,8 @@ export default function Login({ navigation }) {
       requestedOperation: AppleAuthRequestOperation.LOGIN,
       requestedScopes: [
         AppleAuthRequestScope.EMAIL,
-        AppleAuthRequestScope.FULL_NAME
-      ]
+        AppleAuthRequestScope.FULL_NAME,
+      ],
     });
     const { identityToken, nonce } = appleAuthRequestResponse;
     if (identityToken) {
@@ -91,7 +91,7 @@ export default function Login({ navigation }) {
         <View centerV style={styles.input}>
           <TextField
             placeholder="Email"
-            onChangeText={text => setEmail(text)}
+            onChangeText={(text) => setEmail(text)}
           ></TextField>
         </View>
         <SecureText placeholder="Password" onChange={setPassword}></SecureText>

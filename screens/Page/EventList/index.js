@@ -6,7 +6,6 @@ import EventModel from "../../../models/Event";
 import EventDetail from "../../../components/Cards/EventDetailCard";
 import { UserContext } from "../../../dataContainers/context";
 import Icons from "../../../components/Image/Icons";
-import EditEvent from "../../../components/Form/EventCreate";
 
 import styles from "./styles";
 
@@ -20,7 +19,7 @@ export default class Event extends React.Component {
       editEvent: false,
       limit: 7,
       lastVisible: null,
-      complete: false
+      complete: false,
     };
     let loading = true;
   }
@@ -34,26 +33,26 @@ export default class Event extends React.Component {
           .where("d.host", "==", this.context.uid)
           .orderBy("d.date", "desc")
           .get();
-        const tempHost = host.docs.map(doc => ({
+        const tempHost = host.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data().d
+          ...doc.data().d,
         }));
         const join = await collection
           .where("d.invited", "array-contains", this.context.uid)
           .orderBy("d.date", "desc")
           .get();
         const tempJoined = join.docs
-          .filter(doc => doc.data().d.host != this.context.uid)
-          .map(doc => ({ id: doc.id, ...doc.data().d }));
+          .filter((doc) => doc.data().d.host != this.context.uid)
+          .map((doc) => ({ id: doc.id, ...doc.data().d }));
         this.setState({ hostedEvents: tempHost, joinedEvents: tempJoined });
       } else if (this.state.joinedEvents.length) {
         const host = await collection
           .where("d.host", "==", this.context.uid)
           .orderBy("d.date", "desc")
           .get();
-        const tempHost = host.docs.map(doc => ({
+        const tempHost = host.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data().d
+          ...doc.data().d,
         }));
         const join = await collection
           .where("d.invited", "array-contains", this.context.uid)
@@ -61,8 +60,8 @@ export default class Event extends React.Component {
           .endAt(this.state.lastVisible)
           .get();
         const tempJoined = join.docs
-          .filter(doc => doc.data().d.host != this.context.uid)
-          .map(doc => ({ id: doc.id, ...doc.data().d }));
+          .filter((doc) => doc.data().d.host != this.context.uid)
+          .map((doc) => ({ id: doc.id, ...doc.data().d }));
         this.setState({ hostedEvents: tempHost, joinedEvents: tempJoined });
       } else {
         const host = await collection
@@ -70,9 +69,9 @@ export default class Event extends React.Component {
           .orderBy("d.date", "desc")
           .endAt(this.state.lastVisible)
           .get();
-        const tempHost = host.docs.map(doc => ({
+        const tempHost = host.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data().d
+          ...doc.data().d,
         }));
         this.setState({ hostedEvents: tempHost });
       }
@@ -87,7 +86,10 @@ export default class Event extends React.Component {
         .orderBy("d.date", "desc")
         .limit(this.state.limit)
         .get();
-      const tempHost = host.docs.map(doc => ({ id: doc.id, ...doc.data().d }));
+      const tempHost = host.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data().d,
+      }));
       if (tempHost.length < this.state.limit) {
         const join = await collection
           .where("d.invited", "array-contains", this.context.uid)
@@ -95,24 +97,24 @@ export default class Event extends React.Component {
           .limit(this.state.limit)
           .get();
         const tempJoined = join.docs
-          .filter(doc => doc.data().d.host != this.context.uid)
-          .map(doc => ({ id: doc.id, ...doc.data().d }));
+          .filter((doc) => doc.data().d.host != this.context.uid)
+          .map((doc) => ({ id: doc.id, ...doc.data().d }));
         if (tempJoined.length)
           this.setState({
             hostedEvents: tempHost,
             joinedEvents: tempJoined,
-            lastVisible: join.docs[join.docs.length - 1]
+            lastVisible: join.docs[join.docs.length - 1],
           });
         else if (tempHost.length)
           this.setState({
             hostedEvents: tempHost,
-            lastVisible: host.docs[host.docs.length - 1]
+            lastVisible: host.docs[host.docs.length - 1],
           });
         else this.setState({ complete: true });
       } else {
         this.setState({
           hostedEvents: tempHost,
-          lastVisible: host.docs[host.docs.length - 1]
+          lastVisible: host.docs[host.docs.length - 1],
         });
       }
     } catch (error) {
@@ -133,7 +135,7 @@ export default class Event extends React.Component {
             .startAfter(this.state.lastVisible)
             .limit(this.state.limit)
             .get();
-          tempHost = host.docs.map(doc => ({ id: doc.id, ...doc.data().d }));
+          tempHost = host.docs.map((doc) => ({ id: doc.id, ...doc.data().d }));
         }
         if (tempHost.length < this.state.limit) {
           const join = await collection
@@ -143,24 +145,24 @@ export default class Event extends React.Component {
             .limit(this.state.limit)
             .get();
           const tempJoined = join.docs
-            .filter(doc => doc.data().d.host != this.context.uid)
-            .map(doc => ({ id: doc.id, ...doc.data().d }));
+            .filter((doc) => doc.data().d.host != this.context.uid)
+            .map((doc) => ({ id: doc.id, ...doc.data().d }));
           if (tempJoined.length)
             this.setState({
               hostedEvents: [...this.state.hostedEvents, ...tempHost],
               joinedEvents: [...this.state.joinedEvents, ...tempJoined],
-              lastVisible: join.docs[join.docs.length - 1]
+              lastVisible: join.docs[join.docs.length - 1],
             });
           else if (tempHost.length)
             this.setState({
               hostedEvents: [...this.state.hostedEvents, ...tempHost],
-              lastVisible: host.docs[host.docs.length - 1]
+              lastVisible: host.docs[host.docs.length - 1],
             });
           else this.setState({ complete: true });
         } else {
           this.setState({
             hostedEvents: [...this.state.hostedEvents, ...tempHost],
-            lastVisible: host.docs[host.docs.length - 1]
+            lastVisible: host.docs[host.docs.length - 1],
           });
         }
       }
@@ -170,15 +172,15 @@ export default class Event extends React.Component {
   };
 
   render() {
-    const changeContext = eventID => {
+    const changeContext = (eventID) => {
       const hostedEvents = this.state.hostedEvents;
-      const temp = hostedEvents.filter(item => item.id !== eventID);
+      const temp = hostedEvents.filter((item) => item.id !== eventID);
       this.context.updateJoinedEvents(
-        this.context.events.filter(item => item != eventID)
+        this.context.events.filter((item) => item != eventID)
       );
       this.setState({ hostedEvents: temp });
     };
-    const toggleEditEvent = event => {
+    const toggleEditEvent = (event) => {
       this.setState({ editEvent: event });
     };
 
@@ -238,7 +240,7 @@ export default class Event extends React.Component {
               {...this.props}
             />
           );
-        })
+        }),
       ];
     }
     if (this.state.complete) {
@@ -261,23 +263,6 @@ export default class Event extends React.Component {
           onEndReachedThreshold={0}
           keyExtractor={(item, index) => String(index)}
         ></FlatList>
-        <Modal
-          isVisible={this.state.editEvent}
-          style={styles.formContainer}
-          onBackdropPress={() => toggleEditEvent(false)}
-          animationIn="slideInUp"
-          animationOut="slideOutDown"
-          swipeDirection="down"
-          onSwipeComplete={() => toggleEditEvent(false)}
-          onBackButtonPress={() => toggleEditEvent(false)}
-          avoidKeyboard={false}
-        >
-          <EditEvent
-            close={() => toggleEditEvent(false)}
-            event={this.state.editEvent}
-            {...this.props}
-          />
-        </Modal>
       </SafeAreaView>
     );
   }

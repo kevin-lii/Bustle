@@ -3,7 +3,7 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
-  DrawerItem
+  DrawerItem,
 } from "@react-navigation/drawer";
 
 import auth from "@react-native-firebase/auth";
@@ -12,6 +12,8 @@ import Invites from "../screens/Page/Invites";
 import Profile from "./profileNavigator";
 import Settings from "./settingNavigator";
 import TabNavigator from "./tabNavigator";
+
+import MyEventsScreen from "../screens/Page/MyEvents";
 
 const Drawer = createDrawerNavigator();
 
@@ -40,14 +42,21 @@ export default function DrawerNavigator() {
         name="content"
         component={TabNavigator}
         options={{
-          title: "Home"
+          title: "Home",
+        }}
+      />
+      <Drawer.Screen
+        name="myevents"
+        component={MyEventsScreen}
+        options={{
+          title: "My Events",
         }}
       />
       <Drawer.Screen
         name="settings"
         component={Settings}
         options={{
-          title: "Settings"
+          title: "Settings",
         }}
       />
     </Drawer.Navigator>

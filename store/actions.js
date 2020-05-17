@@ -2,31 +2,32 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import EventModel from "../models/Event";
 import PostModel from "../models/Post";
+import UserModel from "../models/User";
 
 export const actionTypes = {
+  LOGOUT: "logout",
   UPDATE_USER: "update user",
   UPDATE_EVENTS: "event update",
   UPDATE_POSTS: "post update",
-  UPDATE_HOSTED_EVENTS: "hosted event update"
+  UPDATE_HOSTED_EVENTS: "hosted event update",
 };
 
-export const login = () => dispatch => {
-  auth().onAuthStateChanged(async user => {
+const subscriptions = [];
+
+export const login = () => (dispatch) => {
+  auth().onAuthStateChanged(async (user) => {
     if (user) {
-      const profile = await firestore()
-        .collection("users")
-        .doc(user.uid)
-        .get();
-      const data = profile.data();
-      data.uid = user.uid;
-      dispatch({
-        type: actionTypes.UPDATE_USER,
-        user: data
-      });
+      const unsub = UserModel.subscribe(user.uid, (data) =>
+        dispatch({
+          type: actionTypes.UPDATE_USER,
+          user: data,
+        })
+      );
+      subscriptions.push(unsub);
     } else {
+      subscriptions.forEach((fn) => fn());
       dispatch({
-        type: actionTypes.UPDATE_USER,
-        user: {}
+        type: actionTypes.LOGOUT,
       });
     }
   });
@@ -34,32 +35,32 @@ export const login = () => dispatch => {
 
 export const getHostedEvents = () => (dispatch, getState) => {
   const { user } = getState();
-  EventModel.get({ host: user.uid }, snapshot => {
+  EventModel.get({ host: user.uid }, (snapshot) => {
     const hostedEvents = [];
-    snapshot.forEach(doc => {
+    snapshot.forEach((doc) => {
       hostedEvents.push({ ...doc.data(), id: doc.id });
     });
     dispatch({
       type: actionTypes.UPDATE_HOSTED_EVENTS,
-      hostedEvents
+      hostedEvents,
     });
   });
 };
 
-export const getEvents = (filters = {}) => dispatch => {
-  EventModel.get(filters, snapshot => {
+export const getEvents = (filters = { radius: 100 }) => (dispatch) => {
+  EventModel.get(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,
-      events: snapshot
+      events: snapshot.docs,
     });
   });
 };
 
-export const getPosts = (filters = {}) => dispatch => {
-  PostModel.get(filters, snapshot => {
+export const getPosts = (filters = {}) => (dispatch) => {
+  PostModel.get(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_POSTS,
-      posts: snapshot
+      posts: snapshot.docs,
     });
   });
 };

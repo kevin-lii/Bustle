@@ -1,17 +1,18 @@
 import React from "react";
 import { View, TouchableOpacity, Image } from "react-native-ui-lib";
-import Icon from "react-native-vector-icons/Fontisto";
+
+import Icons from "../Image/Icons";
 
 import styles from "./styles";
 import globalStyles from "../../global/styles";
 
-export default ({ onPress }) => (
+export default ({ onPress, icon, type, size = 20 }) => (
   <TouchableOpacity
     style={[styles.button, styles.addButton, globalStyles.overlayElementShadow]}
     onPress={onPress}
   >
     <View center>
-      <Icon name="close-a" size={20} />
+      <Icons icon={icon} type={type} size={size} color="black" />
     </View>
   </TouchableOpacity>
 );

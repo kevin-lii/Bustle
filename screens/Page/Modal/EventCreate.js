@@ -9,17 +9,17 @@ import {
 import ImagePicker from "react-native-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import FormCard from "../Cards/FormCard";
-import FormGroup from "./FormGroup";
-import FormHeader from "./FormHeader";
-import TextButton from "../Buttons/TextButton";
-import CategoriesIcon from "../Image/CategoriesIcon";
-import EventModel from "../../models/Event";
-import { UserContext } from "../../dataContainers/context";
-import IconButton from "../Buttons/IconButton";
+import FormCard from "../../../components/Cards/FormCard";
+import FormGroup from "../../../components/Form/FormGroup";
+import FormHeader from "../../../components/Header/FormHeader";
+import TextButton from "../../../components/Buttons/TextButton";
+import CategoriesIcon from "../../../components/Image/CategoriesIcon";
+import EventModel from "../../../models/Event";
+import { UserContext } from "../../../dataContainers/context";
+import IconButton from "../../../components/Buttons/IconButton";
 
-import styles from "./styles";
-import { Theme, categories } from "../../global/constants";
+import styles from "../../../components/Form/styles";
+import { Theme, categories } from "../../../global/constants";
 
 export default class EventCreate extends React.Component {
   static contextType = UserContext;
@@ -45,6 +45,8 @@ export default class EventCreate extends React.Component {
   }
 
   render() {
+    const { navigation, route } = this.props;
+
     const submit = async () => {
       try {
         this.setState({ confirmed: true });
@@ -53,12 +55,15 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        await EventModel.create(
-          this.context.uid,
-          stateCopy,
-          this.context.events
+        EventModel.create(
+          {
+            uid: this.context.uid,
+            displayName: this.context.displayName,
+            photoURL: this.context.photoURL,
+          },
+          stateCopy
         );
-        this.props.onClose();
+        navigation.goBack();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
@@ -74,9 +79,8 @@ export default class EventCreate extends React.Component {
         delete stateCopy.overlayContent;
         delete stateCopy.scrollViewWidth;
         delete stateCopy.currentXOffset;
-        await EventModel.update(this.props.event.id, stateCopy);
-        if (this.props.update) this.props.update();
-        this.props.onClose();
+        EventModel.update(route.params?.event.id, stateCopy);
+        navigation.goBack();
       } catch (e) {
         console.log(e);
         Alert.alert("Error", e.message);
@@ -85,11 +89,12 @@ export default class EventCreate extends React.Component {
     };
 
     const validateSubmission = () => {
-      if (this.props.event) edit();
+      if (route.params?.event) edit();
       else submit();
     };
 
-    setOverlayContent = (content) => this.setState({ overlayContent: content });
+    const setOverlayContent = (content) =>
+      this.setState({ overlayContent: content });
 
     const Overlay = ({ children }) => (
       <View center style={styles.formOverlay}>
@@ -156,24 +161,19 @@ export default class EventCreate extends React.Component {
     };
 
     return (
-      <React.Fragment>
+      <View flex>
         <FormHeader
-          icon="close-a"
-          title={this.props.event ? "Edit Event" : "Create Event"}
-          onPress={this.props.onClose}
-          headerRight={
-            <TextButton
-              text={this.props.event ? "Edit" : "Create"}
-              disabled={this.state.confirmed}
-              onPress={validateSubmission}
-              primary
-            />
-          }
+          onClose={navigation.goBack}
+          onSubmit={validateSubmission}
+          submitText={route.params?.event ? "Update" : "Create"}
+          disabled={this.state.confirmed}
         />
         <ScrollView
+          showsVerticalScrollIndicator={false}
           style={{
-            paddingLeft: 15,
-            paddingRight: 15,
+            paddingHorizontal: 15,
+            backgroundColor: "white",
+            height: "100%",
           }}
         >
           <TextField
@@ -181,13 +181,16 @@ export default class EventCreate extends React.Component {
             onChangeText={(text) => this.setState({ name: text })}
             containerStyle={{}}
             floatingPlaceholder
-            placeholder="Title"
+            placeholder="Event Name"
             validate={"required"}
             errorMessage={"Required field!"}
             floatOnFocus
             color={Theme.primary}
             floatingPlaceholderColor={Theme.primary}
+            hideUnderline={false}
             underlineColor={Theme.primary}
+            useTopErrors={false}
+            rightIconSource={null}
           />
 
           <FormGroup
@@ -263,7 +266,8 @@ export default class EventCreate extends React.Component {
               style={{ height: 60, marginTop: 10 }}
             >
               {categories.map((category) => {
-                color = this.state.category == category ? Theme.primary : null;
+                const color =
+                  this.state.category == category ? Theme.primary : null;
                 return (
                   <View
                     center
@@ -320,7 +324,7 @@ export default class EventCreate extends React.Component {
         {this.state.overlayContent && (
           <Overlay>{this.state.overlayContent}</Overlay>
         )}
-      </React.Fragment>
+      </View>
     );
   }
 }

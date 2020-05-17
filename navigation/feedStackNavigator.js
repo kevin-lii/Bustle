@@ -1,4 +1,5 @@
 import React from "react";
+import { View } from "react-native-ui-lib";
 import {
   useNavigationBuilder,
   StackRouter,
@@ -6,15 +7,8 @@ import {
 } from "@react-navigation/native";
 import { StackView } from "@react-navigation/stack";
 
-import WithOverlayButtons from "../components/Container/WithOverlayButtons";
 import FeedScreen from "../screens/Page/Feed";
-
-import HeaderLeft from "../components/Header/HeaderLeft";
-import HeaderRight from "../components/Buttons/AvatarButton";
-import { View } from "react-native-ui-lib";
-
-import styles from "./styles";
-import FeedHeader from "../components/Header/FeedHeader";
+import PostDetail from "../screens/Detail/PostDetail";
 
 function CustomStackNavigator({
   initialRouteName,
@@ -28,34 +22,21 @@ function CustomStackNavigator({
     initialRouteName,
   });
 
-  const handleToggle = (state) => {
-    navigation.push(state ? "forums" : "events");
-  };
-
   const route = state.routes[state.index];
 
-  const headerRight = (
-    <HeaderRight
-      onPress={() => navigation.openDrawer()}
-      hasBorder
-      useUser
-      marginTop={2}
-      marginRight={8}
-      size={40}
-    />
-  );
+  // return (
+  //   <StackView
+  //     {...rest}
+  //     state={state}
+  //     navigation={navigation}
+  //     descriptors={descriptors}
+  //   />
+  // );
 
-  return (
-    <WithOverlayButtons
-      navigation={navigation}
-      route={route}
-      toggleState={route.name === "forums"}
-      onToggle={handleToggle}
-    >
-      <FeedHeader right={headerRight} />
-      <FeedScreen navigation={navigation} route={route} />
-    </WithOverlayButtons>
-  );
+  if (route.name !== "forums" && route.name !== "events")
+    return <View flex>{descriptors[route.key].render()}</View>;
+
+  return <FeedScreen navigation={navigation} route={route} />;
 }
 
 const Stack = createNavigatorFactory(CustomStackNavigator)();
@@ -66,6 +47,7 @@ export default function FeedStackNavigator() {
       <Stack.Screen name="events" component={FeedScreen} />
       <Stack.Screen name="forums" component={FeedScreen} />
       <Stack.Screen name="event" component={FeedScreen} />
+      <Stack.Screen name="post" component={PostDetail} />
     </Stack.Navigator>
   );
 }

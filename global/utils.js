@@ -1,29 +1,37 @@
 import React from "react";
-import { Alert } from "react-native";
-
+import { Alert, Platform } from "react-native";
 import firestore from "@react-native-firebase/firestore";
-import functions from "@react-native-firebase/functions";
-import Permissions from "react-native-permissions";
+import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 
-exports.bindAll = function(thisArg, obj) {
+import { defaultRegions } from "./forumconfig";
+
+exports.bindAll = function (thisArg, obj) {
   for (const key of Object.keys(obj)) {
     thisArg[key] = obj[key].bind(thisArg);
   }
 };
 
-exports.createChat = async function() {
-  firestore()
-    .collection("chats")
-    .doc("{messages: []}");
+exports.createChat = async function () {
+  firestore().collection("chats").doc("{messages: []}");
 };
 
-exports.getLocation = async function() {
-  let locationPermission = await Permissions.check("location");
-  if (locationPermission == "undetermined")
-    locationPermission = await Permissions.request("location");
+exports.getLocation = async function () {
+  let locationPermission = await check(
+    Platform.select({
+      ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+    })
+  );
+  if (locationPermission == "denied")
+    locationPermission = await request(
+      Platform.select({
+        android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      })
+    );
 
-  if (locationPermission != "authorized")
+  if (locationPermission != "granted")
     return Alert.alert(
       "Enable Location",
       "Please enable location permissions in app settings to continue"
@@ -31,14 +39,14 @@ exports.getLocation = async function() {
 
   return new Promise((resolve, reject) => {
     Geolocation.getCurrentPosition(
-      position => resolve(position),
-      err => reject(err),
+      (position) => resolve(position),
+      (err) => reject(err),
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
   });
 };
 
-exports.validateLocation = function(loc, lat, lng) {
+exports.validateLocation = function (loc, lat, lng) {
   const distanceAway = Math.sqrt(
     Math.pow(69.1 * (lat - loc.coords.latitude), 2) +
       Math.pow(69.1 * (loc.coords.longitude - lng) * Math.cos(lat / 57.3), 2)
@@ -49,27 +57,43 @@ exports.validateLocation = function(loc, lat, lng) {
     );
 };
 
-exports.checkName = function(first, last) {
+exports.getDefaultRegionID = function (zone) {
+  return defaultRegions[zone];
+};
+
+exports.getDefaultZone = function () {
+  return "ucb";
+};
+
+exports.getNameInitials = function (displayName) {
+  return displayName
+    .split(" ")
+    .map((name) => name.charAt(0))
+    .join("")
+    .toUpperCase();
+};
+
+exports.checkName = function (name) {
   const nameRegex = /([A-Z]){1}\w+/;
-  if (!nameRegex.test(first) || !nameRegex.test(last)) {
+  if (!nameRegex.test(name)) {
     throw new Error("Name improperly formatted");
   }
 };
 
-exports.checkPhoneNumber = function(number) {
+exports.checkPhoneNumber = function (number) {
   const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$/;
   if (!phoneRegex.test(number)) {
     throw new Error("Improper phone number");
   }
 };
 
-exports.checkPasswords = function(password, again) {
+exports.checkPasswords = function (password, again) {
   if (password === "" || again === "" || password !== again) {
     throw new Error("Passwords do not match");
   }
 };
 
-exports.checkEmail = function(email) {
+exports.checkEmail = function (email) {
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   const berkeleyEmailRegex = /^\w+([\.-]?\w+)*@berkeley\.edu$/;
   if (!emailRegex.test(email)) {
@@ -79,7 +103,7 @@ exports.checkEmail = function(email) {
   }
 };
 
-exports.navigatePath = function(navigation, path, params) {
+exports.navigatePath = function (navigation, path, params = {}) {
   const routes = path.split("/");
   const allParams = { screen: routes[1] };
   let current = allParams;
@@ -89,10 +113,6 @@ exports.navigatePath = function(navigation, path, params) {
   }
   current.params = params;
   navigation.navigate(routes[0], routes.length > 1 ? allParams : params);
-};
-
-exports.getEndpoint = function(fn) {
-  return functions().httpsCallable(fn);
 };
 
 function sendEmailVerification(email) {}

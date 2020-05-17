@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
-import { withNavigation } from "react-navigation";
 
 import Icons from "../../../components/Image/Icons";
 import EventDetail from "../../../components/Cards/EventDetailCard";
@@ -42,7 +41,7 @@ class MyEvents extends Component {
             style={{
               alignSelf: "flex-end",
               marginRight: 25,
-              marginTop: 20
+              marginTop: 20,
             }}
           >
             <Icons
@@ -60,13 +59,11 @@ class MyEvents extends Component {
   }
 }
 
-export default withNavigation(
-  connect(
-    state => ({
-      hostedEvents: state.hostedEvents
-    }),
-    {
-      getHostedEvents
-    }
-  )(MyEvents)
-);
+export default connect(
+  (state) => ({
+    hostedEvents: state.hostedEvents,
+  }),
+  {
+    getHostedEvents,
+  }
+)(MyEvents);

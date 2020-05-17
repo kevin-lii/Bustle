@@ -3,7 +3,7 @@ import { View, TextInput } from "react-native";
 
 import IconButton from "../Buttons/IconButton";
 
-export default function({ placeholder, onChange }) {
+export default function ({ placeholder, onChange }) {
   const [displayText, changeDisplay] = useState(true);
   function changeDisplayText() {
     changeDisplay(!displayText);
@@ -14,13 +14,13 @@ export default function({ placeholder, onChange }) {
       <TextInput
         placeholder={placeholder}
         secureTextEntry={displayText}
-        onChangeText={text => onChange(text)}
+        onChangeText={(text) => onChange(text)}
       ></TextInput>
       <IconButton
         type="Entypo"
         icon="eye"
         iconOff="eye-with-line"
-        uponChange={displayText}
+        onChange={displayText}
         size={15}
         onPress={() => changeDisplayText()}
       ></IconButton>

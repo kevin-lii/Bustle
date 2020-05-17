@@ -8,17 +8,19 @@ import FormTypes from "../Form/FormTypes";
 import IconToggleSwitch from "../Form/IconToggleSwitch";
 import AddButton from "../Buttons/AddButton";
 
+import { navigatePath } from "../../global/utils";
+
 export default ({
   navigation,
   route,
   onToggle,
   toggleState = false,
-  children
+  children,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <View flex>
+    <View style={{ height: "100%" }}>
       {children}
 
       {route.name !== "event" && route.name !== "eventlist" && (
@@ -28,24 +30,32 @@ export default ({
               primaryIcon="map-marker-alt"
               primaryLabel="Event"
               onPressPrimary={() =>
-                navigation.navigate("modal", { form: FormTypes.EVENT_CREATE })
+                navigatePath(navigation, `modal/${FormTypes.EVENT_CREATE}`)
               }
               secondaryIcon="comment"
               secondaryLabel="Post"
               onPressSecondary={() =>
-                navigation.navigate("modal", { form: FormTypes.POST_CREATE })
+                navigatePath(navigation, `modal/${FormTypes.POST_CREATE}`)
               }
               containerStyle={styles.optionButtons}
             />
           )}
-          <AddButton onPress={() => setExpanded(!expanded)} />
+          <AddButton
+            onState={toggleState}
+            onPressOn={() =>
+              navigatePath(navigation, `modal/${FormTypes.POST_CREATE}`)
+            }
+            onPressOff={() =>
+              navigatePath(navigation, `modal/${FormTypes.EVENT_CREATE}`)
+            }
+          />
           {onToggle && (
             <View style={{ marginTop: 10 }}>
               <IconToggleSwitch
                 onToggle={onToggle}
                 isOn={toggleState}
-                icon="map"
-                offIcon="comments"
+                offIcon="map-marker-alt"
+                icon="comments"
               />
             </View>
           )}
@@ -61,11 +71,11 @@ const styles = StyleSheet.create({
   buttons: {
     position: "absolute",
     bottom: bottom,
-    right: 10
+    right: 10,
   },
   optionButtons: {
     bottom: bottom + 110,
     right: 4,
-    position: "absolute"
-  }
+    position: "absolute",
+  },
 });
