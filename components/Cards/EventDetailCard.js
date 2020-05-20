@@ -26,7 +26,7 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
     >
       <Image
         style={{
-          height: 180,
+          height: 100,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}

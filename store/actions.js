@@ -36,7 +36,7 @@ export const login = () => (dispatch) => {
 
 export const getHostedEvents = () => (dispatch, getState) => {
   const { user } = getState();
-  EventModel.get({ host: user.uid }, (snapshot) => {
+  EventModel.get({ host: user.uid, orderBy: "desc" }, (snapshot) => {
     const hostedEvents = [];
     snapshot.forEach((doc) => {
       hostedEvents.push({ ...doc.data(), id: doc.id });

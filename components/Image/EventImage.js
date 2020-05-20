@@ -17,7 +17,7 @@ exports.generateDefaultURL = function (genre) {
       );
     case "Drinks":
       return <Icons type="Entypo" icon="drink" color={color} size={iconSize} />;
-    case "Business":
+    case "Professional":
       return (
         <Icons type="Entypo" icon="suitcase" color={color} size={iconSize} />
       );

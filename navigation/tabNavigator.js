@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/Fontisto";
 
 import FeedNavigator from "./feedStackNavigator";
 import MapNavigator from "./mapStackNavigator";
-import EventListScreen from "../screens/Page/EventList";
+import EventListScreen from "../screens/Page/MyEvents";
 import WithOverlayBottomSheet from "../components/Container/WithOverlayBottomSheet";
 import { View } from "react-native-ui-lib";
 import EventFilters from "../components/Form/EventFilters";

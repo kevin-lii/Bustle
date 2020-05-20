@@ -26,9 +26,6 @@ export default StyleSheet.create({
   fillerText: {
     marginTop: 25,
   },
-  formGroup: {
-    height: 35,
-  },
   toggleContainer: {
     flexDirection: "row",
     justifyContent: "center",

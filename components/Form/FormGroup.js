@@ -134,13 +134,9 @@ export default ({ type, label, value, setValue, overlay }) => {
               styles={{
                 container: {
                   backgroundColor: "white",
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
                 },
                 textInputContainer: {
                   width: "100%",
-                  borderTopLeftRadius: 12,
-                  borderTopRightRadius: 12,
                   borderWidth: 0,
                   backgroundColor: "transparent",
                   paddingLeft: 15,
