@@ -1,60 +1,62 @@
 import React from "react";
-import { View, TextField } from "react-native-ui-lib";
-import {
-  Alert,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Text,
-} from "react-native";
+import { View, Text, TextField } from "react-native-ui-lib";
+import { Alert, ScrollView } from "react-native";
 import ImagePicker from "react-native-image-picker";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import FormCard from "../../../components/Cards/FormCard";
-import FormGroup from "../../../components/Form/FormGroup";
-import FormHeader from "../../../components/Header/FormHeader";
-import TextButton from "../../../components/Buttons/TextButton";
-import CategoriesIcon from "../../../components/Image/CategoriesIcon";
-import EventModel from "../../../models/Event";
 import { UserContext } from "../../../dataContainers/context";
-import IconButton from "../../../components/Buttons/IconButton";
+import EventModel from "../../../models/CollegeEvent";
+import FormHeader from "../../../components/Header/FormHeader";
+import Icons from "../../../components/Image/Icons";
+import ImageUploader from "../../../components/Form/ImageUploader";
+import DateTime from "../../../components/Form/DateTimeInput";
+import Category from "../../../components/Form/Category";
+import ToggleRow from "../../../components/Form/ToggleRow";
+import LocationInput from "../../../components/Form/LocationInput";
+import Tokenizer from "../../../components/Form/Tokenizer";
 
-import styles from "../../../components/Form/styles";
-import { Theme, categories } from "../../../global/constants";
+import { Theme, tags } from "../../../global/constants";
+import globalStyles from "../../../global/styles";
 
 export default class EventCreate extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
-    this.scrollView = React.createRef();
-    //Changed to support edit
-    this.state = {
-      overlayContent: false,
-      name: props.event ? props.event.name : "",
-      description: props.event ? props.event.description : "",
-      date: props.event ? props.event.date.toDate() : null,
-      time: props.event ? props.event.time.toDate() : null,
-      location: props.event ? props.event.location : null,
-      category: props.event ? props.event.category : "Social",
-      open: props.event ? props.event.open : true,
-      isPrivate: props.event ? props.event.isPrivate : false,
-      image: props.event ? props.event.photoURL : "",
-      scrollViewWidth: 0,
-      currentXOffset: 0,
-      confirmed: false,
+    this.state = props.event || {
+      name: "",
+      description: "",
+      date: new Date(),
+      time: new Date(),
+      endDate: null,
+      endTime: null,
+      location: null,
+      category: "Social",
+      open: true,
+      isPrivate: false,
+      virtual: true,
+      image: "",
+      link: "",
+      tags: [],
     };
+
+    this.state.confirmed = false;
+    if (props.event) {
+      this.state.date = this.state.date.toDate();
+      this.state.time = this.state.time.toDate();
+      this.state.endDate = this.state.endDate?.toDate();
+      this.state.endTime = this.state.endTime?.toDate();
+    }
   }
 
   render() {
     const { navigation, route } = this.props;
+    const iconSize = 25;
 
     const submit = async () => {
       try {
         this.setState({ confirmed: true });
         const stateCopy = Object.assign({}, this.state);
         delete stateCopy.confirmed;
-        delete stateCopy.overlayContent;
-        delete stateCopy.scrollViewWidth;
-        delete stateCopy.currentXOffset;
         EventModel.create(
           {
             uid: this.context.uid,
@@ -76,9 +78,6 @@ export default class EventCreate extends React.Component {
         this.setState({ confirmed: true });
         const stateCopy = Object.assign({}, this.state);
         delete stateCopy.confirmed;
-        delete stateCopy.overlayContent;
-        delete stateCopy.scrollViewWidth;
-        delete stateCopy.currentXOffset;
         EventModel.update(route.params?.event.id, stateCopy);
         navigation.goBack();
       } catch (e) {
@@ -89,75 +88,10 @@ export default class EventCreate extends React.Component {
     };
 
     const validateSubmission = () => {
+      if (!this.state.name) return;
+
       if (route.params?.event) edit();
       else submit();
-    };
-
-    const setOverlayContent = (content) =>
-      this.setState({ overlayContent: content });
-
-    const Overlay = ({ children }) => (
-      <View center style={styles.formOverlay}>
-        <TouchableWithoutFeedback onPress={() => setOverlayContent(false)}>
-          <View
-            style={{ position: "absolute", width: "100%", height: "100%" }}
-          ></View>
-        </TouchableWithoutFeedback>
-        {children}
-      </View>
-    );
-
-    let imgText;
-    // if (this.state.image) {
-    //   const strStart = this.state.image.path.lastIndexOf("/") + 1;
-    //   imgText =
-    //     this.state.image.path.substring(strStart, strStart + 15) + "...";
-    // } else {
-    imgText = "Add Image";
-    // }
-
-    const pickImage = () => {
-      ImagePicker.showImagePicker(
-        {
-          title: "Select Image",
-          storageOptions: {
-            skipBackup: true,
-            path: "images",
-          },
-        },
-        (response) => {
-          if (response.didCancel) console.log("Canceled");
-          else if (response.error) Alert.alert("Error", response.error);
-          else {
-            this.setState({ image: response.uri });
-          }
-        }
-      );
-    };
-
-    const handleScroll = (event) => {
-      newXOffset = event.nativeEvent.contentOffset.x;
-      this.setState({ currentXOffset: newXOffset });
-    };
-
-    const leftArrow = () => {
-      eachItemOffset = this.state.scrollViewWidth / 2;
-      _currentXOffset = this.state.currentXOffset - eachItemOffset;
-      this.scrollView.current.scrollTo({
-        x: _currentXOffset,
-        y: 0,
-        animated: true,
-      });
-    };
-
-    const rightArrow = () => {
-      eachItemOffset = this.state.scrollViewWidth / 2; // Divide by 8 for 8 items
-      _currentXOffset = this.state.currentXOffset + eachItemOffset;
-      this.scrollView.current.scrollTo({
-        x: _currentXOffset,
-        y: 0,
-        animated: true,
-      });
     };
 
     return (
@@ -169,161 +103,154 @@ export default class EventCreate extends React.Component {
           disabled={this.state.confirmed}
         />
         <ScrollView
-          showsVerticalScrollIndicator={false}
           style={{
-            paddingHorizontal: 15,
             backgroundColor: "white",
-            height: "100%",
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          <TextField
-            value={this.state.name}
-            onChangeText={(text) => this.setState({ name: text })}
-            containerStyle={{}}
-            floatingPlaceholder
-            placeholder="Event Name"
-            validate={"required"}
-            errorMessage={"Required field!"}
-            floatOnFocus
-            color={Theme.primary}
-            floatingPlaceholderColor={Theme.primary}
-            hideUnderline={false}
-            underlineColor={Theme.primary}
-            useTopErrors={false}
-            rightIconSource={null}
+          <ImageUploader
+            onImageSubmit={(res) => this.setState({ image: res.uri })}
+            uri={this.state.image}
           />
 
-          <FormGroup
-            type="date"
-            label="Date"
-            value={this.state.date}
-            setValue={(d) => this.setState({ date: d })}
-            overlay={setOverlayContent}
-          />
-
-          <FormGroup
-            type="clock"
-            label="Time"
-            value={this.state.time}
-            setValue={(t) => this.setState({ time: t })}
-            overlay={setOverlayContent}
-          />
-
-          <FormGroup
-            type="map-marker-alt"
-            label="Location"
-            value={this.state.location}
-            setValue={(l) => this.setState({ location: l })}
-            overlay={setOverlayContent}
-          />
-
-          <FormGroup
-            type="user-secret"
-            label="Type"
-            value={this.state.isPrivate}
-            setValue={(p) => this.setState({ isPrivate: p })}
-          />
-
-          {this.state.isPrivate && (
-            <FormGroup
-              type="shield"
-              label={"Open Invite"}
-              value={this.state.open}
-              setValue={(o) => this.setState({ open: o })}
+          <View paddingH-15 paddingB-20>
+            <TextField
+              value={this.state.name}
+              onChangeText={(name) => this.setState({ name })}
+              containerStyle={{}}
+              floatingPlaceholder
+              placeholder="Event Name"
+              validate={"required"}
+              errorMessage={"Required field!"}
+              floatOnFocus
+              color={Theme.primary}
+              floatingPlaceholderColor={Theme.primary}
+              hideUnderline={false}
+              useTopErrors={false}
+              rightIconSource={null}
             />
-          )}
 
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
-          >
-            <IconButton
-              touchStyle={{
-                alignItems: "flex-start",
-                paddingTop: 20,
-                marginRight: 15,
-                marginLeft: 3,
-              }}
-              onPress={leftArrow}
-              icon="ios-arrow-back"
-              type="Ionicons"
+            <View row canterV>
+              <View marginR-10>
+                <Icons icon="clock" size={iconSize} />
+              </View>
+              <DateTime
+                date={this.state.date}
+                time={this.state.time}
+                onDate={(date) => this.setState({ date })}
+                onTime={(time) => this.setState({ time })}
+              />
+            </View>
+            <View marginL-35 marginT-15 marginB-15>
+              <DateTime
+                date={this.state.endDate}
+                time={this.state.endTime}
+                endTime
+                onDate={(date) => this.setState({ date })}
+                onTime={(time) => this.setState({ time })}
+              />
+            </View>
+
+            <ToggleRow
+              icon={<Icons icon="desktop" size={iconSize - 3} />}
+              label="Virtual Event"
+              value={this.state.virtual}
+              size={40}
+              onChange={(virtual) => this.setState({ virtual })}
             />
-            <ScrollView
-              contentContainerStyle={{
-                alignItems: "center",
-              }}
-              horizontal
-              ref={this.scrollView}
-              onContentSizeChange={(w, h) =>
-                this.setState({ scrollViewWidth: w })
-              }
-              scrollEventThrottle={16}
-              onScroll={handleScroll}
-              showsHorizontalScrollIndicator={false}
-              style={{ height: 60, marginTop: 10 }}
-            >
-              {categories.map((category) => {
-                const color =
-                  this.state.category == category ? Theme.primary : null;
-                return (
-                  <View
-                    center
-                    key={category}
-                    style={{ marginRight: 8, marginLeft: 7.5 }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.setState({ category: category });
-                      }}
-                      style={{ height: 25 }}
-                    >
-                      <CategoriesIcon type={category} color={color} />
-                    </TouchableOpacity>
-                    <Text style={{ color }}>{category}</Text>
-                  </View>
-                );
-              })}
-            </ScrollView>
-            <IconButton
-              touchStyle={{
-                alignItems: "flex-start",
-                paddingTop: 20,
-                marginLeft: 15,
-                marginRight: 3,
-              }}
-              onPress={rightArrow}
-              icon="ios-arrow-forward"
-              type="Ionicons"
+
+            <View row marginT-20 marginB-10>
+              <View marginR-10>
+                <Icons
+                  icon={this.state.virtual ? "link" : "map-marker-alt"}
+                  size={iconSize - 2}
+                />
+              </View>
+              <View flex>
+                {this.state.virtual ? (
+                  <TextField
+                    placeholder="Link"
+                    enableErrors={false}
+                    value={this.state.link}
+                    onChangeText={(link) => this.setState({ link })}
+                  />
+                ) : (
+                  <LocationInput
+                    value={this.state.location}
+                    onChange={(location) => this.setState({ location })}
+                  />
+                )}
+              </View>
+            </View>
+
+            <ToggleRow
+              icon={<Icons icon="user-secret" size={iconSize - 3} />}
+              padding={13}
+              label="Private Event"
+              value={this.state.isPrivate}
+              size={40}
+              onChange={(isPrivate) => this.setState({ isPrivate })}
+              underline={!this.state.isPrivate}
             />
+
+            {this.state.isPrivate && (
+              <ToggleRow
+                icon={<Icons icon="email" size={iconSize - 3} />}
+                padding={13}
+                label="Guests may invite others"
+                value={this.state.open}
+                size={40}
+                onChange={(open) => this.setState({ open })}
+              />
+            )}
+
+            <View marginT-10 paddingB-5 style={globalStyles.underline}>
+              <Text text80 color={Theme.grey}>
+                Category
+              </Text>
+              <View paddingH-5>
+                <Category
+                  onChange={(category) => this.setState({ category })}
+                  value={this.state.category}
+                />
+              </View>
+            </View>
+
+            <View row marginT-15>
+              <View marginL-4 marginR-15>
+                <Icons icon="info" size={iconSize - 2} />
+              </View>
+              <View flex>
+                <TextField
+                  value={this.state.description}
+                  expandable={true}
+                  enableErrors={false}
+                  placeholder="Description"
+                  onChangeText={(description) => this.setState({ description })}
+                />
+              </View>
+            </View>
+
+            <View row marginT-15>
+              <View marginR-7 marginT-10>
+                <Icons icon="hashtag" size={iconSize - 2} />
+              </View>
+              <View flex centerV>
+                <Tokenizer
+                  value={this.state.tags}
+                  size={18}
+                  pillColor={Theme.secondary}
+                  color="white"
+                  onChange={(tags) => this.setState({ tags })}
+                  data={tags[this.state.category].map((category) => ({
+                    label: category,
+                    value: category,
+                  }))}
+                />
+              </View>
+            </View>
           </View>
-
-          <View style={{ height: 15 }}></View>
-          <TextButton
-            text={imgText}
-            style={styles.imgButton}
-            onPress={pickImage}
-          />
-          <View style={{ height: 15 }}></View>
-
-          <TextField
-            value={this.state.description}
-            containerStyle={{}}
-            floatingPlaceholder
-            placeholder="Description"
-            multiline
-            floatOnFocus
-            onChangeText={(text) => this.setState({ description: text })}
-            color={Theme.primary}
-            floatingPlaceholderColor={Theme.primary}
-            underlineColor={Theme.primary}
-          />
         </ScrollView>
-        {this.state.overlayContent && (
-          <Overlay>{this.state.overlayContent}</Overlay>
-        )}
       </View>
     );
   }

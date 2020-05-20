@@ -5,18 +5,18 @@ import { StyleSheet } from "react-native";
 import { Theme } from "../../global/constants";
 import Icons from "../Image/Icons";
 
-const Pill = ({ label }) => (
+const Pill = ({ label, size, pillColor, color }) => (
   <View
     row
     centerV
     style={{
-      backgroundColor: label === "Add" ? "white" : Theme.primary,
+      backgroundColor: label === "Add" ? "white" : pillColor,
       marginRight: 10,
       marginBottom: 5,
       paddingHorizontal: 15,
       paddingVertical: 5,
       borderRadius: 100,
-      borderWidth: StyleSheet.hairlineWidth,
+      borderWidth: label === "Add" ? StyleSheet.hairlineWidth : 0,
     }}
   >
     <View marginR-5>
@@ -26,13 +26,23 @@ const Pill = ({ label }) => (
         size={10}
       />
     </View>
-    <Text text60 color={label === "Add" ? Theme.primary : "white"}>
+    <Text
+      style={{ fontSize: size || 20 }}
+      color={label === "Add" ? Theme.primary : color}
+    >
       {label}
     </Text>
   </View>
 );
 
-export default ({ onChange, value, data }) => {
+export default ({
+  onChange,
+  value,
+  data,
+  size,
+  pillColor = Theme.primary,
+  color = "white",
+}) => {
   const picker = useRef();
 
   const getLabel = (value) => {
@@ -56,7 +66,14 @@ export default ({ onChange, value, data }) => {
           containerStyle={{ marginTop: 4.75, flexWrap: "wrap" }}
           getLabel={getLabel}
           tags={[{ label: "Add" }, ...v]}
-          renderTag={Pill}
+          renderTag={({ label }) => (
+            <Pill
+              size={size}
+              label={label}
+              pillColor={pillColor}
+              color={color}
+            />
+          )}
           onTagPress={(index) => {
             if (index === 0) return picker.current.toggleExpandableModal(true);
             onChange(value.filter((_, i) => i != index - 1));

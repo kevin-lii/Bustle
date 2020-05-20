@@ -1,29 +1,24 @@
-import React from 'react'
-import { Card, View, Text, TouchableOpacity } from 'react-native-ui-lib'
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 
-import FormCard from '../Window/FormCard'
-import FormHeader from './FormHeader'
-import CategoryButton from '../Buttons/Category'
+import CategoriesIcon from "../Image/CategoriesIcon";
 
-import styles from './styles'
+import { Theme, categories } from "../../global/constants";
 
-export default function({ category, submitCategory, headerAction }) {
-    
-    return (
-        <FormCard height={200} padded>
-            <FormHeader icon='close' title='Choose Category' onPress={headerAction} />
-            <View flex row spread centerV style={styles.buttonRow}>
-                <CategoryButton category='Social' submitCategory={submitCategory} current={category} />
-                <CategoryButton category='Dining' submitCategory={submitCategory} current={category} />
-                <CategoryButton category='Drinks' submitCategory={submitCategory} current={category} />
-                <CategoryButton category='Athletic' submitCategory={submitCategory} current={category}/>
+export default function ({ onChange, value }) {
+  return (
+    <View marginT-7 row centerV style={{ justifyContent: "space-between" }}>
+      {categories.map((category) => {
+        const color = value === category ? Theme.secondary : null;
+        return (
+          <TouchableOpacity onPress={() => onChange(category)} key={category}>
+            <View center>
+              <CategoriesIcon type={category} color={color} />
+              <Text color={color}>{category}</Text>
             </View>
-            <View flex row spread centerV style={styles.buttonRow}> 
-                <CategoryButton category='Learn' submitCategory={submitCategory} current={category}/>
-                <CategoryButton category='Business' submitCategory={submitCategory} current={category} />
-                <CategoryButton category='Spiritual' submitCategory={submitCategory} current={category} />
-                <CategoryButton category='Service' submitCategory={submitCategory} current={category}/>
-            </View>
-        </FormCard>
-    )
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
 }

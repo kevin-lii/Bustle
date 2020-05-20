@@ -14,7 +14,7 @@ export default ({
   onToggle = () => {},
 }) => {
   return (
-    <TouchableWithoutFeedback onPress={onToggle}>
+    <TouchableWithoutFeedback onPress={() => onToggle(!state)}>
       <View row centerV>
         <Text>
           {state ? onText : offText}

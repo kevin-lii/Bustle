@@ -19,8 +19,8 @@ export default ({ type, color = Theme.primary, size }) => {
     case "Drinks":
       iconSize = size ? size : 20;
       return <Icons type="Entypo" icon="drink" color={color} size={iconSize} />;
-    case "Business":
-      iconSize = size ? size : 20;
+    case "Professional":
+      iconSize = size ? size : 25;
       return (
         <Icons type="Entypo" icon="suitcase" color={color} size={iconSize} />
       );
@@ -44,8 +44,8 @@ export default ({ type, color = Theme.primary, size }) => {
           size={iconSize}
         />
       );
-    case "Community":
-      iconSize = size ? size : 20;
+    case "Social":
+      iconSize = size ? size : 25;
       return (
         <Icons type="Fontisto" icon="persons" color={color} size={iconSize} />
       );
@@ -59,7 +59,7 @@ export default ({ type, color = Theme.primary, size }) => {
           size={iconSize}
         />
       );
-    case "Social":
+    case "Community":
     default:
       iconSize = size ? size : 25;
       return (
