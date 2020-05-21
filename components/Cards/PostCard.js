@@ -4,8 +4,10 @@ import { Text, View } from "react-native-ui-lib";
 import { useNavigation } from "@react-navigation/native";
 
 import Voter from "./components/Voter";
-import PostHeader from "./components/LocationHeader";
+import PostHeader from "./components/ProfileHeader";
 import PostFooter from "./components/PostFooter";
+
+import { Theme } from "../../global/constants";
 
 export default ({ post, postID, footer = true }) => {
   const navigation = useNavigation();
@@ -18,7 +20,7 @@ export default ({ post, postID, footer = true }) => {
           onPress={() => navigation.navigate("post", { post, postID })}
           style={{ flex: 1 }}
         >
-          <PostHeader time={createdAt} regionID={regionID} />
+          <PostHeader {...post.author} />
           <Text style={styles.text}>{text}</Text>
         </TouchableOpacity>
         <View center style={{ height: "100%" }}>

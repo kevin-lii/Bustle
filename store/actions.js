@@ -1,6 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-import EventModel from "../models/Event";
+import EventModel from "../models/CollegeEvent";
 import PostModel from "../models/Post";
 import UserModel from "../models/User";
 
@@ -36,7 +36,7 @@ export const login = () => (dispatch) => {
 
 export const getHostedEvents = () => (dispatch, getState) => {
   const { user } = getState();
-  EventModel.get({ host: user.uid, orderBy: "desc" }, (snapshot) => {
+  EventModel.subscribe({ host: user.uid, orderBy: "desc" }, (snapshot) => {
     const hostedEvents = [];
     snapshot.forEach((doc) => {
       hostedEvents.push({ ...doc.data(), id: doc.id });
@@ -49,7 +49,7 @@ export const getHostedEvents = () => (dispatch, getState) => {
 };
 
 export const getEvents = (filters = {}) => (dispatch) => {
-  EventModel.get(filters, (snapshot) => {
+  EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,
       events: snapshot.docs,
@@ -66,7 +66,7 @@ export const getPosts = (filters = {}) => (dispatch) => {
   });
 };
 export const setEventFilters = (filters = {}) => (dispatch) => {
-  EventModel.get(filters, (snapshot) => {
+  EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.FILTER_EVENTS,
       events: snapshot.docs,

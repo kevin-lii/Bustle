@@ -1,0 +1,18 @@
+{
+  "berkeley.edu": {
+    "IPEDSID": 110635,
+    "NAME": "UNIVERSITY OF CALIFORNIA-BERKELEY",
+    "LATITUDE": 37.875759,
+    "LONGITUDE": -122.24851,
+    "WEBSITE": "berkeley.edu",
+    "ALIAS": "UC Berkeley"
+  },
+  "ucla.edu": {
+    "IPEDSID": 110662,
+    "NAME": "UNIVERSITY OF CALIFORNIA-LOS ANGELES",
+    "LATITUDE": 34.0688923,
+    "LONGITUDE": -118.443900501,
+    "WEBSITE": "ucla.edu",
+    "ALIAS": "UCLA"
+  }
+}

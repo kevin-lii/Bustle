@@ -11,14 +11,14 @@ export default ({ selected }) => {
     <Button
       round
       style={{ width: 50 }}
-      backgroundColor={checked ? Theme.secondary : Theme.disabled}
+      backgroundColor={checked ? Theme.primary : Theme.disabled}
       onPress={() => setChecked(!checked)}
     >
       <Icons
-        size={22}
-        type="MaterialIcons"
+        size={20}
+        type="Font"
         color={checked ? "white" : Theme.primary}
-        icon={checked ? "calendar-check" : "calendar-blank"}
+        icon={checked ? "calendar-check" : "calendar"}
       />
     </Button>
   );

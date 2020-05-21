@@ -11,6 +11,7 @@ import CalendarToggle from "../Buttons/CalendarToggle";
 
 export default ({ children, event, map, edit, trash, rsvp }) => {
   const navigation = useNavigation();
+  const startDate = moment(event.startDate.toDate());
 
   return (
     <Card
@@ -20,15 +21,13 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
       containerStyle={{
         marginTop: 10,
         marginBottom: 10,
-        borderColor: Theme.primary,
-        borderWidth: 2,
       }}
     >
       <Image
         style={{
           height: 100,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+          borderTopLeftRadius: 12,
+          borderTopRightRadius: 12,
         }}
         source={{ uri: event.photoURL || "" }}
       ></Image>
@@ -47,16 +46,13 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
             <CategoriesIcon type={event.category} size={30} />
           </View>
           <View>
-            <Text
-              style={{ fontSize: 20, color: Theme.primary, fontWeight: "bold" }}
-            >
+            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
               {event.name.length > 23
                 ? event.name.substring(0, 20) + "..."
                 : event.name}
             </Text>
-            <Text style={{ fontSize: 15, color: Theme.primary }}>
-              {event.time && moment(event.time.toDate()).format("h:mm a")} on{" "}
-              {event.date && moment(event.date.toDate()).format("MMM Do, YYYY")}
+            <Text style={{ fontSize: 15 }}>
+              {startDate.format("MMM Do, YYYY")} at {startDate.format("h:mm a")}
             </Text>
           </View>
         </View>

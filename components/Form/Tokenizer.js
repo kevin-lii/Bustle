@@ -16,7 +16,8 @@ const Pill = ({ label, size, pillColor, color }) => (
       paddingHorizontal: 15,
       paddingVertical: 5,
       borderRadius: 100,
-      borderWidth: label === "Add" ? StyleSheet.hairlineWidth : 0,
+      borderWidth: label === "Add" ? 1 : 0,
+      borderColor: Theme.primary,
     }}
   >
     <View marginR-5>

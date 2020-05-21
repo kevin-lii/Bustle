@@ -1,4 +1,5 @@
 import React from "react";
+import { TouchableWithoutFeedback } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 
 import ToggleSwitch from "./ToggleSwitch";
@@ -16,21 +17,23 @@ export default ({
   underline = true,
   value,
 }) => (
-  <View
-    style={[{ height: size + 10 }, underline && globalStyle.underline]}
-    centerV
-    spread
-    row
-  >
-    <View row centerV>
-      <View style={{ marginRight: padding }}>{icon}</View>
-      <Text style={{ fontSize: size * 0.4 }}>{label}</Text>
+  <TouchableWithoutFeedback onPress={() => onChange(!value)}>
+    <View
+      style={[{ height: size + 10 }, underline && globalStyle.underline]}
+      centerV
+      spread
+      row
+    >
+      <View row centerV>
+        <View style={{ marginRight: padding }}>{icon}</View>
+        <Text style={{ fontSize: size * 0.4 }}>{label}</Text>
+      </View>
+      <Switch
+        onValueChange={onChange}
+        value={value}
+        thumbColor={value ? Theme.primary : null}
+        trackColor={{ true: "#ffc69b", false: null }}
+      />
     </View>
-    <Switch
-      onValueChange={onChange}
-      value={value}
-      thumbColor={value ? Theme.secondary : null}
-      trackColor={{ true: "#ffc69b", false: null }}
-    />
-  </View>
+  </TouchableWithoutFeedback>
 );

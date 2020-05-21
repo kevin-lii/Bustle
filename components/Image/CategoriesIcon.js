@@ -3,7 +3,7 @@ import React from "react";
 import Icons from "./Icons";
 import { Theme } from "../../global/constants";
 
-export default ({ type, color = Theme.primary, size }) => {
+export default ({ type, color, size }) => {
   let iconSize;
   switch (type) {
     case "Dining":

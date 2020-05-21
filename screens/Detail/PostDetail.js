@@ -61,12 +61,7 @@ class PostDetail extends Component {
     );
 
     return (
-      <View flex>
-        <DetailHeader
-          navigation={navigation}
-          route={route}
-          regionID={post.regionID}
-        />
+      <>
         <View flex>
           <ScrollView>
             <PostDetailCard
@@ -85,7 +80,7 @@ class PostDetail extends Component {
           />
           <IconButton icon="paper-plane" size={20} onPress={sendReply} />
         </View>
-      </View>
+      </>
     );
   }
 }

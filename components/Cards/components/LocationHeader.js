@@ -10,7 +10,7 @@ export default ({ regionID, time, onPick }) => (
   <View row>
     <LocationLabel regionID={regionID} onPick={onPick} />
     {time && (
-      <Text style={{ color: Theme.secondary, fontSize: 13, paddingTop: 2 }}>
+      <Text style={{ color: Theme.primary, fontSize: 13, paddingTop: 2 }}>
         {" "}
         - {moment(time.toDate()).fromNow()}
       </Text>

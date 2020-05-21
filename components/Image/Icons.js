@@ -3,7 +3,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import Feather from "react-native-vector-icons/Feather";
 import Foundation from "react-native-vector-icons/Foundation";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome5";
+import FontAwesome from "react-native-vector-icons/FontAwesome5Pro";
 import Icon from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Custom from "./Icons/index";
@@ -16,7 +16,7 @@ export default function Icons({
   iconOff,
   onChange,
   size,
-  color = Theme.primary,
+  color = Theme.grey,
   onPress,
 }) {
   switch (type) {

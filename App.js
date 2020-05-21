@@ -22,7 +22,7 @@ export default () => {
     const origin = oldRender.call(this, ...args);
     return React.cloneElement(origin, {
       style: [
-        { fontFamily: "Roboto", color: Theme.primary },
+        { fontFamily: "Roboto", color: Theme.secondary },
         origin.props.style,
       ],
     });

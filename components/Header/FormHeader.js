@@ -17,14 +17,20 @@ export default ({
 }) => (
   <View row style={styles.container}>
     <View center style={{ height: "100%" }}>
-      <IconButton size={20} icon="close-a" onPress={onClose} fullSize />
+      <IconButton
+        size={20}
+        icon="close-a"
+        onPress={onClose}
+        fullSize
+        color={Theme.primary}
+      />
     </View>
     <View center>
       {header}
       {title && <Text style={styles.text}>{title}</Text>}
     </View>
     <TouchableOpacity onPress={onSubmit} style={styles.button}>
-      <Text text60 color={Theme.secondary}>
+      <Text text60 color={Theme.primary}>
         {submitText}
       </Text>
     </TouchableOpacity>
@@ -43,7 +49,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: "#1c004b",
   },
   button: {
     height: "100%",

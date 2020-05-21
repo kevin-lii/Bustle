@@ -25,12 +25,8 @@ class Feed extends Component {
 
   render() {
     const { navigation, route, events, posts, getPosts } = this.props;
-    const forumView = route.name === "forums";
+    const forumView = route.name === "forum";
     const sheet = createRef();
-    const openFilters = () =>
-      navigation.dispatch({
-        type: "OPEN_SHEET",
-      });
 
     if (events == null || posts == null) {
       return <Text>Loading...</Text>;
@@ -45,17 +41,9 @@ class Feed extends Component {
       <WithOverlayButtons
         navigation={navigation}
         route={route}
-        toggleState={route.name === "forums"}
-        onToggle={(state) => navigation.push(state ? "forums" : "events")}
+        toggleState={forumView}
       >
         <View flex style={{ backgroundColor: Theme.defaultBackground }}>
-          <FeedHeader
-            navigation={navigation}
-            route={route}
-            regionID={this.state.regionIDs}
-            setRegion={setRegion}
-            openFilters={openFilters}
-          />
           <FlatList
             style={{ paddingHorizontal: forumView ? 0 : 10 }}
             data={forumView ? posts : events}

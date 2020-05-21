@@ -61,7 +61,9 @@ export default ({ onDate, onTime, date, time, endTime }) => {
           style={{ flex: 1 }}
         >
           <View flex centerV style={globalStyle.underline}>
-            {(endTime && <Text style={styles.placeholder}>End Date</Text>) || (
+            {endTime && !date ? (
+              <Text style={styles.placeholder}>End Date</Text>
+            ) : (
               <Text style={styles.text}>{dateText}</Text>
             )}
           </View>
@@ -74,7 +76,9 @@ export default ({ onDate, onTime, date, time, endTime }) => {
           style={{ flex: 1 }}
         >
           <View flex style={globalStyle.underline}>
-            {(endTime && <Text style={styles.placeholder}>End Time</Text>) || (
+            {endTime && !time ? (
+              <Text style={styles.placeholder}>End Time</Text>
+            ) : (
               <Text style={styles.text}>{timeText}</Text>
             )}
           </View>

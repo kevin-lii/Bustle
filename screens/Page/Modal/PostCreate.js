@@ -7,16 +7,17 @@ import { Value } from "react-native-reanimated";
 
 import PostModel from "../../../models/Post";
 import LocationLabel from "../../../components/Buttons/LocationLabel";
-import PillButton from "../../../components/Buttons/PillButton";
 import WithOverlayBottomSheet from "../../../components/Container/WithOverlayBottomSheet";
 import WithFormHeader from "../../../components/Container/WithFormHeader";
+import Icons from "../../../components/Image/Icons";
+import Tokenizer from "../../../components/Form/Tokenizer";
 
 import { getDefaultRegionID, getDefaultZone } from "../../../global/utils";
+import { Theme, forumTags } from "../../../global/constants";
 
 const PostCreate = ({ navigation, route, user }) => {
   const [text, setText] = useState("");
   const zone = getDefaultZone();
-  const [regionID, setRegionID] = useState(getDefaultRegionID(zone));
   const [tags, setTags] = useState([]);
   const [sheetOpen, setSheetOpen] = useState(false);
 
@@ -30,16 +31,13 @@ const PostCreate = ({ navigation, route, user }) => {
           displayName: user.displayName,
           photoURL: user.photoURL,
         },
-        { text, regionID }
+        { text }
       );
       navigation.goBack();
     } catch (e) {
       console.log(e);
     }
   };
-
-  const pills = tags.map((tag, i) => <PillButton label={tag} key={i} />);
-  pills.unshift(<PillButton label="+  Add Tag" key={0} />);
 
   const sheetContent = (
     <View row centerV>
@@ -59,14 +57,6 @@ const PostCreate = ({ navigation, route, user }) => {
         onClose={navigation.goBack}
         onSubmit={handleSubmit}
         submitText="Post"
-        header={
-          <LocationLabel
-            zone={zone}
-            regionID={regionID}
-            size="large"
-            onPick={({ value }) => setRegionID(value)}
-          />
-        }
       >
         <ScrollView style={{ backgroundColor: "white", paddingHorizontal: 10 }}>
           <TextArea
@@ -75,8 +65,23 @@ const PostCreate = ({ navigation, route, user }) => {
             onChangeText={(text) => setText(text)}
           />
         </ScrollView>
-        <View padding-10 style={styles.tag}>
-          {pills}
+        <View padding-10 row style={{ backgroundColor: "white" }}>
+          <View marginR-7 marginT-10>
+            <Icons icon="hashtag" size={20} />
+          </View>
+          <View flex centerV>
+            <Tokenizer
+              value={tags}
+              size={16}
+              pillColor={Theme.primary}
+              color="white"
+              onChange={setTags}
+              data={forumTags.map((tag) => ({
+                label: "#" + tag,
+                value: tag,
+              }))}
+            />
+          </View>
         </View>
       </WithFormHeader>
     </WithOverlayBottomSheet>
