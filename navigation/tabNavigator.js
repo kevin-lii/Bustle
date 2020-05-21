@@ -10,7 +10,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import EventNavigator from "./eventStackNavigator";
 import ForumNavigator from "./forumStackNavigator";
 import MapNavigator from "./mapStackNavigator";
-import EventListScreen from "../screens/Page/MyEvents";
+import EventListScreen from "../screens/Page/EventList/collegeEvent";
 import WithOverlayBottomSheet from "../components/Container/WithOverlayBottomSheet";
 import { View } from "react-native-ui-lib";
 import EventFilters from "../components/Form/EventFilters";

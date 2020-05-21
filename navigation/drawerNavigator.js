@@ -1,4 +1,5 @@
 import React from "react";
+import { View, Text } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -8,18 +9,24 @@ import {
 
 import auth from "@react-native-firebase/auth";
 
-import Invites from "../screens/Page/Invites";
-import Profile from "./profileNavigator";
+// import Invites from "../screens/Page/Invites";
+// import Profile from "./profileNavigator";
 import Settings from "./settingNavigator";
 import TabNavigator from "./tabNavigator";
-
 import MyEventsScreen from "../screens/Page/MyEvents";
+import { UserContext } from "../dataContainers/context";
+import AvatarButton from "../components/Buttons/AvatarButton";
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
+      {/* <DrawerItem
+        onPress={() =>
+          navigation.navigate('ProfileNavigator', { screen: 'Profile' })}
+
+      ></DrawerItem> */}
       <DrawerItemList {...props} />
       <DrawerItem
         label="Log Out"
@@ -29,10 +36,30 @@ function CustomDrawerContent(props) {
   );
 }
 
+function ProfileScreen({ navigation }) {
+  return (
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <UserContext.Consumer>
+        {(user) => <AvatarButton photoURL={user.photoURL} size={50} />}
+      </UserContext.Consumer>
+      <UserContext.Consumer>
+        {(user) => <Text>{user.displayName}</Text>}
+      </UserContext.Consumer>
+    </View>
+  );
+}
+
 export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={CustomDrawerContent}
+      initialRouteName="content"
       drawerPosition="right"
       drawerType="front"
       drawerWidth={200}

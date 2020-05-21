@@ -47,7 +47,10 @@ export default class CollegeEventModel {
     if (filters.categories?.length)
       query = query.where("category", "in", filters.categories);
     if (filters.live) query = query.where("ended", "==", false);
-    if (filters.orderBy) query = query.where("ended", "==", false);
+    if (filters.orderBy) query.orderBy(filters.orderBy, "desc");
+    if (filters.startAfter) query = query.startAfter(filters.startAfter);
+    console.log(query);
+    if (filters.limit) query = query.limit(filters.limit);
     return query;
   }
 

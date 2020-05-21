@@ -2,7 +2,7 @@ import React from "react";
 import {
   useNavigationBuilder,
   StackRouter,
-  createNavigatorFactory
+  createNavigatorFactory,
 } from "@react-navigation/native";
 
 import MapScreen from "../screens/Page/Map";
@@ -14,11 +14,11 @@ import { View } from "react-native-ui-lib";
 import styles from "./styles";
 import { TouchableWithoutFeedback } from "react-native";
 
-const MyStackRouter = options => {
+const MyStackRouter = (options) => {
   const router = StackRouter(options);
 
   return {
-    ...router
+    ...router,
   };
 };
 
@@ -28,7 +28,7 @@ function CustomStackNavigator({ initialRouteName, children, screenOptions }) {
     {
       children,
       screenOptions,
-      initialRouteName
+      initialRouteName,
     }
   );
 
@@ -45,6 +45,8 @@ function CustomStackNavigator({ initialRouteName, children, screenOptions }) {
             onPress={() => navigation.openDrawer()}
             hasBorder
             useUser
+            marginTop={20}
+            marginRight={10}
           />
         </View>
       </View>

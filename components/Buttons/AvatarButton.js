@@ -11,14 +11,15 @@ export default function ({
   init,
   onPress,
   size,
-  marginTop = 20,
-  marginRight = 10,
+  marginTop = 0,
+  marginRight = 0,
   marginBottom = 0,
   hasBorder,
   useUser,
   shadow = true,
 }) {
   const user = useContext(UserContext);
+  // set photo if photo is valid
   let photo;
   if (photoURL) {
     photo = photoURL;
@@ -27,6 +28,7 @@ export default function ({
   } else {
     photo = "";
   }
+  // set initials if photo is invalid
   let initials;
   if (init && !photo) {
     initials = init;

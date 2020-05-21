@@ -12,7 +12,6 @@ import CalendarToggle from "../Buttons/CalendarToggle";
 export default ({ children, event, map, edit, trash, rsvp }) => {
   const navigation = useNavigation();
   const startDate = moment(event.startDate.toDate());
-
   return (
     <Card
       white50

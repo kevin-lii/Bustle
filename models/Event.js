@@ -2,11 +2,8 @@ import { getLocation, validateLocation } from "../global/utils";
 
 import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
 import { firebase as fire } from "@react-native-firebase/functions";
 import { GeoFirestore, GeoTransaction } from "geofirestore";
-import "react-native-get-random-values";
-import { v4 as uuid } from "uuid";
 
 import { UserContext } from "../dataContainers/context";
 // import { getDefaultImage } from "../global/utils";
@@ -50,6 +47,12 @@ export default class EventModel {
         center: new firestore.GeoPoint(37.86835, -122.265),
         radius: filters.radius,
       });
+    if (filters.orderBy)
+      query = query.orderBy(
+        filters.orderBy,
+        filters.orderByDir ? filters.orderByDir : "asc"
+      );
+    if (filters.limit) query = query.limit(filters.limit);
     if (onNext) query.onSnapshot(onNext, console.log);
   }
 
@@ -102,21 +105,20 @@ export default class EventModel {
 
     await geofirestore.runTransaction(async (t) => {
       const transaction = new GeoTransaction(t);
+      const eventRef = store.collection("events").doc();
       // upload image
       if (data.image) {
-        const fileName = `${uuid()}`;
         await f
           .storage()
-          .ref(`events/${data.category}/${fileName}`)
+          .ref(`events/${data.category}/${eventRef}`)
           .putFile(data.image);
         data.photoURL = await f
           .storage()
-          .ref(`events/${data.category}/${fileName}`)
+          .ref(`events/${data.category}/${eventRef}`)
           .getDownloadURL();
-        data.photoID = fileName;
+        data.photoID = eventRef;
         delete data.image;
       }
-      const eventRef = store.collection("events").doc();
       // upload event
       transaction.set(eventRef, data);
 
@@ -148,23 +150,14 @@ export default class EventModel {
         if (data.photoURL) {
           await f.storage().refFromURL(data.photoURL).delete();
         }
-        const fileName = `${uuid()}`;
         await f
           .storage()
-          .ref(`events/${data.category}/${fileName}`)
-          // .put(data.image, {
-          //   customMetadata: { uid: data.host, eventID: event.id }
-          // })
-          // .on(f.storage.TaskEvent.STATE_CHANGED, async snapshot => {
-          //   if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-          //     const photoURL = await snapshot.ref.getDownloadURL();
-          //     // await uploadPhoto({ eventID: event.id, photoURL: photoURL });
-          //   }
-          // });
-          .put(data.image)
-          .then();
-        data.photoURL = snapshot.ref.getDownloadURL();
-        data.photoID = fileName;
+          .ref(`events/${data.category}/${eventID}`)
+          .putFile(data.image);
+        data.photoURL = await f
+          .storage()
+          .ref(`events/${data.category}/${eventID}`)
+          .getDownloadURL();
         delete data.image;
       }
       return geofirestore.collection("events").doc(eventID).update(data);
