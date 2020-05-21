@@ -1,15 +1,13 @@
 import React from "react";
 import { Text, FlatList, SafeAreaView } from "react-native";
-import { connect } from "react-redux";
 
-import { getEvents, getPosts } from "../../../store/actions";
 import EventModel from "../../../models/CollegeEvent";
 import EventDetail from "../../../components/Cards/EventDetailCard";
 import { UserContext } from "../../../dataContainers/context";
 
 import styles from "./styles";
 
-class CollegeEvent extends React.Component {
+export default class CollegeEvent extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
@@ -26,7 +24,7 @@ class CollegeEvent extends React.Component {
   retrieveInitialData = async () => {
     try {
       await EventModel.subscribe(
-        { host: this.context.uid, orderBy: "date", limit: 7 },
+        { orderBy: "startDate", limit: 6 },
         (snapshot) => {
           const tempHost = [];
           let last = null;
@@ -52,10 +50,9 @@ class CollegeEvent extends React.Component {
       if (!this.state.complete) {
         await EventModel.subscribe(
           {
-            host: this.context.uid,
-            orderBy: "date",
+            orderBy: "startDate",
             startAfter: this.state.lastVisible,
-            limit: 7,
+            limit: 6,
           },
           (snapshot) => {
             const tempHost = [];
@@ -64,16 +61,17 @@ class CollegeEvent extends React.Component {
               last = doc;
               tempHost.push({ ...doc.data(), id: doc.id });
             });
+
             if (tempHost.length)
               this.setState({
                 hostedEvents: [...this.state.hostedEvents, ...tempHost],
                 lastVisible: last,
               });
-            else this.setState({ complete: true });
+            else {
+              this.setState({ complete: true });
+            }
           }
         );
-      } else {
-        this.setState({ complete: true });
       }
     } catch (error) {
       console.log(error);
@@ -82,8 +80,10 @@ class CollegeEvent extends React.Component {
 
   render() {
     const { navigation } = this.props;
+    let loading = !this.state.complete;
     const renderFooter = () => {
-      if (!this.state.complete) {
+      console.log(this.state.complete);
+      if (loading) {
         return <Text>Loading...</Text>;
       } else {
         return null;
@@ -98,7 +98,7 @@ class CollegeEvent extends React.Component {
             return <EventDetail event={item} navigation={navigation} rsvp />;
           }}
           ListHeaderComponent={() => (
-            <Text style={styles.title}>Hosted Events</Text>
+            <Text style={styles.title}>Interested Events</Text>
           )}
           ListEmptyComponent={() =>
             this.state.complete && (
@@ -107,17 +107,9 @@ class CollegeEvent extends React.Component {
           }
           ListFooterComponent={renderFooter}
           onEndReached={this.retrieveMoreData}
-          onEndReachedThreshold={0}
+          onEndReachedThreshold={5}
         />
       </SafeAreaView>
     );
   }
 }
-export default connect(
-  (state) => ({
-    events: state.events,
-  }),
-  {
-    getEvents,
-  }
-)(CollegeEvent);
