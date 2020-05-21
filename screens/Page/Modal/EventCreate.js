@@ -1,8 +1,6 @@
 import React from "react";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { Alert, ScrollView } from "react-native";
-import ImagePicker from "react-native-image-picker";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { UserContext } from "../../../dataContainers/context";
 import EventModel from "../../../models/CollegeEvent";
@@ -16,6 +14,7 @@ import LocationInput from "../../../components/Form/LocationInput";
 import Tokenizer from "../../../components/Form/Tokenizer";
 
 import { Theme, eventTags } from "../../../global/constants";
+import { validateURL } from "../../../global/utils";
 import globalStyles from "../../../global/styles";
 
 export default class EventCreate extends React.Component {
@@ -77,7 +76,14 @@ export default class EventCreate extends React.Component {
   }
 
   validateSubmission() {
-    if (!this.state.name) return;
+    const errors = [];
+    const { name, endDate, endTime, link, location } = this.state;
+    if (!name) errors.push("Event name required");
+    if (!endDate && endTime) errors.push("End date required");
+    if (endDate && !endTime) errors.push("End time required");
+    if (link && !validateURL(link)) errors.push("Invalid link");
+    if (!link && !location) errors.push("Link or location required");
+    if (errors.length > 0) return Alert.alert("Error", errors.join("\n"));
 
     this.submit(Boolean(this.props.route.params?.event));
   }
@@ -112,12 +118,11 @@ export default class EventCreate extends React.Component {
               floatingPlaceholder
               placeholder="Event Name"
               validate={"required"}
-              errorMessage={"Required field!"}
               floatOnFocus
-              color={Theme.primary}
+              color={Theme.secondary}
               floatingPlaceholderColor={Theme.primary}
-              hideUnderline={false}
-              useTopErrors={false}
+              underlineColor={Theme.underline}
+              autoFocus={true}
               rightIconSource={null}
             />
 
@@ -217,6 +222,7 @@ export default class EventCreate extends React.Component {
                   expandable={true}
                   enableErrors={false}
                   placeholder="Description"
+                  autoFocus={true}
                   onChangeText={(description) => this.setState({ description })}
                 />
               </View>

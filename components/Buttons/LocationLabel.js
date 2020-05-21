@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Picker, View, Text, ThemeManager } from "react-native-ui-lib";
+import { Picker, View, Text } from "react-native-ui-lib";
 import { StyleSheet, TouchableOpacity } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";

@@ -10,6 +10,7 @@ exports.Theme = {
   red: "#EE0C0C",
   darkred: "#9F0D0D",
   disabled: "#e6e6e6",
+  underline: "#D2D6D8",
   defaultBackground: "#f2f2f2",
   deviceWidth: width,
   CARD_HEIGHT: height / 9,
