@@ -62,7 +62,7 @@ exports.getDefaultRegionID = function (zone) {
 };
 
 exports.getDefaultZone = function () {
-  return "ucb";
+  return 110635; //uc berkeley
 };
 
 exports.getNameInitials = function (displayName) {

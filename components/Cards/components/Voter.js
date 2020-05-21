@@ -33,7 +33,7 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
             setDown(false);
           }
         }}
-        color={up ? Theme.primary : Theme.grey}
+        color={up ? Theme.secondary : Theme.grey}
       />
       <Text style={{ fontSize }}>{numVotes}</Text>
       <IconButton
@@ -48,7 +48,7 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
             setDown(true);
           }
         }}
-        color={down ? Theme.primary : Theme.grey}
+        color={down ? Theme.secondary : Theme.grey}
       />
     </View>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native-ui-lib";
+import { Text, View } from "react-native-ui-lib";
 
 import globalStyles from "../../global/styles";
 import AvatarButton from "../Buttons/AvatarButton";
@@ -10,7 +10,7 @@ import { forumRegions, zones } from "../../global/forumconfig";
 import { getDefaultZone } from "../../global/utils";
 import { Theme } from "../../global/constants";
 
-export default ({ navigation, regionID, setRegion, openFilters }) => {
+export default ({ navigation, text }) => {
   // const items = forumRegions
   //   .filter((region) => !region.inactive)
   //   .map((region) => ({
@@ -28,21 +28,26 @@ export default ({ navigation, regionID, setRegion, openFilters }) => {
       }}
     >
       <View absL centerV style={{ height: "100%", left: 10 }}>
-        <LocationLabel
-          zone={getDefaultZone()}
-          regionID={regionID}
-          onPick={(values) =>
-            setRegion(values.filter((v) => v.value != null).map((v) => v.value))
-          }
-          pickerMode="MULTI"
-          size="large"
-        />
+        {text ? (
+          <Text
+            color={Theme.primary}
+            style={{ fontSize: 24, fontWeight: "bold" }}
+          >
+            {text}
+          </Text>
+        ) : (
+          <LocationLabel zone={getDefaultZone()} size="large" />
+        )}
       </View>
       <View absR row style={{ height: "100%" }}>
         <View>
           <IconButton
             icon="filter"
-            onPress={openFilters}
+            onPress={() =>
+              navigation.dispatch({
+                type: "OPEN_SHEET",
+              })
+            }
             size={20}
             color={Theme.primary}
             fullSize

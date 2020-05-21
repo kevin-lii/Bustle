@@ -9,7 +9,7 @@ export default function ({ onChange, value }) {
   return (
     <View marginT-7 row centerV style={{ justifyContent: "space-between" }}>
       {categories.map((category) => {
-        const color = value === category ? Theme.secondary : null;
+        const color = value === category ? Theme.primary : null;
         return (
           <TouchableOpacity onPress={() => onChange(category)} key={category}>
             <View center>

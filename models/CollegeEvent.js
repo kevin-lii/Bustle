@@ -40,14 +40,25 @@ const collection = "college_events";
 export default class CollegeEventModel {
   constructor() {}
 
-  static async get(filters, onNext) {
+  static genQuery(filters) {
     let query = firestore().collection(collection);
 
     if (filters.host) query = query.where("host.uid", "==", filters.host);
     if (filters.categories?.length)
       query = query.where("category", "in", filters.categories);
-    if (filters.active) query = query.where("ended", "==", false);
-    if (onNext) query.onSnapshot(onNext, console.log);
+    if (filters.live) query = query.where("ended", "==", false);
+    if (filters.orderBy) query = query.where("ended", "==", false);
+    return query;
+  }
+
+  static get(filters) {
+    const query = this.genQuery(filters);
+    return query.get();
+  }
+
+  static async subscribe(filters, onNext, onError = console.log) {
+    const query = this.genQuery(filters);
+    if (onNext) query.onSnapshot(onNext, onError);
   }
 
   static async getCollection() {
@@ -89,7 +100,6 @@ export default class CollegeEventModel {
         data.photoID = fileName;
         delete data.image;
       }
-      console.log(data);
 
       // upload event
       transaction.set(eventRef, data);

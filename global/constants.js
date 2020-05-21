@@ -2,8 +2,8 @@ import { Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 exports.Theme = {
-  primary: "#1c004b",
-  secondary: "#FF7100",
+  primary: "#FF7100",
+  secondary: "#1c004b",
   grey: "#9c9c9c",
   blue: "#006EBE",
   green: "#09BD09",
@@ -27,12 +27,26 @@ exports.categories = [
   "Community",
 ];
 
-exports.tags = {
-  Social: ["Party", "Music", "Film", "Games", "Networking", "Food/drink"],
-  Professional: ["Networking", "Infosession", "Resume drop", "Recruiting"],
-  Athletic: ["Pickup Game", "Watch Party", "Recruiting"],
+exports.eventTags = {
+  Social: ["Film", "Food/drink", "Games", "Music", "Networking", "Party"],
+  Professional: ["Infosession", "Networking", "Recruiting", "Resume drop"],
+  Athletic: ["Recruiting", "Pickup Game", "Watch Party"],
   Learn: ["Infosession", "Lecture", "Workshop"],
-  Community: ["Religion", "Charity", "Fundraiser", "Volunteer"],
+  Community: ["Charity", "Fundraiser", "Religion", "Volunteer"],
 };
 
-exports.anonymous = "anon";
+exports.forumTags = [
+  "alert",
+  "clubs",
+  "confession",
+  "courseadvice",
+  "dormlife",
+  "internships",
+  "memes",
+  "mentorship",
+  "news",
+  "opportunity",
+  "party",
+  "relationships",
+  "roommates",
+];

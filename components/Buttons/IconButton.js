@@ -29,10 +29,10 @@ export default ({
   >
     <View style={iconContainer}>
       <Icons
-        type={type || Theme.icon}
+        type={type}
         size={size}
         icon={icon}
-        color={color || Theme.primary}
+        color={color}
         style={iconStyle}
       />
     </View>

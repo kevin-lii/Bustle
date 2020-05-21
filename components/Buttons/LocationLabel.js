@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Icons from "../Image/Icons";
 
 import { Theme } from "../../global/constants";
-import { regionByID, zonesByID } from "../../global/forumconfig";
+import collegeByID from "../../global/colleges.json";
 import { getDefaultZone } from "../../global/utils";
 
 export default ({
@@ -22,8 +22,8 @@ export default ({
   const iconSize = size === "small" ? 12 : 16;
   const fontWeight = "bold";
 
-  const labelText = regionByID[regionID]?.name || zonesByID[zone].name;
-  let pickerValue = { value: regionID, label: labelText };
+  const labelText = collegeByID[getDefaultZone()]["ALIAS"];
+  let pickerValue = { value: zone, label: labelText };
 
   if (pickerMode === "MULTI") {
     if (regionID?.length > 0)
@@ -56,7 +56,7 @@ export default ({
             <Icons
               type="Ionicons"
               icon="ios-arrow-down"
-              color={Theme.secondary}
+              color={Theme.primary}
             />
           </View>
         )}
@@ -76,7 +76,7 @@ export default ({
             <Icons
               icon="map-marker-alt"
               size={iconSize}
-              color={Theme.secondary}
+              color={Theme.primary}
             />
           </View>
         )}
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    color: Theme.secondary,
+    color: Theme.primary,
     fontWeight: "bold",
   },
 });

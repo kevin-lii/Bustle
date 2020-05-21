@@ -15,7 +15,7 @@ import ToggleRow from "../../../components/Form/ToggleRow";
 import LocationInput from "../../../components/Form/LocationInput";
 import Tokenizer from "../../../components/Form/Tokenizer";
 
-import { Theme, tags } from "../../../global/constants";
+import { Theme, eventTags } from "../../../global/constants";
 import globalStyles from "../../../global/styles";
 
 export default class EventCreate extends React.Component {
@@ -39,68 +39,59 @@ export default class EventCreate extends React.Component {
       tags: [],
     };
 
-    this.state.confirmed = false;
     if (props.event) {
       this.state.date = this.state.date.toDate();
       this.state.time = this.state.time.toDate();
       this.state.endDate = this.state.endDate?.toDate();
       this.state.endTime = this.state.endTime?.toDate();
     }
+
+    this.submit = this.submit.bind(this);
+    this.validateSubmission = this.validateSubmission.bind(this);
+  }
+
+  async submit(update = false) {
+    try {
+      const stateCopy = Object.assign({}, this.state);
+      stateCopy.startDate = new Date();
+      stateCopy.startDate.setDate(this.state.date.getDate());
+      stateCopy.startDate.setTime(this.state.time.getTime());
+      delete stateCopy.date;
+      delete stateCopy.time;
+
+      if (update) return EventModel.update(route.params?.event.id, stateCopy);
+
+      EventModel.create(
+        {
+          uid: this.context.uid,
+          displayName: this.context.displayName,
+          photoURL: this.context.photoURL,
+        },
+        stateCopy
+      );
+      this.props.navigation.goBack();
+    } catch (e) {
+      console.log(e);
+      Alert.alert("Error", e.message);
+    }
+  }
+
+  validateSubmission() {
+    if (!this.state.name) return;
+
+    this.submit(Boolean(this.props.route.params?.event));
   }
 
   render() {
     const { navigation, route } = this.props;
     const iconSize = 25;
 
-    const submit = async () => {
-      try {
-        this.setState({ confirmed: true });
-        const stateCopy = Object.assign({}, this.state);
-        delete stateCopy.confirmed;
-        EventModel.create(
-          {
-            uid: this.context.uid,
-            displayName: this.context.displayName,
-            photoURL: this.context.photoURL,
-          },
-          stateCopy
-        );
-        navigation.goBack();
-      } catch (e) {
-        console.log(e);
-        Alert.alert("Error", e.message);
-        this.setState({ confirmed: false });
-      }
-    };
-
-    const edit = async () => {
-      try {
-        this.setState({ confirmed: true });
-        const stateCopy = Object.assign({}, this.state);
-        delete stateCopy.confirmed;
-        EventModel.update(route.params?.event.id, stateCopy);
-        navigation.goBack();
-      } catch (e) {
-        console.log(e);
-        Alert.alert("Error", e.message);
-        this.setState({ confirmed: false });
-      }
-    };
-
-    const validateSubmission = () => {
-      if (!this.state.name) return;
-
-      if (route.params?.event) edit();
-      else submit();
-    };
-
     return (
       <View flex>
         <FormHeader
           onClose={navigation.goBack}
-          onSubmit={validateSubmission}
+          onSubmit={this.validateSubmission}
           submitText={route.params?.event ? "Update" : "Create"}
-          disabled={this.state.confirmed}
         />
         <ScrollView
           style={{
@@ -141,13 +132,13 @@ export default class EventCreate extends React.Component {
                 onTime={(time) => this.setState({ time })}
               />
             </View>
-            <View marginL-35 marginT-15 marginB-15>
+            <View marginL-35 marginT-15 marginB-20>
               <DateTime
                 date={this.state.endDate}
                 time={this.state.endTime}
                 endTime
-                onDate={(date) => this.setState({ date })}
-                onTime={(time) => this.setState({ time })}
+                onDate={(endDate) => this.setState({ endDate })}
+                onTime={(endTime) => this.setState({ endTime })}
               />
             </View>
 
@@ -159,7 +150,7 @@ export default class EventCreate extends React.Component {
               onChange={(virtual) => this.setState({ virtual })}
             />
 
-            <View row marginT-20 marginB-10>
+            <View row marginT-30 marginB-10>
               <View marginR-10>
                 <Icons
                   icon={this.state.virtual ? "link" : "map-marker-alt"}
@@ -183,7 +174,7 @@ export default class EventCreate extends React.Component {
               </View>
             </View>
 
-            <ToggleRow
+            {/* <ToggleRow
               icon={<Icons icon="user-secret" size={iconSize - 3} />}
               padding={13}
               label="Private Event"
@@ -191,7 +182,7 @@ export default class EventCreate extends React.Component {
               size={40}
               onChange={(isPrivate) => this.setState({ isPrivate })}
               underline={!this.state.isPrivate}
-            />
+            /> */}
 
             {this.state.isPrivate && (
               <ToggleRow
@@ -210,13 +201,13 @@ export default class EventCreate extends React.Component {
               </Text>
               <View paddingH-5>
                 <Category
-                  onChange={(category) => this.setState({ category })}
+                  onChange={(category) => this.setState({ category, tags: [] })}
                   value={this.state.category}
                 />
               </View>
             </View>
 
-            <View row marginT-15>
+            <View row marginT-25>
               <View marginL-4 marginR-15>
                 <Icons icon="info" size={iconSize - 2} />
               </View>
@@ -231,7 +222,7 @@ export default class EventCreate extends React.Component {
               </View>
             </View>
 
-            <View row marginT-15>
+            <View row marginT-20>
               <View marginR-7 marginT-10>
                 <Icons icon="hashtag" size={iconSize - 2} />
               </View>
@@ -239,12 +230,12 @@ export default class EventCreate extends React.Component {
                 <Tokenizer
                   value={this.state.tags}
                   size={18}
-                  pillColor={Theme.secondary}
+                  pillColor={Theme.primary}
                   color="white"
                   onChange={(tags) => this.setState({ tags })}
-                  data={tags[this.state.category].map((category) => ({
-                    label: category,
-                    value: category,
+                  data={eventTags[this.state.category].map((tag) => ({
+                    label: tag,
+                    value: tag,
                   }))}
                 />
               </View>
