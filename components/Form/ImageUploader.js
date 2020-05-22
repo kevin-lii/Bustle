@@ -1,9 +1,8 @@
 import React from "react";
-import { Button, Text } from "react-native-ui-lib";
+import { Text } from "react-native-ui-lib";
 import ImagePicker from "react-native-image-picker";
 import { StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
 
-import TextButton from "../Buttons/TextButton";
 import { Theme } from "../../global/constants";
 
 export default ({ onImageSubmit, uri, height = 120 }) => {

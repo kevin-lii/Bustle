@@ -55,7 +55,7 @@ export default ({ navigation, text }) => {
         </View>
         <AvatarButton
           onPress={() => navigation.openDrawer()}
-          hasBorder
+          borderWidth={1}
           useUser
           marginTop={7.5}
           marginRight={8}

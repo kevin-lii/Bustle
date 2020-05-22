@@ -145,7 +145,9 @@ export default class EventModel {
     }
     const store = firestore();
     const geofirestore = new GeoFirestore(store);
-    await store.runTransaction(async (t) => {
+
+    await geofirestore.runTransaction(async (t) => {
+      const transaction = new GeoTransaction(t);
       if (data.image) {
         if (data.photoURL) {
           await f.storage().refFromURL(data.photoURL).delete();
@@ -160,7 +162,7 @@ export default class EventModel {
           .getDownloadURL();
         delete data.image;
       }
-      return geofirestore.collection("events").doc(eventID).update(data);
+      transaction.update(store.collection(collection).doc(eventID), data);
     });
   }
 }

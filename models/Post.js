@@ -1,9 +1,7 @@
 import firestore, { firebase } from "@react-native-firebase/firestore";
-import Geofirestore from "geofirestore";
 
 import { votePost, postReply } from "../global/functions";
 import { getDefaultZone } from "../global/utils";
-import UserModel from "./User";
 
 // Post Class: {
 //   text
@@ -24,6 +22,9 @@ export default class Post {
     let query = store.collection("posts");
     if (filters.regionIDs && filters.regionIDs.length > 0)
       query = query.where("regionID", "in", filters.regionIDs);
+    if (filters.orderBy) query = query.orderBy(filters.orderBy);
+    if (filters.startAfter) query = query.startAfter(filters.startAfter);
+    if (filters.limit) query = query.limit(filters.limit);
     if (next)
       query.onSnapshot({
         next,
@@ -67,9 +68,27 @@ export default class Post {
 
   static async reply(postID, author, data) {
     if (!data.text) throw new Error("No text");
-    data.author = author;
-    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-    data.votes = 0;
-    firestore().collection("posts").doc(postID).collection("replies").add(data);
+    const store = firestore();
+    await store.runTransaction(async (transaction) => {
+      data.author = author;
+      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      data.votes = 0;
+      const reply = store
+        .collection("posts")
+        .doc(postID)
+        .collection("replies")
+        .doc();
+      transaction.set(reply, data);
+      transaction.update(
+        store
+          .collection("users")
+          .doc(user.uid)
+          .collection("public")
+          .doc("profile"),
+        {
+          replies: firestore.FieldValue.arrayUnion(reply.id),
+        }
+      );
+    });
   }
 }

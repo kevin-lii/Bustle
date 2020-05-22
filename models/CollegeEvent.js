@@ -128,31 +128,22 @@ export default class CollegeEventModel {
       validateLocation(loc, lat, lng);
     }
     const store = firestore();
-    await store.runTransaction(async (t) => {
+    await store.runTransaction(async (transaction) => {
       if (data.image) {
         if (data.photoURL) {
           await f.storage().refFromURL(data.photoURL).delete();
         }
-        const fileName = `${uuid()}`;
         await f
           .storage()
-          .ref(`${collection}/${fileName}`)
-          // .put(data.image, {
-          //   customMetadata: { uid: data.host, eventID: event.id }
-          // })
-          // .on(f.storage.TaskEvent.STATE_CHANGED, async snapshot => {
-          //   if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-          //     const photoURL = await snapshot.ref.getDownloadURL();
-          //     // await uploadPhoto({ eventID: event.id, photoURL: photoURL });
-          //   }
-          // });
-          .put(data.image)
-          .then();
-        data.photoURL = snapshot.ref.getDownloadURL();
-        data.photoID = fileName;
+          .ref(`events/${data.category}/${eventID}`)
+          .putFile(data.image);
+        data.photoURL = await f
+          .storage()
+          .ref(`events/${data.category}/${eventID}`)
+          .getDownloadURL();
         delete data.image;
       }
-      return store.collection(collection).doc(eventID).update(data);
+      transaction.update(store.collection(collection).doc(eventID), data);
     });
   }
 }

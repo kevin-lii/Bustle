@@ -43,7 +43,7 @@ function CustomStackNavigator({ initialRouteName, children, screenOptions }) {
         <View style={styles.headerRight}>
           <HeaderRight
             onPress={() => navigation.openDrawer()}
-            hasBorder
+            borderWidth={1}
             useUser
             marginTop={20}
             marginRight={10}
