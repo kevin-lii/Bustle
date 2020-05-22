@@ -37,30 +37,38 @@ export default class UserModel {
 
     const store = firestore();
     const ref = store.collection("users").doc(uid);
-    let unsubscribe = ref
-      .collection("public")
-      .doc("profile")
-      .onSnapshot(sub, console.log);
+    const unsubs = [];
+    unsubs.push(
+      ref.collection("public").doc("profile").onSnapshot(sub, console.log)
+    );
 
     if (uid === auth().currentUser?.uid) {
-      let unsub = ref
-        .collection("private")
-        .doc("profile")
-        .onSnapshot(sub, console.log);
-      const unsub2 = unsubscribe;
-      unsubscribe = () => {
-        unsub2();
-        unsub();
-      };
+      const userRef = ref.collection("private");
+      unsubs.push(userRef.doc("profile").onSnapshot(sub, console.log));
+      unsubs.push(userRef.doc("votes").onSnapshot(sub, console.log));
+      unsubs.push(
+        userRef.doc("savedCollegeEvents").onSnapshot(sub, console.log)
+      );
     }
 
-    return unsubscribe;
+    return () => unsubs.forEach((fn) => fn());
   }
 
   static async query() {}
 
   static async create(email, password) {
     await auth().createUserWithEmailAndPassword(email, password);
+  }
+
+  static async saveEvent(eventID, status) {
+    await firestore()
+      .collection("users")
+      .doc(auth().currentUser.uid)
+      .collection("private")
+      .doc("savedCollegeEvents")
+      .update({
+        ["saved." + eventID]: status,
+      });
   }
 
   static async update(publicData, privateData) {

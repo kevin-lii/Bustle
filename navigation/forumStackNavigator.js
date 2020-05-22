@@ -36,9 +36,9 @@ export default function ForumStackNavigator() {
           header: ({ scene, previous, navigation }) => {
             return <DetailHeader navigation={navigation} route={scene.route} />;
           },
+          animationEnabled: false,
           gestureDirection: "horizontal",
           gestureEnabled: true,
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
     </Stack.Navigator>

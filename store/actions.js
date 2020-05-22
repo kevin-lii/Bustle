@@ -15,6 +15,14 @@ export const actionTypes = {
 
 const subscriptions = [];
 
+const attachIDs = (snapshot) => {
+  const docs = [];
+  snapshot.forEach((doc) => {
+    docs.push({ ...doc.data(), id: doc.id });
+  });
+  return docs;
+};
+
 export const login = () => (dispatch) => {
   auth().onAuthStateChanged(async (user) => {
     if (user) {
@@ -37,13 +45,9 @@ export const login = () => (dispatch) => {
 export const getHostedEvents = () => (dispatch, getState) => {
   const { user } = getState();
   EventModel.subscribe({ host: user.uid, orderBy: "startDate" }, (snapshot) => {
-    const hostedEvents = [];
-    snapshot.forEach((doc) => {
-      hostedEvents.push({ ...doc.data(), id: doc.id });
-    });
     dispatch({
       type: actionTypes.UPDATE_HOSTED_EVENTS,
-      hostedEvents,
+      hostedEvents: attachIDs(snapshot),
     });
   });
 };
@@ -52,7 +56,7 @@ export const getEvents = (filters = {}) => (dispatch) => {
   EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,
-      events: snapshot.docs,
+      events: attachIDs(snapshot),
     });
   });
 };
@@ -61,7 +65,7 @@ export const getPosts = (filters = {}) => (dispatch) => {
   PostModel.get(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_POSTS,
-      posts: snapshot.docs,
+      posts: attachIDs(snapshot),
     });
   });
 };
@@ -69,7 +73,7 @@ export const setEventFilters = (filters = {}) => (dispatch) => {
   EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.FILTER_EVENTS,
-      events: snapshot.docs,
+      events: attachIDs(snapshot),
       filters,
     });
   });

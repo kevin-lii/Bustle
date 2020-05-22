@@ -46,19 +46,14 @@ class Feed extends Component {
         <View flex style={{ backgroundColor: Theme.defaultBackground }}>
           <FlatList
             style={{ paddingHorizontal: forumView ? 0 : 10 }}
+            contentContainerStyle={{ paddingBottom: 80 }}
             data={forumView ? posts : events}
             renderItem={({ item, index }) => {
               if (forumView)
-                return (
-                  <PostCard post={item.data()} postID={item.id} key={index} />
-                );
+                return <PostCard post={item} postID={item.id} key={index} />;
               else
                 return (
-                  <EventDetailCard
-                    event={item.data()}
-                    navigation={navigation}
-                    rsvp
-                  />
+                  <EventDetailCard event={item} navigation={navigation} rsvp />
                 );
             }}
           />

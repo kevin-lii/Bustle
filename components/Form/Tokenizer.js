@@ -1,40 +1,8 @@
 import React, { useRef } from "react";
 import { View, Text, Picker, TagsInput } from "react-native-ui-lib";
-import { StyleSheet } from "react-native";
 
 import { Theme } from "../../global/constants";
-import Icons from "../Image/Icons";
-
-const Pill = ({ label, size, pillColor, color }) => (
-  <View
-    row
-    centerV
-    style={{
-      backgroundColor: label === "Add" ? "white" : pillColor,
-      marginRight: 10,
-      marginBottom: 5,
-      paddingHorizontal: 15,
-      paddingVertical: 5,
-      borderRadius: 100,
-      borderWidth: label === "Add" ? 1 : 0,
-      borderColor: Theme.primary,
-    }}
-  >
-    <View marginR-5>
-      <Icons
-        icon={label === "Add" ? "plus-a" : "close-a"}
-        color={label === "Add" ? Theme.primary : "white"}
-        size={10}
-      />
-    </View>
-    <Text
-      style={{ fontSize: size || 20 }}
-      color={label === "Add" ? Theme.primary : color}
-    >
-      {label}
-    </Text>
-  </View>
-);
+import Pill from "../Buttons/PillButton";
 
 export default ({
   onChange,
@@ -73,6 +41,8 @@ export default ({
               label={label}
               pillColor={pillColor}
               color={color}
+              active={label !== "Add"}
+              icon={label === "Add" ? "plus-a" : "close-a"}
             />
           )}
           onTagPress={(index) => {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native-ui-lib";
 import moment from "moment";
+import HyperLink from "react-native-hyperlink";
 
 import ProfileHeader from "./components/ProfileHeader";
 import Voter from "./components/Voter";
@@ -22,7 +23,9 @@ export default ({
       <View flex>
         <ProfileHeader {...author} createdAt={createdAt} isOP={isOP} />
         <View marginT-10 paddingR-5>
-          <Text style={{ fontSize: reply ? 15 : 25 }}>{text}</Text>
+          <HyperLink linkDefault={true}>
+            <Text style={{ fontSize: reply ? 15 : 25 }}>{text}</Text>
+          </HyperLink>
         </View>
       </View>
       <View centerV>

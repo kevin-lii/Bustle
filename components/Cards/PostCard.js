@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { Text, View } from "react-native-ui-lib";
+import HyperLink from "react-native-hyperlink";
 import { useNavigation } from "@react-navigation/native";
 
 import Voter from "./components/Voter";
@@ -21,7 +22,9 @@ export default ({ post, postID, footer = true }) => {
           style={{ flex: 1 }}
         >
           <PostHeader {...post.author} />
-          <Text style={styles.text}>{text}</Text>
+          <HyperLink linkDefault={true}>
+            <Text style={styles.text}>{text}</Text>
+          </HyperLink>
         </TouchableOpacity>
         <View center style={{ height: "100%" }}>
           <Voter postID={postID} votes={votes} />

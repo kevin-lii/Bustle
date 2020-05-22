@@ -32,7 +32,7 @@ export default ({
         onValueChange={onChange}
         value={value}
         thumbColor={value ? Theme.primary : null}
-        trackColor={{ true: "#ffc69b", false: null }}
+        trackColor={{ true: Theme.lightPrimary, false: null }}
       />
     </View>
   </TouchableWithoutFeedback>
