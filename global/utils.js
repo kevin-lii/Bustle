@@ -79,6 +79,10 @@ exports.getNameInitials = function (displayName) {
     .toUpperCase();
 };
 
+exports.trimString = function (str, length) {
+  return str.length > length ? str.substring(0, length - 3) + "..." : str;
+};
+
 exports.checkName = function (name) {
   const nameRegex = /([A-Z]){1}\w+/;
   if (!nameRegex.test(name)) {

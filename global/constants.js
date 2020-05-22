@@ -2,7 +2,7 @@ import { Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 exports.Theme = {
-  primary: "#FF7100",
+  primary: "#FF7000",
   lightPrimary: "#ffc69b",
   secondary: "#1c004b",
   grey: "#9c9c9c",
