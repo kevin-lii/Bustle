@@ -10,23 +10,20 @@ import {
 import auth from "@react-native-firebase/auth";
 
 // import Invites from "../screens/Page/Invites";
-// import Profile from "./profileNavigator";
+import Profile from "./profileNavigator";
 import Settings from "./settingNavigator";
 import TabNavigator from "./tabNavigator";
 import MyEventsScreen from "../screens/Page/MyEvents";
 import { UserContext } from "../dataContainers/context";
 import AvatarButton from "../components/Buttons/AvatarButton";
+import { Theme } from "../global/constants";
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   return (
-    <DrawerContentScrollView {...props}>
-      {/* <DrawerItem
-        onPress={() =>
-          navigation.navigate('ProfileNavigator', { screen: 'Profile' })}
-
-      ></DrawerItem> */}
+    <DrawerContentScrollView style={{ marginTop: 20 }} {...props}>
+      <ProfileScreen style={{ alignSelf: "center" }} />
       <DrawerItemList {...props} />
       <DrawerItem
         label="Log Out"
@@ -36,20 +33,26 @@ function CustomDrawerContent(props) {
   );
 }
 
-function ProfileScreen({ navigation }) {
+function ProfileScreen() {
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <View style={{ flex: 1, alignItems: "center" }}>
       <UserContext.Consumer>
-        {(user) => <AvatarButton photoURL={user.photoURL} size={50} />}
+        {(user) => (
+          <AvatarButton
+            photoURL={user.photoURL}
+            size={100}
+            marginBottom={10}
+            borderWidth={3}
+            borderColor={Theme.secondary}
+          />
+        )}
       </UserContext.Consumer>
       <UserContext.Consumer>
-        {(user) => <Text>{user.displayName}</Text>}
+        {(user) => (
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            {user.displayName}
+          </Text>
+        )}
       </UserContext.Consumer>
     </View>
   );
@@ -62,7 +65,7 @@ export default function DrawerNavigator() {
       initialRouteName="content"
       drawerPosition="right"
       drawerType="front"
-      drawerWidth={200}
+      drawerStyle={{ width: 250 }}
       overlayColor="rgba(0, 0, 0, 0.7)"
     >
       <Drawer.Screen
@@ -70,6 +73,13 @@ export default function DrawerNavigator() {
         component={TabNavigator}
         options={{
           title: "Home",
+        }}
+      />
+      <Drawer.Screen
+        name="profileNav"
+        component={Profile}
+        options={{
+          title: "Profile",
         }}
       />
       <Drawer.Screen

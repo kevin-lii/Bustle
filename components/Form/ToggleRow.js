@@ -2,8 +2,6 @@ import React from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 
-import ToggleSwitch from "./ToggleSwitch";
-
 import globalStyle from "../../global/styles";
 import { Theme } from "../../global/constants";
 import { Switch } from "react-native";
