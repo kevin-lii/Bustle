@@ -8,8 +8,6 @@ import Voter from "./components/Voter";
 import PostHeader from "./components/ProfileHeader";
 import PostFooter from "./components/PostFooter";
 
-import { Theme } from "../../global/constants";
-
 export default ({ post, postID, footer = true }) => {
   const navigation = useNavigation();
   const { text, author, votes, regionID, createdAt, replyCount } = post;

@@ -36,10 +36,17 @@ const user = (state, action) => {
   return state || null;
 };
 
+const interested = (state, action) => {
+  if (action.type === actionTypes.UPDATE_INTERESTED_EVENTS)
+    return action.interested;
+  return state || null;
+};
+
 export default combineReducers({
   events,
   eventFilters,
   posts,
   hostedEvents,
   user,
+  interested,
 });

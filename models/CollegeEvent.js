@@ -66,7 +66,6 @@ export default class CollegeEventModel {
   }
 
   static async remove(event) {
-    console.log(event.id);
     await firestore().runTransaction(async (transaction) => {
       firestore()
         .collection(collection)
@@ -75,7 +74,7 @@ export default class CollegeEventModel {
         .catch(function (error) {
           console.error("Error removing document: ", error);
         });
-      // await transaction.update(
+      // transaction.update(
       //   firestore()
       //     .collection("users")
       //     .doc(this..uid)
@@ -85,8 +84,8 @@ export default class CollegeEventModel {
       //     events: firestore.FieldValue.arrayRemove(event.id),
       //   }
       // );
-      console.log("success");
-      // if (event.photoURL) await f.storage().ref(`${collection}/${event.id}`).delete();
+      if (event.photoURL)
+        await f.storage().ref(`${collection}/${event.id}`).delete();
     });
   }
 

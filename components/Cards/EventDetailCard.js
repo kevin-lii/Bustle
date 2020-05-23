@@ -8,9 +8,7 @@ import LinearGradient from "react-native-linear-gradient";
 import IconButton from "../Buttons/IconButton";
 import CategoriesIcon from "../Image/CategoriesIcon";
 import CalendarToggle from "../Buttons/CalendarToggle";
-import globalStyles from "../../global/styles";
-import { navigatePath, trimString } from "../../global/utils";
-import { Theme } from "../../global/constants";
+import { trimString } from "../../global/utils";
 import EventModel from "../../models/CollegeEvent";
 
 const radius = 12;

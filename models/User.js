@@ -37,7 +37,7 @@ export default class UserModel {
         .collection("private")
         .doc("savedCollegeEvents")
         .get();
-      return Object.assign({}, snapshot.data());
+      return snapshot.data();
     }
   }
 

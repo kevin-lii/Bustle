@@ -1,5 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import _ from "lodash";
 import EventModel from "../models/CollegeEvent";
 import PostModel from "../models/Post";
 import UserModel from "../models/User";
@@ -11,6 +12,7 @@ export const actionTypes = {
   FILTER_EVENTS: "filter events",
   UPDATE_POSTS: "post update",
   UPDATE_HOSTED_EVENTS: "hosted event update",
+  UPDATE_INTERESTED_EVENTS: "interested event update",
 };
 
 const subscriptions = [];
@@ -77,4 +79,19 @@ export const setEventFilters = (filters = {}) => (dispatch) => {
       filters,
     });
   });
+};
+
+export const getInterestedEvents = (filters = {}) => async (dispatch) => {
+  const { saved } = await UserModel.getSavedEvents(auth().currentUser.uid);
+  const savedEvents = Object.keys(_.pickBy(saved));
+
+  await EventModel.subscribe(
+    { containsID: savedEvents, ...filters },
+    (snapshot) => {
+      dispatch({
+        type: actionTypes.UPDATE_INTERESTED_EVENTS,
+        interested: attachIDs(snapshot),
+      });
+    }
+  );
 };

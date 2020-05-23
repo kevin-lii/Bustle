@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { Text, View, ImageBackground, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 
 import { UserContext } from "../../../dataContainers/context";
+import Icons from "../../../components/Image/Icons";
 import AvatarButton from "../../../components/Buttons/AvatarButton";
 import { Theme } from "../../../global/constants";
 import ProfileEvent from "./ProfileEvent";
@@ -24,10 +31,22 @@ export default function Profile({ navigation, uri }) {
   return (
     <View style={styles.container}>
       <View style={{ ...styles.imageContainer, height: 150 }}>
-        <ImageBackground
-          source={uri ? { uri } : null}
-          style={styles.image}
-        ></ImageBackground>
+        <ImageBackground source={uri ? { uri } : null} style={styles.image}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-around" }}
+          >
+            <View>
+              <TouchableOpacity>
+                <Icons icon="arrow-left" size={25} />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity>
+                <Icons icon="player-settings" type="Fontisto" size={25} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ImageBackground>
       </View>
       <View
         style={{
