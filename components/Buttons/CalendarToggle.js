@@ -13,15 +13,15 @@ const CalendarToggle = ({ eventID, user }) => {
   return (
     <Button
       round
-      style={{ width: 40 }}
-      backgroundColor={checked ? Theme.primary : Theme.disabled}
+      style={{ width: 45 }}
+      backgroundColor={checked ? Theme.primary : "white"}
       onPress={() => {
         setChecked(!checked);
         UserModel.saveEvent(eventID, !checked);
       }}
     >
       <Icons
-        size={15}
+        size={18}
         type="Font"
         color={checked ? "white" : Theme.primary}
         icon={checked ? "calendar-check" : "calendar"}

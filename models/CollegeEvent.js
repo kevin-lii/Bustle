@@ -39,7 +39,7 @@ export default class CollegeEventModel {
 
   static genQuery(filters) {
     let query = firestore().collection(collection);
-    if (filters.containsID)
+    if (filters.containsID && filters.containsID.length)
       query = query.where(
         firestore.FieldPath.documentId(),
         "in",
@@ -106,7 +106,10 @@ export default class CollegeEventModel {
 
       if (data.image) {
         const fileName = eventRef.id;
-        await f.storage().ref(`${collection}/${fileName}`).putFile(data.image);
+        await f
+          .storage()
+          .ref(`${collection}/${fileName}`)
+          .putString(data.image.data, "base64");
         data.photoURL = await f
           .storage()
           .ref(`${collection}/${fileName}`)
@@ -158,7 +161,7 @@ export default class CollegeEventModel {
           //     // await uploadPhoto({ eventID: event.id, photoURL: photoURL });
           //   }
           // });
-          .put(data.image)
+          .putString(data.image.data, "base64")
           .then();
         data.photoURL = snapshot.ref.getDownloadURL();
         data.photoID = fileName;

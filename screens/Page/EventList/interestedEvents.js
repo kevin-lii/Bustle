@@ -8,8 +8,9 @@ import EventDetail from "../../../components/Cards/EventDetailCard";
 import { UserContext } from "../../../dataContainers/context";
 
 import styles from "./styles";
+import { connect } from "react-redux";
 
-export default class InterestedFeed extends React.Component {
+class InterestedFeed extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
@@ -19,28 +20,37 @@ export default class InterestedFeed extends React.Component {
     };
   }
 
-  retrieveData = async () => {
-    try {
-      const { saved } = await UserModel.getSavedEvents(this.context.uid);
-      const savedEvents = Object.keys(_.pickBy(saved));
-
-      await EventModel.subscribe({ containsID: savedEvents }, (snapshot) => {
-        const event = [];
-        snapshot.forEach((doc) => {
-          event.push({ ...doc.data(), id: doc.id });
+  retrieveData = () => {
+    const eventIDs = Object.keys(_.pickBy(this.props.user.saved));
+    if (eventIDs.length) {
+      try {
+        EventModel.subscribe({ containsID: eventIDs }, (snapshot) => {
+          const event = [];
+          snapshot.forEach((doc) => {
+            event.push({ ...doc.data(), id: doc.id });
+          });
+          this.setState({
+            interested: event,
+          });
         });
-        this.setState({
-          interested: event,
-        });
-      });
-    } catch (error) {
-      console.log(error);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      if (this.state.interested.length) this.setState({ interested: [] });
     }
   };
 
+  componentDidMount() {
+    this.retrieveData();
+  }
+
+  componentDidUpdate() {
+    this.retrieveData();
+  }
+
   render() {
     const { navigation } = this.props;
-    this.retrieveData();
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
@@ -50,7 +60,7 @@ export default class InterestedFeed extends React.Component {
             return <EventDetail event={item} navigation={navigation} />;
           }}
           ListHeaderComponent={() => (
-            <Text style={styles.title}>Interested Events</Text>
+            <Text style={styles.title}>Saved Events</Text>
           )}
           ListEmptyComponent={() =>
             this.state.complete && <Text>You have no events.</Text>
@@ -60,3 +70,5 @@ export default class InterestedFeed extends React.Component {
     );
   }
 }
+
+export default connect((state) => ({ user: state.user }), {})(InterestedFeed);

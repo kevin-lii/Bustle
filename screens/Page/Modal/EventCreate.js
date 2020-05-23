@@ -53,10 +53,14 @@ export default class EventCreate extends React.Component {
     try {
       const stateCopy = Object.assign({}, this.state);
       stateCopy.startDate = new Date();
-      stateCopy.startDate.setDate(this.state.date.getDate());
-      stateCopy.startDate.setTime(this.state.time.getTime());
+      console.log(this.state);
+      stateCopy.startDate.setTime(this.state.date.getTime());
+      stateCopy.startDate.setHours(this.state.time.getHours());
+      stateCopy.startDate.setMinutes(this.state.time.getMinutes());
       delete stateCopy.date;
       delete stateCopy.time;
+
+      stateCopy.tags = stateCopy.tags.map(({ value }) => value);
 
       if (update) return EventModel.update(route.params?.event.id, stateCopy);
 
@@ -106,8 +110,8 @@ export default class EventCreate extends React.Component {
           keyboardShouldPersistTaps="handled"
         >
           <ImageUploader
-            onImageSubmit={(res) => this.setState({ image: res.uri })}
-            uri={this.state.image}
+            onImageSubmit={(res) => this.setState({ image: res })}
+            uri={this.state.image.uri}
           />
 
           <View paddingH-15 paddingB-20>
