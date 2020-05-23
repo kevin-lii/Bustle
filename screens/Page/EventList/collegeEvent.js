@@ -82,7 +82,6 @@ export default class CollegeEvent extends React.Component {
     const { navigation } = this.props;
     let loading = !this.state.complete;
     const renderFooter = () => {
-      console.log(this.state.complete);
       if (loading) {
         return <Text>Loading...</Text>;
       } else {

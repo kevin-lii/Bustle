@@ -2,9 +2,6 @@ import { getLocation, validateLocation } from "../global/utils";
 
 import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
-import { firebase as fire } from "@react-native-firebase/functions";
-import { GeoFirestore, GeoTransaction } from "geofirestore";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
@@ -42,7 +39,12 @@ export default class CollegeEventModel {
 
   static genQuery(filters) {
     let query = firestore().collection(collection);
-
+    if (filters.containsID)
+      query = query.where(
+        firestore.FieldPath.documentId(),
+        "in",
+        filters.containsID
+      );
     if (filters.host) query = query.where("host.uid", "==", filters.host);
     if (filters.categories?.length)
       query = query.where("category", "in", filters.categories);
@@ -63,19 +65,29 @@ export default class CollegeEventModel {
     if (onNext) query.onSnapshot(onNext, onError);
   }
 
-  static async getCollection() {
-    return firestore().collection(collection);
-  }
-
   static async remove(event) {
-    await firestore()
-      .collection(collection)
-      .doc(event.id)
-      .delete()
-      .catch(function (error) {
-        console.error("Error removing document: ", error);
-      });
-    if (event.photoURL) await f.storage().refFromURL(event.photoURL).delete();
+    console.log(event.id);
+    await firestore().runTransaction(async (transaction) => {
+      firestore()
+        .collection(collection)
+        .doc(event.id)
+        .delete()
+        .catch(function (error) {
+          console.error("Error removing document: ", error);
+        });
+      // await transaction.update(
+      //   firestore()
+      //     .collection("users")
+      //     .doc(this..uid)
+      //     .collection("private")
+      //     .doc("profile"),
+      //   {
+      //     events: firestore.FieldValue.arrayRemove(event.id),
+      //   }
+      // );
+      console.log("success");
+      // if (event.photoURL) await f.storage().ref(`${collection}/${event.id}`).delete();
+    });
   }
 
   static async create(user, data) {

@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 import { View, Text, Card, Image } from "react-native-ui-lib";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
@@ -7,11 +8,10 @@ import LinearGradient from "react-native-linear-gradient";
 import IconButton from "../Buttons/IconButton";
 import CategoriesIcon from "../Image/CategoriesIcon";
 import CalendarToggle from "../Buttons/CalendarToggle";
-
 import globalStyles from "../../global/styles";
 import { navigatePath, trimString } from "../../global/utils";
 import { Theme } from "../../global/constants";
-import { StyleSheet } from "react-native";
+import EventModel from "../../models/CollegeEvent";
 
 const radius = 12;
 
@@ -52,8 +52,8 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
                 icon="trash"
                 type="Entypo"
                 size={30}
-                onPress={() => {
-                  EventModel.remove(event);
+                onPress={async () => {
+                  await EventModel.remove(event);
                 }}
               />
             </View>
@@ -70,7 +70,7 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
               />
             </View>
           )}
-          {map && (
+          {/* {map && (
             <View style={styles.icon}>
               <IconButton
                 icon="map-marker-alt"
@@ -79,7 +79,7 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
                 onPress={() => navigatePath(navigation, "map/event", { event })}
               />
             </View>
-          )}
+          )} */}
           {rsvp && (
             <View style={styles.icon}>
               <CalendarToggle eventID={event.id} selected={false} />
