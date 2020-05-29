@@ -7,18 +7,22 @@ import ProfileHeader from "./components/ProfileHeader";
 import Voter from "./components/Voter";
 import Icons from "../Image/Icons";
 
+import { Theme } from "../../global/constants";
+import globalStyle from "../../global/styles";
+
 export default ({
   author,
   replyCount,
   reply,
   votes,
   text,
+  tags,
   createdAt,
   postID,
   isOP = false,
   containerStyle,
 }) => (
-  <View style={{ width: "100%", backgroundColor: "white", ...containerStyle }}>
+  <View style={{ backgroundColor: "white", ...containerStyle }}>
     <View row padding-10>
       <View flex>
         <ProfileHeader {...author} createdAt={createdAt} isOP={isOP} />
@@ -32,17 +36,16 @@ export default ({
         <Voter postID={postID} reply={reply} votes={votes} condensed />
       </View>
     </View>
-    <View row spread paddingH-10 paddingB-5>
-      <Text flex>{createdAt && moment(createdAt.toDate()).fromNow()}</Text>
-      {replyCount != null && (
+    {!reply && (
+      <View row spread paddingH-10 paddingB-5>
+        <Text color={Theme.primary}>{tags.map((t) => `#${t} `)}</Text>
         <View row centerV>
           <Text text80 marginR-5>
-            {replyCount}
+            {replyCount || 0}
           </Text>
           <Icons icon="comment" />
         </View>
-      )}
-      <View flex />
-    </View>
+      </View>
+    )}
   </View>
 );

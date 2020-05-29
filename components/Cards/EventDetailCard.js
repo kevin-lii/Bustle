@@ -4,7 +4,7 @@ import { View, Text, Card, Image } from "react-native-ui-lib";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
-import { parseDomain, fromUrl } from "parse-domain";
+import Url from "url-parse";
 
 import CategoriesIcon from "../Image/CategoriesIcon";
 import CardIcons from "./components/CardIcons";
@@ -28,7 +28,7 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
     >
       <Image style={styles.image} source={{ uri: event.photoURL || "" }} />
       <LinearGradient
-        colors={["#33333360", "#333333f0"]}
+        colors={["#33333380", "#333333f0"]}
         style={styles.gradient}
       />
       <View row absB centerV spread padding-10>
@@ -38,6 +38,20 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
         <View flex paddingR-10>
           <Text style={styles.date}>{startDate.calendar()}</Text>
           <Text style={styles.name}>{trimString(event.name, 62)}</Text>
+          <View row centerV>
+            <View marginR-10>
+              <Icons
+                icon="desktop"
+                iconOff="map-marker-alt"
+                onChange={Boolean(event.link)}
+              />
+            </View>
+            <Text color={Theme.grey}>
+              {event.link
+                ? Url(event.link).hostname
+                : trimString(event.location.description, 15)}
+            </Text>
+          </View>
         </View>
         <CardIcons rsvp={rsvp} trash={trash} eventID={event.id} />
       </View>

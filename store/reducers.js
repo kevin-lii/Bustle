@@ -16,8 +16,17 @@ const eventFilters = (state, action) => {
 };
 
 const posts = (state, action) => {
-  if (action.type === actionTypes.UPDATE_POSTS) return action.posts;
+  if (
+    action.type === actionTypes.UPDATE_POSTS ||
+    action.type === actionTypes.FILTER_POSTS
+  )
+    return action.posts;
   return state || null;
+};
+
+const forumFilters = (state, action) => {
+  if (action.type === actionTypes.FILTER_POSTS) return action.filters;
+  return state || {};
 };
 
 const hostedEvents = (state, action) => {
@@ -40,6 +49,7 @@ export default combineReducers({
   events,
   eventFilters,
   posts,
+  forumFilters,
   hostedEvents,
   user,
 });

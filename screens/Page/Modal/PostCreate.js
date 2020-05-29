@@ -13,7 +13,8 @@ import Icons from "../../../components/Image/Icons";
 import Tokenizer from "../../../components/Form/Tokenizer";
 
 import { getDefaultRegionID, getDefaultZone } from "../../../global/utils";
-import { Theme, forumTags } from "../../../global/constants";
+import { Theme } from "../../../global/constants";
+import { forumTags } from "../../../global/forumconfig";
 
 const PostCreate = ({ navigation, route, user }) => {
   const [text, setText] = useState("");
@@ -31,7 +32,11 @@ const PostCreate = ({ navigation, route, user }) => {
           displayName: user.displayName,
           photoURL: user.photoURL,
         },
-        { text }
+        {
+          tags: tags.map((t) => t.value),
+          text,
+          zone,
+        }
       );
       navigation.goBack();
     } catch (e) {

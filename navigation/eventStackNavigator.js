@@ -15,7 +15,13 @@ export default function EventStackNavigator() {
         component={FeedScreen}
         options={{
           header: ({ scene, previous, navigation }) => {
-            return <FeedHeader navigation={navigation} text="Explore Events" />;
+            return (
+              <FeedHeader
+                navigation={navigation}
+                text="Explore Events"
+                filterable
+              />
+            );
           },
         }}
       />

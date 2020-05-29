@@ -15,17 +15,14 @@ export default ({
   color,
   type,
   onPress,
-  touchStyle,
   iconStyle,
-  fullSize,
+  containerStyle,
+  hitBox,
 }) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[
-      touchStyle,
-      { justifyContent: "center" },
-      fullSize && { height: "100%", width: "100%", padding: 10 },
-    ]}
+    style={[containerStyle, { justifyContent: "center" }]}
+    hitSlop={hitBox}
   >
     <View style={iconContainer}>
       <Icons

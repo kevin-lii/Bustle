@@ -55,14 +55,14 @@ export default class CollegeEventModel {
     return query;
   }
 
-  static get(filters) {
+  static async get(filters) {
     const query = this.genQuery(filters);
-    return query.get();
+    return await query.get();
   }
 
-  static async subscribe(filters, onNext, onError = console.log) {
+  static subscribe(filters, onNext, onError = console.log) {
     const query = this.genQuery(filters);
-    if (onNext) query.onSnapshot(onNext, onError);
+    if (onNext) return query.onSnapshot(onNext, onError);
   }
 
   static async remove(event) {
