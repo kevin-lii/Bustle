@@ -14,7 +14,7 @@ import MapNavigator from "./mapStackNavigator";
 import EventListScreen from "../screens/Page/EventList/interestedEvents";
 import WithOverlayBottomSheet from "../components/Container/WithOverlayBottomSheet";
 import EventFilters from "../components/Form/EventFilters";
-import PostFilters from "../components/Form/PostFilters";
+import PostOptions from "../components/Form/PostOptions";
 
 import { Theme } from "../global/constants";
 
@@ -78,9 +78,9 @@ function CustomNavigator({
       sheetContent={
         state.showSheet ? (
           state?.routes[state.index] === "forums" ? (
-            <EventFilters />
+            <PostOptions />
           ) : (
-            <PostFilters />
+            <EventFilters />
           )
         ) : null
       }

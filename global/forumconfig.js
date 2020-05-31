@@ -5,6 +5,7 @@ exports.forumTags = [
   "courseadvice",
   "dormlife",
   "internships",
+  "lostandfound",
   "memes",
   "mentorship",
   "news",

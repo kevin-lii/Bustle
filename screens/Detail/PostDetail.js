@@ -52,6 +52,7 @@ class PostDetail extends Component {
     const { post, postID } = route.params;
 
     const sendReply = () => {
+      if (!this.state.reply) return;
       try {
         PostModel.reply(
           postID,
