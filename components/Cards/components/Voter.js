@@ -19,6 +19,8 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
   const iconSize = condensed ? 35 : 50;
   const fontSize = condensed ? 15 : 20;
 
+  const hitBox = { top: 8, left: 8, right: 8 };
+
   return (
     <View centerH style={{ width: 40, height }}>
       <IconButton
@@ -34,6 +36,7 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
           }
         }}
         color={up ? Theme.secondary : Theme.grey}
+        hitBox={hitBox}
       />
       <Text style={{ fontSize }}>{numVotes}</Text>
       <IconButton
@@ -49,6 +52,7 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
           }
         }}
         color={down ? Theme.secondary : Theme.grey}
+        hitBox={hitBox}
       />
     </View>
   );

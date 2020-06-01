@@ -4,6 +4,7 @@ import Feather from "react-native-vector-icons/Feather";
 import Foundation from "react-native-vector-icons/Foundation";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome5Pro";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Icon from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Custom from "./Icons/index";
@@ -69,7 +70,6 @@ export default function Icons({
           color={color}
         ></MaterialIcons>
       );
-    case "FontAwesome5":
     case "FontAwesome":
     case "Font":
       return (
@@ -80,6 +80,18 @@ export default function Icons({
           color={color}
         ></FontAwesome>
       );
+
+    case "FontAwesome5":
+    case "Font5":
+      return (
+        <FontAwesome5
+          name={onChange ? icon : iconOff}
+          onPress={onPress}
+          size={size}
+          color={color}
+        ></FontAwesome5>
+      );
+
     case "Ionicons":
     default:
       return (

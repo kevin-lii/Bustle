@@ -23,6 +23,7 @@ export default ({
         onPress={onClose}
         fullSize
         color={Theme.primary}
+        containerStyle={{ marginHorizontal: 10 }}
       />
     </View>
     <View center>
@@ -42,10 +43,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: 60,
     borderBottomColor: Theme.grey,
-    borderBottomWidth: StyleSheet.hairlineWidth,
     paddingRight: 15,
     paddingLeft: 5,
-    backgroundColor: Theme.defaultBackground,
+    backgroundColor: "white",
   },
   text: {
     fontSize: 20,

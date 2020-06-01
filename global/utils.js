@@ -125,6 +125,14 @@ exports.navigatePath = function (navigation, path, params = {}) {
   navigation.navigate(routes[0], routes.length > 1 ? allParams : params);
 };
 
+exports.attachIDs = (snapshot) => {
+  const docs = [];
+  snapshot.forEach((doc) => {
+    docs.push({ ...doc.data(), id: doc.id });
+  });
+  return docs;
+};
+
 function sendEmailVerification(email) {}
 
 function sendPhoneVerification(phone) {}

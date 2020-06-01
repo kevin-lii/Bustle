@@ -4,14 +4,14 @@ import { View, Text, Card, Image } from "react-native-ui-lib";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
+import Url from "url-parse";
 
-import IconButton from "../Buttons/IconButton";
 import CategoriesIcon from "../Image/CategoriesIcon";
-import CalendarToggle from "../Buttons/CalendarToggle";
-import globalStyles from "../../global/styles";
-import { navigatePath, trimString } from "../../global/utils";
+import CardIcons from "./components/CardIcons";
+import Icons from "../Image/Icons";
+
+import { trimString } from "../../global/utils";
 import { Theme } from "../../global/constants";
-import EventModel from "../../models/CollegeEvent";
 
 const radius = 12;
 
@@ -28,64 +28,32 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
     >
       <Image style={styles.image} source={{ uri: event.photoURL || "" }} />
       <LinearGradient
-        colors={["#33333360", "#33333360"]}
+        colors={["#33333380", "#333333f0"]}
         style={styles.gradient}
       />
       <View row absB centerV spread padding-10>
-        <View flex row>
-          <View marginT-10 marginR-15>
-            <CategoriesIcon type={event.category} size={30} color="white" />
-          </View>
-          <View paddingR-10>
-            <Text style={styles.date}>{startDate.calendar()}</Text>
-            <Text style={styles.name}>{trimString(event.name, 62)}</Text>
+        <View marginR-15>
+          <CategoriesIcon type={event.category} size={30} color="white" />
+        </View>
+        <View flex paddingR-10>
+          <Text style={styles.date}>{startDate.calendar()}</Text>
+          <Text style={styles.name}>{trimString(event.name, 62)}</Text>
+          <View row centerV>
+            <View marginR-10>
+              <Icons
+                icon="desktop"
+                iconOff="map-marker-alt"
+                onChange={Boolean(event.link)}
+              />
+            </View>
+            <Text color={Theme.grey}>
+              {event.link
+                ? Url(event.link).hostname
+                : trimString(event.location.description, 15)}
+            </Text>
           </View>
         </View>
-        <View
-          style={{ flexDirection: "row-reverse", alignItems: "center" }}
-          spread
-          width={80}
-        >
-          {trash && (
-            <View style={styles.icon}>
-              <IconButton
-                icon="trash"
-                type="Entypo"
-                size={30}
-                onPress={async () => {
-                  await EventModel.remove(event);
-                }}
-              />
-            </View>
-          )}
-          {edit && (
-            <View style={styles.icon}>
-              <IconButton
-                icon="pencil"
-                type="Entypo"
-                size={30}
-                onPress={() => {
-                  edit(event);
-                }}
-              />
-            </View>
-          )}
-          {/* {map && (
-            <View style={styles.icon}>
-              <IconButton
-                icon="map-marker-alt"
-                type="Fontisto"
-                size={30}
-                onPress={() => navigatePath(navigation, "map/event", { event })}
-              />
-            </View>
-          )} */}
-          {rsvp && (
-            <View style={styles.icon}>
-              <CalendarToggle eventID={event.id} selected={false} />
-            </View>
-          )}
-        </View>
+        <CardIcons rsvp={rsvp} trash={trash} eventID={event.id} />
       </View>
       {children}
     </Card>

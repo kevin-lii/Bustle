@@ -25,22 +25,6 @@ export default class UserModel {
     return profile;
   }
 
-  static async getSavedEvents(id) {
-    const store = firestore();
-    const ref = store.collection("users").doc(id);
-    let snapshot = await ref.collection("public").doc("profile").get();
-    const profile = snapshot.data();
-    profile.id = snapshot.id;
-
-    if (id === auth().currentUser?.uid) {
-      snapshot = await ref
-        .collection("private")
-        .doc("savedCollegeEvents")
-        .get();
-      return Object.assign({}, snapshot.data());
-    }
-  }
-
   static subscribe(uid, callback) {
     const sub = (snapshot) => {
       if (snapshot && snapshot.data()) {

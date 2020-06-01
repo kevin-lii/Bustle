@@ -1,50 +1,22 @@
-exports.zones = [
-  {
-    name: "UC Berkeley",
-    id: "ucb",
-    regions: ["ucb_campus", "ucb_northside", "ucb_southside", "ucb_downtown"],
-  },
-];
-
-exports.forumRegions = [
-  {
-    name: "Campus",
-    zone: "ucb",
-    id: "ucb_campus",
-  },
-  {
-    name: "Downtown",
-    zone: "ucb",
-    id: "ucb_downtown",
-  },
-  {
-    name: "Frat Row",
-    zone: "ucb",
-    id: "ucb_fratrow",
-    inactive: true,
-  },
-  {
-    name: "Southside",
-    zone: "ucb",
-    id: "ucb_southside",
-  },
-  {
-    name: "Northside",
-    zone: "ucb",
-    id: "ucb_northside",
-  },
-];
-
-exports.regionByID = {};
-exports.forumRegions.forEach(
-  (region) => (exports.regionByID[region.id] = region)
-);
-Object.freeze(exports.regionByID);
-
-exports.zonesByID = {};
-exports.zones.forEach((zone) => (exports.zonesByID[zone.id] = zone));
-Object.freeze(exports.zoneByID);
-
-exports.defaultRegions = {
-  ucb: "ucb_campus",
+exports.forumTags = {
+  advice: "#fff100",
+  alert: "#EE0C0C",
+  classes: " #00a2ff",
+  clubs: "#f3ff00",
+  confession: "#FF0680",
+  dormlife: " #006EBE",
+  food: "#00e3ff",
+  housing: "#00ff28",
+  internships: "#09BD09",
+  lostandfound: "#d8a641",
+  memes: "#FF7100",
+  missedconnections: "#7100ff",
+  music: "#ff0000",
+  news: "#ff000f",
+  opportunity: "",
+  party: "#00ff71",
+  relationships: "",
+  sports: "#ff7100",
 };
+
+exports.anonymous = "__anon__";

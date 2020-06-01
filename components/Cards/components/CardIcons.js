@@ -8,7 +8,7 @@ import CalendarToggle from "../../Buttons/CalendarToggle";
 import { navigatePath } from "../../../global/utils";
 
 export default ({ trash, edit, map, rsvp, eventID }) => (
-  <View style={{ flexDirection: "row-reverse" }} marginR-10 spread>
+  <View style={{ flexDirection: "row-reverse" }} spread>
     {trash && (
       <View style={styles.icon}>
         <IconButton

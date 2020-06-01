@@ -3,17 +3,17 @@ import { View, Text, Picker, TagsInput } from "react-native-ui-lib";
 
 import { Theme } from "../../global/constants";
 import Pill from "../Buttons/PillButton";
+import { forumTags } from "../../global/forumconfig";
 
 export default ({
   onChange,
   value,
   data,
   size,
-  pillColor = Theme.primary,
+  // pillColor = Theme.primary,
   color = "white",
 }) => {
   const picker = useRef();
-
   const getLabel = (value) => {
     if (value instanceof Array) {
       if (value.length > 0) return value.map((v) => v.label);
@@ -21,7 +21,6 @@ export default ({
     }
     return value.label;
   };
-
   return (
     <Picker
       ref={picker}
@@ -39,7 +38,7 @@ export default ({
             <Pill
               size={size}
               label={label}
-              pillColor={pillColor}
+              pillColor={forumTags[label.substring(1)]}
               color={color}
               active={label !== "Add"}
               icon={label === "Add" ? "plus-a" : "close-a"}
