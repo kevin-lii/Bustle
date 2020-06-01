@@ -8,15 +8,14 @@ import Voter from "./components/Voter";
 import PostHeader from "./components/ProfileHeader";
 import PostFooter from "./components/PostFooter";
 
-export default ({ post, postID, footer = true }) => {
+export default ({ post, postID, footer = true, path = "post" }) => {
   const navigation = useNavigation();
   const { text, author, votes, regionID, createdAt, replyCount } = post;
-
   return (
     <View style={styles.container}>
       <View row style={styles.topContent}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("post", { post, postID })}
+          onPress={() => navigation.navigate(path, { post, postID })}
           style={{ flex: 1 }}
         >
           <PostHeader {...post.author} />

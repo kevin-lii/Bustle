@@ -44,14 +44,17 @@ export const login = () => (dispatch) => {
   });
 };
 
-export const getHostedEvents = () => (dispatch, getState) => {
+export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
   const { user } = getState();
-  EventModel.subscribe({ host: user.uid, orderBy: "startDate" }, (snapshot) => {
-    dispatch({
-      type: actionTypes.UPDATE_HOSTED_EVENTS,
-      hostedEvents: attachIDs(snapshot),
-    });
-  });
+  EventModel.subscribe(
+    { host: filters.host ? filters.host : user.uid, orderBy: "startDate" },
+    (snapshot) => {
+      dispatch({
+        type: actionTypes.UPDATE_HOSTED_EVENTS,
+        hostedEvents: attachIDs(snapshot),
+      });
+    }
+  );
 };
 
 export const getEvents = (filters = {}) => (dispatch) => {
@@ -79,19 +82,4 @@ export const setEventFilters = (filters = {}) => (dispatch) => {
       filters,
     });
   });
-};
-
-export const getInterestedEvents = (filters = {}) => async (dispatch) => {
-  const { saved } = await UserModel.getSavedEvents(auth().currentUser.uid);
-  const savedEvents = Object.keys(_.pickBy(saved));
-
-  await EventModel.subscribe(
-    { containsID: savedEvents, ...filters },
-    (snapshot) => {
-      dispatch({
-        type: actionTypes.UPDATE_INTERESTED_EVENTS,
-        interested: attachIDs(snapshot),
-      });
-    }
-  );
 };

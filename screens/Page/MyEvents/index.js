@@ -40,7 +40,6 @@ class MyEvents extends Component {
           <View
             style={{
               alignSelf: "flex-end",
-              marginRight: 25,
               marginTop: 20,
             }}
           >

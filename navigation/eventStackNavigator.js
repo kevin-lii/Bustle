@@ -19,7 +19,11 @@ export default function EventStackNavigator() {
           },
         }}
       />
-      <Stack.Screen name="event" component={EventDetail} />
+      <Stack.Screen
+        name="event"
+        component={EventDetail}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

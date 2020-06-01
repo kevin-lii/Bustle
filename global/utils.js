@@ -125,6 +125,47 @@ exports.navigatePath = function (navigation, path, params = {}) {
   navigation.navigate(routes[0], routes.length > 1 ? allParams : params);
 };
 
+exports.openURL = async (partLink, type, isUser) => {
+  let url;
+  let backup;
+  switch (type) {
+    case "twitter":
+      url = "twitter://user?screen_name=" + partLink;
+      backup = "https://twitter.com/" + partLink;
+      break;
+    case "snapchat":
+      url = "snapchat://add/" + userpartLinkname;
+      backup = "https://www.snapchat.com/add/" + partLink;
+      break;
+    case "zoom":
+    case "zoom.us":
+      url = "";
+      backup = "";
+      break;
+    case "twitch":
+    case "twitch.tv":
+      url = "";
+      backup = "";
+      break;
+    case "":
+      url = "";
+      backup = "";
+      break;
+    default:
+    case "instagram":
+      url = "instagram://user?username=" + partLink;
+      backup = "https://www.instagram.com/" + partLink;
+      break;
+  }
+  let isSupported = await Linking.canOpenURL(url);
+
+  if (isSupported) {
+    await Linking.openURL(url);
+  } else {
+    await Linking.openURL(backup);
+  }
+};
+
 function sendEmailVerification(email) {}
 
 function sendPhoneVerification(phone) {}

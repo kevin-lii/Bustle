@@ -1,4 +1,4 @@
-import storage from "@react-native-firebase/storage";
+import { firebase as storage } from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
@@ -23,22 +23,6 @@ export default class UserModel {
     }
 
     return profile;
-  }
-
-  static async getSavedEvents(id) {
-    const store = firestore();
-    const ref = store.collection("users").doc(id);
-    let snapshot = await ref.collection("public").doc("profile").get();
-    const profile = snapshot.data();
-    profile.id = snapshot.id;
-
-    if (id === auth().currentUser?.uid) {
-      snapshot = await ref
-        .collection("private")
-        .doc("savedCollegeEvents")
-        .get();
-      return snapshot.data();
-    }
   }
 
   static subscribe(uid, callback) {
@@ -89,15 +73,30 @@ export default class UserModel {
 
   static async update(publicData, privateData) {
     const store = firestore();
-    if (publicData.image) {
-      const ref = storage().ref(data.type + "/" + data.host);
-      const image = await ref.putFile(data.image.path);
-      publicData.photoURL = image.fullPath;
-      delete publicData.image;
-    }
-
     const ref = store.collection("users").doc(auth().currentUser.uid);
     store.runTransaction(async (t) => {
+      if (publicData.image?.data) {
+        await storage
+          .storage()
+          .ref(`user/profile/${auth().currentUser.uid}`)
+          .putString(publicData.image.data, "base64");
+        publicData.photoURL = await storage
+          .storage()
+          .ref(`user/profile/${auth().currentUser.uid}`)
+          .getDownloadURL();
+      }
+      delete publicData.image;
+      if (publicData.coverImage?.data) {
+        await storage
+          .storage()
+          .ref(`user/cover/${auth().currentUser.uid}`)
+          .putString(publicData.coverImage.data, "base64");
+        publicData.coverPhotoURL = await storage
+          .storage()
+          .ref(`user/cover/${auth().currentUser.uid}`)
+          .getDownloadURL();
+      }
+      delete publicData.coverImage;
       await t.update(ref.collection("public").doc("profile"), publicData);
       return t.update(ref.collection("private").doc("profile"), privateData);
     });

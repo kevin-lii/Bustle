@@ -19,7 +19,7 @@ export default ({ navigation, route, regionID }) => (
       <IconButton
         type="MaterialIcons"
         icon="arrow-left"
-        onPress={navigation.goBack}
+        onPress={() => navigation.goBack()}
       />
     </View>
     <View centerV marginL-20>

@@ -15,12 +15,18 @@ import { Theme } from "../../../global/constants";
 class Feed extends Component {
   constructor(props) {
     super(props);
-    props.getEvents();
-    props.getPosts();
 
     if (props.route.params?.region)
       this.state = { regionIDs: [props.route.params?.region] };
     else this.state = { regionIDs: null };
+  }
+  componentDidMount() {
+    this.props.getEvents();
+    this.props.getPosts();
+    this.props.navigation.addListener("focus", async () => {
+      this.props.getEvents();
+      this.props.getPosts();
+    });
   }
 
   render() {

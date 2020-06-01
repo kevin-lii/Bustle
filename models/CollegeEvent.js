@@ -2,8 +2,6 @@ import { getLocation, validateLocation } from "../global/utils";
 
 import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
-import "react-native-get-random-values";
-import { v4 as uuid } from "uuid";
 
 import { UserContext } from "../dataContainers/context";
 // import { getDefaultImage } from "../global/utils";
@@ -105,7 +103,10 @@ export default class CollegeEventModel {
 
       if (data.image) {
         const fileName = eventRef.id;
-        await f.storage().ref(`${collection}/${fileName}`).putFile(data.image);
+        await f
+          .storage()
+          .ref(`${collection}/${fileName}`)
+          .putString(data.image.data, "base64");
         data.photoURL = await f
           .storage()
           .ref(`${collection}/${fileName}`)

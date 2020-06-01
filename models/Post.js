@@ -20,6 +20,13 @@ export default class Post {
   static async get(filters, next) {
     const store = firestore();
     let query = store.collection("posts");
+    if (filters.containsID)
+      query = query.where(
+        firestore.FieldPath.documentId(),
+        "in",
+        filters.containsID
+      );
+    if (filters.author) query = query.where("author.uid", "==", filters.author);
     if (filters.regionIDs && filters.regionIDs.length > 0)
       query = query.where("regionID", "in", filters.regionIDs);
     if (filters.orderBy) query = query.orderBy(filters.orderBy);

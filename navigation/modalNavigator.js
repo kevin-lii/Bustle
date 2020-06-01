@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import EventCreate from "../screens/Page/Modal/EventCreate";
 import PostCreate from "../screens/Page/Modal/PostCreate";
-
+import EditProfile from "../screens/Page/Modal/EditProfile";
 import FormTypes from "../components/Form/FormTypes";
 import NewUserFlow from "../screens/Page/Modal/NewUserFlow";
 
@@ -15,6 +15,7 @@ export default function ModalStackNavigator() {
       <Stack.Screen name={"newuser"} component={NewUserFlow} />
       <Stack.Screen name={FormTypes.EVENT_CREATE} component={EventCreate} />
       <Stack.Screen name={FormTypes.POST_CREATE} component={PostCreate} />
+      <Stack.Screen name={FormTypes.PROFILE_EDIT} component={EditProfile} />
     </Stack.Navigator>
   );
 }

@@ -6,12 +6,12 @@ import Icons from "../../../../components/Image/Icons";
 
 import styles from "./styles";
 
-export default function({ navigation }) {
+export default function ({ navigation }) {
   const headerHeight = useHeaderHeight();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ alignSelf: "flex-end", marginRight: 20, marginTop: 20 }}>
+        <View style={{ alignSelf: "flex-end", marginRight: 10, marginTop: 20 }}>
           <Icons
             icon="close-a"
             type="Fontisto"

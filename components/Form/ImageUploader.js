@@ -5,7 +5,13 @@ import { StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
 
 import { Theme } from "../../global/constants";
 
-export default ({ onImageSubmit, uri, height = 120 }) => {
+export default ({
+  onImageSubmit,
+  uri,
+  height = 120,
+  width = "100%",
+  borderRadius,
+}) => {
   const pickImage = () => {
     ImagePicker.showImagePicker(
       {
@@ -25,12 +31,16 @@ export default ({ onImageSubmit, uri, height = 120 }) => {
 
   return (
     <TouchableOpacity
-      style={{ ...styles.container, height }}
+      style={{ ...styles.container, height, borderRadius, width }}
       onPress={pickImage}
     >
-      <ImageBackground source={uri ? { uri } : null} style={styles.image}>
+      <ImageBackground
+        source={uri ? { uri } : null}
+        style={styles.image}
+        imageStyle={{ borderRadius }}
+      >
         {!uri && (
-          <Text color={Theme.grey} text40>
+          <Text color={Theme.grey} text40 center>
             Add an Image
           </Text>
         )}

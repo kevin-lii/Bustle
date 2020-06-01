@@ -1,18 +1,15 @@
 import React, { useState, createRef } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { Text, View, TextArea } from "react-native-ui-lib";
-import { Picker } from "@react-native-community/picker";
 import { connect } from "react-redux";
-import { Value } from "react-native-reanimated";
 
 import PostModel from "../../../models/Post";
-import LocationLabel from "../../../components/Buttons/LocationLabel";
 import WithOverlayBottomSheet from "../../../components/Container/WithOverlayBottomSheet";
 import WithFormHeader from "../../../components/Container/WithFormHeader";
 import Icons from "../../../components/Image/Icons";
 import Tokenizer from "../../../components/Form/Tokenizer";
 
-import { getDefaultRegionID, getDefaultZone } from "../../../global/utils";
+import { getDefaultZone } from "../../../global/utils";
 import { Theme, forumTags } from "../../../global/constants";
 
 const PostCreate = ({ navigation, route, user }) => {

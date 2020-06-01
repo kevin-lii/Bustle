@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -23,7 +23,10 @@ const Drawer = createDrawerNavigator();
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView style={{ marginTop: 20 }} {...props}>
-      <ProfileScreen style={{ alignSelf: "center" }} />
+      <ProfileScreen
+        style={{ alignSelf: "center" }}
+        navigation={props.navigation}
+      />
       <DrawerItemList {...props} />
       <DrawerItem
         label="Log Out"
@@ -33,9 +36,12 @@ function CustomDrawerContent(props) {
   );
 }
 
-function ProfileScreen() {
+function ProfileScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <TouchableOpacity
+      style={{ flex: 1, alignItems: "center" }}
+      onPress={() => navigation.navigate("profileNav")}
+    >
       <UserContext.Consumer>
         {(user) => (
           <AvatarButton
@@ -54,7 +60,7 @@ function ProfileScreen() {
           </Text>
         )}
       </UserContext.Consumer>
-    </View>
+    </TouchableOpacity>
   );
 }
 

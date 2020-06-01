@@ -1,10 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import LoginContainer from "../navigation/loginNavigator";
 import Loading from "../components/Loading";
 import Main from "../navigation";
-
-import { connect } from "react-redux";
 import { login } from "../store/actions";
 import { UserContext } from "./context";
 
@@ -28,10 +27,10 @@ class AuthContainer extends Component {
 }
 
 export default connect(
-  state => ({
-    user: state.user
+  (state) => ({
+    user: state.user,
   }),
   {
-    login
+    login,
   }
 )(AuthContainer);

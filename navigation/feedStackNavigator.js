@@ -9,6 +9,7 @@ import { StackView } from "@react-navigation/stack";
 
 import FeedScreen from "../screens/Page/Feed";
 import PostDetail from "../screens/Detail/PostDetail";
+import EventDetail from "../screens/Detail/EventDetail";
 
 function CustomStackNavigator({
   initialRouteName,
@@ -46,7 +47,7 @@ export default function FeedStackNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="events" component={FeedScreen} />
       <Stack.Screen name="forums" component={FeedScreen} />
-      <Stack.Screen name="event" component={FeedScreen} />
+      <Stack.Screen name="event" component={EventDetail} />
       <Stack.Screen name="post" component={PostDetail} />
     </Stack.Navigator>
   );

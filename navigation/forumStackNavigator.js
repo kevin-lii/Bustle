@@ -1,10 +1,4 @@
 import React from "react";
-import { View } from "react-native-ui-lib";
-import {
-  useNavigationBuilder,
-  StackRouter,
-  createNavigatorFactory,
-} from "@react-navigation/native";
 import {
   createStackNavigator,
   CardStyleInterpolators,

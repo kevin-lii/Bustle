@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Text, View } from "react-native-ui-lib";
 import IconButton from "../../Buttons/IconButton";
 import { connect } from "react-redux";
