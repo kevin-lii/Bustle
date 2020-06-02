@@ -4,10 +4,13 @@ import { View, Text, Card, Image, TouchableOpacity } from "react-native-ui-lib";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
+import Url from "url-parse";
 
 import CategoriesIcon from "../Image/CategoriesIcon";
 import CardIcons from "./components/CardIcons";
 import { trimString } from "../../global/utils";
+import Icons from "../Image/Icons";
+import { Theme } from "../../global/constants";
 
 const radius = 12;
 
@@ -46,6 +49,20 @@ export default ({
           <View flex paddingR-10>
             <Text style={styles.date}>{startDate.calendar()}</Text>
             <Text style={styles.name}>{trimString(event.name, 62)}</Text>
+            <View row centerV>
+              <View marginR-10>
+                <Icons
+                  icon="desktop"
+                  iconOff="map-marker-alt"
+                  onChange={Boolean(event.link)}
+                />
+              </View>
+              <Text color={Theme.grey}>
+                {event.link
+                  ? Url(event.link).hostname
+                  : trimString(event.location.description, 15)}
+              </Text>
+            </View>
           </View>
           <CardIcons rsvp={rsvp} trash={trash} event={event} />
         </View>

@@ -4,6 +4,7 @@ import {
   useNavigationBuilder,
   TabRouter,
 } from "@react-navigation/native";
+import { View } from "react-native-ui-lib";
 import { BottomTabView } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
@@ -12,8 +13,8 @@ import ForumNavigator from "./forumStackNavigator";
 import MapNavigator from "./mapStackNavigator";
 import EventListScreen from "../screens/Page/EventList/interestedEvents";
 import WithOverlayBottomSheet from "../components/Container/WithOverlayBottomSheet";
-import { View } from "react-native-ui-lib";
 import EventFilters from "../components/Form/EventFilters";
+import PostOptions from "../components/Form/PostOptions";
 
 import { Theme } from "../global/constants";
 
@@ -74,7 +75,15 @@ function CustomNavigator({
       navigation={navigation}
       height={350}
       ref={sheet}
-      sheetContent={state.showSheet ? <EventFilters /> : null}
+      sheetContent={
+        state.showSheet ? (
+          state?.routes[state.index] === "forums" ? (
+            <PostOptions />
+          ) : (
+            <EventFilters />
+          )
+        ) : null
+      }
     >
       <View style={{ height: "100%", width: "100%" }}>
         <BottomTabView

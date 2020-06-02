@@ -9,8 +9,9 @@ import WithFormHeader from "../../../components/Container/WithFormHeader";
 import Icons from "../../../components/Image/Icons";
 import Tokenizer from "../../../components/Form/Tokenizer";
 
-import { getDefaultZone } from "../../../global/utils";
-import { Theme, forumTags } from "../../../global/constants";
+import { getDefaultRegionID, getDefaultZone } from "../../../global/utils";
+import { Theme } from "../../../global/constants";
+import { forumTags } from "../../../global/forumconfig";
 
 const PostCreate = ({ navigation, route, user }) => {
   const [text, setText] = useState("");
@@ -28,7 +29,11 @@ const PostCreate = ({ navigation, route, user }) => {
           displayName: user.displayName,
           photoURL: user.photoURL,
         },
-        { text }
+        {
+          tags: tags.map((t) => t.value),
+          text,
+          zone,
+        }
       );
       navigation.goBack();
     } catch (e) {
@@ -70,10 +75,9 @@ const PostCreate = ({ navigation, route, user }) => {
             <Tokenizer
               value={tags}
               size={16}
-              pillColor={Theme.primary}
               color="white"
               onChange={setTags}
-              data={forumTags.map((tag) => ({
+              data={Object.keys(forumTags).map((tag) => ({
                 label: "#" + tag,
                 value: tag,
               }))}

@@ -1,4 +1,5 @@
 import { Dimensions } from "react-native";
+import moment from "moment";
 
 const { width, height } = Dimensions.get("window");
 exports.Theme = {
@@ -37,18 +38,20 @@ exports.eventTags = {
   Community: ["Charity", "Fundraiser", "Religion", "Volunteer"],
 };
 
-exports.forumTags = [
-  "alert",
-  "clubs",
-  "confession",
-  "courseadvice",
-  "dormlife",
-  "internships",
-  "memes",
-  "mentorship",
-  "news",
-  "opportunity",
-  "party",
-  "relationships",
-  "roommates",
-];
+moment.updateLocale("en", {
+  relativeTime: {
+    future: "%s ago",
+    past: "%s ago",
+    s: "few seconds",
+    m: "1m",
+    h: "1h",
+    d: "1w",
+    w: "1w",
+    mm: "%dm",
+    hh: "%dh",
+    dd: "%dd",
+    ww: "%dw",
+    MM: "%dm",
+    yy: "%dy",
+  },
+});

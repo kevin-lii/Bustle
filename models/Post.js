@@ -1,7 +1,8 @@
 import firestore, { firebase } from "@react-native-firebase/firestore";
 
 import { votePost, postReply } from "../global/functions";
-import { getDefaultZone } from "../global/utils";
+import { getDefaultZone, attachIDs } from "../global/utils";
+import UserModel from "./User";
 
 // Post Class: {
 //   text
@@ -17,9 +18,8 @@ import { getDefaultZone } from "../global/utils";
 // }
 
 export default class Post {
-  static async get(filters, next) {
-    const store = firestore();
-    let query = store.collection("posts");
+  static genQuery(filters) {
+    let query = firestore().collection("posts");
     if (filters.containsID)
       query = query.where(
         firestore.FieldPath.documentId(),
@@ -29,11 +29,20 @@ export default class Post {
     if (filters.author) query = query.where("author.uid", "==", filters.author);
     if (filters.regionIDs && filters.regionIDs.length > 0)
       query = query.where("regionID", "in", filters.regionIDs);
-    if (filters.orderBy) query = query.orderBy(filters.orderBy);
-    if (filters.startAfter) query = query.startAfter(filters.startAfter);
-    if (filters.limit) query = query.limit(filters.limit);
+    if (filters.tag) query = query.where("tags", "array-contains", filters.tag);
+    if (filters.orderBy) query = query.orderBy(filters.orderBy, "desc");
+    return query;
+  }
+
+  static async get(filters) {
+    const query = this.genQuery(filters);
+    return attachIDs(await query.get());
+  }
+
+  static subscribe(filters, next) {
+    const query = this.genQuery(filters);
     if (next)
-      query.onSnapshot({
+      return query.onSnapshot({
         next,
         error: (error) => console.log(error),
       });
@@ -42,7 +51,6 @@ export default class Post {
   static async create(author, data, parent = null) {
     if (!data.text) throw new Error("No text");
     data.author = author;
-    data.zone = getDefaultZone();
     data.createdAt = firestore.FieldValue.serverTimestamp();
     data.tags = data.tags || [];
     data.flags = 0;
@@ -61,8 +69,8 @@ export default class Post {
     await votePost(postID, false, reply);
   }
 
-  static async subscribeReplies(postID, fn) {
-    firestore()
+  static subscribeReplies(postID, fn) {
+    return firestore()
       .collection("posts")
       .doc(postID)
       .collection("replies")
@@ -73,29 +81,25 @@ export default class Post {
       });
   }
 
+  static subscribePost(postID, fn) {
+    return firestore()
+      .collection("posts")
+      .doc(postID)
+      .onSnapshot({
+        next: (doc) => fn(doc.data()),
+        error: console.log,
+      });
+  }
+
   static async reply(postID, author, data) {
     if (!data.text) throw new Error("No text");
-    const store = firestore();
-    await store.runTransaction(async (transaction) => {
-      data.author = author;
-      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-      data.votes = 0;
-      const reply = store
-        .collection("posts")
-        .doc(postID)
-        .collection("replies")
-        .doc();
-      transaction.set(reply, data);
-      transaction.update(
-        store
-          .collection("users")
-          .doc(user.uid)
-          .collection("public")
-          .doc("profile"),
-        {
-          replies: firestore.FieldValue.arrayUnion(reply.id),
-        }
-      );
-    });
+    data.author = author;
+    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    data.votes = 0;
+    await firestore()
+      .collection("posts")
+      .doc(postID)
+      .collection("replies")
+      .add(data);
   }
 }

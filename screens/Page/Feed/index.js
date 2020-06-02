@@ -51,7 +51,7 @@ class Feed extends Component {
       >
         <View flex style={{ backgroundColor: Theme.defaultBackground }}>
           <FlatList
-            style={{ paddingHorizontal: forumView ? 0 : 10 }}
+            style={{ paddingHorizontal: 10 }}
             contentContainerStyle={{ paddingBottom: 80 }}
             data={forumView ? posts : events}
             renderItem={({ item, index }) => {

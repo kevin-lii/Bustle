@@ -11,32 +11,26 @@ export const actionTypes = {
   UPDATE_EVENTS: "event update",
   FILTER_EVENTS: "filter events",
   UPDATE_POSTS: "post update",
+  FILTER_POSTS: "filter posts",
   UPDATE_HOSTED_EVENTS: "hosted event update",
   UPDATE_INTERESTED_EVENTS: "interested event update",
 };
 
-const subscriptions = [];
+const subscriptions = {};
 
-const attachIDs = (snapshot) => {
-  const docs = [];
-  snapshot.forEach((doc) => {
-    docs.push({ ...doc.data(), id: doc.id });
-  });
-  return docs;
-};
+import { attachIDs } from "../global/utils";
 
 export const login = () => (dispatch) => {
   auth().onAuthStateChanged(async (user) => {
     if (user) {
-      const unsub = UserModel.subscribe(user.uid, (data) =>
+      subscriptions.user = UserModel.subscribe(user.uid, (data) =>
         dispatch({
           type: actionTypes.UPDATE_USER,
           user: data,
         })
       );
-      subscriptions.push(unsub);
     } else {
-      subscriptions.forEach((fn) => fn());
+      for (let [key, fn] in subscriptions) fn();
       dispatch({
         type: actionTypes.LOGOUT,
       });
@@ -45,8 +39,9 @@ export const login = () => (dispatch) => {
 };
 
 export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
+  if (subscriptions.hostedEvents) subscriptions.hostedEvents();
   const { user } = getState();
-  EventModel.subscribe(
+  subscriptions.hostedEvents = EventModel.subscribe(
     { host: filters.host ? filters.host : user.uid, orderBy: "startDate" },
     (snapshot) => {
       dispatch({
@@ -58,7 +53,8 @@ export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
 };
 
 export const getEvents = (filters = {}) => (dispatch) => {
-  EventModel.subscribe(filters, (snapshot) => {
+  if (subscriptions.events) subscriptions.events();
+  subscriptions.events = EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_EVENTS,
       events: attachIDs(snapshot),
@@ -67,15 +63,18 @@ export const getEvents = (filters = {}) => (dispatch) => {
 };
 
 export const getPosts = (filters = {}) => (dispatch) => {
-  PostModel.get(filters, (snapshot) => {
+  if (subscriptions.posts) subscriptions.posts();
+  subscriptions.posts = PostModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.UPDATE_POSTS,
       posts: attachIDs(snapshot),
     });
   });
 };
+
 export const setEventFilters = (filters = {}) => (dispatch) => {
-  EventModel.subscribe(filters, (snapshot) => {
+  if (subscriptions.events) subscriptions.events();
+  subscriptions.events = EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.FILTER_EVENTS,
       events: attachIDs(snapshot),

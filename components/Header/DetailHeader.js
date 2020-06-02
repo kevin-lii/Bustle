@@ -5,8 +5,9 @@ import IconButton from "../Buttons/IconButton";
 import LocationLabel from "../Buttons/LocationLabel";
 
 import globalStyles from "../../global/styles";
+import { Theme } from "../../global/constants";
 
-export default ({ navigation, route, regionID }) => (
+export default ({ navigation, route, regionID, text }) => (
   <View
     row
     style={{
@@ -23,7 +24,13 @@ export default ({ navigation, route, regionID }) => (
       />
     </View>
     <View centerV marginL-20>
-      <LocationLabel regionID={regionID} onPress={() => {}} size="large" />
+      {text ? (
+        <Text color={Theme.primary} text60>
+          {text}
+        </Text>
+      ) : (
+        <LocationLabel regionID={regionID} onPress={() => {}} size="large" />
+      )}
     </View>
     <View style={{ height: "100%" }}></View>
   </View>
