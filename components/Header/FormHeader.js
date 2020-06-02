@@ -24,6 +24,7 @@ export default ({
         fullSize
         color={Theme.primary}
         containerStyle={{ marginHorizontal: 10 }}
+        hitBox={{ top: 10, bottom: 10, left: 10, right: 10 }}
       />
     </View>
     <View center>

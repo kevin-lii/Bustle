@@ -38,7 +38,6 @@ export default ({
             <Pill
               size={size}
               label={label}
-              pillColor={forumTags[label.substring(1)]}
               color={color}
               active={label !== "Add"}
               icon={label === "Add" ? "plus-a" : "close-a"}

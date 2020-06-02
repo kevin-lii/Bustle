@@ -8,7 +8,7 @@ import { setForumFilters } from "../../../store/actions";
 import { forumTags } from "../../../global/forumconfig";
 import { Theme } from "../../../global/constants";
 
-export default ({ tags }) => {
+export default ({ tags, limit }) => {
   const navigation = useNavigation();
   return (
     <View row>
@@ -17,7 +17,11 @@ export default ({ tags }) => {
           key={tag}
           onPress={() => navigation.push("search", { tag })}
         >
-          <Text text60 color={forumTags[tag]} marginR-3>
+          <Text
+            marginR-10
+            color={Theme.primary}
+            style={{ fontSize: 16, fontWeight: "bold" }}
+          >
             #{tag}
           </Text>
         </TouchableNativeFeedback>
