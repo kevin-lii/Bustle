@@ -19,6 +19,7 @@ export default function Icons({
   size,
   color = Theme.grey,
   onPress,
+  style,
 }) {
   switch (type) {
     case "Custom":
@@ -32,6 +33,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></Fontisto>
       );
     case "Entypo":
@@ -41,6 +43,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></Entypo>
       );
     case "Feather":
@@ -50,6 +53,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></Feather>
       );
     case "Foundation":
@@ -59,6 +63,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></Foundation>
       );
     case "MaterialIcons":
@@ -68,6 +73,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></MaterialIcons>
       );
     case "FontAwesome":
@@ -78,6 +84,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></FontAwesome>
       );
 
@@ -89,6 +96,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></FontAwesome5>
       );
 
@@ -100,6 +108,7 @@ export default function Icons({
           onPress={onPress}
           size={size}
           color={color}
+          style={style}
         ></Icon>
       );
   }

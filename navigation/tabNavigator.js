@@ -5,7 +5,10 @@ import {
   TabRouter,
 } from "@react-navigation/native";
 import { View } from "react-native-ui-lib";
-import { BottomTabView } from "@react-navigation/bottom-tabs";
+import {
+  BottomTabView,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 import EventNavigator from "./eventStackNavigator";
@@ -71,33 +74,18 @@ function CustomNavigator({
   const sheet = useRef();
 
   return (
-    <WithOverlayBottomSheet
-      navigation={navigation}
-      height={350}
-      ref={sheet}
-      sheetContent={
-        state.showSheet ? (
-          state?.routes[state.index] === "forums" ? (
-            <PostOptions />
-          ) : (
-            <EventFilters />
-          )
-        ) : null
-      }
-    >
-      <View style={{ height: "100%", width: "100%" }}>
-        <BottomTabView
-          {...rest}
-          state={state}
-          navigation={navigation}
-          descriptors={descriptors}
-        />
-      </View>
-    </WithOverlayBottomSheet>
+    <View style={{ height: "100%", width: "100%" }}>
+      <BottomTabView
+        {...rest}
+        state={state}
+        navigation={navigation}
+        descriptors={descriptors}
+      />
+    </View>
   );
 }
 
-const Tab = createNavigatorFactory(CustomNavigator)();
+const Tab = createBottomTabNavigator();
 
 export default function TabNavigator({ route }) {
   const { state } = route;
@@ -121,6 +109,7 @@ export default function TabNavigator({ route }) {
 
   return (
     <Tab.Navigator
+      initialRouteName="forums"
       tabBarOptions={{
         activeTintColor: Theme.primary,
         showLabel: false,

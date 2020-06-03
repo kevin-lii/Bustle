@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 
 import DrawerNavigator from "./drawerNavigator";
 import ModalNavigator from "./modalNavigator";
+import SheetNavigator from "./sheetNavigator";
 
 const Stack = createStackNavigator();
 
@@ -19,27 +20,15 @@ function RootNavigator({ user }) {
       screenOptions={{
         cardStyle: { backgroundColor: "transparent" },
         cardOverlayEnabled: true,
-        // cardStyleInterpolator: ({ current: { progress } }) => ({
-        //   cardStyle: {
-        //     transform: [{
-        //       translateY: progress.interpolate({
-        //         inputRange: [0, 0.5, 0.9, 1],
-        //         outputRange: [150, 100, 25, 0],
-        //       })
-        //     }]
-        //   },
-        //   overlayStyle: {
-        //     opacity: progress.interpolate({
-        //       inputRange: [0, 1],
-        //       outputRange: [0, 0.5],
-        //       extrapolate: 'clamp',
-        //     }),
-        //   },
-        // }),
       }}
     >
       <Stack.Screen name="main" component={DrawerNavigator} />
       <Stack.Screen name="modal" component={ModalNavigator} />
+      <Stack.Screen
+        name="sheet"
+        component={SheetNavigator}
+        options={{ animationEnabled: false }}
+      />
     </Stack.Navigator>
   );
 }

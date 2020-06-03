@@ -5,19 +5,18 @@ import { Text, View } from "react-native-ui-lib";
 import Icons from "../../Image/Icons";
 
 import { Theme, anonymous } from "../../../global/constants";
-import { trimString } from "../../../global/utils";
 import TagLinks from "./TagLinks";
 
 export default ({ postID, tags, totalComments, commentPress }) => {
   return (
     <View
       row
-      centerV
       spread
       style={{
-        height: 40,
+        minHeight: 25,
         width: "100%",
         paddingHorizontal: 10,
+        alignItems: "flex-end",
       }}
     >
       <TagLinks tags={tags} />

@@ -7,7 +7,7 @@ import LocationLabel from "../Buttons/LocationLabel";
 import IconButton from "../Buttons/IconButton";
 
 import { forumRegions, zones } from "../../global/forumconfig";
-import { getDefaultZone } from "../../global/utils";
+import { getDefaultZone, navigatePath } from "../../global/utils";
 import { Theme } from "../../global/constants";
 
 export default ({ navigation, text, filterable }) => {
@@ -44,11 +44,7 @@ export default ({ navigation, text, filterable }) => {
           <View centerV>
             <IconButton
               icon="filter"
-              onPress={() =>
-                navigation.dispatch({
-                  type: "OPEN_SHEET",
-                })
-              }
+              onPress={() => navigatePath(navigation, "sheet/eventfilters")}
               size={20}
               color={Theme.primary}
               containerStyle={{ height: "100%", marginHorizontal: 10 }}

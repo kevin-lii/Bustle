@@ -8,6 +8,8 @@ import Voter from "./components/Voter";
 import PostHeader from "./components/ProfileHeader";
 import PostFooter from "./components/PostFooter";
 
+import { navigatePath } from "../../global/utils";
+import { Theme } from "../../global/constants";
 export default ({ post, postID, footer = true, path = "post" }) => {
   const navigation = useNavigation();
   const { text, author, votes, tags, createdAt, replyCount } = post;
@@ -19,12 +21,13 @@ export default ({ post, postID, footer = true, path = "post" }) => {
       width={"100%"}
       containerStyle={styles.container}
     >
+      <View paddingH-10>
+        <PostHeader {...post.author} postID={postID} createdAt={createdAt} />
+      </View>
       <View row style={styles.topContent}>
         <View flex>
-          <PostHeader {...post.author} createdAt={createdAt} />
-
           <TouchableOpacity
-            onPress={() => navigation.navigate("post", { post, postID })}
+            onPress={() => navigation.navigate(path, { post, postID })}
             style={{ flex: 1 }}
           >
             <HyperLink linkDefault={true}>
@@ -33,9 +36,10 @@ export default ({ post, postID, footer = true, path = "post" }) => {
           </TouchableOpacity>
         </View>
         <View center style={{ height: "100%", paddingVertical: 10 }}>
-          <Voter postID={postID} votes={votes} condensed />
+          <Voter postID={postID} votes={votes} height={100} />
         </View>
       </View>
+
       {footer && (
         <PostFooter
           totalComments={replyCount || 0}
@@ -53,11 +57,11 @@ export default ({ post, postID, footer = true, path = "post" }) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
+    paddingVertical: 10,
   },
   topContent: {
-    height: 100,
+    height: 90,
     width: "100%",
-    paddingTop: 10,
     paddingHorizontal: 10,
     justifyContent: "space-between",
   },

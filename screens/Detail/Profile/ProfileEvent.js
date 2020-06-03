@@ -125,15 +125,13 @@ export default class CollegeEvent extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     height: "100%",
   },
   scrollView: {
-    flex: 1,
-    height: "100%",
+    paddingHorizontal: 10,
   },
   emptyText: {
+    marginTop: 200,
     color: Theme.secondary,
-    height: "100%",
   },
 });

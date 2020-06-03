@@ -1,9 +1,10 @@
 import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
 import _ from "lodash";
+
 import EventModel from "../models/CollegeEvent";
 import PostModel from "../models/Post";
 import UserModel from "../models/User";
+import { attachIDs } from "../global/utils";
 
 export const actionTypes = {
   LOGOUT: "logout",
@@ -17,8 +18,6 @@ export const actionTypes = {
 };
 
 const subscriptions = {};
-
-import { attachIDs } from "../global/utils";
 
 export const login = () => (dispatch) => {
   auth().onAuthStateChanged(async (user) => {

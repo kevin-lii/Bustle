@@ -28,7 +28,6 @@ class EditProfile extends React.Component {
   }
   async update() {
     const stateCopy = _.pickBy(Object.assign({}, this.state));
-    console.log(stateCopy);
     return await UserData.update(stateCopy, {});
   }
   render() {

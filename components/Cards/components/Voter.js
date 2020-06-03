@@ -19,10 +19,10 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
   const iconSize = condensed ? 35 : 50;
   const fontSize = condensed ? 15 : 20;
 
-  const hitBox = { top: 8, left: 8, right: 8 };
+  const hitBox = { top: 3, left: 8, right: 8 };
 
   return (
-    <View centerH style={{ width: 40, height }}>
+    <View centerH spread style={{ height }}>
       <IconButton
         type="Ionicons"
         icon="ios-arrow-up"
@@ -38,7 +38,16 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
         color={up ? Theme.secondary : Theme.grey}
         hitBox={hitBox}
       />
-      <Text style={{ fontSize }}>{numVotes}</Text>
+      <Text
+        style={{
+          fontSize,
+          position: "absolute",
+          top: "50%",
+          marginTop: -fontSize * 0.65,
+        }}
+      >
+        {numVotes}
+      </Text>
       <IconButton
         type="Ionicons"
         icon="ios-arrow-down"

@@ -15,7 +15,7 @@ export default class UserModel {
     const ref = store.collection("users").doc(id);
     let snapshot = await ref.collection("public").doc("profile").get();
     const profile = snapshot.data();
-    profile.id = snapshot.id;
+    profile.uid = id;
 
     if (id === auth().currentUser?.uid) {
       snapshot = await ref.collection("private").doc("profile").get();

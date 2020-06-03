@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 import { Text, TextField, View } from "react-native-ui-lib";
 import ActionButton from "../../../components/Buttons/ActionButton";
 import { checkName } from "../../../global/utils";
+import { Theme } from "../../../global/constants";
 
 import UserModel from "../../../models/User";
 import ImageUploader from "../../../components/Form/ImageUploader";

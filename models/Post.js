@@ -102,4 +102,8 @@ export default class Post {
       .collection("replies")
       .add(data);
   }
+
+  static async remove(postID) {
+    firestore().collection("posts").doc(postID).delete();
+  }
 }

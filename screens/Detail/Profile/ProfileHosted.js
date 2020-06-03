@@ -15,12 +15,19 @@ function ProfileHosted({
   hostedEvents,
 }) {
   useEffect(() => {
-    getHostedEvents({ host: user.id, live: true });
+    getHostedEvents({ host: user.uid });
     navigation.addListener("focus", async () => {
-      getHostedEvents({ host: user.id, live: true });
+      getHostedEvents({ host: user.id });
     });
   }, []);
-
+  // const [hostedEvents, setHosted] = useState([]);
+  // async function retrieveData() {
+  //   const tempHost = await EventModel.get({ host: user.uid });
+  //   setHosted(attachIDs(tempHost));
+  // }
+  // useEffect(() => {
+  //   retrieveData();
+  // }, []);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -44,17 +51,14 @@ function ProfileHosted({
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     height: "100%",
   },
   scrollView: {
     paddingHorizontal: 10,
-    flex: 1,
-    height: "100%",
   },
   emptyText: {
+    marginTop: 200,
     color: Theme.secondary,
-    height: "100%",
   },
 });
 

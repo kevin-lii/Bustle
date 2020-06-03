@@ -14,7 +14,6 @@ function ProfileActivity({ navigation, isCurrentUser, user, getPosts, post }) {
       getPosts({ author: user.uid });
     });
   }, []);
-  console.log(post);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -22,12 +21,7 @@ function ProfileActivity({ navigation, isCurrentUser, user, getPosts, post }) {
         data={post}
         renderItem={({ item, index }) => {
           return (
-            <PostCard
-              post={item}
-              postID={item.id}
-              key={index}
-              path="UserPost"
-            />
+            <PostCard post={item} postID={item.id} key={index} path="post" />
           );
         }}
         ListEmptyComponent={() => (

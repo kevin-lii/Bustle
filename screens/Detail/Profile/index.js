@@ -14,28 +14,42 @@ import ActionButton from "../../../components/Buttons/ActionButton";
 import FormTypes from "../../../components/Form/FormTypes";
 import { navigatePath } from "../../../global/utils";
 
-function Profile({ navigation, foreignUser, currentUser }) {
+function Profile({ navigation, route, currentUser }) {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "events", title: "Past Events" },
     { key: "hosted", title: "Hosted Events" },
     { key: "activity", title: "Activity" },
   ]);
-  const user = foreignUser ? foreignUser : currentUser;
+  const isForeign = route.params && route.params.user;
+  const user = isForeign ? route.params.user : currentUser;
+  // console.log(user);
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "activity":
         return (
-          <ProfileActivity isCurrentUser user={user} navigation={navigation} />
+          <ProfileActivity
+            isCurrentUser={!isForeign}
+            user={user}
+            navigation={navigation}
+          />
         );
       case "hosted":
         return (
-          <ProfileHosted isCurrentUser user={user} navigation={navigation} />
+          <ProfileHosted
+            isCurrentUser={!isForeign}
+            user={user}
+            navigation={navigation}
+          />
         );
       case "events":
       default:
         return (
-          <ProfileEvent isCurrentUser user={user} navigation={navigation} />
+          <ProfileEvent
+            isCurrentUser={!isForeign}
+            user={user}
+            navigation={navigation}
+          />
         );
     }
   };
@@ -61,7 +75,7 @@ function Profile({ navigation, foreignUser, currentUser }) {
                 <Icons icon="arrow-left" size={25} color={Theme.primary} />
               </TouchableOpacity>
             </View>
-            {!foreignUser && (
+            {!isForeign && (
               <View centerV center style={styles.iconCircle}>
                 <TouchableOpacity
                   // onPress={() => navigation.navigate("newUser")}
@@ -114,7 +128,7 @@ function Profile({ navigation, foreignUser, currentUser }) {
           </Text>
           <ActionButton
             text="Social Info"
-            onPress={() => navigation.navigate("SocialInfo", { user })}
+            onPress={() => navigation.navigate("socialinfo", { user })}
             primary
             style={{
               width: "100%",

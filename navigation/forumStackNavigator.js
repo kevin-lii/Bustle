@@ -4,6 +4,9 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 
+import EventDetail from "../screens/Detail/EventDetail";
+import Profile from "../screens/Detail/Profile";
+import SocialInfo from "../screens/Detail/Profile/SocialInfo";
 import FeedScreen from "../screens/Page/Feed";
 import PostDetail from "../screens/Detail/PostDetail";
 import ForumHeader from "../components/Header/ForumFeedHeader";
@@ -50,6 +53,25 @@ export default function ForumStackNavigator() {
           gestureDirection: "horizontal",
           gestureEnabled: true,
         }}
+      />
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="socialinfo"
+        component={SocialInfo}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="event"
+        component={EventDetail}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
