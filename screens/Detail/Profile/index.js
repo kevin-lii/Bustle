@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
+import auth from "@react-native-firebase/auth";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import { connect } from "react-redux";
@@ -13,17 +14,27 @@ import ProfileHosted from "./ProfileHosted";
 import ActionButton from "../../../components/Buttons/ActionButton";
 import FormTypes from "../../../components/Form/FormTypes";
 import { navigatePath } from "../../../global/utils";
+import globalStyles from "../../../global/styles";
+import UserModel from "../../../models/User";
 
 function Profile({ navigation, route, currentUser }) {
+  const isForeign =
+    route.params?.user && route.params.user.uid !== auth().currentUser.uid;
+  const defaultUser = isForeign ? route.params?.user : currentUser;
+  const [user, setUser] = useState(defaultUser);
+
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
+  const routes = [
     { key: "events", title: "Past Events" },
     { key: "hosted", title: "Hosted Events" },
     { key: "activity", title: "Activity" },
-  ]);
-  const isForeign = route.params && route.params.user;
-  const user = isForeign ? route.params.user : currentUser;
-  // console.log(user);
+  ];
+
+  useEffect(() => {
+    if (isForeign)
+      UserModel.get(route.params.user.uid).then((user) => setUser(user));
+  }, []);
+
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "activity":
@@ -72,7 +83,12 @@ function Profile({ navigation, route, currentUser }) {
           >
             <View centerV center style={styles.iconCircle}>
               <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Icons icon="arrow-left" size={25} color={Theme.primary} />
+                <Icons
+                  type="MaterialIcons"
+                  icon="arrow-left"
+                  size={30}
+                  color={Theme.primary}
+                />
               </TouchableOpacity>
             </View>
             {!isForeign && (
@@ -105,7 +121,7 @@ function Profile({ navigation, route, currentUser }) {
         }}
       >
         <AvatarButton
-          photoURL={user.photoURL}
+          photoURL={user.photoURL + "?height=150"}
           init={user.displayName}
           size={150}
           borderColor={Theme.primary}
@@ -177,6 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 35,
     width: 35,
+    // ...globalStyles.overlayElementShadow
   },
 });
 
