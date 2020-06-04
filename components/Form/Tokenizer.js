@@ -36,7 +36,7 @@ export default ({
           tags={[{ label: "Add" }, ...v]}
           renderTag={({ label }) => (
             <Pill
-              size={size}
+              fontSize={size}
               label={label}
               color={color}
               active={label !== "Add"}

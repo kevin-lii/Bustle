@@ -26,10 +26,12 @@ export default class UserModel {
   }
 
   static subscribe(uid, callback) {
-    const sub = (snapshot) => {
+    const sub = (snapshot, type) => {
       if (snapshot && snapshot.data()) {
         const profile = snapshot.data();
         profile.uid = uid;
+        if (type === "forums") profile.posts = new Set(profile.posts);
+
         callback(profile);
       }
       callback({});
@@ -48,6 +50,9 @@ export default class UserModel {
       unsubs.push(userRef.doc("votes").onSnapshot(sub, console.log));
       unsubs.push(
         userRef.doc("savedCollegeEvents").onSnapshot(sub, console.log)
+      );
+      unsubs.push(
+        userRef.doc("forums").onSnapshot((s) => sub(s, "forums"), console.log)
       );
     }
 

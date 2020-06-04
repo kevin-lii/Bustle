@@ -1,4 +1,5 @@
 import firestore, { firebase } from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 import { votePost, postReply } from "../global/functions";
 import { getDefaultZone, attachIDs } from "../global/utils";
@@ -49,6 +50,7 @@ export default class Post {
   }
 
   static async create(author, data, parent = null) {
+    // CHANGES HERE MUST BE REFLECTED IN POSTANONYMOUSLY FUNCTION
     if (!data.text) throw new Error("No text");
     data.author = author;
     data.createdAt = firestore.FieldValue.serverTimestamp();
@@ -104,6 +106,13 @@ export default class Post {
   }
 
   static async remove(postID) {
-    firestore().collection("posts").doc(postID).delete();
+    const store = firestore();
+    const postRef = store.collection("posts").doc(postID).delete();
+    // const userRef = store.collection("users").doc(auth().currentUser.uid)
+    //   .collection('private').doc('forums')
+    // console.log(postID, auth().currentUser.uid)
+    // store.runTransaction(async t => {
+    //   t.delete(postRef)
+    // })
   }
 }

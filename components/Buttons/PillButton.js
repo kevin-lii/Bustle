@@ -10,10 +10,12 @@ export default ({
   active,
   label,
   icon,
-  size,
-  color,
+  fontSize = 20,
+  iconSize = 10,
+  color = "white",
   pillColor = Theme.primary,
   onPress,
+  defaultColor = Theme.primary,
 }) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View
@@ -27,16 +29,17 @@ export default ({
         paddingVertical: 5,
         borderRadius: 100,
         borderWidth: active ? 0 : 1,
-        borderColor: Theme.primary,
+        borderColor: defaultColor,
       }}
     >
       <View marginR-5>
-        <Icons icon={icon} color={active ? "white" : Theme.primary} size={10} />
+        <Icons
+          icon={icon}
+          color={active ? "white" : defaultColor}
+          size={iconSize}
+        />
       </View>
-      <Text
-        style={{ fontSize: size || 20 }}
-        color={active ? color : Theme.primary}
-      >
+      <Text style={{ fontSize }} color={active ? color : defaultColor}>
         {label}
       </Text>
     </View>
