@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Platform } from "react-native";
+import { Alert, Platform, Linking } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
@@ -134,7 +134,7 @@ exports.openURL = async (partLink, type, isUser) => {
       backup = "https://twitter.com/" + partLink;
       break;
     case "snapchat":
-      url = "snapchat://add/" + userpartLinkname;
+      url = "snapchat://add/" + partLink;
       backup = "https://www.snapchat.com/add/" + partLink;
       break;
     case "zoom":

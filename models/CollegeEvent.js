@@ -37,7 +37,7 @@ export default class CollegeEventModel {
 
   static genQuery(filters) {
     let query = firestore().collection(collection);
-    if (filters.containsID)
+    if (filters.containsID && filters.containsID.length)
       query = query.where(
         firestore.FieldPath.documentId(),
         "in",

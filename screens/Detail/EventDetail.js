@@ -3,6 +3,7 @@ import { ImageBackground, StyleSheet, Linking } from "react-native";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import moment from "moment";
+import HyperLink from "react-native-hyperlink";
 
 import Icons from "../../components/Image/Icons";
 import Avatar from "../../components/Buttons/AvatarButton";
@@ -25,10 +26,10 @@ function Temp1() {
 
 export default function ({ route, navigation }) {
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
+  const routes = [
     { key: "description", title: "Description" },
     { key: "discussion", title: "Discussion" },
-  ]);
+  ];
   const event = route.params?.event;
   const startDate = moment(event.startDate.toDate()).format("MMM Do, YYYY");
   const startTime = moment(event.startDate.toDate()).format("h:mm a");

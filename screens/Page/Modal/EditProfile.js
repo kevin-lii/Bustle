@@ -40,7 +40,7 @@ class EditProfile extends React.Component {
           onSubmit={this.update}
           submitText={"Save"}
         />
-        <ScrollView>
+        <ScrollView style={{ backgroundColor: "white" }}>
           <View style={styles.section}>
             <Text text70 color={Theme.grey} style={{ fontWeight: "bold" }}>
               Profile Photo

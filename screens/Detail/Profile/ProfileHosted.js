@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { Text, View } from "react-native-ui-lib";
 
+import EventModel from "../../../models/CollegeEvent";
 import { getHostedEvents } from "../../../store/actions";
 import EventDetail from "../../../components/Cards/EventDetailCard";
 import { Theme } from "../../../global/constants";
@@ -14,25 +15,19 @@ function ProfileHosted({
   getHostedEvents,
   hostedEvents,
 }) {
+  const [hosted, setHosted] = useState([]);
   useEffect(() => {
-    getHostedEvents({ host: user.uid });
-    navigation.addListener("focus", async () => {
-      getHostedEvents({ host: user.id });
-    });
+    if (!isCurrentUser) {
+      EventModel.get({ host: user.uid }).then((events) => setHosted(events));
+    } else {
+      getHostedEvents();
+    }
   }, []);
-  // const [hostedEvents, setHosted] = useState([]);
-  // async function retrieveData() {
-  //   const tempHost = await EventModel.get({ host: user.uid });
-  //   setHosted(attachIDs(tempHost));
-  // }
-  // useEffect(() => {
-  //   retrieveData();
-  // }, []);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         contentContainerStyle={styles.scrollView}
-        data={hostedEvents}
+        data={isCurrentUser ? hostedEvents : hosted}
         renderItem={({ item, index }) => {
           return <EventDetail event={item} navigation={navigation} />;
         }}

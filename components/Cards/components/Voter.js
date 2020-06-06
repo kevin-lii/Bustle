@@ -27,6 +27,7 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
         type="Ionicons"
         icon="ios-arrow-up"
         size={iconSize}
+        color={Theme.secondary}
         onPress={() => {
           if (!up) {
             PostModel.upvote(postID, reply);
@@ -52,6 +53,7 @@ const Voter = ({ user, postID, votes, reply, height, condensed = false }) => {
         type="Ionicons"
         icon="ios-arrow-down"
         size={iconSize}
+        color={Theme.secondary}
         onPress={() => {
           if (!down) {
             PostModel.downvote(postID, reply);

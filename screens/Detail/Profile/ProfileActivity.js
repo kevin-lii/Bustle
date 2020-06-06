@@ -1,18 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { Text, View } from "react-native-ui-lib";
-import { connect } from "react-redux";
 
-import { getPosts } from "../../../store/actions";
+import PostModel from "../../../models/Post";
 import PostCard from "../../../components/Cards/PostCard";
 import { Theme } from "../../../global/constants";
 
-function ProfileActivity({ navigation, isCurrentUser, user, getPosts, post }) {
+export default function ProfileActivity({ navigation, isCurrentUser, user }) {
+  const [post, setPost] = useState([]);
   useEffect(() => {
-    getPosts({ author: user.uid });
-    navigation.addListener("focus", async () => {
-      getPosts({ author: user.uid });
-    });
+    PostModel.get({ author: user.uid }).then((post) => setPost(post));
   }, []);
   return (
     <SafeAreaView style={styles.container}>
@@ -39,24 +36,14 @@ function ProfileActivity({ navigation, isCurrentUser, user, getPosts, post }) {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
+    flex: 1,
     height: "100%",
   },
   scrollView: {
-    flex: 1,
-    height: "100%",
+    paddingHorizontal: 10,
   },
   emptyText: {
     color: Theme.secondary,
     height: "100%",
   },
 });
-
-export default connect(
-  (state) => ({
-    post: state.posts,
-  }),
-  {
-    getPosts,
-  }
-)(ProfileActivity);

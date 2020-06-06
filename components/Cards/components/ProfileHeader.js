@@ -7,11 +7,11 @@ import LocationLabel from "../../Buttons/LocationLabel";
 import Icons from "../../Image/Icons";
 
 import { Theme } from "../../../global/constants";
+// import Avatar from "../../Buttons/AvatarButton"
 import { anonymous } from "../../../global/forumconfig";
 import { navigatePath } from "../../../global/utils";
 import IconButton from "../../Buttons/IconButton";
 import { TouchableOpacity, StyleSheet } from "react-native";
-import UserModel from "../../../models/User";
 
 export default ({
   photoURL,

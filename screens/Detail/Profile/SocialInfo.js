@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { SocialIcon } from "react-native-elements";
 
 import { Theme } from "../../../global/constants";
-import { openURL } from "../../../global/constants";
+import { openURL } from "../../../global/utils";
 import Icons from "../../../components/Image/Icons";
 import AvatarButton from "../../../components/Buttons/AvatarButton";
 import ActionButton from "../../../components/Buttons/ActionButton";
@@ -25,7 +25,7 @@ export default function ({ route, navigation }) {
       </View>
       <View center style={{ height: "100%", width: "100%", marginBottom: 5 }}>
         <AvatarButton
-          photoURL={user.photoURL}
+          photoURL={user.photoURL + "?height=150"}
           init={user.displayName}
           size={100}
           borderColor={Theme.primary}
