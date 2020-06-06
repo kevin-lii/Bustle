@@ -1,14 +1,14 @@
 import React from "react";
 import { Text, View } from "react-native-ui-lib";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import auth from "@react-native-firebase/auth";
+import { connect } from "react-redux";
 import Icons from "../Image/Icons";
 
 import PostModel from "../../models/Post";
 
-export default ({ navigation, postID, authorID }) => (
+const PostOptions = ({ navigation, postID, authorID, user }) => (
   <View flex padding-10>
-    {auth().currentUser.uid === authorID && (
+    {(user.uid === authorID || user.posts?.has(postID)) && (
       <TouchableOpacity
         onPress={() => {
           PostModel.remove(postID);
@@ -41,3 +41,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+export default connect((state) => ({ user: state.user }), {})(PostOptions);

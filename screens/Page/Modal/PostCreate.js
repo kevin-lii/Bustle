@@ -12,29 +12,35 @@ import Tokenizer from "../../../components/Form/Tokenizer";
 import { getDefaultRegionID, getDefaultZone } from "../../../global/utils";
 import { Theme } from "../../../global/constants";
 import { forumTags } from "../../../global/forumconfig";
+import { postAnonymously } from "../../../global/functions";
+import PillButton from "../../../components/Buttons/PillButton";
 
 const PostCreate = ({ navigation, route, user }) => {
   const [text, setText] = useState("");
   const zone = getDefaultZone();
   const [tags, setTags] = useState([]);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [anon, setAnon] = useState(false);
 
   const sheet = createRef();
 
   const handleSubmit = async () => {
+    const data = {
+      tags: tags.map((t) => t.value),
+      text,
+      zone,
+    };
     try {
-      await PostModel.create(
-        {
-          uid: user.uid,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-        },
-        {
-          tags: tags.map((t) => t.value),
-          text,
-          zone,
-        }
-      );
+      if (anon) postAnonymously(data);
+      else
+        await PostModel.create(
+          {
+            uid: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          },
+          data
+        );
       navigation.goBack();
     } catch (e) {
       console.log(e);
@@ -67,21 +73,34 @@ const PostCreate = ({ navigation, route, user }) => {
             onChangeText={(text) => setText(text)}
           />
         </ScrollView>
-        <View padding-10 row style={{ backgroundColor: "white" }}>
-          <View marginR-7 marginT-10>
-            <Icons icon="hashtag" size={20} />
-          </View>
-          <View flex centerV>
-            <Tokenizer
-              value={tags}
-              size={16}
-              color="white"
-              onChange={setTags}
-              data={Object.keys(forumTags).map((tag) => ({
-                label: "#" + tag,
-                value: tag,
-              }))}
+        <View paddingH-10 style={{ backgroundColor: "white" }}>
+          <View style={{ width: 156 }}>
+            <PillButton
+              icon="user-secret"
+              label="Anonymous"
+              iconSize={16}
+              fontSize={18}
+              active={anon}
+              defaultColor={Theme.grey}
+              onPress={() => setAnon(!anon)}
             />
+          </View>
+          <View row>
+            <View marginR-7 marginT-10>
+              <Icons icon="hashtag" size={20} />
+            </View>
+            <View flex centerV>
+              <Tokenizer
+                value={tags}
+                size={16}
+                color="white"
+                onChange={setTags}
+                data={Object.keys(forumTags).map((tag) => ({
+                  label: "#" + tag,
+                  value: tag,
+                }))}
+              />
+            </View>
           </View>
         </View>
       </WithFormHeader>

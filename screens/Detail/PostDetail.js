@@ -84,6 +84,7 @@ class PostDetail extends Component {
           {...data}
           isOP={data.author.uid === user.uid}
           key={index}
+          condensed
         />
       ))
     ) : (

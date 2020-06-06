@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native-ui-lib";
-import { TouchableNativeFeedback } from "react-native";
+import { Text } from "react-native-ui-lib";
+import { TouchableNativeFeedback, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { forumTags } from "../../../global/forumconfig";
@@ -9,7 +9,7 @@ import { Theme } from "../../../global/constants";
 export default ({ tags, limit }) => {
   const navigation = useNavigation();
   return (
-    <View row>
+    <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
       {tags.map((tag) => (
         <TouchableNativeFeedback
           key={tag}

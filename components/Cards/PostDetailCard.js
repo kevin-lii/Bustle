@@ -22,20 +22,27 @@ export default ({
   createdAt,
   postID,
   isOP = false,
+  condensed = false,
   containerStyle,
 }) => (
   <View style={{ backgroundColor: "white", ...containerStyle }} padding-10>
     <ProfileHeader {...author} createdAt={createdAt} isOP={isOP} />
-    <View row>
+    <View row marginB-5>
       <View flex>
-        <View marginT-10 paddingR-5>
+        <View marginT-10 paddingR-10>
           <HyperLink linkDefault={true}>
             <Text style={{ fontSize: reply ? 15 : 25 }}>{text}</Text>
           </HyperLink>
         </View>
       </View>
       <View centerV>
-        <Voter postID={postID} reply={reply} votes={votes} height={120} />
+        <Voter
+          postID={postID}
+          reply={reply}
+          votes={votes}
+          height={condensed ? 70 : 120}
+          condensed={condensed}
+        />
       </View>
     </View>
     {!reply && (
