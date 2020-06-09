@@ -31,7 +31,7 @@ export default ({
       <View flex>
         <View marginT-10 paddingR-10>
           <HyperLink linkDefault={true}>
-            <Text style={{ fontSize: reply ? 15 : 25 }}>{text}</Text>
+            <Text style={{ fontSize: reply ? 15 : 20 }}>{text}</Text>
           </HyperLink>
         </View>
       </View>

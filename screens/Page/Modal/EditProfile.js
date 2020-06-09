@@ -14,20 +14,23 @@ class EditProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: { uri: props.user.photoURL },
-      coverImage: { uri: props.user.coverPhotoURL },
-      major: props.user.major,
-      year: props.user.year,
-      bio: props.user.bio,
+      image: { uri: props.user?.photoURL ? props.user.photoURL : "" },
+      coverImage: {
+        uri: props.user?.coverPhotoURL ? props.user.coverPhotoURL : "",
+      },
+      major: props.user?.major ? props.user.major : "",
+      year: props.user?.year ? props.user.year : "",
+      bio: props.user?.bio ? props.user.bio : "",
       // hobbies: props.user.hobbies,
-      instagram: props.user.instagram,
-      twitter: props.user.twitter,
+      instagram: props.user?.instagram ? props.user.instagram : "",
+      twitter: props.user?.twitter ? props.user.twitter : "",
       // facebook: props.user.facebook,
-      snapchat: props.user.snapchat,
+      snapchat: props.user?.snapchat ? props.user.snapchat : "",
     };
   }
   async update() {
-    const stateCopy = _.pickBy(Object.assign({}, this.state));
+    const stateCopy = _.pickBy(this.state);
+    this.props.navigation.goBack();
     return await UserData.update(stateCopy, {});
   }
   render() {
@@ -37,7 +40,7 @@ class EditProfile extends React.Component {
       <View flex>
         <FormHeader
           onClose={navigation.goBack}
-          onSubmit={this.update}
+          onSubmit={() => this.update()}
           submitText={"Save"}
         />
         <ScrollView style={{ backgroundColor: "white" }}>

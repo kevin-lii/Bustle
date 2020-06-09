@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Linking } from "react-native";
+import { StyleSheet, SafeAreaView } from "react-native";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { SocialIcon } from "react-native-elements";
 
@@ -12,14 +12,9 @@ import ActionButton from "../../../components/Buttons/ActionButton";
 export default function ({ route, navigation }) {
   const user = route.params?.user;
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View centerV style={styles.header}>
-        <TouchableOpacity
-          style={{ marginRight: 10 }}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
+        <TouchableOpacity onPress={navigation.goBack}>
           <Icons icon="arrow-left" size={25} color={Theme.primary} />
         </TouchableOpacity>
       </View>
@@ -68,7 +63,7 @@ export default function ({ route, navigation }) {
             button
             type="twitter"
             onPress={() => openURL(user.twitter, "twitter")}
-            style={{ marginVertical: 10 }}
+            style={{ marginVertical: 10, width: "100%" }}
           />
         )}
         {user.instagram && (
@@ -80,14 +75,15 @@ export default function ({ route, navigation }) {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  container: { paddingHorizontal: 20 },
+  container: { flex: 1, paddingHorizontal: 20 },
   header: {
     position: "absolute",
     top: 15,
     left: 20,
+    zIndex: 1,
   },
 });

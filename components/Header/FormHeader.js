@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
   },
   button: {
     height: "100%",
+    minHeight: "100%",
+    maxHeight: "100%",
     alignItems: "center",
     justifyContent: "center",
   },

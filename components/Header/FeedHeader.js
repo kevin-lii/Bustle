@@ -1,4 +1,5 @@
 import React from "react";
+import { SafeAreaView } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 
 import globalStyles from "../../global/styles";
@@ -20,7 +21,7 @@ export default ({ navigation, text, filterable }) => {
   //   }));
 
   return (
-    <View
+    <SafeAreaView
       style={{
         height: 55,
         backgroundColor: "white",
@@ -39,7 +40,7 @@ export default ({ navigation, text, filterable }) => {
           <LocationLabel zone={getDefaultZone()} size="large" />
         )}
       </View>
-      <View absR row style={{ height: "100%", paddingRight: 10 }}>
+      <View absR centerV row style={{ height: "100%", paddingRight: 10 }}>
         {filterable && (
           <View centerV>
             <IconButton
@@ -60,6 +61,6 @@ export default ({ navigation, text, filterable }) => {
           shadow={false}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

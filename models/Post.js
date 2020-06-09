@@ -59,6 +59,7 @@ export default class Post {
     data.votes = 0;
     data.views = 0;
     data.replyCount = 0;
+    data.zone = getDefaultZone();
 
     await firestore().collection("posts").add(data);
   }

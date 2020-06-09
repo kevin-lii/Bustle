@@ -25,8 +25,8 @@ function Profile({ navigation, route, currentUser }) {
 
   const [index, setIndex] = useState(0);
   const routes = [
-    { key: "events", title: "Past Events" },
-    { key: "hosted", title: "Hosted Events" },
+    { key: "events", title: "Past" },
+    { key: "hosted", title: "Hosted" },
     { key: "activity", title: "Activity" },
   ];
 

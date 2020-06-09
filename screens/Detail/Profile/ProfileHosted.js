@@ -7,6 +7,7 @@ import EventModel from "../../../models/CollegeEvent";
 import { getHostedEvents } from "../../../store/actions";
 import EventDetail from "../../../components/Cards/EventDetailCard";
 import { Theme } from "../../../global/constants";
+import { attachIDs } from "../../../global/utils";
 
 function ProfileHosted({
   navigation,
@@ -18,11 +19,15 @@ function ProfileHosted({
   const [hosted, setHosted] = useState([]);
   useEffect(() => {
     if (!isCurrentUser) {
-      EventModel.get({ host: user.uid }).then((events) => setHosted(events));
+      EventModel.get({ host: user.uid }).then((events) => {
+        setHosted(attachIDs(events));
+      });
     } else {
       getHostedEvents();
     }
   }, []);
+  // console.log("hosted")
+  // console.log(hosted);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

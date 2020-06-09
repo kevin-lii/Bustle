@@ -13,7 +13,7 @@ export default ({ navigation }) => {
       style={{
         height: 55,
         backgroundColor: "white",
-        ...globalStyles.overlayElementShadow,
+        // ...globalStyles.overlayElementShadow,
       }}
     >
       <View absL centerV style={{ height: "100%", left: 10 }}>

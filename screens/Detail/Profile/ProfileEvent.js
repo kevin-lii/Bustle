@@ -21,7 +21,7 @@ export default class ProfileEvent extends React.Component {
 
   retrieveInitialData = () => {
     try {
-      if (this.props.user?.pastEvents.length)
+      if (this.props.user?.pastEvents?.length)
         EventModel.get({
           containsID: this.props.user.pastEvents.slice(0, 9),
         }).then((snapshot) => {
@@ -51,7 +51,7 @@ export default class ProfileEvent extends React.Component {
   retrieveMoreData = () => {
     try {
       if (!this.state.complete) {
-        if (this.props.user.pastEvents.length >= this.state.lastVisible)
+        if (this.props.user?.pastEvents?.length >= this.state.lastVisible)
           EventModel.get({
             containsID: this.props.user.pastEvents.slice(
               this.state.lastVisible,

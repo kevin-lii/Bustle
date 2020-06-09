@@ -3,13 +3,19 @@ import { Text } from "react-native-ui-lib";
 import { TouchableNativeFeedback, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { forumTags } from "../../../global/forumconfig";
 import { Theme } from "../../../global/constants";
 
 export default ({ tags, limit }) => {
   const navigation = useNavigation();
   return (
-    <View style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
+    <View
+      style={{
+        flex: 1,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        paddingLeft: 30,
+      }}
+    >
       {tags.map((tag) => (
         <TouchableNativeFeedback
           key={tag}
@@ -17,8 +23,8 @@ export default ({ tags, limit }) => {
         >
           <Text
             marginR-10
-            color={Theme.primary}
-            style={{ fontSize: 16, fontWeight: "bold" }}
+            color={Theme.secondary}
+            style={{ fontSize: 13, fontWeight: "bold" }}
           >
             #{tag}
           </Text>

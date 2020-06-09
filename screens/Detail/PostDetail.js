@@ -11,7 +11,6 @@ import PostDetailCard from "../../components/Cards/PostDetailCard";
 
 import PostModel from "../../models/Post";
 import { Theme } from "../../global/constants";
-import globalStyles from "../../global/styles";
 
 class PostDetail extends Component {
   constructor(props) {
@@ -79,7 +78,6 @@ class PostDetail extends Component {
             borderRadius: 12,
             marginHorizontal: 10,
             marginBottom: 5,
-            ...globalStyles.cardShadow,
           }}
           {...data}
           isOP={data.author.uid === user.uid}

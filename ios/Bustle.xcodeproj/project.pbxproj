@@ -26,7 +26,6 @@
 		48FE35B92489DE5700BB81F6 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4723CAAA260022DD03 /* Roboto-Medium.ttf */; };
 		48FE35BA2489DE5700BB81F6 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4623CAAA260022DD03 /* Roboto-Regular.ttf */; };
 		48FE35BB2489DE5700BB81F6 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4823CAAA270022DD03 /* Roboto-Thin.ttf */; };
-		48FE35BD2489E3F000BB81F6 /* FontAwesome5_Pro_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48FE35BC2489E3F000BB81F6 /* FontAwesome5_Pro_Regular.ttf */; };
 		E57FBD55FB8B6662CFE97B00 /* libPods-Bustle-tvOS-Bustle-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C92AD84605657267ECB5C7E /* libPods-Bustle-tvOS-Bustle-tvOSTests.a */; };
 		F33F99A720CAF9BBAEEC2425 /* libPods-Bustle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F13A018C3C3418A2B3EFC26 /* libPods-Bustle.a */; };
 /* End PBXBuildFile section */
@@ -236,7 +235,6 @@
 		DD851D50E479465E8160266B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				48FE35BC2489E3F000BB81F6 /* FontAwesome5_Pro_Regular.ttf */,
 				4859AD4923CAAA270022DD03 /* Roboto-Black.ttf */,
 				4859AD4A23CAAA270022DD03 /* Roboto-Bold.ttf */,
 				4859AD4B23CAAA270022DD03 /* Roboto-Italic.ttf */,
@@ -252,6 +250,7 @@
 				4FD0DF4DE0734385AE9BB1CA /* FontAwesome.ttf */,
 				FE07AB88EA39419A8AE0F8E1 /* FontAwesome5_Brands.ttf */,
 				1BC143FDD33449BDB2E90D9A /* FontAwesome5_Regular.ttf */,
+				48FE35BC2489E3F000BB81F6 /* FontAwesome5_Pro_Regular.ttf */,
 				3E0BE66312EF474297E4B28D /* FontAwesome5_Solid.ttf */,
 				FD0F9A2A50D2431C87654F7E /* Fontisto.ttf */,
 				2580355D2C1B487C9F1FB6F7 /* Foundation.ttf */,
@@ -439,7 +438,6 @@
 				48FE35BA2489DE5700BB81F6 /* Roboto-Regular.ttf in Resources */,
 				48FE35BB2489DE5700BB81F6 /* Roboto-Thin.ttf in Resources */,
 				48FE35B42489DE4A00BB81F6 /* GoogleService-Info.plist in Resources */,
-				48FE35BD2489E3F000BB81F6 /* FontAwesome5_Pro_Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

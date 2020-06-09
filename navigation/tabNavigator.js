@@ -14,7 +14,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import EventNavigator from "./eventStackNavigator";
 import ForumNavigator from "./forumStackNavigator";
 import MapNavigator from "./mapStackNavigator";
-import EventListScreen from "../screens/Page/EventList/interestedEvents";
+import EventListScreen from "./interestedStackNavigator";
 import WithOverlayBottomSheet from "../components/Container/WithOverlayBottomSheet";
 import EventFilters from "../components/Form/EventFilters";
 import PostOptions from "../components/Form/PostOptions";

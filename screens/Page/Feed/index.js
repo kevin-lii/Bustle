@@ -1,15 +1,12 @@
 import React, { Component, createRef } from "react";
-import { FlatList } from "react-native";
-import { Card, Text, View } from "react-native-ui-lib";
+import { FlatList, SafeAreaView } from "react-native";
+import { Text } from "react-native-ui-lib";
 import { connect } from "react-redux";
 
 import { getEvents, getPosts } from "../../../store/actions";
 import PostCard from "../../../components/Cards/PostCard";
-import EventFilters from "../../../components/Form/EventFilters";
 import WithOverlayButtons from "../../../components/Container/WithOverlayButtons";
-import FeedHeader from "../../../components/Header/FeedHeader";
 import EventDetailCard from "../../../components/Cards/EventDetailCard";
-import WithOverlayBottomSheet from "../../../components/Container/WithOverlayBottomSheet";
 
 import { Theme } from "../../../global/constants";
 class Feed extends Component {
@@ -49,7 +46,7 @@ class Feed extends Component {
         route={route}
         toggleState={forumView}
       >
-        <View flex style={{ backgroundColor: Theme.defaultBackground }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
           <FlatList
             style={{ paddingHorizontal: 10 }}
             contentContainerStyle={{ paddingBottom: 80 }}
@@ -63,7 +60,7 @@ class Feed extends Component {
                 );
             }}
           />
-        </View>
+        </SafeAreaView>
       </WithOverlayButtons>
     );
   }

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Text, TextField, View } from "react-native-ui-lib";
+
 import ActionButton from "../../../components/Buttons/ActionButton";
 import { checkName } from "../../../global/utils";
-import { Theme } from "../../../global/constants";
-
 import UserModel from "../../../models/User";
 import ImageUploader from "../../../components/Form/ImageUploader";
 
@@ -18,29 +17,26 @@ export default class NewUserFlow extends React.Component {
       major: "",
       year: "",
       bio: "",
-      // hobbies: props.user.hobbies,
       instagram: "",
       twitter: "",
-      // facebook: props.user.facebook,
       snapchat: "",
+      error: "",
     };
   }
 
   handlePress = async () => {
-    setError("");
     try {
-      checkName(name);
-      await UserModel.createNewProfile(name);
-
-      navigation.replace("main");
+      checkName(this.state.name);
+      await UserModel.createNewProfile(this.state.name);
+      this.props.navigation.replace("main");
     } catch (e) {
-      setError(e.message);
+      this.setState({ error: e.message });
       console.log(e);
     }
   };
   render() {
     return (
-      <View flex margin-15 spread>
+      <View flex margin-15>
         <View center>
           <Text style={styles.text}>Welcome to Bustle!</Text>
           <Text style={styles.text}>Enter your full name to get started.</Text>
@@ -56,7 +52,7 @@ export default class NewUserFlow extends React.Component {
           placeholder="Full name"
           onChangeText={(name) => this.setState({ name })}
         />
-        <View flex row>
+        <View flex row spread>
           <TextField
             placeholder="Major"
             enableErrors={false}
@@ -71,7 +67,7 @@ export default class NewUserFlow extends React.Component {
             onChangeText={(year) => this.setState({ year })}
           />
         </View>
-        <TextField
+        {/* <TextField
           placeholder="Full name"
           onChangeText={(name) => this.setState({ name })}
         />
@@ -82,9 +78,9 @@ export default class NewUserFlow extends React.Component {
         <TextField
           placeholder="Full name"
           onChangeText={(name) => this.setState({ name })}
-        />
-        <Text>{error}</Text>
-        <ActionButton primary text="Get started" onPress={handlePress} />
+        /> */}
+        <Text>{this.state.error}</Text>
+        <ActionButton primary text="Get started" onPress={this.handlePress} />
       </View>
     );
   }

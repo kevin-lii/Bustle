@@ -15,12 +15,7 @@ export default ({ post, postID, footer = true, path = "post" }) => {
   const { text, author, votes, tags, createdAt, replyCount } = post;
 
   return (
-    <Card
-      white50
-      borderRadius={12}
-      width={"100%"}
-      containerStyle={styles.container}
-    >
+    <Card borderRadius={12} width={"100%"} containerStyle={styles.container}>
       <View paddingH-10>
         <PostHeader {...post.author} postID={postID} createdAt={createdAt} />
       </View>
@@ -66,7 +61,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   text: {
-    fontSize: 18,
+    fontSize: 15,
     paddingTop: 5,
+    paddingLeft: 30,
   },
 });
