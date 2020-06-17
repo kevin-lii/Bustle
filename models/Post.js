@@ -1,7 +1,8 @@
 import firestore, { firebase } from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-import { votePost, postReply } from "../global/functions";
+import { removePost } from "../store/actions";
+import { votePost, deleteAnonPost } from "../global/functions";
 import { getDefaultZone, attachIDs } from "../global/utils";
 import UserModel from "./User";
 
@@ -106,14 +107,10 @@ export default class Post {
       .add(data);
   }
 
-  static async remove(postID) {
-    const store = firestore();
-    const postRef = store.collection("posts").doc(postID).delete();
-    // const userRef = store.collection("users").doc(auth().currentUser.uid)
-    //   .collection('private').doc('forums')
-    // console.log(postID, auth().currentUser.uid)
-    // store.runTransaction(async t => {
-    //   t.delete(postRef)
-    // })
+  static async remove(postID, anon = false) {
+    if (anon) {
+      removePost(postID);
+      deleteAnonPost(postID);
+    } else firestore().collection("posts").doc(postID).delete();
   }
 }

@@ -17,6 +17,7 @@ export default ({ postID, tags, totalComments, commentPress }) => {
         width: "100%",
         paddingHorizontal: 10,
         alignItems: "flex-end",
+        borderTopWidth: StyleSheet.hairlineWidth,
       }}
     >
       <TagLinks tags={tags} />

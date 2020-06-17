@@ -15,7 +15,12 @@ export default function ({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <View centerV style={styles.header}>
         <TouchableOpacity onPress={navigation.goBack}>
-          <Icons icon="arrow-left" size={25} color={Theme.primary} />
+          <Icons
+            type="MaterialIcons"
+            icon="arrow-left"
+            size={30}
+            color={Theme.primary}
+          />
         </TouchableOpacity>
       </View>
       <View center style={{ height: "100%", width: "100%", marginBottom: 5 }}>
@@ -79,7 +84,11 @@ export default function ({ route, navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal: 20 },
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    backgroundColor: "white",
+  },
   header: {
     position: "absolute",
     top: 15,

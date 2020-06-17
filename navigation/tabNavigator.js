@@ -11,15 +11,14 @@ import {
 } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-import EventNavigator from "./eventStackNavigator";
-import ForumNavigator from "./forumStackNavigator";
 import MapNavigator from "./mapStackNavigator";
-import EventListScreen from "./interestedStackNavigator";
 import WithOverlayBottomSheet from "../components/Container/WithOverlayBottomSheet";
-import EventFilters from "../components/Form/EventFilters";
-import PostOptions from "../components/Form/PostOptions";
 
 import { Theme } from "../global/constants";
+import FeedHeader from "../components/Header/FeedHeader";
+import EventStackNavigator from "./eventStackNavigator";
+import CalendarStackNavigator from "./calendarStackNavigator";
+import ProfileNavigator from "./profileNavigator";
 
 const CustomTabRouter = (options) => {
   const router = TabRouter(options);
@@ -102,14 +101,9 @@ export default function TabNavigator({ route }) {
     const feedRoute = nestedRoute.state?.routes[nestedRoute.state.index];
     showTabs = feedRoute?.name !== "event" && !feedRoute?.params?.hideTabBar;
   }
-  if (nestedRoute?.name === "forums") {
-    const forumRoute = nestedRoute.state?.routes[nestedRoute.state.index];
-    showTabs = forumRoute?.name !== "post" && !forumRoute?.params?.hideTabBar;
-  }
 
   return (
     <Tab.Navigator
-      initialRouteName="forums"
       tabBarOptions={{
         activeTintColor: Theme.primary,
         showLabel: false,
@@ -120,8 +114,17 @@ export default function TabNavigator({ route }) {
     >
       <Tab.Screen
         name="explore"
-        component={EventNavigator}
+        component={EventStackNavigator}
         options={{
+          header: ({ scene, previous, navigation }) => {
+            return (
+              <FeedHeader
+                navigation={navigation}
+                text="Explore Events"
+                filterable
+              />
+            );
+          },
           tabBarIcon: ({ color, size }) => (
             <Icon name="search" size={size} color={color} />
           ),
@@ -129,21 +132,20 @@ export default function TabNavigator({ route }) {
         }}
       />
       <Tab.Screen
-        name="forums"
-        component={ForumNavigator}
+        name="eventlist"
+        component={CalendarStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="comment" size={size} color={color} />
+            <Icon name="calendar-alt" size={size} color={color} />
           ),
-          tabBarVisible: showTabs,
         }}
       />
       <Tab.Screen
-        name="eventlist"
-        component={EventListScreen}
+        name="profile"
+        component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="calendar-check" size={size} color={color} />
+            <Icon name="user" size={size} color={color} />
           ),
         }}
       />

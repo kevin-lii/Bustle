@@ -5,6 +5,7 @@ import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 
 import { defaultRegions } from "./forumconfig";
+import URL from "url";
 
 exports.bindAll = function (thisArg, obj) {
   for (const key of Object.keys(obj)) {
@@ -58,9 +59,7 @@ exports.validateLocation = function (loc, lat, lng) {
 };
 
 exports.validateURL = function (str) {
-  return RegExp(
-    /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/
-  ).test(str);
+  return Boolean(URL.parse(str).hostname);
 };
 
 exports.getDefaultRegionID = function (zone) {

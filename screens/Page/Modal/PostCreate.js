@@ -71,6 +71,7 @@ const PostCreate = ({ navigation, route, user }) => {
             text50
             placeholder="What's on your mind?"
             onChangeText={(text) => setText(text)}
+            autoFocus={true}
           />
         </ScrollView>
         <View paddingH-10 style={{ backgroundColor: "white" }}>

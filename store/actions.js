@@ -29,7 +29,7 @@ export const login = () => (dispatch) => {
         })
       );
     } else {
-      for (let [key, fn] in subscriptions) fn();
+      for (fn of Object.values(subscriptions)) fn();
       dispatch({
         type: actionTypes.LOGOUT,
       });
@@ -79,5 +79,16 @@ export const setEventFilters = (filters = {}) => (dispatch) => {
       events: attachIDs(snapshot),
       filters,
     });
+  });
+};
+
+export const removePost = (postID) => (dispatch, getState) => {
+  const { posts } = getState();
+  const allPosts = [];
+  posts.map((p) => (p.id === postID ? null : allPosts.push(p)));
+
+  dispatch({
+    type: actionTypes.UPDATE_POSTS,
+    posts: allPosts,
   });
 };

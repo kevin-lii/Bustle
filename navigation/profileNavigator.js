@@ -14,29 +14,10 @@ export default function ProfileNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Profile"
+        name="profile"
         component={Profile}
         options={{
           headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="socialinfo"
-        component={SocialInfo}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="post"
-        component={PostDetail}
-        options={{
-          header: ({ scene, previous, navigation }) => {
-            return <DetailHeader navigation={navigation} route={scene.route} />;
-          },
-          animationEnabled: false,
-          gestureDirection: "horizontal",
-          gestureEnabled: true,
         }}
       />
       <Stack.Screen

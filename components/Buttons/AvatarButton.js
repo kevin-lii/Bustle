@@ -8,7 +8,7 @@ import globalStyles from "../../global/styles";
 
 export default function ({
   photoURL,
-  init,
+  name,
   onPress,
   size,
   marginTop = 0,
@@ -31,10 +31,9 @@ export default function ({
   }
   // set initials if photo is invalid
   let initials;
-  if (init && !photo) {
-    initials = init;
-  } else if (useUser && user && user.displayName && !photo) {
-    initials = user.displayName
+  const displayName = name || user.displayName;
+  if (name && !photo) {
+    initials = displayName
       .split(" ")
       .map((name) => name.charAt(0))
       .join("");

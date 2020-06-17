@@ -1,10 +1,14 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { View, Text, Card, Image, TouchableOpacity } from "react-native-ui-lib";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+} from "react-native";
+import { View, Text, Card, Image } from "react-native-ui-lib";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
-import Url from "url-parse";
+import Url from "url";
 
 import CategoriesIcon from "../Image/CategoriesIcon";
 import CardIcons from "./components/CardIcons";
@@ -27,15 +31,12 @@ export default ({
   const startDate = moment(event.startDate.toDate());
 
   return (
-    <Card
-      white50
-      borderRadius={radius}
-      width={"100%"}
-      containerStyle={styles.containerStyle}
-    >
-      <TouchableOpacity
-        onPress={() => navigation.navigate(path, { event })}
-        style={{ flex: 1 }}
+    <TouchableOpacity onPress={() => navigation.push(path, { event })}>
+      <Card
+        white50
+        borderRadius={radius}
+        width={"100%"}
+        containerStyle={styles.containerStyle}
       >
         <Image style={styles.image} source={{ uri: event.photoURL || "" }} />
         <LinearGradient
@@ -59,7 +60,7 @@ export default ({
               </View>
               <Text color={Theme.grey}>
                 {event.link
-                  ? Url(event.link).hostname
+                  ? Url.parse(event.link).hostname
                   : trimString(event.location.description, 15)}
               </Text>
             </View>
@@ -67,8 +68,8 @@ export default ({
           <CardIcons rsvp={rsvp} trash={trash} event={event} />
         </View>
         {children}
-      </TouchableOpacity>
-    </Card>
+      </Card>
+    </TouchableOpacity>
   );
 };
 

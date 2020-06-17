@@ -16,6 +16,13 @@ import FormTypes from "../../../components/Form/FormTypes";
 import { navigatePath } from "../../../global/utils";
 import globalStyles from "../../../global/styles";
 import UserModel from "../../../models/User";
+import IconButton from "../../../components/Buttons/IconButton";
+
+const getPhotoURL = (s) => {
+  if (typeof s !== "string") return "";
+
+  return s.indexOf("facebook") !== -1 ? s + "?height=150" : s;
+};
 
 function Profile({ navigation, route, currentUser }) {
   const isForeign =
@@ -27,7 +34,6 @@ function Profile({ navigation, route, currentUser }) {
   const routes = [
     { key: "events", title: "Past" },
     { key: "hosted", title: "Hosted" },
-    { key: "activity", title: "Activity" },
   ];
 
   useEffect(() => {
@@ -37,14 +43,6 @@ function Profile({ navigation, route, currentUser }) {
 
   const renderScene = ({ route }) => {
     switch (route.key) {
-      case "activity":
-        return (
-          <ProfileActivity
-            isCurrentUser={!isForeign}
-            user={user}
-            navigation={navigation}
-          />
-        );
       case "hosted":
         return (
           <ProfileHosted
@@ -72,32 +70,34 @@ function Profile({ navigation, route, currentUser }) {
           style={styles.image}
         >
           <View
+            flex
             row
-            style={{
-              paddingHorizontal: 20,
-              paddingTop: 15,
-              flex: 1,
-              justifyContent: "space-between",
-              width: "100%",
-            }}
+            spread
+            paddingT-15
+            paddingH-20
+            style={{ width: "100%" }}
           >
-            <View centerV center style={styles.iconCircle}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Icons
-                  type="MaterialIcons"
-                  icon="arrow-left"
-                  size={30}
-                  color={Theme.primary}
-                />
-              </TouchableOpacity>
-            </View>
+            {route.params?.user && (
+              <IconButton
+                containerStyle={styles.iconCircle}
+                type="MaterialIcons"
+                icon="arrow-left"
+                color={Theme.primary}
+                size={30}
+                onPress={navigation.goBack}
+              />
+            )}
             {!isForeign && (
-              <View centerV center style={styles.iconCircle}>
+              <View
+                center
+                absT
+                absR
+                marginT-15
+                marginR-15
+                style={styles.iconCircle}
+              >
                 <TouchableOpacity
-                  // onPress={() => navigation.navigate("newUser")}
-                  onPress={() =>
-                    navigatePath(navigation, `modal/${FormTypes.PROFILE_EDIT}`)
-                  }
+                  onPress={() => navigation.navigate(FormTypes.PROFILE_EDIT)}
                 >
                   <Icons
                     icon="player-settings"
@@ -118,11 +118,12 @@ function Profile({ navigation, route, currentUser }) {
           alignItems: "center",
           marginBottom: 15,
           marginTop: -50,
+          // backgroundColor: "white"
         }}
       >
         <AvatarButton
-          photoURL={user.photoURL + "?height=150"}
-          init={user.displayName}
+          photoURL={getPhotoURL(user.photoURL)}
+          name={user.displayName}
           size={150}
           borderColor={Theme.primary}
           borderWidth={2}
@@ -159,9 +160,9 @@ function Profile({ navigation, route, currentUser }) {
         renderTabBar={(props) => (
           <TabBar
             {...props}
-            indicatorStyle={{ backgroundColor: Theme.secondary }}
+            indicatorStyle={{ backgroundColor: Theme.primary }}
             style={{ backgroundColor: "white" }}
-            activeColor={Theme.secondary}
+            activeColor={Theme.primary}
             inactiveColor={Theme.secondary}
           />
         )}
@@ -185,15 +186,14 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "center",
     alignItems: "center",
-    opacity: 0.75,
+    opacity: 1,
   },
   iconCircle: {
     backgroundColor: "white",
-    opacity: 1,
     borderRadius: 20,
-    height: 35,
-    width: 35,
-    // ...globalStyles.overlayElementShadow
+    height: 40,
+    width: 40,
+    ...globalStyles.overlayElementShadow,
   },
 });
 

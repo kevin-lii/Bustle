@@ -44,22 +44,15 @@ export default ({ navigation, text, filterable }) => {
         {filterable && (
           <View centerV>
             <IconButton
-              icon="filter"
-              onPress={() => navigatePath(navigation, "sheet/eventfilters")}
+              type="Font"
+              icon="sliders-h"
+              onPress={() => navigation.push("eventfilters")}
               size={20}
               color={Theme.primary}
               containerStyle={{ height: "100%", marginHorizontal: 10 }}
             />
           </View>
         )}
-        <AvatarButton
-          onPress={() => navigation.openDrawer()}
-          borderWidth={1}
-          useUser
-          marginTop={7.5}
-          size={40}
-          shadow={false}
-        />
       </View>
     </SafeAreaView>
   );

@@ -12,6 +12,7 @@ import { getDefaultZone } from "../../global/utils";
 export default ({
   onPress,
   zone = getDefaultZone(),
+  color = Theme.primary,
   regionID,
   size = "small",
   pinIcon = true,
@@ -35,7 +36,9 @@ export default ({
   }
 
   let content = (
-    <Text style={[styles.text, { fontSize, fontWeight }]}>{labelText}</Text>
+    <Text style={[styles.text, { fontSize, fontWeight, color }]}>
+      {labelText}
+    </Text>
   );
 
   const getLabel = (value) => {
@@ -50,14 +53,10 @@ export default ({
         mode={pickerMode}
         renderPicker={(l) => (
           <View row centerV>
-            <Text style={styles.text} marginR-5>
+            <Text style={styles.text} marginR-5 color={color}>
               {getLabel(l)}
             </Text>
-            <Icons
-              type="Ionicons"
-              icon="ios-arrow-down"
-              color={Theme.primary}
-            />
+            <Icons type="Ionicons" icon="ios-arrow-down" color={color} />
           </View>
         )}
         value={pickerValue}
@@ -73,11 +72,7 @@ export default ({
       <View row centerV style={styles.label}>
         {pinIcon && (
           <View marginR-5>
-            <Icons
-              icon="map-marker-alt"
-              size={iconSize}
-              color={Theme.primary}
-            />
+            <Icons icon="map-marker-alt" size={iconSize} color={color} />
           </View>
         )}
         {content}
@@ -92,7 +87,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-    color: Theme.primary,
     fontWeight: "bold",
   },
 });

@@ -42,12 +42,7 @@ export default ({
           )}
           <AddButton
             onState={toggleState}
-            onPressOn={() =>
-              navigatePath(navigation, `modal/${FormTypes.POST_CREATE}`)
-            }
-            onPressOff={() =>
-              navigatePath(navigation, `modal/${FormTypes.EVENT_CREATE}`)
-            }
+            onPressOff={() => navigation.push(FormTypes.EVENT_CREATE)}
           />
           {onToggle && (
             <View style={{ marginTop: 10 }}>

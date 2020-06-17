@@ -11,7 +11,7 @@ const PostOptions = ({ navigation, postID, authorID, user }) => (
     {(user.uid === authorID || user.posts?.has(postID)) && (
       <TouchableOpacity
         onPress={() => {
-          PostModel.remove(postID);
+          PostModel.remove(postID, user.uid !== authorID);
           navigation.goBack();
         }}
       >
