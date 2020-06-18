@@ -4,11 +4,6 @@ import { TouchableOpacity, View } from "react-native";
 import Icons from "../Image/Icons";
 import { Theme } from "../../global/constants";
 
-const iconContainer = {
-  alignItems: "center",
-  justifyContent: "center",
-};
-
 export default ({
   size = 30,
   icon,
@@ -21,10 +16,10 @@ export default ({
 }) => (
   <TouchableOpacity
     onPress={onPress}
-    style={[containerStyle, { justifyContent: "center" }]}
+    style={[containerStyle, { justifyContent: "center", alignItems: "center" }]}
     hitSlop={hitBox}
   >
-    <View style={iconContainer}>
+    <View center>
       <Icons
         type={type}
         size={size}

@@ -51,6 +51,11 @@ function RootNavigator({ user }) {
         options={modalOptions}
       />
       <Stack.Screen
+        name={FormTypes.EVENT_EDIT}
+        component={EventCreate}
+        options={modalOptions}
+      />
+      <Stack.Screen
         name={FormTypes.POST_CREATE}
         component={PostCreate}
         options={modalOptions}

@@ -21,7 +21,8 @@ export default class EventCreate extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
-    this.state = props.event || {
+    const event = props.route?.params?.event;
+    this.state = { ...event } || {
       name: "",
       description: "",
       date: new Date(),
@@ -38,11 +39,15 @@ export default class EventCreate extends React.Component {
       tags: [],
     };
 
-    if (props.event) {
-      this.state.date = this.state.date.toDate();
-      this.state.time = this.state.time.toDate();
-      this.state.endDate = this.state.endDate?.toDate();
-      this.state.endTime = this.state.endTime?.toDate();
+    if (event) {
+      this.state.date = event.startDate.toDate();
+      this.state.time = event.startDate.toDate();
+      this.state.endDate = event.endDate?.toDate();
+      this.state.endTime = event.endTime?.toDate();
+      this.state.tags = this.state.tags.map((value) => ({
+        label: value,
+        value,
+      }));
     }
 
     this.submit = this.submit.bind(this);
@@ -53,7 +58,6 @@ export default class EventCreate extends React.Component {
     try {
       const stateCopy = Object.assign({}, this.state);
       stateCopy.startDate = new Date();
-      console.log(this.state);
       stateCopy.startDate.setTime(this.state.date.getTime());
       stateCopy.startDate.setHours(this.state.time.getHours());
       stateCopy.startDate.setMinutes(this.state.time.getMinutes());
@@ -110,7 +114,7 @@ export default class EventCreate extends React.Component {
         >
           <ImageUploader
             onImageSubmit={(res) => this.setState({ image: res })}
-            uri={this.state.image.uri}
+            uri={this.state.image?.uri}
           />
 
           <View paddingH-15 paddingB-20>

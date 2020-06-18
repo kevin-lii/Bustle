@@ -7,6 +7,7 @@ import CalendarToggle from "../../Buttons/CalendarToggle";
 import EventModel from "../../../models/CollegeEvent";
 
 import { navigatePath } from "../../../global/utils";
+import FormTypes from "../../Form/FormTypes";
 
 export default ({ trash, edit, map, rsvp, event }) => (
   <View style={{ flexDirection: "row-reverse" }} spread>
@@ -28,9 +29,7 @@ export default ({ trash, edit, map, rsvp, event }) => (
           icon="pencil"
           type="Entypo"
           size={30}
-          onPress={() => {
-            edit(event);
-          }}
+          onPress={() => navigation.navigate(FormTypes.EVENT_EDIT, { event })}
         />
       </View>
     )}

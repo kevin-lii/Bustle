@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import auth from "@react-native-firebase/auth";
 import { ImageBackground, StyleSheet, Linking } from "react-native";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
@@ -12,6 +13,7 @@ import ActionButton from "../../components/Buttons/ActionButton";
 import FormTypes from "../../components/Form/FormTypes";
 import { getNameInitials } from "../../global/utils";
 import globalStyles from "../../global/styles";
+import IconButton from "../../components/Buttons/IconButton";
 
 function Temp({ event }) {
   return (
@@ -61,16 +63,27 @@ export default function ({ route, navigation }) {
             paddingT-15
             style={{ width: "100%" }}
           >
-            <View centerV center style={styles.iconCircle}>
-              <TouchableOpacity onPress={navigation.goBack}>
-                <Icons
-                  type="MaterialIcons"
-                  icon="arrow-left"
-                  color={Theme.primary}
-                  size={30}
-                />
-              </TouchableOpacity>
-            </View>
+            <IconButton
+              containerStyle={styles.iconCircle}
+              onPress={navigation.goBack}
+              type="FontAwesome"
+              icon="arrow-left"
+              color={Theme.primary}
+              size={iconSize}
+            />
+            {auth().currentUser.uid === event.host.uid && (
+              <IconButton
+                containerStyle={styles.iconCircle}
+                iconStyle={{ paddingBottom: 2, paddingLeft: 1 }}
+                onPress={() =>
+                  navigation.navigate(FormTypes.EVENT_EDIT, { event })
+                }
+                type="Font"
+                icon="edit"
+                color={Theme.primary}
+                size={iconSize - 5}
+              />
+            )}
           </View>
         </ImageBackground>
       </View>
