@@ -5,15 +5,12 @@ import { Theme } from "../../../global/constants";
 export default StyleSheet.create({
   container: {
     display: "flex",
-    height: "100%"
+    height: "100%",
   },
   title: {
     color: Theme.primary,
     fontSize: 30,
     fontWeight: "bold",
-    marginTop: 30,
-    marginBottom: 20,
-    marginLeft: 2
   },
   subtitle: {
     color: Theme.primary,
@@ -21,26 +18,26 @@ export default StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: 2
+    marginLeft: 2,
   },
   iconContainer: {
     height: "100%",
     width: "100%",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   closeContainer: {
     width: 40,
     height: "100%",
-    right: 0
+    right: 0,
   },
   scrollView: {
     paddingLeft: 5,
-    paddingRight: 5
+    paddingRight: 5,
   },
   formContainer: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "transparent"
-  }
+    backgroundColor: "transparent",
+  },
 });

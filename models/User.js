@@ -2,6 +2,7 @@ import { firebase as storage } from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
+import { saveEvent, unsaveEvent } from "../global/functions";
 import { UserContext } from "../dataContainers/context";
 
 export default class UserModel {
@@ -66,14 +67,8 @@ export default class UserModel {
   }
 
   static async saveEvent(eventID, status) {
-    await firestore()
-      .collection("users")
-      .doc(auth().currentUser.uid)
-      .collection("private")
-      .doc("savedCollegeEvents")
-      .update({
-        ["saved." + eventID]: status,
-      });
+    if (status) saveEvent(eventID);
+    else unsaveEvent(eventID);
   }
 
   static async update(publicData, privateData) {

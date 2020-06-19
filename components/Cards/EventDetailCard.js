@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    height: 150,
+    height: 145,
     borderRadius: radius,
   },
   gradient: {

@@ -1,11 +1,13 @@
 import React from "react";
-import { Text, FlatList, SafeAreaView } from "react-native";
+import { Text, FlatList, SafeAreaView, View } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
 
+import CalendarHeader from "../../../components/Header/CalendarHeader";
 import EventDetail from "../../../components/Cards/EventDetailCard";
 import EventModel from "../../../models/CollegeEvent";
 
+import { getHostedEvents } from "../../../store/actions";
 import styles from "./styles";
 
 class InterestedFeed extends React.Component {
@@ -15,11 +17,13 @@ class InterestedFeed extends React.Component {
       interested: [],
       lastVisible: 0,
       complete: false,
+      showHosting: false,
     };
   }
 
   componentDidMount() {
     this.retrieveData();
+    this.props.getHostedEvents();
     this.props.navigation.addListener("focus", async () => {
       this.loadData();
     });
@@ -131,12 +135,19 @@ class InterestedFeed extends React.Component {
       <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.scrollView}
-          data={this.state.interested}
+          data={
+            this.state.showHosting
+              ? this.props.hostedEvents
+              : this.state.interested
+          }
           renderItem={({ item, index }) => {
             return <EventDetail event={item} navigation={navigation} />;
           }}
           ListHeaderComponent={() => (
-            <Text style={styles.title}>Saved Events</Text>
+            <CalendarHeader
+              state={this.state.showHosting}
+              onChange={(showHosting) => this.setState({ showHosting })}
+            />
           )}
           ListEmptyComponent={() => <Text>You have no interested events.</Text>}
           ListFooterComponent={renderFooter}
@@ -148,4 +159,12 @@ class InterestedFeed extends React.Component {
   }
 }
 
-export default connect((state) => ({ user: state.user }), {})(InterestedFeed);
+export default connect(
+  (state) => ({
+    hostedEvents: state.hostedEvents,
+    user: state.user,
+  }),
+  {
+    getHostedEvents,
+  }
+)(InterestedFeed);

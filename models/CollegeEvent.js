@@ -63,6 +63,11 @@ export default class CollegeEventModel {
     if (onNext) return query.onSnapshot(onNext, onError);
   }
 
+  static subscribeOne(eventID, onNext, onError = console.log) {
+    const query = firestore().collection(collection).doc(eventID);
+    if (onNext) return query.onSnapshot(onNext, onError);
+  }
+
   static async remove(event) {
     await firestore().runTransaction(async (transaction) => {
       firestore()
