@@ -1,34 +1,41 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native-ui-lib";
+import { connect } from "react-redux";
 
 import IconButton from "../../Buttons/IconButton";
 import CalendarToggle from "../../Buttons/CalendarToggle";
 import EventModel from "../../../models/CollegeEvent";
 
+import { Theme } from "../../../global/constants";
 import { navigatePath } from "../../../global/utils";
 import FormTypes from "../../Form/FormTypes";
 
-export default ({ trash, edit, map, rsvp, event }) => (
+const iconSize = 25;
+
+const CardIcons = ({ navigation, event, trash, edit, map, rsvp, user }) => (
   <View style={{ flexDirection: "row-reverse" }} spread>
     {trash && (
       <View style={styles.icon}>
         <IconButton
+          color="white"
           icon="trash"
           type="Entypo"
-          size={30}
+          size={iconSize}
           onPress={() => {
-            EventModel.remove(event);
+            // interstitial here
+            // EventModel.remove(event);
           }}
         />
       </View>
     )}
-    {edit && (
+    {edit && user.events.includes(event.id) && (
       <View style={styles.icon}>
         <IconButton
-          icon="pencil"
-          type="Entypo"
-          size={30}
+          color="white"
+          icon="edit"
+          type="Font"
+          size={iconSize}
           onPress={() => navigation.navigate(FormTypes.EVENT_EDIT, { event })}
         />
       </View>
@@ -36,9 +43,10 @@ export default ({ trash, edit, map, rsvp, event }) => (
     {map && (
       <View style={styles.icon}>
         <IconButton
+          color="white"
           icon="map-marker-alt"
           type="Fontisto"
-          size={30}
+          size={iconSize}
           onPress={() => navigatePath(navigation, "map/event", { event })}
         />
       </View>
@@ -50,6 +58,8 @@ export default ({ trash, edit, map, rsvp, event }) => (
     )}
   </View>
 );
+
+export default connect((state) => ({ user: state.user }), {})(CardIcons);
 
 const styles = StyleSheet.create({
   icon: {

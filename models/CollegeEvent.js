@@ -1,5 +1,5 @@
 import { getLocation, validateLocation } from "../global/utils";
-
+import auth from "@react-native-firebase/auth";
 import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
 
@@ -42,6 +42,12 @@ export default class CollegeEventModel {
         firestore.FieldPath.documentId(),
         "in",
         filters.containsID
+      );
+    if (filters.interested)
+      query = query.where(
+        "interested",
+        "array-contains",
+        auth().currentUser.uid
       );
     if (filters.host) query = query.where("host.uid", "==", filters.host);
     if (filters.categories?.length)

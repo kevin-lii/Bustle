@@ -7,6 +7,19 @@ import globalStyles from "../../global/styles";
 import { Theme } from "../../global/constants";
 import Icons from "../Image/Icons";
 
+function calculateIconSize(size) {
+  switch (size) {
+    case "small":
+      return 14;
+    case "medium":
+      return 16;
+    case "large":
+      return 20;
+    default:
+      return 14;
+  }
+}
+
 function calculateDimensions(size) {
   switch (size) {
     case "small":
@@ -15,7 +28,15 @@ function calculateDimensions(size) {
         padding: 10,
         circleWidth: 15,
         circleHeight: 15,
-        translateX: 22
+        translateX: 22,
+      };
+    case "medium":
+      return {
+        width: 56,
+        padding: 17,
+        circleWidth: 28,
+        circleHeight: 28,
+        translateX: 38,
       };
     case "large":
       return {
@@ -23,7 +44,7 @@ function calculateDimensions(size) {
         padding: 20,
         circleWidth: 30,
         circleHeight: 30,
-        translateX: 38
+        translateX: 38,
       };
     default:
       return {
@@ -31,7 +52,7 @@ function calculateDimensions(size) {
         padding: 22,
         circleWidth: 35,
         circleHeight: 35,
-        translateX: 44
+        translateX: 44,
       };
   }
 }
@@ -47,7 +68,8 @@ export default ({
   onColor = Theme.primary,
   offColor = "white",
   size,
-  shadow = true
+  shadow = true,
+  border,
 }) => {
   const offsetX = useRef(new Animated.Value(0)).current;
   const dimensions = calculateDimensions(size);
@@ -57,7 +79,9 @@ export default ({
     width: dimensions.width,
     borderRadius: 30,
     padding: dimensions.padding,
-    backgroundColor: isOn ? onColor : offColor
+    backgroundColor: isOn ? onColor : offColor,
+    borderColor: Theme.primary,
+    borderWidth: border ? 2 : 0,
   });
 
   const createInsideCircleStyle = () => ({
@@ -73,21 +97,21 @@ export default ({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.2,
     shadowRadius: 2.5,
-    elevation: 1.5
+    elevation: 1.5,
   });
 
-  const iconSize = 20;
+  const iconSize = calculateIconSize(size);
   const iconColor = isOn ? onColor : offColor;
   const toValue = isOn ? dimensions.width - dimensions.translateX : 0;
 
   Animated.timing(offsetX, {
     toValue,
     duration: 300,
-    useNativeDriver: true
+    useNativeDriver: true,
   }).start();
 
   return (
@@ -98,7 +122,7 @@ export default ({
       <TouchableOpacity
         style={[
           createToggleSwitchStyle(),
-          shadow ? globalStyles.overlayElementShadow : null
+          shadow ? globalStyles.overlayElementShadow : null,
         ]}
         activeOpacity={0.8}
         onPress={() => (disabled ? null : onToggle(!isOn))}

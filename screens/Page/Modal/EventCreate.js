@@ -22,22 +22,24 @@ export default class EventCreate extends React.Component {
   constructor(props) {
     super(props);
     const event = props.route?.params?.event;
-    this.state = { ...event } || {
-      name: "",
-      description: "",
-      date: new Date(),
-      time: new Date(),
-      endDate: null,
-      endTime: null,
-      location: null,
-      category: "Social",
-      open: true,
-      isPrivate: false,
-      virtual: true,
-      image: "",
-      link: "",
-      tags: [],
-    };
+    this.state = event
+      ? { ...event }
+      : {
+          name: "",
+          description: "",
+          date: new Date(),
+          time: new Date(),
+          endDate: null,
+          endTime: null,
+          location: null,
+          category: "Social",
+          open: true,
+          isPrivate: false,
+          virtual: true,
+          image: "",
+          link: "",
+          tags: [],
+        };
 
     if (event) {
       this.state.date = event.startDate.toDate();

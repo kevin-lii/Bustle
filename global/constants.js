@@ -19,7 +19,7 @@ exports.Theme = {
   CARD_WIDTH: height / 4 - 50,
   margin: 20,
   borderRadius: 12,
-  icon: "Fontisto",
+  icon: "FontAwesome5",
 };
 
 exports.categories = [

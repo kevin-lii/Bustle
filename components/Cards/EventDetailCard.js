@@ -65,7 +65,13 @@ export default ({
               </Text>
             </View>
           </View>
-          <CardIcons rsvp={rsvp} trash={trash} event={event} />
+          <CardIcons
+            navigation={navigation}
+            event={event}
+            rsvp={rsvp}
+            trash={trash}
+            edit={edit}
+          />
         </View>
         {children}
       </Card>

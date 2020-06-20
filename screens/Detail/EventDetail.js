@@ -42,8 +42,11 @@ export default function ({ route, navigation }) {
     );
   }, []);
   const routes = [
+    {
+      key: "attendees",
+      title: `Interested (${event?.attendees?.length || 0})`,
+    },
     { key: "description", title: "Description" },
-    { key: "attendees", title: "Interested" },
   ];
 
   const startDate = moment(event.startDate.toDate()).format("MMM Do, YYYY");

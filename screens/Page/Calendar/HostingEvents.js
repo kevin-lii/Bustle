@@ -25,6 +25,7 @@ class MyEvents extends Component {
             event={event}
             navigation={navigation}
             map
+            edit
             trash
             {...this.props}
           />
@@ -36,23 +37,7 @@ class MyEvents extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              alignSelf: "flex-end",
-              marginTop: 20,
-            }}
-          >
-            <Icons
-              icon="close-a"
-              type="Fontisto"
-              size={25}
-              onPress={() => navigation.goBack(null)}
-            />
-          </View>
-          <Text style={styles.title}>My Events</Text>
-          {events}
-        </ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>{events}</ScrollView>
       </SafeAreaView>
     );
   }

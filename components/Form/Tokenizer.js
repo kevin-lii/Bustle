@@ -40,7 +40,7 @@ export default ({
               label={label}
               color={color}
               active={label !== "Add"}
-              icon={label === "Add" ? "plus-a" : "close-a"}
+              icon={label === "Add" ? "plus" : "times"}
             />
           )}
           onTagPress={(index) => {

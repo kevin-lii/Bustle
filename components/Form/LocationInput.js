@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { TextField, Modal } from "react-native-ui-lib";
+import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 

@@ -20,10 +20,6 @@ class Feed extends Component {
   componentDidMount() {
     this.props.getEvents();
     this.props.getPosts();
-    this.props.navigation.addListener("focus", async () => {
-      this.props.getEvents();
-      this.props.getPosts();
-    });
   }
 
   render() {
