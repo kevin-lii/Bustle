@@ -21,15 +21,14 @@ export default ({ host, onToggle }) => {
       <Text color={Theme.primary} style={{ fontSize: 24, fontWeight: "bold" }}>
         {host ? "Events Hosting" : "Saved Events"}
       </Text>
-      <IconToggleSwitch
-        offIcon="check-square"
-        icon="door-open"
-        isOn={host}
-        onToggle={onToggle}
-        shadow={false}
-        border
-        size="medium"
-      />
+      <TouchableOpacity
+        onPress={onToggle}
+        hitSlop={{ top: 15, left: 5, right: 5, bottom: 15 }}
+      >
+        <Text text80 color={Theme.primary}>
+          {host ? "See Saved" : "See Hosting"}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

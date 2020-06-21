@@ -38,6 +38,11 @@ exports.eventTags = {
   Community: ["Charity", "Fundraiser", "Religion", "Volunteer"],
 };
 
+const allTags = new Set();
+for (lst of Object.values(exports.eventTags))
+  lst.forEach((t) => allTags.add(t));
+exports.allEventTags = [...allTags].sort();
+
 moment.updateLocale("en", {
   relativeTime: {
     future: "%s ago",

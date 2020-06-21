@@ -52,6 +52,8 @@ export default class CollegeEventModel {
     if (filters.host) query = query.where("host.uid", "==", filters.host);
     if (filters.categories?.length)
       query = query.where("category", "in", filters.categories);
+    if (filters.tags?.length)
+      query = query.where("tags", "array-contains-any", filters.tags);
     if (filters.live) query = query.where("ended", "==", false);
     if (filters.orderBy) query = query.orderBy(filters.orderBy, "desc");
     if (filters.startAfter) query = query.startAfter(filters.startAfter);
