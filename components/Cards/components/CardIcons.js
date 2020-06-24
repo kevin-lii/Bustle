@@ -53,7 +53,7 @@ const CardIcons = ({ navigation, event, trash, edit, map, rsvp, user }) => (
     )}
     {rsvp && (
       <View style={styles.icon}>
-        <CalendarToggle eventID={event.id} selected={false} />
+        <CalendarToggle event={event} selected={false} />
       </View>
     )}
   </View>

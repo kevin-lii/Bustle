@@ -42,7 +42,7 @@ export default function SignUp({ navigation }) {
   }
 
   return (
-    <View flex spreads style={styles.container}>
+    <View flex spread style={styles.container}>
       <View flex centerV>
         <TextField
           placeholder="Email"

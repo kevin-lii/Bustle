@@ -6,9 +6,10 @@ import { Theme } from "../../global/constants";
 import Icons from "../Image/Icons";
 
 import UserModel from "../../models/User";
+import { saveEvent, removeEvent } from "../../store/actions";
 
-const CalendarToggle = ({ eventID, user }) => {
-  const [checked, setChecked] = useState(user.saved && user.saved[eventID]);
+const CalendarToggle = ({ event, user }) => {
+  const [checked, setChecked] = useState(user.saved && user.saved[event.id]);
 
   return (
     <Button
@@ -17,7 +18,8 @@ const CalendarToggle = ({ eventID, user }) => {
       backgroundColor={checked ? Theme.primary : "white"}
       onPress={() => {
         setChecked(!checked);
-        UserModel.saveEvent(eventID, !checked);
+        UserModel.saveEvent(event.id, !checked);
+        checked ? removeEvent(event.id) : saveEvent(event);
       }}
     >
       <Icons

@@ -11,6 +11,8 @@ import FormTypes from "../components/Form/FormTypes";
 import NewUserFlow from "../screens/Page/Modal/NewUserFlow";
 import SocialInfo from "../screens/Detail/Profile/SocialInfo";
 import EventFilters from "../screens/Page/Modal/EventFilterCard";
+import PrivacyPolicy from "../screens/Detail/Settings/PrivacyPolicy";
+import Terms from "../screens/Detail/Settings/Terms";
 
 import { Theme } from "../global/constants";
 
@@ -30,7 +32,7 @@ function RootNavigator({ user }) {
     <Stack.Navigator
       headerMode="none"
       mode="modal"
-      initialRouteName={newUser ? "modal" : "home"}
+      initialRouteName={newUser ? "newuser" : "home"}
       screenOptions={{
         cardStyle: { backgroundColor: Theme.defaultBackground },
         cardOverlayEnabled: true,
@@ -69,6 +71,22 @@ function RootNavigator({ user }) {
         name={"socialinfo"}
         component={SocialInfo}
         options={modalOptions}
+      />
+      <Stack.Screen
+        name="privacy"
+        component={PrivacyPolicy}
+        options={{
+          headerShown: false,
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="terms"
+        component={Terms}
+        options={{
+          headerShown: false,
+          headerTransparent: true,
+        }}
       />
 
       {/* sheet */}

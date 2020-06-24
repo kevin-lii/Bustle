@@ -6,35 +6,26 @@ import _ from "lodash";
 import EventDetail from "../../../components/Cards/EventDetailCard";
 import EventModel from "../../../models/CollegeEvent";
 
-import { getHostedEvents } from "../../../store/actions";
+import { getHostedEvents, getSavedEvents } from "../../../store/actions";
 import styles from "../EventList/styles";
 
 class InterestedFeed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      interested: [],
-      lastVisible: 0,
-      complete: false,
       showHosting: false,
     };
   }
 
   componentDidMount() {
     this.props.getHostedEvents();
-    EventModel.subscribe({ interested: true }, (snapshot) => {
-      const interested = [];
-      snapshot.forEach((doc) => {
-        interested.push({ ...doc.data(), id: doc.id });
-      });
-      this.setState({ interested, complete: true });
-    });
+    this.props.getSavedEvents();
   }
 
   render() {
     const { navigation } = this.props;
     const renderFooter = () => {
-      if (!this.state.complete) {
+      if (!this.props.savedEvents || !this.props.hostedEvents) {
         return <Text>Loading...</Text>;
       } else {
         return null;
@@ -47,7 +38,7 @@ class InterestedFeed extends React.Component {
           data={
             this.state.showHosting
               ? this.props.hostedEvents
-              : this.state.interested
+              : this.props.savedEvents
           }
           renderItem={({ item, index }) => {
             return <EventDetail event={item} navigation={navigation} edit />;
@@ -67,9 +58,11 @@ class InterestedFeed extends React.Component {
 export default connect(
   (state) => ({
     hostedEvents: state.hostedEvents,
+    savedEvents: state.savedEvents,
     user: state.user,
   }),
   {
     getHostedEvents,
+    getSavedEvents,
   }
 )(InterestedFeed);

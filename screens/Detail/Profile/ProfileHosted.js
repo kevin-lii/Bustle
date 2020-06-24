@@ -26,18 +26,19 @@ function ProfileHosted({
       getHostedEvents();
     }
   }, []);
-  // console.log("hosted")
-  // console.log(hosted);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         contentContainerStyle={styles.scrollView}
         data={isCurrentUser ? hostedEvents : hosted}
         renderItem={({ item, index }) => {
-          return <EventDetail event={item} navigation={navigation} />;
+          return (
+            <EventDetail event={item} navigation={navigation} trash edit />
+          );
         }}
         ListEmptyComponent={() => (
-          <View centerV center style={styles.emptyText}>
+          <View centerH style={styles.emptyText}>
             <Text text65 style={{ fontWeight: "bold" }}>
               {isCurrentUser ? "You are " : user.displayName + " is "}not
               hosting any events.

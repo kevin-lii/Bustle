@@ -1,5 +1,5 @@
-import { firebase as storage } from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
+import storage from "@react-native-firebase/storage";
 import auth from "@react-native-firebase/auth";
 
 import { saveEvent, unsaveEvent } from "../global/functions";
@@ -72,44 +72,35 @@ export default class UserModel {
   }
 
   static async update(publicData, privateData) {
-    const store = firestore();
-    const ref = store.collection("users").doc(auth().currentUser.uid);
-    store.runTransaction(async (t) => {
+    const uid = auth().currentUser.uid;
+    const ref = firestore().collection("users").doc(uid);
+    const imgRef = storage().ref(`user/profile/${uid}`);
+    const coverImgRef = storage().ref(`user/cover/${auth().currentUser.uid}`);
+
+    firestore().runTransaction(async (t) => {
       if (publicData.image?.data) {
-        await storage
-          .storage()
-          .ref(`user/profile/${auth().currentUser.uid}`)
-          .putString(publicData.image.data, "base64");
-        publicData.photoURL = await storage
-          .storage()
-          .ref(`user/profile/${auth().currentUser.uid}`)
-          .getDownloadURL();
+        await imgRef.putString(publicData.image.data, "base64");
+        publicData.photoURL = await imgRef.getDownloadURL();
+        publicData.photoID = fileName;
+        delete data.image;
       }
       delete publicData.image;
       if (publicData.coverImage?.data) {
-        await storage
-          .storage()
-          .ref(`user/cover/${auth().currentUser.uid}`)
-          .putString(publicData.coverImage.data, "base64");
-        publicData.coverPhotoURL = await storage
-          .storage()
-          .ref(`user/cover/${auth().currentUser.uid}`)
-          .getDownloadURL();
+        await coverImgRef.putString(publicData.coverImage.data, "base64");
+        publicData.coverPhotoURL = await coverImgRef.getDownloadURL();
       }
       delete publicData.coverImage;
-      await t.update(ref.collection("public").doc("profile"), publicData);
-      return t.update(ref.collection("private").doc("profile"), privateData);
+
+      await t
+        .update(ref.collection("public").doc("profile"), publicData)
+        .update(ref.collection("private").doc("profile"), privateData);
     });
   }
 
-  static async createNewProfile(displayName, image) {
-    // handle new user image
-    const photoURL = "";
-
-    await this.update({ displayName }, { newUser: false });
+  static async createNewProfile(data) {
+    await this.update(data, { newUser: false });
     await auth().currentUser.updateProfile({
-      displayName,
-      photoURL,
+      displayName: data.displayName,
     });
   }
 }

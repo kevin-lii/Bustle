@@ -5,7 +5,7 @@ import HostingEvents from "./HostingEvents";
 import InterestedEvents from "./InterestedEvents";
 
 export default ({ navigation, route }) => {
-  const [mode, setMode] = useState(true);
+  const [mode, setMode] = useState(false);
   return (
     <>
       <CalendarHeader host={mode} onToggle={() => setMode(!mode)} />

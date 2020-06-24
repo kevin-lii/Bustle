@@ -23,7 +23,8 @@ export default function ({
   // set photo if photo is valid
   let photo;
   if (photoURL) {
-    photo = photoURL;
+    if (photoURL.indexOf("facebook") !== -1) photo = photoURL + "?height=150";
+    else photo = photoURL;
   } else if (useUser && user && user.photoURL) {
     photo = user.photoURL;
   } else {

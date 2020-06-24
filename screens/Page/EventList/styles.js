@@ -5,7 +5,7 @@ import { Theme } from "../../../global/constants";
 export default StyleSheet.create({
   container: {
     display: "flex",
-    height: "100%",
+    paddingBottom: 60,
   },
   title: {
     color: Theme.primary,

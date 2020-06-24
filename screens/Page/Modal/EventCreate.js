@@ -42,6 +42,7 @@ export default class EventCreate extends React.Component {
         };
 
     if (event) {
+      this.state.image = { uri: event.photoURL };
       this.state.date = event.startDate.toDate();
       this.state.time = event.startDate.toDate();
       this.state.endDate = event.endDate?.toDate();

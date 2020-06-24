@@ -35,6 +35,12 @@ const hostedEvents = (state, action) => {
   return state || null;
 };
 
+const savedEvents = (state, action) => {
+  if (action.type === actionTypes.UPDATE_INTERESTED_EVENTS)
+    return action.savedEvents;
+  return state || null;
+};
+
 const user = (state, action) => {
   if (action.type === actionTypes.UPDATE_USER) {
     return Object.assign({ ...state }, action.user);
@@ -51,5 +57,6 @@ export default combineReducers({
   posts,
   forumFilters,
   hostedEvents,
+  savedEvents,
   user,
 });

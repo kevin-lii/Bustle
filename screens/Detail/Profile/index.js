@@ -18,12 +18,6 @@ import globalStyles from "../../../global/styles";
 import UserModel from "../../../models/User";
 import IconButton from "../../../components/Buttons/IconButton";
 
-const getPhotoURL = (s) => {
-  if (typeof s !== "string") return "";
-
-  return s.indexOf("facebook") !== -1 ? s + "?height=150" : s;
-};
-
 function Profile({ navigation, route, currentUser }) {
   const isForeign =
     route.params?.user && route.params.user.uid !== auth().currentUser.uid;
@@ -122,7 +116,7 @@ function Profile({ navigation, route, currentUser }) {
         }}
       >
         <AvatarButton
-          photoURL={getPhotoURL(user.photoURL)}
+          photoURL={user.photoURL}
           name={user.displayName}
           size={150}
           borderColor={Theme.primary}

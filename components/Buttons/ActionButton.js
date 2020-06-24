@@ -15,7 +15,7 @@ export default ({
   backgroundColor = "white",
   color = Theme.secondary,
   borderColor = Theme.secondary,
-  borderRadius = 10,
+  borderRadius = 30,
 }) => (
   <Button
     label={text}
@@ -28,7 +28,5 @@ export default ({
     onPress={onPress}
     disabled={disabled}
     style={style}
-  >
-    {children}
-  </Button>
+  ></Button>
 );

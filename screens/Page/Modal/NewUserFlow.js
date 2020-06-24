@@ -1,17 +1,24 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { Text, TextField, View } from "react-native-ui-lib";
+import React, { useState, createRef } from "react";
+import { connect } from "react-redux";
+import { TextInput, StyleSheet, Keyboard } from "react-native";
+import { Text, TextField, View, Carousel, Picker } from "react-native-ui-lib";
 
 import ActionButton from "../../../components/Buttons/ActionButton";
 import { checkName } from "../../../global/utils";
 import UserModel from "../../../models/User";
 import ImageUploader from "../../../components/Form/ImageUploader";
+import OnboardingScreen from "./OnboardingScreen";
 
-export default class NewUserFlow extends React.Component {
+import { Theme, gradeLevels } from "../../../global/constants";
+import GradePicker from "../../../components/Form/GradePicker";
+
+class NewUserFlow extends React.Component {
   constructor(props) {
     super(props);
+    this.chainFlow = createRef();
     this.state = {
-      name: "",
+      pageNumber: 0,
+      displayName: props.user?.displayName || "",
       image: {},
       coverImage: {},
       major: "",
@@ -24,67 +31,114 @@ export default class NewUserFlow extends React.Component {
     };
   }
 
-  handlePress = async () => {
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
+    if (prevProps.user.displayName !== user.displayName)
+      this.setState({
+        name: user.displayName,
+        image: { url: user.photoURL },
+      });
+  }
+
+  completeSignUp = async () => {
+    const data = { ...this.state };
+    delete data.error;
+    delete data.image;
+
+    if (this.check("all")) await UserModel.createNewProfile(data);
+    this.props.navigation.replace("home");
+  };
+
+  check = (type) => {
     try {
-      checkName(this.state.name);
-      await UserModel.createNewProfile(this.state.name);
-      this.props.navigation.replace("main");
+      switch (type) {
+        case "name":
+          checkName(this.state.displayName);
+          break;
+        case "all":
+          checkName(this.state.displayName);
+          if (!this.state.year || !this.state.major)
+            throw new Error("Please enter year and major.");
+        default:
+          break;
+      }
+      return true;
     } catch (e) {
       this.setState({ error: e.message });
       console.log(e);
+      return false;
     }
   };
+
+  increment = (amount) => {
+    Keyboard.dismiss();
+    const page = this.state.pageNumber;
+    this.chainFlow.current.goToPage(page + amount);
+    this.setState({ pageNumber: page + amount });
+  };
+
   render() {
     return (
-      <View flex margin-15>
-        <View center>
-          <Text style={styles.text}>Welcome to Bustle!</Text>
-          <Text style={styles.text}>Enter your full name to get started.</Text>
-        </View>
-        <ImageUploader
-          onImageSubmit={(res) => this.setState({ image: res })}
-          uri={this.state.image.uri}
-          borderRadius={100}
-          height={150}
-          width={150}
-        />
-        <TextField
-          placeholder="Full name"
-          onChangeText={(name) => this.setState({ name })}
-        />
-        <View flex row spread>
-          <TextField
-            placeholder="Major"
-            enableErrors={false}
-            value={this.state.major}
-            onChangeText={(major) => this.setState({ major })}
-            style={{ marginRight: 12.5 }}
+      <Carousel
+        initialPage={0}
+        containerStyle={{ flex: 1, backgroundColor: "white" }}
+        ref={this.chainFlow}
+        keyboardShouldPersistTaps="always"
+        pageControlPosition="under"
+      >
+        <OnboardingScreen
+          first
+          onNext={() => this.check("name") && this.increment(1)}
+          validationMessage={this.state.error}
+          title="Enter your full name to get started."
+        >
+          <TextInput
+            placeholder="Full name"
+            style={{ fontSize: 30 }}
+            onChangeText={(displayName) =>
+              this.setState({ displayName, error: "" })
+            }
+            autoCompleteType="name"
+            textAlign="center"
           />
-          <TextField
-            placeholder="Year"
-            enableErrors={false}
+        </OnboardingScreen>
+        <OnboardingScreen
+          onNext={() => this.increment(1)}
+          onCancel={() => this.increment(-1)}
+          title="Show us what you look like?"
+        >
+          <ImageUploader
+            onImageSubmit={(image) => this.setState({ image })}
+            uri={this.state.image.uri}
+            borderRadius={100}
+            height={150}
+            width={150}
+          />
+        </OnboardingScreen>
+        <OnboardingScreen
+          last
+          onCancel={() => this.increment(-1)}
+          onNext={() => this.completeSignUp()}
+          validationMessage={this.state.error}
+          title="Tell us a bit more about yourself."
+        >
+          <GradePicker
             value={this.state.year}
-            onChangeText={(year) => this.setState({ year })}
+            onChange={(year) => this.setState({ year })}
           />
-        </View>
-        {/* <TextField
-          placeholder="Full name"
-          onChangeText={(name) => this.setState({ name })}
-        />
-        <TextField
-          placeholder="Full name"
-          onChangeText={(name) => this.setState({ name })}
-        />
-        <TextField
-          placeholder="Full name"
-          onChangeText={(name) => this.setState({ name })}
-        /> */}
-        <Text>{this.state.error}</Text>
-        <ActionButton primary text="Get started" onPress={this.handlePress} />
-      </View>
+          <TextInput
+            placeholder="Major"
+            style={{ fontSize: 30 }}
+            textAlign="center"
+            onChangeText={(major) => this.setState({ major, error: "" })}
+          />
+        </OnboardingScreen>
+      </Carousel>
     );
   }
 }
+
+export default connect((state) => ({ user: state.user }), {})(NewUserFlow);
 
 const styles = StyleSheet.create({
   text: {

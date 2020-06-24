@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { View, Text, TouchableOpacity, TextField } from "react-native-ui-lib";
+import auth from "@react-native-firebase/auth";
 import { connect } from "react-redux";
 import _ from "lodash";
 
@@ -9,6 +10,9 @@ import ImageUploader from "../../../components/Form/ImageUploader";
 import { Theme } from "../../../global/constants";
 import FormHeader from "../../../components/Header/FormHeader";
 import UserData from "../../../models/User";
+import TextButton from "../../../components/Buttons/TextButton";
+import ActionButton from "../../../components/Buttons/ActionButton";
+import GradePicker from "../../../components/Form/GradePicker";
 
 class EditProfile extends React.Component {
   constructor(props) {
@@ -37,7 +41,7 @@ class EditProfile extends React.Component {
     const { navigation } = this.props;
     const iconSize = 25;
     return (
-      <View flex>
+      <View flex paddingB-10 style={{ backgroundColor: "white" }}>
         <FormHeader
           onClose={navigation.goBack}
           onSubmit={() => this.update()}
@@ -83,11 +87,11 @@ class EditProfile extends React.Component {
               />
             </View>
             <View flex style={{ marginLeft: 12.5 }}>
-              <TextField
-                placeholder="Year"
-                enableErrors={false}
+              <GradePicker
+                onChange={(year) => this.setState({ year })}
                 value={this.state.year}
-                onChangeText={(year) => this.setState({ year })}
+                size="small"
+                underline
               />
             </View>
           </View>
@@ -145,6 +149,28 @@ class EditProfile extends React.Component {
               />
             </View>
           </View>
+          <View flex centerH>
+            <ActionButton
+              text="Privacy Policy"
+              style={styles.button}
+              onPress={() => navigation.navigate("privacy")}
+              borderColor="transparent"
+            />
+            <ActionButton
+              text="Terms of Use"
+              style={styles.button}
+              onPress={() => navigation.navigate("terms")}
+              borderColor="transparent"
+            />
+            <ActionButton
+              text="Logout"
+              backgroundColor={Theme.red}
+              color="white"
+              style={styles.button}
+              onPress={() => auth().signOut()}
+              borderColor="transparent"
+            />
+          </View>
         </ScrollView>
       </View>
     );
@@ -152,6 +178,10 @@ class EditProfile extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    width: "90%",
+    marginVertical: 5,
+  },
   container: { flex: 1 },
   header: {
     paddingHorizontal: 20,
@@ -161,7 +191,10 @@ const styles = StyleSheet.create({
     height: 57.5,
     marginBottom: 10,
   },
-  section: { paddingHorizontal: 20, marginBottom: 10 },
+  section: {
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
 });
 
 export default connect((state) => ({ user: state.user }), {})(EditProfile);
