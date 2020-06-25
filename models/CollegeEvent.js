@@ -54,6 +54,7 @@ export default class CollegeEventModel {
       query = query.where("category", "in", filters.categories);
     if (filters.tags?.length)
       query = query.where("tags", "array-contains-any", filters.tags);
+    if (filters.active) query = query.where("startDate", ">=", new Date());
     if (filters.live) query = query.where("ended", "==", false);
     if (filters.orderBy) query = query.orderBy(filters.orderBy, "desc");
     if (filters.startAfter) query = query.startAfter(filters.startAfter);
@@ -77,27 +78,22 @@ export default class CollegeEventModel {
   }
 
   static async remove(event) {
-    await firestore().runTransaction(async (transaction) => {
-      firestore()
-        .collection(collection)
-        .doc(event.id)
-        .delete()
-        .catch(function (error) {
-          console.error("Error removing document: ", error);
-        });
-      // transaction.update(
-      //   firestore()
-      //     .collection("users")
-      //     .doc(this..uid)
-      //     .collection("private")
-      //     .doc("profile"),
-      //   {
-      //     events: firestore.FieldValue.arrayRemove(event.id),
-      //   }
-      // );
-      if (event.photoURL)
-        await f.storage().ref(`${collection}/${event.id}`).delete();
-    });
+    if (event.photoURL)
+      await f.storage().ref(`${collection}/${event.id}`).delete();
+    firestore()
+      .collection(collection)
+      .doc(event.id)
+      .delete()
+      .catch(function (error) {
+        console.error("Error removing document: ", error);
+      });
+  }
+
+  static async cancel(eventId) {
+    await firestore()
+      .collection(collection)
+      .doc(eventId)
+      .update({ cancelled: true });
   }
 
   static async create(user, data) {
