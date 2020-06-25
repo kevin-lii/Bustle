@@ -136,19 +136,9 @@ exports.openURL = async (partLink, type, isUser) => {
       url = "snapchat://add/" + partLink;
       backup = "https://www.snapchat.com/add/" + partLink;
       break;
-    case "zoom":
-    case "zoom.us":
-      url = "";
-      backup = "";
-      break;
-    case "twitch":
-    case "twitch.tv":
-      url = "";
-      backup = "";
-      break;
-    case "":
-      url = "";
-      backup = "";
+    case "linkedin":
+      url = "linkedin://profile/" + partLink;
+      backup = "https://www.linkedin.com/in/" + partLink;
       break;
     default:
     case "instagram":

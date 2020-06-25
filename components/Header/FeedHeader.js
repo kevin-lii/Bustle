@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, useSafeArea } from "react-native-safe-area-context";
 import { Text, View } from "react-native-ui-lib";
 
 import globalStyles from "../../global/styles";
@@ -19,16 +19,20 @@ export default ({ navigation, text, filterable }) => {
   //     text: region.name,
   //     onPress: () => navigation.push("forums", { region: region.id }),
   //   }));
-
+  const safeTop = useSafeArea().top;
   return (
-    <SafeAreaView
+    <View
       style={{
-        height: 55,
+        height: 55 + safeTop,
         backgroundColor: "white",
         ...globalStyles.overlayElementShadow,
       }}
     >
-      <View absL centerV style={{ height: "100%", left: 10 }}>
+      <View
+        centerV
+        absL
+        style={{ marginTop: safeTop / 2, height: "100%", left: 10 }}
+      >
         {text ? (
           <Text
             color={Theme.primary}
@@ -40,20 +44,22 @@ export default ({ navigation, text, filterable }) => {
           <LocationLabel zone={getDefaultZone()} size="large" />
         )}
       </View>
-      <View absR centerV row style={{ height: "100%", paddingRight: 10 }}>
+      <View
+        absR
+        centerV
+        style={{ marginTop: safeTop / 2, height: "100%", paddingRight: 10 }}
+      >
         {filterable && (
-          <View centerV>
-            <IconButton
-              type="Font"
-              icon="sliders-h"
-              onPress={() => navigation.push("eventfilters")}
-              size={20}
-              color={Theme.primary}
-              containerStyle={{ height: "100%", marginHorizontal: 10 }}
-            />
-          </View>
+          <IconButton
+            type="Font"
+            icon="sliders-h"
+            onPress={() => navigation.push("eventfilters")}
+            size={20}
+            color={Theme.primary}
+            containerStyle={{ height: "100%", marginHorizontal: 10 }}
+          />
         )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 };

@@ -4,16 +4,15 @@ import auth from "@react-native-firebase/auth";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import { connect } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import Icons from "../../../components/Image/Icons";
 import AvatarButton from "../../../components/Buttons/AvatarButton";
 import { Theme } from "../../../global/constants";
 import ProfileEvent from "./ProfileEvent";
-import ProfileActivity from "./ProfileActivity";
 import ProfileHosted from "./ProfileHosted";
 import ActionButton from "../../../components/Buttons/ActionButton";
 import FormTypes from "../../../components/Form/FormTypes";
-import { navigatePath } from "../../../global/utils";
 import globalStyles from "../../../global/styles";
 import UserModel from "../../../models/User";
 import IconButton from "../../../components/Buttons/IconButton";
@@ -38,7 +37,8 @@ function Profile({ navigation, route, currentUser }) {
 
   useEffect(() => {
     if (isForeign)
-      UserModel.get(route.params.user.uid).then((user) => setUser(user));
+      UserModel.get(route.params.user.uid).then((item) => setUser(item));
+    console.log(user);
   }, []);
 
   const renderScene = ({ route }) => {
@@ -63,7 +63,7 @@ function Profile({ navigation, route, currentUser }) {
     }
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={{ ...styles.imageContainer, height: 150 }}>
         <ImageBackground
           source={user.coverPhotoURL ? { uri: user.coverPhotoURL } : null}
@@ -170,7 +170,7 @@ function Profile({ navigation, route, currentUser }) {
         renderScene={renderScene}
         onIndexChange={setIndex}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

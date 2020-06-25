@@ -26,13 +26,17 @@ function ProfileHosted({
       getHostedEvents();
     }
   }, []);
-  // console.log("hosted")
-  // console.log(hosted);
+  const eventsHosted = isCurrentUser ? hostedEvents : hosted;
+  console.log(eventsHosted);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        contentContainerStyle={styles.scrollView}
-        data={isCurrentUser ? hostedEvents : hosted}
+        contentContainerStyle={
+          eventsHosted != null && eventsHosted.length > 0
+            ? styles.scrollView
+            : styles.emptyView
+        }
+        data={eventsHosted}
         renderItem={({ item, index }) => {
           return <EventDetail event={item} navigation={navigation} />;
         }}
@@ -56,9 +60,13 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingHorizontal: 10,
   },
+  emptyView: {
+    flex: 1,
+    height: "100%",
+  },
   emptyText: {
-    marginTop: 200,
     color: Theme.secondary,
+    height: "100%",
   },
 });
 

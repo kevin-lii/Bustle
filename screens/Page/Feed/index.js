@@ -1,6 +1,6 @@
 import React, { Component, createRef } from "react";
-import { FlatList, SafeAreaView } from "react-native";
-import { Text } from "react-native-ui-lib";
+import { FlatList } from "react-native";
+import { Text, View } from "react-native-ui-lib";
 import { connect } from "react-redux";
 
 import { getEvents, getPosts } from "../../../store/actions";
@@ -46,7 +46,7 @@ class Feed extends Component {
         route={route}
         toggleState={forumView}
       >
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+        <View style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
           <FlatList
             style={{ paddingHorizontal: 10 }}
             contentContainerStyle={{ paddingBottom: 80 }}
@@ -60,7 +60,7 @@ class Feed extends Component {
                 );
             }}
           />
-        </SafeAreaView>
+        </View>
       </WithOverlayButtons>
     );
   }

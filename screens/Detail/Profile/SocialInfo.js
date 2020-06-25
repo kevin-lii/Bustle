@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
+import { StyleSheet } from "react-native";
+import { useSafeArea } from "react-native-safe-area-context";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { SocialIcon } from "react-native-elements";
 
@@ -11,9 +12,10 @@ import ActionButton from "../../../components/Buttons/ActionButton";
 
 export default function ({ route, navigation }) {
   const user = route.params?.user;
+  const insets = useSafeArea();
   return (
-    <SafeAreaView style={styles.container}>
-      <View centerV style={styles.header}>
+    <View flex style={styles.container}>
+      <View centerV style={{ ...styles.header, top: 10 + insets.top }}>
         <TouchableOpacity onPress={navigation.goBack}>
           <Icons
             type="MaterialIcons"
@@ -25,8 +27,8 @@ export default function ({ route, navigation }) {
       </View>
       <View center style={{ height: "100%", width: "100%", marginBottom: 5 }}>
         <AvatarButton
-          photoURL={user.photoURL + "?height=150"}
-          init={user.displayName}
+          photoURL={user.photoURL}
+          name={user.displayName}
           size={100}
           borderColor={Theme.primary}
           borderWidth={2}
@@ -79,19 +81,25 @@ export default function ({ route, navigation }) {
             style={{ marginVertical: 10, width: "100%" }}
           />
         )}
+        {user.linkedin && (
+          <SocialIcon
+            button
+            type="linkedin"
+            onPress={() => openURL(user.linkedin, "linkedin")}
+            style={{ marginVertical: 10, width: "100%" }}
+          />
+        )}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 20,
     backgroundColor: "white",
   },
   header: {
     position: "absolute",
-    top: 15,
     left: 20,
     zIndex: 1,
   },

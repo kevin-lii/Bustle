@@ -3,12 +3,21 @@ import { StyleSheet, ScrollView } from "react-native";
 import { View, Text, TouchableOpacity, TextField } from "react-native-ui-lib";
 import { connect } from "react-redux";
 import _ from "lodash";
+import LinkedInModal from "react-native-linkedin";
+import { SocialIcon } from "react-native-elements";
+import axios from "axios";
 
+import {
+  linkedinClientID,
+  linkedinClientSecret,
+} from "../../../global/secrets";
 import Icons from "../../../components/Image/Icons";
 import ImageUploader from "../../../components/Form/ImageUploader";
 import { Theme } from "../../../global/constants";
 import FormHeader from "../../../components/Header/FormHeader";
 import UserData from "../../../models/User";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ActionButton from "../../../components/Buttons/ActionButton";
 
 class EditProfile extends React.Component {
   constructor(props) {
@@ -26,6 +35,7 @@ class EditProfile extends React.Component {
       twitter: props.user?.twitter ? props.user.twitter : "",
       // facebook: props.user.facebook,
       snapchat: props.user?.snapchat ? props.user.snapchat : "",
+      linkedin: props.user?.linkedin ? props.user.linkedin : "",
     };
   }
   async update() {
@@ -33,11 +43,12 @@ class EditProfile extends React.Component {
     this.props.navigation.goBack();
     return await UserData.update(stateCopy, {});
   }
+  linkedRef = React.createRef();
   render() {
     const { navigation } = this.props;
     const iconSize = 25;
     return (
-      <View flex>
+      <SafeAreaView style={{ flex: 1 }}>
         <FormHeader
           onClose={navigation.goBack}
           onSubmit={() => this.update()}
@@ -145,8 +156,42 @@ class EditProfile extends React.Component {
               />
             </View>
           </View>
+          <View style={styles.section}>
+            <LinkedInModal
+              ref={this.linkedRef}
+              clientID={linkedinClientID}
+              clientSecret={linkedinClientSecret}
+              redirectUri="https://bustleapp-35fe0.firebaseapp.com/login/callback"
+              onSuccess={async ({ access_token }) => {
+                console.log(access_token);
+                await axios
+                  .create({
+                    baseURL: "https://api.linkedin.com/v2",
+                    headers: {
+                      Authorization: "Bearer " + access_token,
+                    },
+                  })
+                  .get(
+                    "/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))"
+                  )
+                  .then((response) => {
+                    console.log(response.data.id);
+                    this.setState({ linkedin: response.data.id });
+                  });
+              }}
+              renderButton={() => (
+                <SocialIcon
+                  title="Connect with LinkedIn"
+                  button
+                  type="linkedin"
+                  onPress={() => this.linkedRef.current.open()}
+                />
+              )}
+              linkText="Connect with LinkedIn"
+            />
+          </View>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   }
 }

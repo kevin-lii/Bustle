@@ -95,7 +95,11 @@ export default class ProfileEvent extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          contentContainerStyle={styles.scrollView}
+          contentContainerStyle={
+            this.state.pastEvents && this.state.pastEvents.length > 0
+              ? styles.scrollView
+              : styles.emptyView
+          }
           data={this.state.pastEvents}
           renderItem={({ item, index }) => {
             return <EventDetail event={item} navigation={navigation} />;
@@ -127,7 +131,12 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingHorizontal: 10,
   },
+  emptyView: {
+    flex: 1,
+    height: "100%",
+  },
   emptyText: {
     color: Theme.secondary,
+    height: "100%",
   },
 });
