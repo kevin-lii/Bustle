@@ -2,6 +2,7 @@ import React, { useState, createRef } from "react";
 import { connect } from "react-redux";
 import { TextInput, StyleSheet, Keyboard } from "react-native";
 import { Text, TextField, View, Carousel, Picker } from "react-native-ui-lib";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import ActionButton from "../../../components/Buttons/ActionButton";
 import { checkName } from "../../../global/utils";
@@ -27,6 +28,7 @@ class NewUserFlow extends React.Component {
       instagram: "",
       twitter: "",
       snapchat: "",
+      linkedin: "",
       error: "",
     };
   }
@@ -79,61 +81,63 @@ class NewUserFlow extends React.Component {
 
   render() {
     return (
-      <Carousel
-        initialPage={0}
-        containerStyle={{ flex: 1, backgroundColor: "white" }}
-        ref={this.chainFlow}
-        keyboardShouldPersistTaps="always"
-        pageControlPosition="under"
-      >
-        <OnboardingScreen
-          first
-          onNext={() => this.check("name") && this.increment(1)}
-          validationMessage={this.state.error}
-          title="Enter your full name to get started."
+      <SafeAreaView style={{ flex: 1 }}>
+        <Carousel
+          initialPage={0}
+          containerStyle={{ flex: 1, backgroundColor: "white" }}
+          ref={this.chainFlow}
+          keyboardShouldPersistTaps="always"
+          pageControlPosition="under"
         >
-          <TextInput
-            placeholder="Full name"
-            style={{ fontSize: 30 }}
-            onChangeText={(displayName) =>
-              this.setState({ displayName, error: "" })
-            }
-            autoCompleteType="name"
-            textAlign="center"
-          />
-        </OnboardingScreen>
-        <OnboardingScreen
-          onNext={() => this.increment(1)}
-          onCancel={() => this.increment(-1)}
-          title="Show us what you look like?"
-        >
-          <ImageUploader
-            onImageSubmit={(image) => this.setState({ image })}
-            uri={this.state.image.uri}
-            borderRadius={100}
-            height={150}
-            width={150}
-          />
-        </OnboardingScreen>
-        <OnboardingScreen
-          last
-          onCancel={() => this.increment(-1)}
-          onNext={() => this.completeSignUp()}
-          validationMessage={this.state.error}
-          title="Tell us a bit more about yourself."
-        >
-          <GradePicker
-            value={this.state.year}
-            onChange={(year) => this.setState({ year })}
-          />
-          <TextInput
-            placeholder="Major"
-            style={{ fontSize: 30 }}
-            textAlign="center"
-            onChangeText={(major) => this.setState({ major, error: "" })}
-          />
-        </OnboardingScreen>
-      </Carousel>
+          <OnboardingScreen
+            first
+            onNext={() => this.check("name") && this.increment(1)}
+            validationMessage={this.state.error}
+            title="Enter your full name to get started."
+          >
+            <TextInput
+              placeholder="Full name"
+              style={{ fontSize: 30 }}
+              onChangeText={(displayName) =>
+                this.setState({ displayName, error: "" })
+              }
+              autoCompleteType="name"
+              textAlign="center"
+            />
+          </OnboardingScreen>
+          <OnboardingScreen
+            onNext={() => this.increment(1)}
+            onCancel={() => this.increment(-1)}
+            title="Show us what you look like?"
+          >
+            <ImageUploader
+              onImageSubmit={(image) => this.setState({ image })}
+              uri={this.state.image.uri}
+              borderRadius={100}
+              height={150}
+              width={150}
+            />
+          </OnboardingScreen>
+          <OnboardingScreen
+            last
+            onCancel={() => this.increment(-1)}
+            onNext={() => this.completeSignUp()}
+            validationMessage={this.state.error}
+            title="Tell us a bit more about yourself."
+          >
+            <GradePicker
+              value={this.state.year}
+              onChange={(year) => this.setState({ year })}
+            />
+            <TextInput
+              placeholder="Major"
+              style={{ fontSize: 30 }}
+              textAlign="center"
+              onChangeText={(major) => this.setState({ major, error: "" })}
+            />
+          </OnboardingScreen>
+        </Carousel>
+      </SafeAreaView>
     );
   }
 }

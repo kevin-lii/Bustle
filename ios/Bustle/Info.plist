@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FirebaseScreenReportingEnabled</key>
+	<false/>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<string>FALSE</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,10 +41,12 @@
 	<string>BustleApp</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>fbapi</string>
 		<string>fb-messenger-share-api</string>
 		<string>fbauth2</string>
-		<string>fbshareextension</string>
+		<string>linkedin</string>
+		<string>instagram</string>
+		<string>snapchat</string>
+		<string>twitter</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -99,6 +105,7 @@
 		<string>FontAwesome.ttf</string>
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Pro-Regular.ttf</string>
 		<string>FontAwesome5_Solid.ttf</string>
 		<string>Fontisto.ttf</string>
 		<string>Foundation.ttf</string>
@@ -123,11 +130,5 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>LSApplicationQueriesSchemes</key>
-  <array>
-      <string>instagram</string>
-      <string>snapchat</string>
-      <string>twitter</string>
-  </array>
 </dict>
 </plist>

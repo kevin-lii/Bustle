@@ -32,7 +32,6 @@ function Profile({ navigation, route, currentUser }) {
   useEffect(() => {
     if (isForeign)
       UserModel.get(route.params.user.uid).then((item) => setUser(item));
-    console.log(user);
   }, []);
 
   const renderScene = ({ route }) => {
