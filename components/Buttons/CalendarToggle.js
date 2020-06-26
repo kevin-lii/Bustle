@@ -8,7 +8,7 @@ import Icons from "../Image/Icons";
 import UserModel from "../../models/User";
 import { saveEvent, removeEvent } from "../../store/actions";
 
-const CalendarToggle = ({ event, user }) => {
+const CalendarToggle = ({ event, user, saveEvent, removeEvent }) => {
   const [checked, setChecked] = useState(user.saved && user.saved[event.id]);
 
   return (
@@ -32,4 +32,12 @@ const CalendarToggle = ({ event, user }) => {
   );
 };
 
-export default connect((state) => ({ user: state.user }), {})(CalendarToggle);
+export default connect(
+  (state) => ({
+    user: state.user,
+  }),
+  {
+    saveEvent,
+    removeEvent,
+  }
+)(CalendarToggle);
