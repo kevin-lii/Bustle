@@ -1,5 +1,5 @@
 import { getLocation, validateLocation } from "../global/utils";
-
+import auth from "@react-native-firebase/auth";
 import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
 
@@ -43,9 +43,17 @@ export default class CollegeEventModel {
         "in",
         filters.containsID
       );
+    if (filters.interested)
+      query = query.where(
+        "interested",
+        "array-contains",
+        auth().currentUser.uid
+      );
     if (filters.host) query = query.where("host.uid", "==", filters.host);
     if (filters.categories?.length)
       query = query.where("category", "in", filters.categories);
+    if (filters.tags?.length)
+      query = query.where("tags", "array-contains-any", filters.tags);
     if (filters.live) query = query.where("ended", "==", false);
     if (filters.orderBy) query = query.orderBy(filters.orderBy, "desc");
     if (filters.startAfter) query = query.startAfter(filters.startAfter);
@@ -60,6 +68,11 @@ export default class CollegeEventModel {
 
   static subscribe(filters, onNext, onError = console.log) {
     const query = this.genQuery(filters);
+    if (onNext) return query.onSnapshot(onNext, onError);
+  }
+
+  static subscribeOne(eventID, onNext, onError = console.log) {
+    const query = firestore().collection(collection).doc(eventID);
     if (onNext) return query.onSnapshot(onNext, onError);
   }
 

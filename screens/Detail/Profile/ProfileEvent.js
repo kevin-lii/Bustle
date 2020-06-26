@@ -106,7 +106,7 @@ export default class ProfileEvent extends React.Component {
           }}
           ListEmptyComponent={() =>
             this.state.complete && (
-              <View centerV center style={styles.emptyText}>
+              <View centerH centerV style={styles.emptyText}>
                 <Text text65 style={{ fontWeight: "bold" }}>
                   {isCurrentUser ? "You have " : user.displayName + " has "}no
                   past events.

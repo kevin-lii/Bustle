@@ -36,7 +36,7 @@ export default ({ navigation, text, filterable }) => {
         {text ? (
           <Text
             color={Theme.primary}
-            style={{ fontSize: 24, fontFamily: "Roboto-Bold" }}
+            style={{ fontSize: 28, fontFamily: "Roboto-Medium" }}
           >
             {text}
           </Text>

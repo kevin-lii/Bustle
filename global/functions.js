@@ -3,8 +3,7 @@ import functions from "@react-native-firebase/functions";
 const endpoints = {
   VOTE_POST: "votePost",
   FLAG_POST: "flagPost",
-  ANON_POST: "postAnonymously",
-  DELETE_ANON_POST: "removeAnonPost",
+  SAVE_EVENT: "saveEvent",
 };
 
 const getEndpoint = (fn) => functions().httpsCallable(fn);
@@ -17,10 +16,10 @@ exports.flagPost = function (postID) {
   getEndpoint(endpoints.FLAG_POST)({ postID });
 };
 
-exports.postAnonymously = function (data) {
-  getEndpoint(endpoints.ANON_POST)(data);
+exports.saveEvent = function (eventID) {
+  getEndpoint(endpoints.SAVE_EVENT)({ eventID, unSave: false });
 };
 
-exports.deleteAnonPost = function (postID) {
-  getEndpoint(endpoints.DELETE_ANON_POST)({ postID });
+exports.unsaveEvent = function (eventID) {
+  getEndpoint(endpoints.SAVE_EVENT)({ eventID, unSave: true });
 };

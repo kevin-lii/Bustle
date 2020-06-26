@@ -19,6 +19,7 @@ export default ({
     <View center style={{ height: "100%" }}>
       <IconButton
         size={20}
+        type="Fontisto"
         icon="close-a"
         onPress={onClose}
         fullSize

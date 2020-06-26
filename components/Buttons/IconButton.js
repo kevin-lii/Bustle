@@ -12,7 +12,12 @@ export default ({
   onPress,
   iconStyle,
   containerStyle,
-  hitBox,
+  hitBox = {
+    top: 5,
+    left: 5,
+    right: 5,
+    bottom: 5,
+  },
 }) => (
   <TouchableOpacity
     onPress={onPress}

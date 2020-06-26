@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { ImageBackground, StyleSheet, Linking } from "react-native";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
@@ -7,33 +7,48 @@ import moment from "moment";
 import HyperLink from "react-native-hyperlink";
 
 import Icons from "../../components/Image/Icons";
-import Avatar from "../../components/Buttons/AvatarButton";
 import { Theme } from "../../global/constants";
 import ActionButton from "../../components/Buttons/ActionButton";
 import FormTypes from "../../components/Form/FormTypes";
 import { getNameInitials } from "../../global/utils";
 import globalStyles from "../../global/styles";
 import IconButton from "../../components/Buttons/IconButton";
+import CollegeEventModel from "../../models/CollegeEvent";
+import ProfileLink from "../../components/Buttons/ProfileLink";
 
-function Temp({ event }) {
-  return (
-    <View>
-      <Text>{event.description}</Text>
-    </View>
-  );
-}
+const Description = ({ event }) => (
+  <View>
+    <Text>{event.description}</Text>
+  </View>
+);
 
-function Temp1() {
-  return <View></View>;
-}
+const Attendees = ({ navigation, event }) => (
+  <View>
+    {event.attendees?.map((user, i) => (
+      <View centerV padding-10 key={i}>
+        <ProfileLink navigation={navigation} user={user} size={35} key={i} />
+      </View>
+    ))}
+  </View>
+);
 
 export default function ({ route, navigation }) {
+  const [event, setEvent] = useState(route.params?.event);
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    return CollegeEventModel.subscribeOne(route.params.event.id, (event) =>
+      setEvent(event.data())
+    );
+  }, []);
   const routes = [
+    {
+      key: "attendees",
+      title: `Interested (${event?.attendees?.length || 0})`,
+    },
     { key: "description", title: "Description" },
-    { key: "discussion", title: "Discussion" },
   ];
-  const event = route.params?.event;
+
   const startDate = moment(event.startDate.toDate()).format("MMM Do, YYYY");
   const startTime = moment(event.startDate.toDate()).format("h:mm a");
   const iconSize = 23;
@@ -41,9 +56,9 @@ export default function ({ route, navigation }) {
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "description":
-        return <Temp event={event} navigation={navigation} />;
-      case "discussion":
-        return <Temp1 event={event} navigation={navigation} />;
+        return <Description event={event} navigation={navigation} />;
+      case "attendees":
+        return <Attendees event={event} navigation={navigation} />;
       default:
         return null;
     }
@@ -90,22 +105,7 @@ export default function ({ route, navigation }) {
 
       <Text style={styles.popupTitle}>{event.name}</Text>
       <View style={styles.info}>
-        <View marginT-5 centerV row>
-          <Avatar
-            photoURL={event.host.photoURL}
-            init={getNameInitials(event.host.displayName)}
-            size={25}
-            shadow={false}
-            borderWidth={1}
-          />
-          <TouchableOpacity
-            onPress={() => navigation.push("profile", { user: event.host })}
-          >
-            <Text text80 marginL-7 numberOfLines={1}>
-              by {event.host.displayName}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <ProfileLink navigation={navigation} user={event.host} />
         <View row centerV marginT-20 style={styles.infoLine}>
           <Icons type="Entypo" icon="calendar" size={iconSize + 1}></Icons>
           <Text text65 numberOfLines={1} marginL-10 style={styles.infoText}>
@@ -137,6 +137,7 @@ export default function ({ route, navigation }) {
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
+        style={{ backgroundColor: "white" }}
       />
     </View>
   );

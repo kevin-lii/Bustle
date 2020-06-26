@@ -51,6 +51,20 @@ export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
   );
 };
 
+export const getSavedEvents = () => (dispatch, getState) => {
+  if (subscriptions.savedEvents) subscriptions.savedEvents();
+  const { user } = getState();
+  subscriptions.savedEvents = EventModel.subscribe(
+    { interested: true, orderBy: "startDate" },
+    (snapshot) => {
+      dispatch({
+        type: actionTypes.UPDATE_INTERESTED_EVENTS,
+        savedEvents: attachIDs(snapshot),
+      });
+    }
+  );
+};
+
 export const getEvents = (filters = {}) => (dispatch) => {
   if (subscriptions.events) subscriptions.events();
   subscriptions.events = EventModel.subscribe(filters, (snapshot) => {
@@ -79,6 +93,40 @@ export const setEventFilters = (filters = {}) => (dispatch) => {
       events: attachIDs(snapshot),
       filters,
     });
+  });
+};
+
+export const saveEvent = (event) => (dispatch, getState) => {
+  console.log("saved");
+  const { savedEvents } = getState();
+  const allEvents = [];
+  let flag = true;
+  const boundary = event.startDate.toDate();
+  savedEvents.forEach((e) => {
+    if (e.startDate.toDate() > event.boundary() && flag) {
+      allEvents.push(event);
+      flag = false;
+    }
+    allEvents.push(e);
+  });
+  if (flag) allEvents.push(boundary);
+
+  dispatch({
+    type: actionTypes.UPDATE_INTERESTED_EVENTS,
+    savedEvents: allEvents,
+  });
+};
+
+export const removeEvent = (eventID) => (dispatch, getState) => {
+  console.log("removeEvent");
+  const { savedEvents } = getState();
+  const allEvents = [];
+  savedEvents.forEach((e) => {
+    if (e.id !== eventID) allEvents.push(event);
+  });
+  dispatch({
+    type: actionTypes.UPDATE_INTERESTED_EVENTS,
+    savedEvents: allEvents,
   });
 };
 

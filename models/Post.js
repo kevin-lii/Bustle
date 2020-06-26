@@ -1,7 +1,6 @@
 import firestore, { firebase } from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-import { removePost } from "../store/actions";
 import { votePost, deleteAnonPost } from "../global/functions";
 import { getDefaultZone, attachIDs } from "../global/utils";
 import UserModel from "./User";
@@ -109,7 +108,6 @@ export default class Post {
 
   static async remove(postID, anon = false) {
     if (anon) {
-      removePost(postID);
       deleteAnonPost(postID);
     } else firestore().collection("posts").doc(postID).delete();
   }

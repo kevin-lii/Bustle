@@ -4,7 +4,8 @@ export default StyleSheet.create({
   container: {
     display: "flex",
     height: "100%",
-    marginHorizontal: 20,
+    paddingHorizontal: 5,
+    paddingBottom: 60,
   },
   title: {
     fontSize: 30,

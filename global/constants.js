@@ -19,7 +19,7 @@ exports.Theme = {
   CARD_WIDTH: height / 4 - 50,
   margin: 20,
   borderRadius: 12,
-  icon: "Fontisto",
+  icon: "FontAwesome5",
 };
 
 exports.categories = [
@@ -37,6 +37,11 @@ exports.eventTags = {
   Learn: ["Infosession", "Lecture", "Workshop"],
   Community: ["Charity", "Fundraiser", "Religion", "Volunteer"],
 };
+
+const allTags = new Set();
+for (lst of Object.values(exports.eventTags))
+  lst.forEach((t) => allTags.add(t));
+exports.allEventTags = [...allTags].sort();
 
 moment.updateLocale("en", {
   relativeTime: {

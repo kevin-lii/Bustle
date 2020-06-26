@@ -48,10 +48,10 @@ export default function ({ route, navigation }) {
         )}
         {user.year && (
           <Text text70 style={{ marginVertical: 5, fontWeight: "bold" }}>
-            {"C/O: " + user.year}
+            {"Class of " + user.year}
           </Text>
         )}
-        {user.snapchat && (
+        {Boolean(user.snapchat) && (
           <ActionButton
             backgroundColor="#FFFC00"
             onPress={() => openURL(user.snapchat, "snapchat")}
@@ -62,10 +62,10 @@ export default function ({ route, navigation }) {
               marginVertical: 10,
             }}
           >
-            <Icons type="Font" icon="snapchat-ghost" size={25} color="white" />
+            <Icons type="Font5" icon="snapchat-ghost" size={25} color="white" />
           </ActionButton>
         )}
-        {user.twitter && (
+        {Boolean(user.twitter) && (
           <SocialIcon
             button
             type="twitter"
@@ -73,7 +73,7 @@ export default function ({ route, navigation }) {
             style={{ marginVertical: 10, width: "100%" }}
           />
         )}
-        {user.instagram && (
+        {Boolean(user.instagram) && (
           <SocialIcon
             button
             type="instagram"

@@ -65,7 +65,13 @@ export default ({
               </Text>
             </View>
           </View>
-          <CardIcons rsvp={rsvp} trash={trash} event={event} />
+          <CardIcons
+            navigation={navigation}
+            event={event}
+            rsvp={rsvp}
+            trash={trash}
+            edit={edit}
+          />
         </View>
         {children}
       </Card>
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    height: 150,
+    height: 145,
     borderRadius: radius,
   },
   gradient: {

@@ -22,24 +22,27 @@ export default class EventCreate extends React.Component {
   constructor(props) {
     super(props);
     const event = props.route?.params?.event;
-    this.state = { ...event } || {
-      name: "",
-      description: "",
-      date: new Date(),
-      time: new Date(),
-      endDate: null,
-      endTime: null,
-      location: null,
-      category: "Social",
-      open: true,
-      isPrivate: false,
-      virtual: true,
-      image: "",
-      link: "",
-      tags: [],
-    };
+    this.state = event
+      ? { ...event }
+      : {
+          name: "",
+          description: "",
+          date: new Date(),
+          time: new Date(),
+          endDate: null,
+          endTime: null,
+          location: null,
+          category: "Social",
+          open: true,
+          isPrivate: false,
+          virtual: true,
+          image: "",
+          link: "",
+          tags: [],
+        };
 
     if (event) {
+      this.state.image = { uri: event.photoURL };
       this.state.date = event.startDate.toDate();
       this.state.time = event.startDate.toDate();
       this.state.endDate = event.endDate?.toDate();
@@ -66,7 +69,8 @@ export default class EventCreate extends React.Component {
 
       stateCopy.tags = stateCopy.tags.map(({ value }) => value);
 
-      if (update) return EventModel.update(route.params?.event.id, stateCopy);
+      if (update)
+        return EventModel.update(this.props.route.params?.event.id, stateCopy);
       EventModel.create(
         {
           uid: this.context.uid,
