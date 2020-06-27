@@ -38,7 +38,7 @@ const hostedEvents = (state, action) => {
 const savedEvents = (state, action) => {
   if (action.type === actionTypes.UPDATE_INTERESTED_EVENTS)
     return action.savedEvents;
-  return state || null;
+  return state || [];
 };
 
 const user = (state, action) => {
