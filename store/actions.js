@@ -102,13 +102,13 @@ export const saveEvent = (event) => (dispatch, getState) => {
   let flag = true;
   const boundary = event.startDate.toDate();
   savedEvents?.forEach((e) => {
-    if (e.startDate.toDate() > event.boundary() && flag) {
+    if (e.startDate.toDate() > boundary && flag) {
       allEvents.push(event);
       flag = false;
     }
     allEvents.push(e);
   });
-  if (flag) allEvents.push(boundary);
+  if (flag) allEvents.push(event);
 
   dispatch({
     type: actionTypes.UPDATE_INTERESTED_EVENTS,
@@ -120,7 +120,7 @@ export const removeEvent = (eventID) => (dispatch, getState) => {
   const { savedEvents } = getState();
   const allEvents = [];
   savedEvents?.forEach((e) => {
-    if (e.id !== eventID) allEvents.push(event);
+    if (e.id !== eventID) allEvents.push(e);
   });
   dispatch({
     type: actionTypes.UPDATE_INTERESTED_EVENTS,
