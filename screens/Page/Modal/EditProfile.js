@@ -4,20 +4,13 @@ import { View, Text, TouchableOpacity, TextField } from "react-native-ui-lib";
 import auth from "@react-native-firebase/auth";
 import { connect } from "react-redux";
 import _ from "lodash";
-import LinkedInModal from "react-native-linkedin";
-import { SocialIcon } from "react-native-elements";
-import axios from "axios";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import {
-  linkedinClientID,
-  linkedinClientSecret,
-} from "../../../global/secrets";
 import Icons from "../../../components/Image/Icons";
 import ImageUploader from "../../../components/Form/ImageUploader";
 import { Theme } from "../../../global/constants";
 import FormHeader from "../../../components/Header/FormHeader";
 import UserData from "../../../models/User";
-import { SafeAreaView } from "react-native-safe-area-context";
 import TextButton from "../../../components/Buttons/TextButton";
 import ActionButton from "../../../components/Buttons/ActionButton";
 import GradePicker from "../../../components/Form/GradePicker";

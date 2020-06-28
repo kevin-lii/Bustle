@@ -124,7 +124,7 @@ exports.navigatePath = function (navigation, path, params = {}) {
   navigation.navigate(routes[0], routes.length > 1 ? allParams : params);
 };
 
-exports.openURL = async (partLink, type, isUser) => {
+exports.openURL = async (partLink, type) => {
   let url;
   let backup;
   switch (type) {
@@ -137,7 +137,7 @@ exports.openURL = async (partLink, type, isUser) => {
       backup = "https://www.snapchat.com/add/" + partLink;
       break;
     case "linkedin":
-      url = "linkedin://profile/" + partLink;
+      url = partLink;
       backup = "https://www.linkedin.com/in/" + partLink;
       break;
     default:
