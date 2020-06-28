@@ -13,6 +13,7 @@ import SocialInfo from "../screens/Detail/Profile/SocialInfo";
 import EventFilters from "../screens/Page/Modal/EventFilterCard";
 import PrivacyPolicy from "../screens/Detail/Settings/PrivacyPolicy";
 import Terms from "../screens/Detail/Settings/Terms";
+import EventAlert from "../screens/Page/Modal/EventAlert";
 
 import { Theme } from "../global/constants";
 
@@ -93,6 +94,11 @@ function RootNavigator({ user }) {
       <Stack.Screen
         name={"eventfilters"}
         component={EventFilters}
+        options={{ animationEnabled: false, ...modalOptions }}
+      />
+      <Stack.Screen
+        name={"eventmodal"}
+        component={EventAlert}
         options={{ animationEnabled: false, ...modalOptions }}
       />
     </Stack.Navigator>

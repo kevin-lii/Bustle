@@ -8,6 +8,7 @@ import moment from "moment";
 import HyperLink from "react-native-hyperlink";
 import AwesomeAlert from "react-native-awesome-alerts";
 import Url from "url";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import Icons from "../../components/Image/Icons";
 import ActionButton from "../../components/Buttons/ActionButton";
@@ -151,10 +152,11 @@ const EventDetail = function ({
         return null;
     }
   };
+  const padTop = useSafeArea().top;
   return (
     <>
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-        <View style={{ ...styles.imageContainer, height: 175 }}>
+        <View style={{ ...styles.imageContainer, height: 175 + padTop }}>
           <ImageBackground
             source={event.photoURL ? { uri: event.photoURL } : null}
             style={styles.image}
@@ -209,7 +211,7 @@ const EventDetail = function ({
         paddingH-10
         paddingT-15
         abs
-        style={{ width: "100%" }}
+        style={{ width: "100%", marginTop: padTop }}
       >
         <IconButton
           containerStyle={styles.iconCircle}

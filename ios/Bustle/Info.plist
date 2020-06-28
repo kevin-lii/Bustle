@@ -91,6 +91,7 @@
 	<string>$(PRODUCT_NAME) would like recognize your speech</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>FontAwesome5_Pro_Regular.ttf</string>
 		<string>Roboto-Italic.ttf</string>
 		<string>Roboto-Thin.ttf</string>
 		<string>Roboto-Regular.ttf</string>
@@ -105,7 +106,7 @@
 		<string>FontAwesome.ttf</string>
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5_Pro-Regular.ttf</string>
+		<string>FontAwesome5Pro-Regular.ttf</string>
 		<string>FontAwesome5_Solid.ttf</string>
 		<string>Fontisto.ttf</string>
 		<string>Foundation.ttf</string>

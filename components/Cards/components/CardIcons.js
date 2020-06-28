@@ -23,8 +23,12 @@ const CardIcons = ({ navigation, event, trash, edit, map, rsvp, user }) => (
           type="Entypo"
           size={iconSize}
           onPress={() => {
-            // interstitial here
-            // EventModel.remove(event);
+            navigation.push("eventmodal", {
+              alertMessages: "Remove Event?",
+              handleAlertConfirm: () => {
+                EventModel.remove(event);
+              },
+            });
           }}
         />
       </View>
