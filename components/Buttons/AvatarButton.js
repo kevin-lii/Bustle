@@ -61,7 +61,7 @@ export default function ({
         flex: 1,
         width: null,
         height: null,
-        resizeMode: "contain",
+        resizeMode: "cover",
         overflow: "hidden",
       }}
       source={{ uri: photo }}

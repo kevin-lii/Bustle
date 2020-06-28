@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native-ui-lib";
+import { Alert, Text } from "react-native-ui-lib";
 import ImagePicker from "react-native-image-picker";
 import { StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
 

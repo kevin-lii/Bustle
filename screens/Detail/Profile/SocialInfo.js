@@ -81,7 +81,7 @@ export default function ({ route, navigation }) {
             style={{ marginVertical: 10, width: "100%" }}
           />
         )}
-        {user.linkedin && (
+        {Boolean(user.linkedin) && (
           <SocialIcon
             button
             type="linkedin"

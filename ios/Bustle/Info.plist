@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -29,18 +29,20 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb544967933015511</string>
+				<string>fb693482281095289</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
-	<string>544967933015511</string>
+	<string>693482281095289</string>
 	<key>FacebookDisplayName</key>
 	<string>BustleApp</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>zoomus</string>
+		<string>youtube</string>
 		<string>fb-messenger-share-api</string>
 		<string>fbauth2</string>
 		<string>linkedin</string>
@@ -106,7 +108,6 @@
 		<string>FontAwesome.ttf</string>
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome5Pro-Regular.ttf</string>
 		<string>FontAwesome5_Solid.ttf</string>
 		<string>Fontisto.ttf</string>
 		<string>Foundation.ttf</string>

@@ -81,8 +81,7 @@ export default class UserModel {
       if (publicData.image?.data) {
         await imgRef.putString(publicData.image.data, "base64");
         publicData.photoURL = await imgRef.getDownloadURL();
-        publicData.photoID = fileName;
-        delete data.image;
+        delete publicData.image;
       }
       delete publicData.image;
       if (publicData.coverImage?.data) {

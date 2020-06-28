@@ -117,8 +117,8 @@ android {
         applicationId "co.bustleapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.4"
+        versionCode 4
+        versionName "1.5"
         vectorDrawables.useSupportLibrary = true
         
     }
