@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native-ui-lib";
 import { connect } from "react-redux";
+import auth from "@react-native-firebase/auth";
 
 import IconButton from "../../Buttons/IconButton";
 import CalendarToggle from "../../Buttons/CalendarToggle";
@@ -15,7 +16,7 @@ const iconSize = 25;
 
 const CardIcons = ({ navigation, event, trash, edit, map, rsvp, user }) => (
   <View style={{ flexDirection: "row-reverse" }} spread>
-    {trash && (
+    {trash && user.uid === event.host.uid && (
       <View style={styles.icon}>
         <IconButton
           color="white"
@@ -23,8 +24,10 @@ const CardIcons = ({ navigation, event, trash, edit, map, rsvp, user }) => (
           type="Entypo"
           size={iconSize}
           onPress={() => {
-            // interstitial here
-            // EventModel.remove(event);
+            navigation.navigate("interstitial", {
+              event,
+              alertType: "deleteEvent",
+            });
           }}
         />
       </View>

@@ -54,7 +54,10 @@ export default class CollegeEventModel {
       query = query.where("category", "in", filters.categories);
     if (filters.tags?.length)
       query = query.where("tags", "array-contains-any", filters.tags);
-    if (filters.active) query = query.where("startDate", ">=", new Date());
+    if (filters.active)
+      query = query
+        .where("startDate", ">=", new Date())
+        .where("cancelled", "==", false);
     if (filters.live) query = query.where("ended", "==", false);
     if (filters.orderBy) query = query.orderBy(filters.orderBy, "desc");
     if (filters.startAfter) query = query.startAfter(filters.startAfter);
@@ -89,6 +92,13 @@ export default class CollegeEventModel {
       });
   }
 
+  static async end(eventId) {
+    await firestore()
+      .collection(collection)
+      .doc(eventId)
+      .update({ endDate: new Date() });
+  }
+
   static async cancel(eventId) {
     await firestore()
       .collection(collection)
@@ -104,6 +114,7 @@ export default class CollegeEventModel {
 
     data.host = user;
     data.invited = {};
+    data.cancelled = false;
     data.invited[user.uid] = true;
 
     await store.runTransaction(async (transaction) => {

@@ -48,7 +48,9 @@ export default ({
             <CategoriesIcon type={event.category} size={30} color="white" />
           </View>
           <View flex paddingR-10>
-            <Text style={styles.date}>{startDate.calendar()}</Text>
+            <Text style={styles.date}>
+              {event.cancelled ? "Cancelled" : startDate.calendar()}
+            </Text>
             <Text style={styles.name}>{trimString(event.name, 62)}</Text>
             <View row centerV>
               <View marginR-10>

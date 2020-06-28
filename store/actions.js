@@ -85,13 +85,14 @@ export const getPosts = (filters = {}) => (dispatch) => {
   });
 };
 
-export const setEventFilters = (filters = {}) => (dispatch) => {
+export const setEventFilters = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.events) subscriptions.events();
+  const { eventFilters } = getState();
   subscriptions.events = EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.FILTER_EVENTS,
       events: attachIDs(snapshot),
-      filters,
+      filters: { ...eventFilters, ...filters },
     });
   });
 };

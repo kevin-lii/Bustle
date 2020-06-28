@@ -15,6 +15,8 @@ import PrivacyPolicy from "../screens/Detail/Settings/PrivacyPolicy";
 import Terms from "../screens/Detail/Settings/Terms";
 
 import { Theme } from "../global/constants";
+import { View } from "react-native-ui-lib";
+import Interstitial from "../screens/Page/Modal/Interstitial";
 
 const Stack = createStackNavigator();
 
@@ -93,6 +95,12 @@ function RootNavigator({ user }) {
       <Stack.Screen
         name={"eventfilters"}
         component={EventFilters}
+        options={{ animationEnabled: false, ...modalOptions }}
+      />
+
+      <Stack.Screen
+        name={"interstitial"}
+        component={Interstitial}
         options={{ animationEnabled: false, ...modalOptions }}
       />
     </Stack.Navigator>
