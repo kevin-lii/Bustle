@@ -54,7 +54,7 @@ const EventDetail = function ({
 
   useEffect(() => {
     return CollegeEventModel.subscribeOne(route.params.event.id, (event) =>
-      setEvent(event.data())
+      setEvent({ id: route.params.event.id, ...event.data() })
     );
   }, []);
   const routes = [
@@ -98,9 +98,10 @@ const EventDetail = function ({
           secondary
           text="Saved to Calendar"
           onPress={() => {
+            console.log(event);
             setSaved(!saved);
             UserModel.saveEvent(event.id, false);
-            saveEvent(event);
+            removeEvent(event);
           }}
         />
       );
@@ -111,8 +112,8 @@ const EventDetail = function ({
           text="Save to Calendar"
           onPress={() => {
             setSaved(!saved);
-            UserModel.saveEvent(event.id, false);
-            removeEvent(event);
+            UserModel.saveEvent(event.id, true);
+            saveEvent(event);
           }}
         />
       );

@@ -4,6 +4,7 @@ import { firebase as f } from "@react-native-firebase/storage";
 import firestore, { firebase } from "@react-native-firebase/firestore";
 
 import { UserContext } from "../dataContainers/context";
+import moment from "moment";
 // import { getDefaultImage } from "../global/utils";
 
 // Event Class:
@@ -56,7 +57,7 @@ export default class CollegeEventModel {
       query = query.where("tags", "array-contains-any", filters.tags);
     if (filters.active)
       query = query
-        .where("startDate", ">=", new Date())
+        .where("startDate", ">=", moment().subtract(1, "d").toDate())
         .where("cancelled", "==", false);
     if (filters.live) query = query.where("ended", "==", false);
     if (filters.orderBy) query = query.orderBy(filters.orderBy, "desc");
