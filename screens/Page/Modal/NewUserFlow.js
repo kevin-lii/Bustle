@@ -47,8 +47,10 @@ class NewUserFlow extends React.Component {
     delete data.error;
     delete data.image;
 
-    if (this.check("all")) await UserModel.createNewProfile(data);
-    this.props.navigation.replace("home");
+    if (this.check("all")) {
+      await UserModel.createNewProfile(data);
+      this.props.navigation.replace("home");
+    }
   };
 
   check = (type) => {
