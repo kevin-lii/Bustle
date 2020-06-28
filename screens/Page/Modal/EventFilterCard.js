@@ -6,7 +6,7 @@ import EventFilters from "../../../components/Form/EventFilters";
 
 export default ({ navigation, route }) => (
   <WithOverlayBottomSheet
-    height={200}
+    height={400}
     navigation={navigation}
     sheetContent={<EventFilters />}
   />

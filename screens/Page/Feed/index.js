@@ -18,16 +18,14 @@ class Feed extends Component {
     else this.state = { regionIDs: null };
   }
   componentDidMount() {
-    this.props.getEvents();
-    this.props.getPosts();
+    this.props.getEvents({ active: true, orderBy: "startDate" });
   }
 
   render() {
     const { navigation, route, events, posts, getPosts } = this.props;
     const forumView = route.name === "forum";
-    const sheet = createRef();
 
-    if (events == null || posts == null) {
+    if (events == null) {
       return <Text>Loading...</Text>;
     }
 
@@ -48,12 +46,9 @@ class Feed extends Component {
             contentContainerStyle={{ paddingBottom: 80 }}
             data={forumView ? posts : events}
             renderItem={({ item, index }) => {
-              if (forumView)
-                return <PostCard post={item} postID={item.id} key={index} />;
-              else
-                return (
-                  <EventDetailCard event={item} navigation={navigation} rsvp />
-                );
+              return (
+                <EventDetailCard event={item} navigation={navigation} rsvp />
+              );
             }}
           />
         </View>

@@ -6,7 +6,6 @@ import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import moment from "moment";
 import HyperLink from "react-native-hyperlink";
-import AwesomeAlert from "react-native-awesome-alerts";
 import Url from "url";
 import { useSafeArea } from "react-native-safe-area-context";
 
@@ -42,8 +41,6 @@ const Attendees = ({ navigation, event }) => (
   </View>
 );
 
-const alertMessages = ["", "Cancel Event?", "End Event?"];
-
 const EventDetail = function ({
   route,
   navigation,
@@ -55,18 +52,6 @@ const EventDetail = function ({
   const [saved, setSaved] = useState(user.saved[event.id]);
   const [alert, setAlert] = useState(false);
   const [index, setIndex] = useState(0);
-
-  const handleAlertConfirm = () => {
-    switch (alert) {
-      case 1:
-        CollegeEventModel.cancel(route.params.event.id);
-        break;
-      case 2:
-        CollegeEventModel.remove(route.params.event);
-        break;
-    }
-    setAlert(false);
-  };
 
   useEffect(() => {
     return CollegeEventModel.subscribeOne(route.params.event.id, (event) =>
@@ -96,13 +81,18 @@ const EventDetail = function ({
   let text = <Text center>{event.link && Url.parse(event.link).hostname}</Text>;
   if (new Date() < event.startDate.toDate()) {
     if (isHost)
-      button = (
+      button = !event.cancelled ? (
         <ActionButton
           secondary
           text="Cancel Event"
-          onPress={() => setAlert(1)}
+          onPress={() =>
+            navigation.navigate("interstitial", {
+              event,
+              alertType: "cancelEvent",
+            })
+          }
         />
-      );
+      ) : null;
     else if (saved)
       button = (
         <ActionButton
@@ -134,7 +124,9 @@ const EventDetail = function ({
     button = (
       <ActionButton
         backgroundColor={Theme.red}
-        onPress={() => setAlert(2)}
+        onPress={() =>
+          navigation.navigate("interstitial", { event, alertType: "endEvent" })
+        }
         borderColor="transparent"
         color="white"
         text="End Event"
@@ -169,7 +161,7 @@ const EventDetail = function ({
           <View row centerV marginT-20 style={styles.infoLine}>
             <Icons type="Entypo" icon="calendar" size={iconSize + 1}></Icons>
             <Text text65 numberOfLines={1} marginL-10 style={styles.infoText}>
-              {startTime} on {startDate}
+              {event.cancelled ? "Cancelled" : startTime + " on " + startDate}
             </Text>
           </View>
           <View row centerV style={styles.infoLine}>
@@ -233,22 +225,6 @@ const EventDetail = function ({
           />
         )}
       </View>
-
-      <AwesomeAlert
-        show={Boolean(alert)}
-        showProgress={false}
-        message={alertMessages[alert]}
-        closeOnTouchOutside
-        closeOnHardwareBackPress
-        showCancelButton={true}
-        showConfirmButton={true}
-        cancelText="No"
-        confirmText="Yes, I'm sure"
-        confirmButtonColor={Theme.red}
-        onDismiss={() => setAlert(false)}
-        onCancelPressed={() => setAlert(false)}
-        onConfirmPressed={handleAlertConfirm}
-      />
     </>
   );
 };

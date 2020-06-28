@@ -85,31 +85,31 @@ export const getPosts = (filters = {}) => (dispatch) => {
   });
 };
 
-export const setEventFilters = (filters = {}) => (dispatch) => {
+export const setEventFilters = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.events) subscriptions.events();
+  const { eventFilters } = getState();
   subscriptions.events = EventModel.subscribe(filters, (snapshot) => {
     dispatch({
       type: actionTypes.FILTER_EVENTS,
       events: attachIDs(snapshot),
-      filters,
+      filters: { ...eventFilters, ...filters },
     });
   });
 };
 
 export const saveEvent = (event) => (dispatch, getState) => {
-  console.log("saved");
   const { savedEvents } = getState();
   const allEvents = [];
   let flag = true;
   const boundary = event.startDate.toDate();
-  savedEvents.forEach((e) => {
-    if (e.startDate.toDate() > event.boundary() && flag) {
+  savedEvents?.forEach((e) => {
+    if (e.startDate.toDate() > boundary && flag) {
       allEvents.push(event);
       flag = false;
     }
     allEvents.push(e);
   });
-  if (flag) allEvents.push(boundary);
+  if (flag) allEvents.push(event);
 
   dispatch({
     type: actionTypes.UPDATE_INTERESTED_EVENTS,
@@ -118,11 +118,10 @@ export const saveEvent = (event) => (dispatch, getState) => {
 };
 
 export const removeEvent = (eventID) => (dispatch, getState) => {
-  console.log("removeEvent");
   const { savedEvents } = getState();
   const allEvents = [];
-  savedEvents.forEach((e) => {
-    if (e.id !== eventID) allEvents.push(event);
+  savedEvents?.forEach((e) => {
+    if (e.id !== eventID) allEvents.push(e);
   });
   dispatch({
     type: actionTypes.UPDATE_INTERESTED_EVENTS,
