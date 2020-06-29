@@ -12,10 +12,10 @@ export default ({ navigation, route }) => {
   return (
     <View style={{ paddingBottom: padBottom }}>
       <CalendarHeader host={mode} onToggle={() => setMode(!mode)} />
-      <View style={{ display: mode ? "flex" : "none" }}>
+      <View padding-5 style={{ display: mode ? "flex" : "none" }}>
         <HostingEvents />
       </View>
-      <View style={{ display: mode ? "none" : "flex" }}>
+      <View padding-5 style={{ display: mode ? "none" : "flex" }}>
         <InterestedEvents />
       </View>
     </View>

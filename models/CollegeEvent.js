@@ -5,6 +5,8 @@ import firestore, { firebase } from "@react-native-firebase/firestore";
 
 import { UserContext } from "../dataContainers/context";
 import moment from "moment";
+
+import { joinEvent } from "../global/functions";
 // import { getDefaultImage } from "../global/utils";
 
 // Event Class:
@@ -105,6 +107,10 @@ export default class CollegeEventModel {
       .collection(collection)
       .doc(eventId)
       .update({ cancelled: true });
+  }
+
+  static join(eventId) {
+    joinEvent(eventId);
   }
 
   static async create(user, data) {

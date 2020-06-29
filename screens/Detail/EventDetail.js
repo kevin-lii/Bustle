@@ -75,7 +75,11 @@ const EventDetail = function ({
     <ActionButton
       primary
       text="Join Event"
-      onPress={() => Linking.openURL(event.link)}
+      onPress={() => {
+        Linking.openURL(event.link);
+        user.pastEvents.push(event.id);
+        UserModel.update({ pastEvents: user.pastEvents }, {});
+      }}
     />
   );
   let text = <Text center>{event.link && Url.parse(event.link).hostname}</Text>;
@@ -121,6 +125,9 @@ const EventDetail = function ({
 
     if (!isHost)
       text = <Text center>Link available when the event starts.</Text>;
+  } else if (new Date() > event.endDate?.toDate()) {
+    button = null;
+    text = <Text center>Event Ended.</Text>;
   } else if (isHost) {
     button = (
       <ActionButton
