@@ -7,7 +7,7 @@ const events = (state, action) => {
     action.type === actionTypes.FILTER_EVENTS
   )
     return action.events;
-  return state || null;
+  return state || [];
 };
 
 const eventFilters = (state, action) => {
@@ -32,7 +32,7 @@ const forumFilters = (state, action) => {
 const hostedEvents = (state, action) => {
   if (action.type === actionTypes.UPDATE_HOSTED_EVENTS)
     return action.hostedEvents;
-  return state || null;
+  return state || [];
 };
 
 const savedEvents = (state, action) => {

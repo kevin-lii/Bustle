@@ -25,7 +25,7 @@ class Feed extends Component {
     const { navigation, route, events, posts, getPosts } = this.props;
     const forumView = route.name === "forum";
 
-    if (events == null) {
+    if (events === null) {
       return <Text>Loading...</Text>;
     }
 

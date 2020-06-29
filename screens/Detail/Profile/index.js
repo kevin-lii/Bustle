@@ -20,7 +20,7 @@ import IconButton from "../../../components/Buttons/IconButton";
 function Profile({ navigation, route, currentUser }) {
   const isForeign =
     route.params?.user && route.params.user.uid !== auth().currentUser.uid;
-  const [user, setUser] = useState(route.params?.user);
+  const [foreignUser, setUser] = useState(route.params?.user);
 
   const [index, setIndex] = useState(0);
   const routes = [
@@ -33,6 +33,7 @@ function Profile({ navigation, route, currentUser }) {
       UserModel.get(route.params.user.uid).then((item) => setUser(item));
   }, []);
 
+  const user = isForeign ? foreignUser : currentUser;
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "hosted":
@@ -54,16 +55,11 @@ function Profile({ navigation, route, currentUser }) {
         );
     }
   };
-  const effectiveUser = isForeign ? user : currentUser;
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ ...styles.imageContainer, height: 150 }}>
         <ImageBackground
-          source={
-            effectiveUser.coverPhotoURL
-              ? { uri: effectiveUser.coverPhotoURL }
-              : null
-          }
+          source={user.coverPhotoURL ? { uri: user.coverPhotoURL } : null}
           style={styles.image}
         >
           <View
@@ -119,8 +115,8 @@ function Profile({ navigation, route, currentUser }) {
         }}
       >
         <AvatarButton
-          photoURL={effectiveUser.photoURL}
-          name={effectiveUser.displayName}
+          photoURL={user.photoURL}
+          name={user.displayName}
           size={150}
           borderColor={Theme.primary}
           borderWidth={2}
