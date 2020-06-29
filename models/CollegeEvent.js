@@ -122,7 +122,7 @@ export default class CollegeEventModel {
       // upload image
       const eventRef = store.collection(collection).doc();
 
-      if (data.image) {
+      if (data.image?.data) {
         const fileName = eventRef.id;
         await f
           .storage()
@@ -162,17 +162,14 @@ export default class CollegeEventModel {
     }
     const store = firestore();
     await store.runTransaction(async (transaction) => {
-      if (data.image) {
-        if (data.photoURL) {
-          await f.storage().refFromURL(data.photoURL).delete();
-        }
+      if (data.image?.data) {
         await f
           .storage()
-          .ref(`events/${data.category}/${eventID}`)
-          .putFile(data.image);
+          .ref(`${collection}/${eventID}`)
+          .putString(data.image.data, "base64");
         data.photoURL = await f
           .storage()
-          .ref(`events/${data.category}/${eventID}`)
+          .ref(`${collection}/${eventID}`)
           .getDownloadURL();
         delete data.image;
       }

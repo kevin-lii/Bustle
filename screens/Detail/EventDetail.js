@@ -49,7 +49,7 @@ const EventDetail = function ({
   removeEvent,
 }) {
   const [event, setEvent] = useState(route.params?.event);
-  const [saved, setSaved] = useState(user.saved[event.id]);
+  const [saved, setSaved] = useState(user.saved && user.saved[event.id]);
   const [alert, setAlert] = useState(false);
   const [index, setIndex] = useState(0);
 

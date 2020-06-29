@@ -70,15 +70,16 @@ export default class EventCreate extends React.Component {
       stateCopy.tags = stateCopy.tags.map(({ value }) => value);
 
       if (update)
-        return EventModel.update(this.props.route.params?.event.id, stateCopy);
-      EventModel.create(
-        {
-          uid: this.context.uid,
-          displayName: this.context.displayName,
-          photoURL: this.context.photoURL,
-        },
-        stateCopy
-      );
+        EventModel.update(this.props.route.params?.event.id, stateCopy);
+      else
+        EventModel.create(
+          {
+            uid: this.context.uid,
+            displayName: this.context.displayName,
+            photoURL: this.context.photoURL,
+          },
+          stateCopy
+        );
       this.props.navigation.goBack();
     } catch (e) {
       console.log(e);
