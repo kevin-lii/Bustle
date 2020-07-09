@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet } from "react-native";
 import { View, Text, TouchableOpacity, TextField } from "react-native-ui-lib";
 import auth from "@react-native-firebase/auth";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import Icons from "../../../components/Image/Icons";
 import ImageUploader from "../../../components/Form/ImageUploader";
@@ -52,7 +53,7 @@ class EditProfile extends React.Component {
           onSubmit={() => this.update()}
           submitText={"Save"}
         />
-        <ScrollView style={{ backgroundColor: "white" }}>
+        <KeyboardAwareScrollView style={{ backgroundColor: "white" }}>
           <View style={styles.section}>
             <Text text70 color={Theme.grey} style={{ fontWeight: "bold" }}>
               Profile Photo
@@ -189,7 +190,7 @@ class EditProfile extends React.Component {
               borderColor="transparent"
             />
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     );
   }

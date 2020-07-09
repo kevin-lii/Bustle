@@ -10,6 +10,7 @@ import appleAuth, {
 
 import ActionButton from "../../../components/Buttons/ActionButton";
 import SecureText from "../../../components/Text/SecureInput";
+import Icons from "../../../components/Image/Icons";
 
 import styles from "./styles";
 
@@ -104,15 +105,45 @@ export default function Login({ navigation }) {
         </View>
 
         <View style={styles.button}>
-          <ActionButton primary onPress={facebookLogin} text="Facebook Login" />
+          <ActionButton
+            backgroundColor="#3B5998"
+            borderColor="#3B5998"
+            onPress={facebookLogin}
+          >
+            <View row centerV>
+              <Icons
+                type="Font"
+                icon="facebook-f"
+                size={15}
+                color="white"
+                style={{ marginRight: 5 }}
+              />
+              <Text text70 color="white">
+                Sign in with Facebook
+              </Text>
+            </View>
+          </ActionButton>
         </View>
 
         {Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 13 && (
           <ActionButton
-            primary
             onPress={() => onAppleButtonPress()}
-            text="Apple Login"
-          />
+            backgroundColor="black"
+            borderColor="black"
+          >
+            <View row centerV>
+              <Icons
+                type="Font"
+                icon="apple"
+                size={15}
+                color="white"
+                style={{ marginRight: 5 }}
+              />
+              <Text text70 color="white">
+                Sign in with Apple
+              </Text>
+            </View>
+          </ActionButton>
         )}
 
         <View style={styles.button}>

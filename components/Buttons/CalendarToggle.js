@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "react-native-ui-lib";
 import { connect } from "react-redux";
 
@@ -10,7 +10,12 @@ import { saveEvent, removeEvent } from "../../store/actions";
 
 const CalendarToggle = ({ event, user, saveEvent, removeEvent }) => {
   const [checked, setChecked] = useState(user.saved && user.saved[event.id]);
-
+  {
+    user.saved &&
+      useEffect(() => {
+        setChecked(user.saved[event.id]);
+      }, [user.saved[event.id]]);
+  }
   return (
     <Button
       round

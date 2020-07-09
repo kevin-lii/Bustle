@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import { Text, View } from "react-native-ui-lib";
 import { connect } from "react-redux";
 
-import { getEvents, getPosts } from "../../../store/actions";
+import { setEventFilters, getPosts } from "../../../store/actions";
 import PostCard from "../../../components/Cards/PostCard";
 import WithOverlayButtons from "../../../components/Container/WithOverlayButtons";
 import EventDetailCard from "../../../components/Cards/EventDetailCard";
@@ -18,7 +18,7 @@ class Feed extends Component {
     else this.state = { regionIDs: null };
   }
   componentDidMount() {
-    this.props.getEvents({ active: true, orderBy: "startDate" });
+    this.props.setEventFilters({ active: true, orderBy: "startDate" });
   }
 
   render() {
@@ -63,7 +63,7 @@ export default connect(
     posts: state.posts,
   }),
   {
-    getEvents,
+    setEventFilters,
     getPosts,
   }
 )(Feed);

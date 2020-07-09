@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 import EventDetail from "../../../components/Cards/EventDetailCard";
-import EventModel from "../../../models/CollegeEvent";
 
 import { getHostedEvents, getSavedEvents } from "../../../store/actions";
 import styles from "../EventList/styles";
@@ -19,7 +18,7 @@ class InterestedFeed extends React.Component {
 
   componentDidMount() {
     this.props.getHostedEvents();
-    this.props.getSavedEvents();
+    this.props.getSavedEvents({ active: true });
   }
 
   render() {

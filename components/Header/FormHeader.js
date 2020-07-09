@@ -32,7 +32,11 @@ export default ({
       {header}
       {title && <Text style={styles.text}>{title}</Text>}
     </View>
-    <TouchableOpacity onPress={onSubmit} style={styles.button}>
+    <TouchableOpacity
+      onPress={onSubmit}
+      style={styles.button}
+      disabled={disabled}
+    >
       <Text text60 color={Theme.primary}>
         {submitText}
       </Text>

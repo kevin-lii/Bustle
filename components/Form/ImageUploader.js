@@ -1,7 +1,12 @@
 import React from "react";
-import { Alert, Text } from "react-native-ui-lib";
+import { Text } from "react-native-ui-lib";
 import ImagePicker from "react-native-image-picker";
-import { StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 
 import { Theme } from "../../global/constants";
 

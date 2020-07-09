@@ -17,6 +17,11 @@ export default class ProfileEvent extends React.Component {
   }
   componentDidMount() {
     this.retrieveInitialData();
+    // this.props.navigation.addListener("focus", async () => {
+    //   if (this.state.complete && this.state.lastVisible < this.props.user?.pastEvents?.length) {
+    //     this.reloadDataWhenFocus();
+    //   }
+    // });
   }
 
   retrieveInitialData = () => {
@@ -32,12 +37,12 @@ export default class ProfileEvent extends React.Component {
           if (tempPast.length == 10)
             this.setState({
               pastEvents: tempPast,
-              lastVisible: this.state.lastVisible + 10,
+              lastVisible: this.state.lastVisible + tempPast.length,
             });
           else if (tempPast.length < 10 && tempPast.length > 0)
             this.setState({
               pastEvents: tempPast,
-              lastVisible: this.state.lastVisible + 10,
+              lastVisible: this.state.lastVisible + tempPast.length,
               complete: true,
             });
           else this.setState({ complete: true });
@@ -62,16 +67,15 @@ export default class ProfileEvent extends React.Component {
             snapshot.forEach((doc) => {
               tempPast.push({ ...doc.data(), id: doc.id });
             });
-
             if (tempPast.length == 10)
               this.setState({
-                pastEvents: [...this.state.pastEvents, ...tempPast],
-                lastVisible: this.state.lastVisible + 10,
+                pastEvents: [...tempPast, ...this.state.pastEvents],
+                lastVisible: this.state.lastVisible + tempPast.length,
               });
             else if (tempPast.length < 10 && tempPast.length > 0)
               this.setState({
-                pastEvents: [...this.state.pastEvents, ...tempPast],
-                lastVisible: this.state.lastVisible + 10,
+                pastEvents: [...tempPast, ...this.state.pastEvents],
+                lastVisible: this.state.lastVisible + tempPast.length,
                 complete: true,
               });
             else this.setState({ complete: true });
@@ -80,6 +84,36 @@ export default class ProfileEvent extends React.Component {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  reloadDataWhenFocus = function () {
+    try {
+      EventModel.get({
+        containsID: this.props.user.pastEvents.slice(
+          this.state.lastVisible,
+          this.state.lastVisible + 9
+        ),
+      }).then((snapshot) => {
+        const tempPast = [];
+        snapshot.forEach((doc) => {
+          tempPast.push({ ...doc.data(), id: doc.id });
+        });
+        if (tempPast.length == 10)
+          this.setState({
+            pastEvents: [...tempPast, ...this.state.pastEvents],
+            lastVisible: this.state.lastVisible + tempPast.length,
+          });
+        else if (tempPast.length < 10 && tempPast.length > 0)
+          this.setState({
+            pastEvents: [...tempPast, ...this.state.pastEvents],
+            lastVisible: this.state.lastVisible + tempPast.length,
+            complete: true,
+          });
+        else this.setState({ complete: true });
+      });
+    } catch (e) {
+      console.log(e);
     }
   };
 

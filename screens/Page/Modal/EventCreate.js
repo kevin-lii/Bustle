@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, TextField } from "react-native-ui-lib";
-import { Alert, ScrollView } from "react-native";
+import { Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { UserContext } from "../../../dataContainers/context";
 import EventModel from "../../../models/CollegeEvent";
@@ -28,6 +30,7 @@ export default class EventCreate extends React.Component {
           name: "",
           description: "",
           date: new Date(),
+          disabled: false,
           time: new Date(),
           endDate: null,
           endTime: null,
@@ -46,7 +49,7 @@ export default class EventCreate extends React.Component {
       this.state.date = event.startDate.toDate();
       this.state.time = event.startDate.toDate();
       this.state.endDate = event.endDate?.toDate();
-      this.state.endTime = event.endTime?.toDate();
+      this.state.endTime = event.endDate?.toDate();
       this.state.tags = this.state.tags.map((value) => ({
         label: value,
         value,
@@ -59,13 +62,21 @@ export default class EventCreate extends React.Component {
 
   async submit(update = false) {
     try {
+      this.setState({ disabled: true });
       const stateCopy = Object.assign({}, this.state);
       stateCopy.startDate = new Date();
       stateCopy.startDate.setTime(this.state.date.getTime());
       stateCopy.startDate.setHours(this.state.time.getHours());
       stateCopy.startDate.setMinutes(this.state.time.getMinutes());
+      if (this.state.endDate && this.state.endTime) {
+        stateCopy.endDate.setTime(this.state.endDate.getTime());
+        stateCopy.endDate.setHours(this.state.endTime.getHours());
+        stateCopy.endDate.setMinutes(this.state.endTime.getMinutes());
+      }
+      delete stateCopy.endTime;
       delete stateCopy.date;
       delete stateCopy.time;
+      delete stateCopy.disabled;
 
       stateCopy.tags = stateCopy.tags.map(({ value }) => value);
 
@@ -83,6 +94,7 @@ export default class EventCreate extends React.Component {
       this.props.navigation.goBack();
     } catch (e) {
       console.log(e);
+      this.setState({ disabled: false });
       Alert.alert("Error", e.message);
     }
   }
@@ -105,13 +117,14 @@ export default class EventCreate extends React.Component {
     const iconSize = 25;
 
     return (
-      <View flex>
+      <SafeAreaView style={{ flex: 1 }}>
         <FormHeader
           onClose={navigation.goBack}
           onSubmit={this.validateSubmission}
           submitText={route.params?.event ? "Update" : "Create"}
+          disabled={this.state.disabled}
         />
-        <ScrollView
+        <KeyboardAwareScrollView
           style={{
             backgroundColor: "white",
           }}
@@ -259,8 +272,8 @@ export default class EventCreate extends React.Component {
               </View>
             </View>
           </View>
-        </ScrollView>
-      </View>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }

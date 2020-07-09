@@ -47,6 +47,7 @@
     "react-native-google-signin": "2.1.1",
     "react-native-hyperlink": "^0.0.19",
     "react-native-image-picker": "2.3.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-linkedin": "^2.1.1",
     "react-native-maps": "0.27.1",

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import { connect } from "react-redux";
 import { ImageBackground, StyleSheet, Linking, ScrollView } from "react-native";
-import { View, Text, TouchableOpacity } from "react-native-ui-lib";
+import { View, Text } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import moment from "moment";
 import HyperLink from "react-native-hyperlink";
@@ -24,9 +24,9 @@ import { saveEvent, removeEvent } from "../../store/actions";
 import CollegeEventModel from "../../models/CollegeEvent";
 
 const Description = ({ event }) => (
-  <View>
+  <View style={{ padding: 10 }}>
     <HyperLink linkDefault>
-      <Text>{event.description}</Text>
+      <Text text65>{event.description}</Text>
     </HyperLink>
   </View>
 );
@@ -77,8 +77,10 @@ const EventDetail = function ({
       text="Join Event"
       onPress={() => {
         Linking.openURL(event.link);
-        user.pastEvents.push(event.id);
-        UserModel.update({ pastEvents: user.pastEvents }, {});
+        if (!user.pastEvents.filter((x) => x === event.id).length) {
+          user.pastEvents.push(event.id);
+          UserModel.update({ pastEvents: user.pastEvents }, {});
+        }
       }}
     />
   );
@@ -103,8 +105,8 @@ const EventDetail = function ({
           secondary
           text="Saved to Calendar"
           onPress={() => {
-            console.log(event);
             setSaved(!saved);
+            user.saved[event.id] = false;
             UserModel.saveEvent(event.id, false);
             removeEvent(event);
           }}
@@ -117,6 +119,7 @@ const EventDetail = function ({
           text="Save to Calendar"
           onPress={() => {
             setSaved(!saved);
+            user.saved[event.id] = true;
             UserModel.saveEvent(event.id, true);
             saveEvent(event);
           }}

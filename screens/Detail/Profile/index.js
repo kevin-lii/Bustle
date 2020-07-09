@@ -51,6 +51,7 @@ function Profile({ navigation, route, currentUser }) {
             isCurrentUser={!isForeign}
             user={user}
             navigation={navigation}
+            focused={!index}
           />
         );
     }
@@ -162,6 +163,7 @@ function Profile({ navigation, route, currentUser }) {
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
+        lazy
       />
     </SafeAreaView>
   );
