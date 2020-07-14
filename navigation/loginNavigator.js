@@ -2,8 +2,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-import Login from "../screens/Page/Login";
-import SignUp from "../screens/Page/SignUp";
+import Login from "../screens/Login";
+import SignUp from "../screens/Login/SignUp";
 import IconButton from "../components/Buttons/IconButton";
 
 const Stack = createStackNavigator();
@@ -31,7 +31,7 @@ export default () => (
             />
           ),
           headerTransparent: true,
-          headerRightContainerStyle: { marginTop: 20, marginRight: 25 }
+          headerRightContainerStyle: { marginTop: 20, marginRight: 25 },
         })}
       />
     </Stack.Navigator>

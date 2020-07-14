@@ -5,10 +5,8 @@ import {
   createNavigatorFactory,
 } from "@react-navigation/native";
 
-import MapScreen from "../screens/Page/Map";
+import MapScreen from "../screens/Map";
 
-import HeaderLeft from "../components/Header/HeaderLeft";
-import HeaderRight from "../components/Buttons/AvatarButton";
 import { View } from "react-native-ui-lib";
 
 import styles from "./styles";
@@ -37,18 +35,8 @@ function CustomStackNavigator({ initialRouteName, children, screenOptions }) {
       <MapScreen route={state.routes[state.index]} navigation={navigation} />
 
       <View flex spread style={styles.floatingHeader}>
-        <View style={styles.headerLeft}>
-          <HeaderLeft />
-        </View>
-        <View style={styles.headerRight}>
-          <HeaderRight
-            onPress={() => navigation.openDrawer()}
-            borderWidth={1}
-            useUser
-            marginTop={20}
-            marginRight={10}
-          />
-        </View>
+        <View style={styles.headerLeft}></View>
+        <View style={styles.headerRight}></View>
       </View>
     </React.Fragment>
   );

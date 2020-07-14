@@ -1,9 +1,9 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Calendar from "../screens/Page/Calendar";
+import Calendar from "../screens/Calendar";
 import EventDetail from "../screens/Detail/EventDetail";
-import Profile from "../screens/Detail/Profile";
+import Profile from "../screens/Profile";
 
 const Stack = createStackNavigator();
 

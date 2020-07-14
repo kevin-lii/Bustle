@@ -3,9 +3,8 @@ import { View } from "react-native-ui-lib";
 import { StyleSheet } from "react-native";
 
 import AddWithOptions from "../Buttons/AddWithOptions";
-import Icons from "../Image/Icons";
 import FormTypes from "../Form/FormTypes";
-import IconToggleSwitch from "../Form/IconToggleSwitch";
+import IconToggleSwitch from "../Switch/IconToggleSwitch";
 import AddButton from "../Buttons/AddButton";
 
 import { navigatePath } from "../../global/utils";

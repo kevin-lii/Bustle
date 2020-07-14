@@ -16,7 +16,6 @@ import IconButton from "../../components/Buttons/IconButton";
 import ProfileLink from "../../components/Buttons/ProfileLink";
 
 import { Theme } from "../../global/constants";
-import { getNameInitials } from "../../global/utils";
 import globalStyles from "../../global/styles";
 import UserModel from "../../models/User";
 

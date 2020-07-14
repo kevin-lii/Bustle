@@ -2,13 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native-ui-lib";
 import { connect } from "react-redux";
-import auth from "@react-native-firebase/auth";
 
 import IconButton from "../../Buttons/IconButton";
 import CalendarToggle from "../../Buttons/CalendarToggle";
-import EventModel from "../../../models/CollegeEvent";
 
-import { Theme } from "../../../global/constants";
 import { navigatePath } from "../../../global/utils";
 import FormTypes from "../../Form/FormTypes";
 

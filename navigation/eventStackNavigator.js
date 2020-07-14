@@ -1,10 +1,10 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import FeedScreen from "../screens/Page/Feed";
+import FeedScreen from "../screens/Feed";
 import EventDetail from "../screens/Detail/EventDetail";
 import FeedHeader from "../components/Header/FeedHeader";
-import Profile from "../screens/Detail/Profile";
+import Profile from "../screens/Profile";
 
 const Stack = createStackNavigator();
 

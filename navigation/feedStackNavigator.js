@@ -5,10 +5,8 @@ import {
   StackRouter,
   createNavigatorFactory,
 } from "@react-navigation/native";
-import { StackView } from "@react-navigation/stack";
 
-import FeedScreen from "../screens/Page/Feed";
-import PostDetail from "../screens/Detail/PostDetail";
+import FeedScreen from "../screens/Feed";
 import EventDetail from "../screens/Detail/EventDetail";
 
 function CustomStackNavigator({
@@ -48,7 +46,6 @@ export default function FeedStackNavigator() {
       <Stack.Screen name="events" component={FeedScreen} />
       <Stack.Screen name="forums" component={FeedScreen} />
       <Stack.Screen name="event" component={EventDetail} />
-      <Stack.Screen name="post" component={PostDetail} />
     </Stack.Navigator>
   );
 }

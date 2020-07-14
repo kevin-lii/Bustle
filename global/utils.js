@@ -4,7 +4,6 @@ import firestore from "@react-native-firebase/firestore";
 import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 
-import { defaultRegions } from "./forumconfig";
 import URL from "url";
 
 exports.bindAll = function (thisArg, obj) {
@@ -60,14 +59,6 @@ exports.validateLocation = function (loc, lat, lng) {
 
 exports.validateURL = function (str) {
   return Boolean(URL.parse(str).hostname);
-};
-
-exports.getDefaultRegionID = function (zone) {
-  return defaultRegions[zone];
-};
-
-exports.getDefaultZone = function () {
-  return 110635; //uc berkeley
 };
 
 exports.getNameInitials = function (displayName) {

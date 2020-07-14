@@ -1,18 +1,9 @@
 import React, { useRef } from "react";
-import { View, Text, Picker, TagsInput } from "react-native-ui-lib";
+import { Picker, TagsInput } from "react-native-ui-lib";
 
-import { Theme } from "../../global/constants";
 import Pill from "../Buttons/PillButton";
-import { forumTags } from "../../global/forumconfig";
 
-export default ({
-  onChange,
-  value,
-  data,
-  size,
-  // pillColor = Theme.primary,
-  color = "white",
-}) => {
+export default ({ onChange, value, data, size, color = "white" }) => {
   const picker = useRef();
   const getLabel = (value) => {
     if (value instanceof Array) {

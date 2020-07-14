@@ -4,16 +4,15 @@ import auth from "@react-native-firebase/auth";
 import { connect } from "react-redux";
 
 import TabNavigator from "./tabNavigator";
-import EventCreate from "../screens/Page/Modal/EventCreate";
-import PostCreate from "../screens/Page/Modal/PostCreate";
-import EditProfile from "../screens/Page/Modal/EditProfile";
+import EventCreate from "../screens/Modal/EventCreate";
+import EditProfile from "../screens/Modal/EditProfile";
 import FormTypes from "../components/Form/FormTypes";
-import NewUserFlow from "../screens/Page/Modal/NewUserFlow";
-import SocialInfo from "../screens/Detail/Profile/SocialInfo";
-import EventFilters from "../screens/Page/Modal/EventFilterCard";
-import PrivacyPolicy from "../screens/Detail/Settings/PrivacyPolicy";
-import Terms from "../screens/Detail/Settings/Terms";
-import Interstitial from "../screens/Page/Modal/Interstitial";
+import NewUserFlow from "../screens/Modal/NewUserFlow";
+import SocialInfo from "../screens/Profile/SocialInfo";
+import EventFilters from "../screens/Modal/EventFilterCard";
+import PrivacyPolicy from "../screens/Settings/PrivacyPolicy";
+import Terms from "../screens/Settings/Terms";
+import Interstitial from "../screens/Modal/Interstitial";
 
 import { Theme } from "../global/constants";
 
@@ -56,11 +55,6 @@ function RootNavigator({ user }) {
       <Stack.Screen
         name={FormTypes.EVENT_EDIT}
         component={EventCreate}
-        options={modalOptions}
-      />
-      <Stack.Screen
-        name={FormTypes.POST_CREATE}
-        component={PostCreate}
         options={modalOptions}
       />
       <Stack.Screen

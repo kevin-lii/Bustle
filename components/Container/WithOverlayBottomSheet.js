@@ -1,12 +1,8 @@
 import React, { Component, createRef } from "react";
 import { StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Text, View } from "react-native-ui-lib";
-import Modal from "react-native-modal";
 import BottomSheet from "reanimated-bottom-sheet";
 import Animated from "react-native-reanimated";
-
-import IconButton from "../Buttons/IconButton";
-import CircleIconButton from "../Buttons/CircleIconButton";
 
 export default class WithOverlayBottomSheet extends Component {
   constructor(props) {
@@ -75,17 +71,6 @@ export default class WithOverlayBottomSheet extends Component {
           renderContent={() => (
             <View style={{ ...styles.card, height }}>{sheetContent}</View>
           )}
-          // renderHeader={
-          //   () => (
-          //     <View marginB-10>
-          //       <CircleIconButton
-          //         icon="arrow-left"
-          //         type="MaterialIcons"
-          //         size={30}
-          //         onPress={() => ref.current.snapTo(1)}/>
-          //     </View>
-          //   )
-          // }
           enabledContentTapInteraction={false}
           callbackNode={this.node}
           callbackThreshold={0.1}

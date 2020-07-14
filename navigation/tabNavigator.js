@@ -1,18 +1,11 @@
 import React, { useRef } from "react";
-import {
-  createNavigatorFactory,
-  useNavigationBuilder,
-  TabRouter,
-} from "@react-navigation/native";
+import { useNavigationBuilder, TabRouter } from "@react-navigation/native";
 import { View } from "react-native-ui-lib";
 import {
   BottomTabView,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/FontAwesome5";
-
-import MapNavigator from "./mapStackNavigator";
-import WithOverlayBottomSheet from "../components/Container/WithOverlayBottomSheet";
 
 import { Theme } from "../global/constants";
 import FeedHeader from "../components/Header/FeedHeader";

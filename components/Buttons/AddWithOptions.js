@@ -1,6 +1,5 @@
 import React from "react";
 import { View, TouchableOpacity, Text } from "react-native-ui-lib";
-import { StyleSheet } from "react-native";
 
 import styles from "./styles";
 import globalStyles from "../../global/styles";
@@ -13,7 +12,7 @@ export default ({
   secondaryLabel,
   onPressPrimary,
   onPressSecondary,
-  containerStyle
+  containerStyle,
 }) => (
   <View
     flex
@@ -26,7 +25,7 @@ export default ({
         touchStyle={[
           styles.button,
           styles.smallButton,
-          globalStyles.overlayElementShadow
+          globalStyles.overlayElementShadow,
         ]}
         onPress={onPressSecondary}
         icon={secondaryIcon}
@@ -39,7 +38,7 @@ export default ({
         touchStyle={[
           styles.button,
           styles.smallButton,
-          globalStyles.overlayElementShadow
+          globalStyles.overlayElementShadow,
         ]}
         onPress={onPressPrimary}
         icon={primaryIcon}
