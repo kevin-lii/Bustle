@@ -17,13 +17,13 @@ import { Theme } from "./global/constants";
 
 export default () => {
   const oldRender = Text.render;
-  Text.render = function(...args) {
+  Text.render = function (...args) {
     const origin = oldRender.call(this, ...args);
     return React.cloneElement(origin, {
       style: [
-        { fontFamily: "Roboto", color: Theme.primary },
-        origin.props.style
-      ]
+        { fontFamily: "Roboto", color: Theme.secondary },
+        origin.props.style,
+      ],
     });
   };
   return (

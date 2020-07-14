@@ -4,30 +4,32 @@ import { TouchableOpacity, View } from "react-native";
 import Icons from "../Image/Icons";
 import { Theme } from "../../global/constants";
 
-const iconContainer = {
-  height: "100%",
-  width: "100%",
-  alignItems: "center",
-  justifyContent: "center"
-};
-
 export default ({
-  size,
+  size = 30,
   icon,
   color,
   type,
   onPress,
-  touchStyle,
-  iconStyle
+  iconStyle,
+  containerStyle,
+  hitBox = {
+    top: 5,
+    left: 5,
+    right: 5,
+    bottom: 5,
+  },
 }) => (
-  <TouchableOpacity onPress={onPress} style={touchStyle}>
-    <View style={iconContainer}>
+  <TouchableOpacity
+    onPress={onPress}
+    style={[containerStyle, { justifyContent: "center", alignItems: "center" }]}
+    hitSlop={hitBox}
+  >
+    <View center>
       <Icons
-        type={Theme.icon}
-        size={size || 30}
-        icon={icon}
         type={type}
-        color={color || Theme.primary}
+        size={size}
+        icon={icon}
+        color={color}
         style={iconStyle}
       />
     </View>
