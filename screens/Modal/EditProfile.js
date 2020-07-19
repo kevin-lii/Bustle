@@ -11,7 +11,7 @@ import FormHeader from "./components/FormHeader";
 
 import Icons from "../../components/Image/Icons";
 import ImageUploader from "../../components/Form/ImageUploader";
-import UserData from "../../models/User";
+import UserModel from "../../models/User";
 import ActionButton from "../../components/Buttons/ActionButton";
 import GradePicker from "../../components/Form/GradePicker";
 
@@ -30,16 +30,15 @@ class EditProfile extends React.Component {
       bio: props.user?.bio ? props.user.bio : "",
       // hobbies: props.user.hobbies,
       instagram: props.user?.instagram ? props.user.instagram : "",
-      twitter: props.user?.twitter ? props.user.twitter : "",
-      // facebook: props.user.facebook,
       snapchat: props.user?.snapchat ? props.user.snapchat : "",
       linkedin: props.user?.linkedin ? props.user.linkedin : "",
     };
   }
   async update() {
+    const { realm, user } = this.props;
     const stateCopy = _.pickBy(this.state);
     this.props.navigation.goBack();
-    return await UserData.update(stateCopy, {});
+    return await UserModel.update(realm, user, stateCopy);
   }
   linkedRef = React.createRef();
   render() {
@@ -217,4 +216,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect((state) => ({ user: state.user }), {})(EditProfile);
+export default connect(
+  (state) => ({
+    user: state.user,
+    realm: state.userRealm,
+  }),
+  {}
+)(EditProfile);

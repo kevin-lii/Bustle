@@ -23,15 +23,6 @@ function CustomStackNavigator({
 
   const route = state.routes[state.index];
 
-  // return (
-  //   <StackView
-  //     {...rest}
-  //     state={state}
-  //     navigation={navigation}
-  //     descriptors={descriptors}
-  //   />
-  // );
-
   if (route.name !== "forums" && route.name !== "events")
     return <View flex>{descriptors[route.key].render()}</View>;
 

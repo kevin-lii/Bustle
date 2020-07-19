@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, View, Text } from "react-native-ui-lib";
+import { Button } from "react-native-ui-lib";
 
 import { Theme } from "../../global/constants";
 

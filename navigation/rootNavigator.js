@@ -39,7 +39,7 @@ function RootNavigator({ user }) {
         animationEnabled: false,
       }}
     >
-      <Stack.Screen name="home" component={TabNavigator} />
+      {/* <Stack.Screen name="home" component={TabNavigator} /> */}
 
       {/* modal */}
       <Stack.Screen

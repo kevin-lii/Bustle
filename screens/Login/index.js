@@ -2,20 +2,21 @@ import React, { useState } from "react";
 import { Platform } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { AccessToken, LoginManager } from "react-native-fbsdk";
-import auth, { firebase } from "@react-native-firebase/auth";
 import appleAuth, {
   AppleAuthRequestScope,
   AppleAuthRequestOperation,
 } from "@invertase/react-native-apple-authentication";
+import { connect } from "react-redux";
 
 import SecureText from "./components/SecureInput";
 
 import ActionButton from "../../components/Buttons/ActionButton";
 import Icons from "../../components/Image/Icons";
+import { login } from "../../store/actions";
 
 import styles from "./styles";
 
-export default function Login({ navigation }) {
+function Login({ navigation, login }) {
   const [email, setEmail] = useState("a@ol.com");
   const [password, setPassword] = useState("tester");
   const [error, setError] = useState("");
@@ -23,7 +24,7 @@ export default function Login({ navigation }) {
   async function emailLogin() {
     try {
       resetError();
-      await auth().signInWithEmailAndPassword(email, password);
+      login(email, password);
     } catch (e) {
       handleError(e);
     }
@@ -157,3 +158,7 @@ export default function Login({ navigation }) {
     </View>
   );
 }
+
+export default connect((state) => ({}), {
+  login,
+})(Login);

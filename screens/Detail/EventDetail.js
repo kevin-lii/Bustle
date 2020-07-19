@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import auth from "@react-native-firebase/auth";
-import { connect } from "react-redux";
 import { ImageBackground, StyleSheet, Linking, ScrollView } from "react-native";
 import { View, Text } from "react-native-ui-lib";
-import { TabView, TabBar } from "react-native-tab-view";
+import { connect } from "react-redux";
 import moment from "moment";
 import HyperLink from "react-native-hyperlink";
 import Url from "url";
+import auth from "@react-native-firebase/auth";
+import { TabView, TabBar } from "react-native-tab-view";
 import { useSafeArea } from "react-native-safe-area-context";
 
 import Icons from "../../components/Image/Icons";
@@ -14,13 +14,12 @@ import ActionButton from "../../components/Buttons/ActionButton";
 import FormTypes from "../../components/Form/FormTypes";
 import IconButton from "../../components/Buttons/IconButton";
 import ProfileLink from "../../components/Buttons/ProfileLink";
+import CollegeEventModel from "../../models/CollegeEvent";
+import { saveEvent, removeEvent } from "../../store/actions";
 
 import { Theme } from "../../global/constants";
 import globalStyles from "../../global/styles";
 import UserModel from "../../models/User";
-
-import { saveEvent, removeEvent } from "../../store/actions";
-import CollegeEventModel from "../../models/CollegeEvent";
 
 const Description = ({ event }) => (
   <View style={{ padding: 10 }}>
@@ -44,12 +43,12 @@ const EventDetail = function ({
   route,
   navigation,
   user,
+  realm,
   saveEvent,
   removeEvent,
 }) {
   const [event, setEvent] = useState(route.params?.event);
   const [saved, setSaved] = useState(user.saved && user.saved[event.id]);
-  const [alert, setAlert] = useState(false);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -78,7 +77,7 @@ const EventDetail = function ({
         Linking.openURL(event.link);
         if (!user.pastEvents.filter((x) => x === event.id).length) {
           user.pastEvents.push(event.id);
-          UserModel.update({ pastEvents: user.pastEvents }, {});
+          UserModel.update(realm, user, { pastEvents: user.pastEvents });
         }
       }}
     />
@@ -241,6 +240,7 @@ const EventDetail = function ({
 
 export default connect(
   (state) => ({
+    realm: state.userRealm,
     user: state.user,
   }),
   {

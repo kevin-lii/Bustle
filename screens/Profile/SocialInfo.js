@@ -42,6 +42,11 @@ export default function ({ route, navigation }) {
             {user.college}
           </Text>
         )}
+        {user.bio && (
+          <Text text70 style={{ marginVertical: 5, fontWeight: "bold" }}>
+            {user.bio}
+          </Text>
+        )}
         {user.major && (
           <Text text70 style={{ marginVertical: 5, fontWeight: "bold" }}>
             {"Major: " + user.major}

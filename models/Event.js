@@ -1,170 +1,136 @@
-import { getLocation, validateLocation } from "../global/utils";
+import { ObjectId } from "bson";
 
-import { firebase as f } from "@react-native-firebase/storage";
-import firestore, { firebase } from "@react-native-firebase/firestore";
-import { firebase as fire } from "@react-native-firebase/functions";
-import { GeoFirestore, GeoTransaction } from "geofirestore";
+export default class Event {
+  constructor({
+    name,
+    partition,
+    id = new ObjectId(),
+    category,
+    link,
+    host,
+    location,
+    description,
+    endDate,
+    photoURL,
+    startDate,
+    virtual,
+  }) {
+    this._partition = partition;
+    this._id = id;
+    this.name = name;
+    this.cancelled = false;
+    this.category = category;
+    this.attendees = [];
+    this.host = host;
+    this.link = link || null;
+    this.location = location || null;
+    this.description = description;
+    this.endDate = endDate;
+    this.photoURL = photoURL;
+    this.startDate = startDate;
+    this.virtual = virtual;
+  }
+  static schema = {
+    name: "Event",
+    properties: {
+      _id: "objectId",
+      _partition: "string",
+      name: "string",
+      attendees: "User?[]",
+      cancelled: "bool",
+      category: "string",
+      location: "object?",
+      description: "string",
+      endDate: "date?",
+      host: "User?",
+      link: "string?",
+      photoURL: "string",
+      startDate: "date",
+      virtual: "bool",
+    },
+    primaryKey: "_id",
+  };
 
-import { UserContext } from "../dataContainers/context";
-// import { getDefaultImage } from "../global/utils";
-
-// Event Class:
-// {
-//     category: one of ['Social', 'Dining', 'Drinks', 'Athletic', 'Learn', 'Business', 'Spiritual', 'Service']
-
-//     host: firebase doc id
-
-//     name: string
-//     description: string, optional
-//     image: null, { path, width, height, data, cropRect } https://github.com/ivpusic/react-native-image-crop-picker#readme
-//     open: boolean
-//     private: boolean
-
-//     date: date object, null
-//     time: date object containing time, null
-//     location: Google Place Details, null
-
-//     active: boolean
-// invited: [uid]
-// coordinates
-// photoURL
-// }
-
-export default class EventModel {
-  constructor() {}
-
-  static async get(filters, onNext) {
-    const store = firestore();
-    const geofirestore = new GeoFirestore(store);
-    let query = geofirestore.collection("events");
-
-    if (filters.host) query = query.where("host.uid", "==", filters.host);
+  static get(realm, filters) {
+    let query = realm.objects("Event").snapshot();
+    if (filters.containsID && filters.containsID.length)
+      query = query.where(
+        firestore.FieldPath.documentId(),
+        "in",
+        filters.containsID
+      );
+    if (filters.host) query = query.filtered("host == ", filters.host);
     if (filters.categories?.length)
-      query = query.where("category", "in", filters.categories);
-    if (filters.active) query = query.where("ended", "==", false);
-    if (filters.radius > 0)
-      query = query.near({
-        center: new firestore.GeoPoint(37.86835, -122.265),
-        radius: filters.radius,
-      });
-    if (filters.orderBy)
-      query = query.orderBy(
-        filters.orderBy,
-        filters.orderByDir ? filters.orderByDir : "asc"
+      query = query.filtered("category in " + filters.categories);
+    if (filters.active)
+      query = query
+        .filtered("startDate >= " + moment().subtract(1, "d").toDate())
+        .filtered("endDate < " + moment().toDate())
+        .filtered("cancelled == false");
+
+    if (filters.live) query = query.filtered("ended == false");
+    if (filters.orderBy) query = query.sorted([filters.orderBy, false]);
+    return query;
+  }
+
+  static subscribe(realm, filters) {
+    let query = realm.objects("Event");
+    if (filters.containsID && filters.containsID.length)
+      query = query.where(
+        firestore.FieldPath.documentId(),
+        "in",
+        filters.containsID
       );
-    if (filters.limit) query = query.limit(filters.limit);
-    if (onNext) query.onSnapshot(onNext, console.log);
+    if (filters.host) query = query.filtered("host == ", filters.host);
+    if (filters.categories?.length)
+      query = query.filtered("category in " + filters.categories);
+    if (filters.active)
+      query = query
+        .filtered("startDate >= " + moment().subtract(1, "d").toDate())
+        .filtered("endDate < " + moment().toDate())
+        .filtered("cancelled == false");
+
+    if (filters.live) query = query.filtered("ended == false");
+    if (filters.orderBy) query = query.sorted([filters.orderBy, false]);
+    return query;
   }
 
-  static async getCollection() {
-    return firestore().collection("events");
+  static getOne(realm, id) {
+    const query = realm.objectForPrimaryKey("Event", id);
+    return query;
   }
 
-  static async remove(event) {
-    const deleteEvent = fire.functions().httpsCallable("deleteEvent");
-    await firestore()
-      .collection("events")
-      .doc(event.id)
-      .delete()
-      .catch(function (error) {
-        console.error("Error removing document: ", error);
-      });
-    if (event.photoURL) await f.storage().refFromURL(event.photoURL).delete();
-    for (let count; count < event.invited; count++) {
-      const userID = event.invited[count];
-      await deleteEvent({ uid: userID, eventID: event.id });
-    }
-  }
-
-  static async create(user, data) {
+  static async create(realm, user, data) {
     if (!data.name) throw new Error("Name not provided");
-    const store = firestore();
-    const geofirestore = new GeoFirestore(store);
-
-    const now = firebase.firestore.FieldValue.serverTimestamp();
-    data.createdAt = now;
-    data.date = data.date || now;
-    data.time = data.time || now;
-
-    data.host = user;
-    data.ended = false;
-    data.invited = {};
-    data.invited[user.uid] = true;
-
-    const loc = await getLocation();
-    if (data.location) {
-      const { lat, lng } = data.location.geometry.location;
-      // validateLocation(loc, lat, lng);
-      data.coordinates = new firestore.GeoPoint(lat, lng);
-    } else {
-      data.coordinates = new firestore.GeoPoint(
-        loc.coords.latitude,
-        loc.coords.longitude
-      );
-    }
-
-    await geofirestore.runTransaction(async (t) => {
-      const transaction = new GeoTransaction(t);
-      const eventRef = store.collection("events").doc();
-      // upload image
-      if (data.image) {
-        await f
-          .storage()
-          .ref(`events/${data.category}/${eventRef}`)
-          .putFile(data.image);
-        data.photoURL = await f
-          .storage()
-          .ref(`events/${data.category}/${eventRef}`)
-          .getDownloadURL();
-        data.photoID = eventRef;
-        delete data.image;
-      }
-      // upload event
-      transaction.set(eventRef, data);
-
-      // // denormed update on user
-      return transaction.native.update(
-        store
-          .collection("users")
-          .doc(user.uid)
-          .collection("private")
-          .doc("profile"),
-        {
-          events: firestore.FieldValue.arrayUnion(eventRef.id),
-        }
-      );
+    realm.write(() => {
+      const newEvent = new Event({ ...data });
+      realm.create("Event", newEvent);
+      user.hostedEvents.push(newEvent);
     });
   }
 
-  static async update(eventID, data) {
-    if (!data.name) throw new Error("Name not provided");
-    if (data.location) {
-      const loc = await getLocation();
-      const { lat, lng } = data.location.geometry.location;
-      validateLocation(loc, lat, lng);
-    }
-    const store = firestore();
-    const geofirestore = new GeoFirestore(store);
+  static async update(realm) {
+    realm.write(() => {});
+  }
 
-    await geofirestore.runTransaction(async (t) => {
-      const transaction = new GeoTransaction(t);
-      if (data.image) {
-        if (data.photoURL) {
-          await f.storage().refFromURL(data.photoURL).delete();
-        }
-        await f
-          .storage()
-          .ref(`events/${data.category}/${eventID}`)
-          .putFile(data.image);
-        data.photoURL = await f
-          .storage()
-          .ref(`events/${data.category}/${eventID}`)
-          .getDownloadURL();
-        delete data.image;
-      }
-      transaction.update(store.collection(collection).doc(eventID), data);
+  static remove(realm, event) {
+    realm.write(() => {
+      const user = event.host;
+      realm.delete(event);
+      const index = user.hostedEvents.findIndex((ev) => ev._id == event._id);
+      user.hostedEvents.splice(index, 1);
+    });
+  }
+
+  static end(realm, event) {
+    realm.write(() => {
+      event.endDate = new Date();
+    });
+  }
+
+  static cancel(realm, event) {
+    realm.write(() => {
+      event.cancelled = true;
     });
   }
 }
-
-EventModel.contextType = UserContext;
