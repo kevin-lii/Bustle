@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 import LoginContainer from "../navigation/loginNavigator";
 import Loading from "../components/Loading";
 import Main from "../navigation";
-import { registerApp } from "../store/actions";
+import { login } from "../store/actions";
 import { UserContext } from "./context";
 
 class AuthContainer extends Component {
   componentDidMount() {
     // this.props.registerApp();
+    this.props.login();
   }
 
   render() {
@@ -31,6 +32,6 @@ export default connect(
     user: state.user,
   }),
   {
-    registerApp,
+    login,
   }
 )(AuthContainer);
