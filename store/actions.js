@@ -1,63 +1,116 @@
-import auth from "@react-native-firebase/auth";
 import _ from "lodash";
+import Realm from "realm";
+import { ObjectId } from "bson";
 
-import EventModel from "../models/CollegeEvent";
-import PostModel from "../models/Post";
+import EventModel from "../models/Event";
 import UserModel from "../models/User";
 import { attachIDs } from "../global/utils";
+import { realmID } from "../global/secrets";
 
 export const actionTypes = {
   LOGOUT: "logout",
   UPDATE_USER: "update user",
   UPDATE_EVENTS: "event update",
   FILTER_EVENTS: "filter events",
-  UPDATE_POSTS: "post update",
-  FILTER_POSTS: "filter posts",
   UPDATE_HOSTED_EVENTS: "hosted event update",
   UPDATE_INTERESTED_EVENTS: "interested event update",
+  REGISTER_APP: "register realm app",
+  GET_EVENT: "get event",
 };
 
 const subscriptions = {};
+let authUser = null;
 
-export const login = () => (dispatch) => {
-  auth().onAuthStateChanged(async (user) => {
-    if (user) {
-      subscriptions.user = UserModel.subscribe(user.uid, (data) =>
-        dispatch({
-          type: actionTypes.UPDATE_USER,
-          user: data,
-        })
-      );
-    } else {
-      for (fn of Object.values(subscriptions)) fn();
-      dispatch({
-        type: actionTypes.LOGOUT,
-      });
-    }
+export const registerApp = () => async (dispatch) => {
+  const appConfig = {
+    id: realmID,
+    timeout: 10000,
+    app: {
+      name: "default",
+      version: "0",
+    },
+  };
+  const data = new Realm.App(appConfig);
+  dispatch({
+    type: actionTypes.REGISTER_APP,
+    app: data,
+  });
+};
+
+export const login = (creds) => async (dispatch, getState) => {
+  if (authUser != null) {
+    console.warn("Already logged in -- can't log out!");
+    return;
+  }
+  const { app } = getState();
+  console.log(`Logging in with ${creds}...`);
+  authUser = await app.logIn(creds);
+  console.log(`Logged in as ${authUser.identity}`);
+
+  const privateUserConfig = {
+    schema: [UserModel.privateSchema],
+    path: "privatePath.realm",
+  };
+  const config = {
+    schema: [EventModel.schema, UserModel.schema],
+    schemaVersion: 1,
+    sync: {
+      user: authUser,
+      partitionValue: "Berkeley",
+    },
+  };
+  console.log("beginning to open realms");
+  const eventRealm = await Realm.open(config);
+  console.log(eventRealm.path);
+  const privateUserRealm = await Realm.open(privateUserConfig);
+  console.log("finish realms");
+  const query = UserModel.get(eventRealm, new ObjectId(authUser.identity));
+  console.log(query);
+  console.log("finish query");
+  dispatch({
+    type: actionTypes.UPDATE_USER,
+    user: query,
+    userRealm: privateUserRealm,
+    eventRealm,
+  });
+  query.addListener((obj, change) => {
+    console.log("change");
+    console.log(change);
+    dispatch({
+      type: actionTypes.UPDATE_USER,
+      user: obj,
+    });
+  });
+};
+
+export const logout = () => async (dispatch, getState) => {
+  const { user } = getState();
+  if (authUser == null) {
+    console.warn("Not logged in -- can't log out!");
+    return;
+  }
+
+  user.removeAllListeners();
+  userRealm.removeAllListeners();
+  eventRealm.removeAllListeners();
+
+  console.log("Logging out...");
+  authUser.logOut();
+  authUser = null;
+  dispatch({
+    type: actionTypes.LOGOUT,
   });
 };
 
 export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.hostedEvents) subscriptions.hostedEvents();
   const { user } = getState();
-  subscriptions.hostedEvents = EventModel.subscribe(
-    {
-      host: filters.host ? filters.host : user.uid,
-      orderBy: "startDate",
-      ...filters,
-    },
-    (snapshot) => {
-      dispatch({
-        type: actionTypes.UPDATE_HOSTED_EVENTS,
-        hostedEvents: attachIDs(snapshot),
-      });
-    }
-  );
 };
 
 export const getSavedEvents = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.savedEvents) subscriptions.savedEvents();
   const { user } = getState();
+
   subscriptions.savedEvents = EventModel.subscribe(
     { interested: true, orderBy: "startDate", ...filters },
     (snapshot) => {
@@ -69,35 +122,29 @@ export const getSavedEvents = (filters = {}) => (dispatch, getState) => {
   );
 };
 
-export const getEvents = (filters = {}) => (dispatch) => {
+export const getEvent = (id) => (dispatch, getState) => {
   if (subscriptions.events) subscriptions.events();
-  subscriptions.events = EventModel.subscribe(filters, (snapshot) => {
-    dispatch({
-      type: actionTypes.UPDATE_EVENTS,
-      events: attachIDs(snapshot),
-    });
-  });
-};
-
-export const getPosts = (filters = {}) => (dispatch) => {
-  if (subscriptions.posts) subscriptions.posts();
-  subscriptions.posts = PostModel.subscribe(filters, (snapshot) => {
-    dispatch({
-      type: actionTypes.UPDATE_POSTS,
-      posts: attachIDs(snapshot),
-    });
+  const { eventRealm } = getState();
+  const query = EventModel.getOne(eventRealm, id);
+  dispatch({
+    type: actionTypes.GET_EVENT,
+    event: query,
   });
 };
 
 export const setEventFilters = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.events) subscriptions.events();
   const { eventFilters } = getState();
-  subscriptions.events = EventModel.subscribe(filters, (snapshot) => {
+  const query = EventModel.get(eventRealm, id, filters);
+  dispatch({
+    type: actionTypes.FILTER_EVENTS,
+    events: query,
+    filters: { ...eventFilters, ...filters },
+  });
+  query.addListener((collection) => {
     dispatch({
       type: actionTypes.FILTER_EVENTS,
-      events: attachIDs(snapshot),
-      // filters: { ...eventFilters, ...filters },
-      filters: { ...filters },
+      events: collection,
     });
   });
 };
@@ -115,7 +162,6 @@ export const saveEvent = (event) => (dispatch, getState) => {
     allEvents.push(e);
   });
   if (flag) allEvents.push(event);
-
   dispatch({
     type: actionTypes.UPDATE_INTERESTED_EVENTS,
     savedEvents: allEvents,
@@ -131,16 +177,5 @@ export const removeEvent = (eventID) => (dispatch, getState) => {
   dispatch({
     type: actionTypes.UPDATE_INTERESTED_EVENTS,
     savedEvents: allEvents,
-  });
-};
-
-export const removePost = (postID) => (dispatch, getState) => {
-  const { posts } = getState();
-  const allPosts = [];
-  posts.map((p) => (p.id === postID ? null : allPosts.push(p)));
-
-  dispatch({
-    type: actionTypes.UPDATE_POSTS,
-    posts: allPosts,
   });
 };

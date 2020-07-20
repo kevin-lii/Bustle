@@ -3,17 +3,17 @@ import { ObjectId } from "bson";
 export default class Event {
   constructor({
     name,
-    partition,
+    partition = "Berkeley",
     id = new ObjectId(),
-    category,
-    link,
+    category = "",
+    link = "",
     host,
-    location,
-    description,
-    endDate,
-    photoURL,
-    startDate,
-    virtual,
+    location = "",
+    description = "",
+    endDate = null,
+    photoURL = "",
+    startDate = new Date(),
+    virtual = false,
   }) {
     this._partition = partition;
     this._id = id;
@@ -30,23 +30,25 @@ export default class Event {
     this.startDate = startDate;
     this.virtual = virtual;
   }
+
   static schema = {
     name: "Event",
     properties: {
       _id: "objectId",
       _partition: "string",
       name: "string",
-      attendees: "User?[]",
       cancelled: "bool",
       category: "string",
-      location: "object?",
       description: "string",
-      endDate: "date?",
-      host: "User?",
-      link: "string?",
       photoURL: "string",
       startDate: "date",
       virtual: "bool",
+
+      attendees: "User[]",
+      endDate: "date?",
+      host: "User?",
+      link: "string?",
+      location: "string?",
     },
     primaryKey: "_id",
   };

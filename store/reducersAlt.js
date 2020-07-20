@@ -27,55 +27,20 @@ const savedEvents = (state, action) => {
   return state || [];
 };
 
-const event = (state, action) => {
-  if (action.type === actionTypes.GET_EVENT) {
-    return action.event;
-  }
-  return state || [];
-};
-
 const user = (state, action) => {
   if (action.type === actionTypes.UPDATE_USER) {
     return Object.assign({ ...state }, action.user);
   }
-  if (
-    action.type === actionTypes.LOGOUT ||
-    action.type === actionTypes.REGISTER_APP
-  ) {
+  if (action.type === actionTypes.LOGOUT) {
     return {};
   }
   return state || null;
 };
 
-const app = (state, action) => {
-  if (action.type === actionTypes.REGISTER_APP) {
-    return action.app;
-  }
-  return state || null;
-};
-
-const userRealm = (state, action) => {
-  if (action.type === actionTypes.UPDATE_USER) {
-    return action.userRealm;
-  }
-  return state || null;
-};
-
-const eventRealm = (state, action) => {
-  if (action.type === actionTypes.UPDATE_USER) {
-    return action.eventRealm;
-  }
-  return state || null;
-};
-
 export default combineReducers({
-  event,
   events,
   eventFilters,
   hostedEvents,
   savedEvents,
   user,
-  app,
-  userRealm,
-  eventRealm,
 });

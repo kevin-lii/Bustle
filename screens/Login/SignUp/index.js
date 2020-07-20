@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextField } from "react-native-ui-lib";
 import Realm from "realm";
+import { View, Text, TextField } from "react-native-ui-lib";
+import { connect } from "react-redux";
 
 import SecureText from "../components/SecureInput";
 import UserModel from "../../../models/User";
 import ActionButton from "../../../components/Buttons/ActionButton";
+import { login } from "../../../store/actions";
 
 import { checkEmail, checkPasswords } from "../../../global/utils";
 
@@ -19,7 +21,8 @@ function SignUp({ app, login }) {
   const submit = async () => {
     console.log(`Registering as ${email}...`);
     await app.auth.emailPassword.registerEmail(email, password);
-    login(email, password);
+    const creds = Realm.Credentials.emailPassword(email, password);
+    login(creds);
   };
 
   async function validateSubmission() {

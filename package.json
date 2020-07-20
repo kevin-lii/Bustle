@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "run:android": "react-native run-android",
-    "run:ios": "react-native run-ios",
+    "run:android": "npx react-native run-android",
+    "run:ios": "npx react-native run-ios",
     "build:apk": "cd android && ./gradlew assembleRelease",
     "build:bundle": "cd android && ./gradlew bundleRelease",
     "test": "jest",
@@ -86,6 +86,9 @@
     "assets": [
       "./assets/fonts/"
     ]
+  },
+  "resolutions": {
+    "@react-native-community/cli-debugger-ui": "4.7.0"
   },
   "husky": {
     "hooks": {

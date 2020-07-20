@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Credentials } from "realm";
 import { Platform } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { AccessToken, LoginManager } from "react-native-fbsdk";
@@ -17,14 +18,15 @@ import { login } from "../../store/actions";
 import styles from "./styles";
 
 function Login({ navigation, login }) {
-  const [email, setEmail] = useState("a@ol.com");
-  const [password, setPassword] = useState("tester");
+  const [email, setEmail] = useState("A@berkeley.edu");
+  const [password, setPassword] = useState("kxli0131");
   const [error, setError] = useState("");
 
   async function emailLogin() {
     try {
       resetError();
-      login(email, password);
+      const creds = Credentials.emailPassword(email, password);
+      login(creds);
     } catch (e) {
       handleError(e);
     }
@@ -39,18 +41,17 @@ function Login({ navigation, login }) {
     if (result.isCancelled) {
       setError("Login cancelled");
     }
-
     if (error) {
       handleError(error);
     } else if (result.isCancelled) {
       setError("Cancelled");
     } else {
       const token = await AccessToken.getCurrentAccessToken();
-      const credential = auth.FacebookAuthProvider.credential(
-        token.accessToken
-      );
+      const credential = Credentials.facebook(token.accessToken);
+      console.log(token.accessToken.toString());
+      console.log(credential);
       try {
-        auth().signInWithCredential(credential);
+        login(credential);
       } catch (e) {
         handleError(e);
       }
