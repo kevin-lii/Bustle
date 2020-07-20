@@ -19,7 +19,8 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* BustleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BustleTests.m */; };
 		488C42D924C5A21E00CFD40D /* FontAwesome5_Pro_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 488C42D824C5A21E00CFD40D /* FontAwesome5_Pro_Regular.ttf */; };
-		48951A7624B11B0900D0CF38 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48951A7524B11B0900D0CF38 /* GoogleService-Info.plist */; };
+		488C42DB24C5A67100CFD40D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 488C42DA24C5A67100CFD40D /* GoogleService-Info.plist */; };
+		48951A7624B11B0900D0CF38 /* GoogleServiceProd-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 48951A7524B11B0900D0CF38 /* GoogleServiceProd-Info.plist */; };
 		48FE35B52489DE5700BB81F6 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4923CAAA270022DD03 /* Roboto-Black.ttf */; };
 		48FE35B62489DE5700BB81F6 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4A23CAAA270022DD03 /* Roboto-Bold.ttf */; };
 		48FE35B72489DE5700BB81F6 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4859AD4B23CAAA270022DD03 /* Roboto-Italic.ttf */; };
@@ -81,8 +82,9 @@
 		4859AD4A23CAAA270022DD03 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Bold.ttf"; path = "../android/app/src/main/assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		4859AD4B23CAAA270022DD03 /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-Italic.ttf"; path = "../android/app/src/main/assets/fonts/Roboto-Italic.ttf"; sourceTree = "<group>"; };
 		488C42D824C5A21E00CFD40D /* FontAwesome5_Pro_Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome5_Pro_Regular.ttf; sourceTree = "<group>"; };
+		488C42DA24C5A67100CFD40D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		488DBFD223DCEE12005BA60B /* BustleRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = BustleRelease.entitlements; path = Bustle/BustleRelease.entitlements; sourceTree = "<group>"; };
-		48951A7524B11B0900D0CF38 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		48951A7524B11B0900D0CF38 /* GoogleServiceProd-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleServiceProd-Info.plist"; sourceTree = "<group>"; };
 		4F13A018C3C3418A2B3EFC26 /* libPods-Bustle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Bustle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FD0DF4DE0734385AE9BB1CA /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		528AA073667BCB72EBA5578B /* libPods-BustleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BustleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,7 +166,8 @@
 		13B07FAE1A68108700A75B9A /* Bustle */ = {
 			isa = PBXGroup;
 			children = (
-				48951A7524B11B0900D0CF38 /* GoogleService-Info.plist */,
+				488C42DA24C5A67100CFD40D /* GoogleService-Info.plist */,
+				48951A7524B11B0900D0CF38 /* GoogleServiceProd-Info.plist */,
 				488DBFD223DCEE12005BA60B /* BustleRelease.entitlements */,
 				5E35B1E323DAC09F00950073 /* Bustle.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -432,13 +435,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				48FE35B52489DE5700BB81F6 /* Roboto-Black.ttf in Resources */,
+				488C42DB24C5A67100CFD40D /* GoogleService-Info.plist in Resources */,
 				48FE35B62489DE5700BB81F6 /* Roboto-Bold.ttf in Resources */,
 				48FE35B72489DE5700BB81F6 /* Roboto-Italic.ttf in Resources */,
 				48FE35B82489DE5700BB81F6 /* Roboto-Light.ttf in Resources */,
 				48FE35B92489DE5700BB81F6 /* Roboto-Medium.ttf in Resources */,
 				48FE35BA2489DE5700BB81F6 /* Roboto-Regular.ttf in Resources */,
 				48FE35BB2489DE5700BB81F6 /* Roboto-Thin.ttf in Resources */,
-				48951A7624B11B0900D0CF38 /* GoogleService-Info.plist in Resources */,
+				48951A7624B11B0900D0CF38 /* GoogleServiceProd-Info.plist in Resources */,
 				488C42D924C5A21E00CFD40D /* FontAwesome5_Pro_Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
