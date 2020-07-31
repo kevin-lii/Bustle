@@ -35,6 +35,7 @@ export default function ({
   const displayName = name || user.displayName;
   if (name && !photo) {
     initials = displayName
+      .toUpperCase()
       .split(" ")
       .map((name) => name.charAt(0))
       .join("");
