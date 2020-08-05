@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Text, ScrollView, SafeAreaView } from "react-native";
+import { FlatList } from "react-native";
+import { Text } from "react-native-ui-lib";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 
 import EventDetail from "../../components/Cards/EventDetailCard";
@@ -7,36 +9,42 @@ import { getHostedEvents } from "../../store/actions";
 
 import styles from "./styles";
 
-class MyEvents extends Component {
+class HostedFeed extends Component {
   componentDidMount() {
     this.props.getHostedEvents();
   }
 
   render() {
     const { navigation, hostedEvents } = this.props;
-    let events;
-
-    if (hostedEvents) {
-      if (hostedEvents.length > 0)
-        events = hostedEvents.map((event, index) => (
-          <EventDetail
-            key={index}
-            event={event}
-            navigation={navigation}
-            map
-            edit
-            trash
-            {...this.props}
-          />
-        ));
-      else events = <Text>You have not hosted any events.</Text>;
-    } else {
-      events = <Text>Loading...</Text>;
-    }
-
+    const renderFooter = () => {
+      if (!hostedEvents) {
+        return <Text>Loading...</Text>;
+      } else {
+        return null;
+      }
+    };
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>{events}</ScrollView>
+        <FlatList
+          style={styles.scrollView}
+          data={hostedEvents}
+          renderItem={({ item }) => {
+            return (
+              <EventDetail
+                event={item}
+                navigation={navigation}
+                map
+                edit
+                trash
+              />
+            );
+          }}
+          keyExtractor={(item) => item._id.toString()}
+          ListEmptyComponent={() => (
+            <Text marginT-10>You have no hosted events.</Text>
+          )}
+          ListFooterComponent={renderFooter}
+        />
       </SafeAreaView>
     );
   }
@@ -49,4 +57,4 @@ export default connect(
   {
     getHostedEvents,
   }
-)(MyEvents);
+)(HostedFeed);

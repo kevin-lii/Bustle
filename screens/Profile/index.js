@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
-import auth from "@react-native-firebase/auth";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import { connect } from "react-redux";
@@ -12,15 +11,14 @@ import ProfileEvent from "./Subtabs/ProfileEvent";
 import ProfileHosted from "./Subtabs/ProfileHosted";
 import ActionButton from "../../components/Buttons/ActionButton";
 import FormTypes from "../../components/Form/FormTypes";
-import UserModel from "../../models/User";
 import IconButton from "../../components/Buttons/IconButton";
 
 import { Theme } from "../../global/constants";
 import globalStyles from "../../global/styles";
 
-function Profile({ navigation, route, currentUser }) {
+function Profile({ navigation, route, currentUser, auth }) {
   const isForeign =
-    route.params?.user && route.params.user.uid !== auth().currentUser.uid;
+    route.params?.user && route.params.user._id.toString() !== auth.identity;
   const [foreignUser, setUser] = useState(route.params?.user);
 
   const [index, setIndex] = useState(0);
@@ -28,11 +26,6 @@ function Profile({ navigation, route, currentUser }) {
     { key: "events", title: "Past" },
     { key: "hosted", title: "Hosted" },
   ];
-
-  useEffect(() => {
-    if (isForeign)
-      UserModel.get(route.params.user.uid).then((item) => setUser(item));
-  }, []);
 
   const user = isForeign ? foreignUser : currentUser;
   const renderScene = ({ route }) => {
@@ -193,4 +186,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect((state) => ({ currentUser: state.user }), {})(Profile);
+export default connect(
+  (state) => ({ currentUser: state.user, auth: state.auth }),
+  {}
+)(Profile);

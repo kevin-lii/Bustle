@@ -20,7 +20,6 @@ const EventFilters = ({ eventFilters, setEventFilters }) => {
             setEventFilters({
               ...eventFilters,
               categories: values.map((v) => v.value),
-              tags: [],
             })
           }
           value={
@@ -39,7 +38,6 @@ const EventFilters = ({ eventFilters, setEventFilters }) => {
             setEventFilters({
               ...eventFilters,
               tags: values.map((v) => v.value),
-              categories: [],
             })
           }
           value={eventFilters.tags?.map((v) => ({ label: v, value: v })) || []}

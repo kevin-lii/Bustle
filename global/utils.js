@@ -146,14 +146,6 @@ exports.openURL = async (partLink, type) => {
   }
 };
 
-exports.attachIDs = (snapshot) => {
-  const docs = [];
-  snapshot.forEach((doc) => {
-    docs.push({ ...doc.data(), id: doc.id });
-  });
-  return docs;
-};
-
 function sendEmailVerification(email) {}
 
 function sendPhoneVerification(phone) {}

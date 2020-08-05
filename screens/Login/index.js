@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Credentials } from "realm";
+import Realm from "realm";
 import { Platform } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { AccessToken, LoginManager } from "react-native-fbsdk";
@@ -10,7 +10,6 @@ import appleAuth, {
 import { connect } from "react-redux";
 
 import SecureText from "./components/SecureInput";
-
 import ActionButton from "../../components/Buttons/ActionButton";
 import Icons from "../../components/Image/Icons";
 import { login } from "../../store/actions";
@@ -19,13 +18,13 @@ import styles from "./styles";
 
 function Login({ navigation, login }) {
   const [email, setEmail] = useState("A@berkeley.edu");
-  const [password, setPassword] = useState("kxli0131");
+  const [password, setPassword] = useState("tester");
   const [error, setError] = useState("");
 
   async function emailLogin() {
     try {
       resetError();
-      const creds = Credentials.emailPassword(email, password);
+      const creds = Realm.Credentials.emailPassword(email, password);
       login(creds);
     } catch (e) {
       handleError(e);
@@ -47,7 +46,7 @@ function Login({ navigation, login }) {
       setError("Cancelled");
     } else {
       const token = await AccessToken.getCurrentAccessToken();
-      const credential = Credentials.facebook(token.accessToken);
+      const credential = Realm.Credentials.facebook(token.accessToken);
       console.log(token.accessToken.toString());
       console.log(credential);
       try {

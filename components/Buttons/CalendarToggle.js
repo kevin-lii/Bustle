@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-native-ui-lib";
 import { connect } from "react-redux";
+import { ObjectId } from "bson";
 
 import { Theme } from "../../global/constants";
 import Icons from "../Image/Icons";
-
-import UserModel from "../../models/User";
 import { saveEvent, removeEvent } from "../../store/actions";
 
-const CalendarToggle = ({ event, user, saveEvent, removeEvent }) => {
-  const [checked, setChecked] = useState(user.saved && user.saved[event.id]);
+const CalendarToggle = ({ event, saved, saveEvent, removeEvent }) => {
+  const [checked, setChecked] = useState(saved?.includes(event._id.toString()));
   {
-    user.saved &&
+    saved &&
       useEffect(() => {
-        setChecked(user.saved[event.id]);
-      }, [user.saved[event.id]]);
+        setChecked(saved?.includes(event._id.toString()));
+      }, [saved?.includes(event._id.toString())]);
   }
   return (
     <Button
@@ -23,8 +22,7 @@ const CalendarToggle = ({ event, user, saveEvent, removeEvent }) => {
       backgroundColor={checked ? Theme.primary : "white"}
       onPress={() => {
         setChecked(!checked);
-        UserModel.saveEvent(event.id, !checked);
-        checked ? removeEvent(event.id) : saveEvent(event);
+        checked ? removeEvent(event._id) : saveEvent(event._id);
       }}
     >
       <Icons
@@ -39,7 +37,7 @@ const CalendarToggle = ({ event, user, saveEvent, removeEvent }) => {
 
 export default connect(
   (state) => ({
-    user: state.user,
+    saved: state.saved,
   }),
   {
     saveEvent,

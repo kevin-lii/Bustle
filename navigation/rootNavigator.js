@@ -1,6 +1,5 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import auth from "@react-native-firebase/auth";
 import { connect } from "react-redux";
 
 import TabNavigator from "./tabNavigator";
@@ -20,7 +19,7 @@ const Stack = createStackNavigator();
 
 function RootNavigator({ user }) {
   const newUser =
-    !auth().currentUser.displayName ||
+    user.displayName === "" ||
     // || !auth().currentUser.emailVerified
     user.newUser;
 
@@ -39,7 +38,7 @@ function RootNavigator({ user }) {
         animationEnabled: false,
       }}
     >
-      {/* <Stack.Screen name="home" component={TabNavigator} /> */}
+      <Stack.Screen name="home" component={TabNavigator} />
 
       {/* modal */}
       <Stack.Screen

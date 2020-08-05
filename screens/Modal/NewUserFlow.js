@@ -8,6 +8,7 @@ import UserModel from "../../models/User";
 import GradePicker from "../../components/Form/GradePicker";
 import ImageUploader from "../../components/Form/ImageUploader";
 import OnboardingScreen from "./OnboardingScreen";
+import { updateUser } from "../../store/actions";
 
 import { checkName } from "../../global/utils";
 
@@ -36,17 +37,19 @@ class NewUserFlow extends React.Component {
     if (prevProps.user.displayName !== user.displayName)
       this.setState({
         name: user.displayName,
-        image: { url: user.photoURL },
+        image: { uri: user.photoURL },
       });
   }
 
   completeSignUp = async () => {
     const data = { ...this.state };
+    const { realm, user } = this.props;
     delete data.error;
     delete data.image;
+    delete data.pageNumber;
 
     if (this.check("all")) {
-      await UserModel.createNewProfile(data);
+      UserModel.createNewProfile(realm, user, data);
       this.props.navigation.replace("home");
     }
   };
@@ -142,7 +145,13 @@ class NewUserFlow extends React.Component {
   }
 }
 
-export default connect((state) => ({ user: state.user }), {})(NewUserFlow);
+export default connect(
+  (state) => ({
+    user: state.user,
+    realm: state.userRealm,
+  }),
+  { updateUser }
+)(NewUserFlow);
 
 const styles = StyleSheet.create({
   text: {

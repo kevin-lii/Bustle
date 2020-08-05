@@ -4,22 +4,18 @@ import { connect } from "react-redux";
 import LoginContainer from "../navigation/loginNavigator";
 import Loading from "../components/Loading";
 import Main from "../navigation";
-// import { login } from "../store/actions";
 import { registerApp } from "../store/actions";
 import { UserContext } from "./context";
 
 class AuthContainer extends Component {
   componentDidMount() {
     this.props.registerApp();
-    // this.props.login();
   }
 
   render() {
-    const { user } = this.props;
+    const { user, auth } = this.props;
     if (!user) return <Loading />;
-
-    if (!user.uid) return <LoginContainer />;
-
+    if (!auth || !user._id) return <LoginContainer />;
     return (
       <UserContext.Provider value={user}>
         <Main />
@@ -31,6 +27,7 @@ class AuthContainer extends Component {
 export default connect(
   (state) => ({
     user: state.user,
+    auth: state.auth,
   }),
   {
     registerApp,

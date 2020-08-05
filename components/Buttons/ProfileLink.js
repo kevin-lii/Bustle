@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native-ui-lib";
+import { connect } from "react-redux";
 
-import UserModel from "../../models/User";
+// import UserModel from "../../models/User";
 import Avatar from "../Buttons/AvatarButton";
 
-export default ({ navigation, size = 25, user }) => {
+const ProfileLink = ({ realm, navigation, size = 25, user }) => {
   const [userInfo, setUser] = useState(user);
-  useEffect(() => {
-    UserModel.get(user.uid).then((user) => setUser(user));
-  }, []);
+  // useEffect(() => {
+  //   UserModel.get(realm, user._id).then((user) => setUser(user));
+  // }, []);
 
   return (
     <TouchableOpacity onPress={() => navigation.push("profile", { user })}>
@@ -27,3 +28,10 @@ export default ({ navigation, size = 25, user }) => {
     </TouchableOpacity>
   );
 };
+
+export default connect(
+  (state) => ({
+    realm: state.realm,
+  }),
+  {}
+)(ProfileLink);

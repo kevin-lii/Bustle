@@ -10,10 +10,12 @@ import React from "react";
 import { Text } from "react-native";
 
 import AuthContainer from "./dataContainers/AuthContainer";
+import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 
-import store from "./store";
+import configureStore from "./store";
 import { Theme } from "./global/constants";
+import Loading from "./components/Loading";
 
 export default () => {
   const oldRender = Text.render;
@@ -26,9 +28,12 @@ export default () => {
       ],
     });
   };
+  const { store, persistor } = configureStore();
   return (
     <Provider store={store}>
-      <AuthContainer />
+      <PersistGate loading={<Loading />} persistor={persistor}>
+        <AuthContainer />
+      </PersistGate>
     </Provider>
   );
 };

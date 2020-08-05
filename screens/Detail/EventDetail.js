@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import HyperLink from "react-native-hyperlink";
 import Url from "url";
-import auth from "@react-native-firebase/auth";
+import _ from "lodash";
 import { TabView, TabBar } from "react-native-tab-view";
 import { useSafeArea } from "react-native-safe-area-context";
 
@@ -14,12 +14,10 @@ import ActionButton from "../../components/Buttons/ActionButton";
 import FormTypes from "../../components/Form/FormTypes";
 import IconButton from "../../components/Buttons/IconButton";
 import ProfileLink from "../../components/Buttons/ProfileLink";
-import CollegeEventModel from "../../models/CollegeEvent";
+import EventModel from "../../models/Event";
 import { saveEvent, removeEvent } from "../../store/actions";
-
 import { Theme } from "../../global/constants";
 import globalStyles from "../../global/styles";
-import UserModel from "../../models/User";
 
 const Description = ({ event }) => (
   <View style={{ padding: 10 }}>
@@ -29,33 +27,57 @@ const Description = ({ event }) => (
   </View>
 );
 
-const Attendees = ({ navigation, event }) => (
-  <View>
-    {event.attendees?.map((user, i) => (
-      <View centerV padding-10 key={i}>
-        <ProfileLink navigation={navigation} user={user} size={35} key={i} />
-      </View>
-    ))}
-  </View>
-);
+const Attendees = ({ navigation, event }) => {
+  return (
+    <View>
+      {event.attendees?.map((user, i) => (
+        <View centerV padding-10 key={i}>
+          <ProfileLink navigation={navigation} user={user} size={35} key={i} />
+        </View>
+      ))}
+    </View>
+  );
+};
 
 const EventDetail = function ({
   route,
   navigation,
   user,
+  savedEvents,
   realm,
+  userRealm,
   saveEvent,
   removeEvent,
 }) {
   const [event, setEvent] = useState(route.params?.event);
-  const [saved, setSaved] = useState(user.saved && user.saved[event.id]);
+  const [saved, setSaved] = useState(
+    savedEvents.includes(event._id.toString())
+  );
   const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const isHost = user._id.toString() === event.host._id.toString();
 
   useEffect(() => {
-    return CollegeEventModel.subscribeOne(route.params.event.id, (event) =>
-      setEvent({ id: route.params.event.id, ...event.data() })
-    );
+    let object;
+    if (isHost) object = EventModel.getOne(userRealm, route.params?.event?._id);
+    else object = EventModel.getOne(realm, route.params?.event?._id);
+    setEvent(object);
+    object.addListener((obj, change) => {
+      console.log(change);
+      if (!_.values(change).every(_.isEmpty)) {
+        console.log(change);
+        setLoading(!loading);
+        setEvent(obj);
+        setLoading(!loading);
+      }
+    });
   }, []);
+
+  useEffect(() => {
+    setLoading(!loading);
+    setLoading(!loading);
+  }, [user.interestedEvents.length]);
+
   const routes = [
     {
       key: "attendees",
@@ -64,9 +86,8 @@ const EventDetail = function ({
     { key: "description", title: "Description" },
   ];
 
-  const startDate = moment(event.startDate.toDate()).format("MMM Do, YYYY");
-  const startTime = moment(event.startDate.toDate()).format("h:mm a");
-  const isHost = auth().currentUser.uid === event.host.uid;
+  const startDate = moment(event.startDate).format("MMM Do, YYYY");
+  const startTime = moment(event.startDate).format("h:mm a");
   const iconSize = 23;
 
   let button = (
@@ -75,15 +96,19 @@ const EventDetail = function ({
       text="Join Event"
       onPress={() => {
         Linking.openURL(event.link);
-        if (!user.pastEvents.filter((x) => x === event.id).length) {
-          user.pastEvents.push(event.id);
-          UserModel.update(realm, user, { pastEvents: user.pastEvents });
+        if (
+          !user.pastEvents.filter((x) => x.toString() === event._id.toString())
+            .length
+        ) {
+          userRealm.write(() => {
+            user.pastEvents.push(event);
+          });
         }
       }}
     />
   );
   let text = <Text center>{event.link && Url.parse(event.link).hostname}</Text>;
-  if (new Date() < event.startDate.toDate()) {
+  if (new Date() < event.startDate) {
     if (isHost)
       button = !event.cancelled ? (
         <ActionButton
@@ -104,9 +129,7 @@ const EventDetail = function ({
           text="Saved to Calendar"
           onPress={() => {
             setSaved(!saved);
-            user.saved[event.id] = false;
-            UserModel.saveEvent(event.id, false);
-            removeEvent(event);
+            removeEvent(event._id);
           }}
         />
       );
@@ -117,16 +140,14 @@ const EventDetail = function ({
           text="Save to Calendar"
           onPress={() => {
             setSaved(!saved);
-            user.saved[event.id] = true;
-            UserModel.saveEvent(event.id, true);
-            saveEvent(event);
+            saveEvent(event._id);
           }}
         />
       );
 
     if (!isHost)
       text = <Text center>Link available when the event starts.</Text>;
-  } else if (new Date() > event.endDate?.toDate()) {
+  } else if (event.endDate && new Date() > event.endDate) {
     button = null;
     text = <Text center>Event Ended.</Text>;
   } else if (isHost) {
@@ -222,7 +243,7 @@ const EventDetail = function ({
           color={Theme.primary}
           size={iconSize}
         />
-        {isHost && (
+        {!isHost && (
           <IconButton
             containerStyle={styles.iconCircle}
             iconStyle={{ paddingBottom: 2, paddingLeft: 1 }}
@@ -240,8 +261,10 @@ const EventDetail = function ({
 
 export default connect(
   (state) => ({
-    realm: state.userRealm,
+    realm: state.realm,
+    userRealm: state.userRealm,
     user: state.user,
+    savedEvents: state.saved,
   }),
   {
     saveEvent,

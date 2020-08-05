@@ -1,7 +1,8 @@
 import React from "react";
 import AwesomeAlert from "react-native-awesome-alerts";
+import { connect } from "react-redux";
 
-import CollegeEventModel from "../../models/CollegeEvent";
+import EventModel from "../../models/Event";
 
 import { Theme } from "../../global/constants";
 
@@ -10,20 +11,19 @@ const alertMessages = {
   deleteEvent: "Remove Event?",
   endEvent: "End Event?",
 };
-
-export default ({ navigation, route }) => {
+const Interstitial = ({ navigation, route, realm }) => {
   const type = route.params.alertType;
 
   const handleAlertConfirm = () => {
     switch (type) {
       case "cancelEvent":
-        CollegeEventModel.cancel(route.params.event.id);
+        EventModel.cancel(realm, route.params.event);
         break;
       case "deleteEvent":
-        CollegeEventModel.remove(route.params.event);
+        EventModel.remove(realm, route.params.event);
         break;
       case "endEvent":
-        CollegeEventModel.end(route.params.event.id);
+        EventModel.end(realm, route.params.event);
         break;
     }
     navigation.goBack();
@@ -47,3 +47,10 @@ export default ({ navigation, route }) => {
     />
   );
 };
+
+export default connect(
+  (state) => ({
+    realm: state.userRealm,
+  }),
+  {}
+)(Interstitial);

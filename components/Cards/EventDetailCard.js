@@ -18,20 +18,12 @@ import { Theme } from "../../global/constants";
 
 const radius = 12;
 
-export default ({
-  children,
-  event,
-  map,
-  edit,
-  trash,
-  rsvp,
-  path = "event",
-}) => {
+export default ({ children, event, map, edit, trash, rsvp }) => {
   const navigation = useNavigation();
-  const startDate = moment(event.startDate.toDate());
+  const startDate = moment(event.startDate);
 
   return (
-    <TouchableOpacity onPress={() => navigation.push(path, { event })}>
+    <TouchableOpacity onPress={() => navigation.push("event", { event })}>
       <Card
         white50
         borderRadius={radius}

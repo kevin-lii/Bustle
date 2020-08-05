@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
-import auth from "@react-native-firebase/auth";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,7 +13,7 @@ import ImageUploader from "../../components/Form/ImageUploader";
 import UserModel from "../../models/User";
 import ActionButton from "../../components/Buttons/ActionButton";
 import GradePicker from "../../components/Form/GradePicker";
-
+import { logout } from "../../store/actions";
 import { Theme } from "../../global/constants";
 
 class EditProfile extends React.Component {
@@ -28,7 +27,6 @@ class EditProfile extends React.Component {
       major: props.user?.major ? props.user.major : "",
       year: props.user?.year ? props.user.year : "",
       bio: props.user?.bio ? props.user.bio : "",
-      // hobbies: props.user.hobbies,
       instagram: props.user?.instagram ? props.user.instagram : "",
       snapchat: props.user?.snapchat ? props.user.snapchat : "",
       linkedin: props.user?.linkedin ? props.user.linkedin : "",
@@ -186,7 +184,7 @@ class EditProfile extends React.Component {
               backgroundColor={Theme.red}
               color="white"
               style={styles.button}
-              onPress={() => auth().signOut()}
+              onPress={this.props.logout}
               borderColor="transparent"
             />
           </View>
@@ -221,5 +219,7 @@ export default connect(
     user: state.user,
     realm: state.userRealm,
   }),
-  {}
+  {
+    logout,
+  }
 )(EditProfile);

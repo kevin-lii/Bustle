@@ -3,26 +3,27 @@ import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { Text, View } from "react-native-ui-lib";
 
-import EventModel from "../../../models/CollegeEvent";
+import UserModel from "../../../models/User";
 import { getHostedEvents } from "../../../store/actions";
 import EventDetail from "../../../components/Cards/EventDetailCard";
 
 import { Theme } from "../../../global/constants";
-import { attachIDs } from "../../../global/utils";
 
 function ProfileHosted({
   navigation,
   isCurrentUser,
   user,
+  realm,
   getHostedEvents,
   hostedEvents,
 }) {
   const [hosted, setHosted] = useState([]);
   useEffect(() => {
     if (!isCurrentUser) {
-      EventModel.get({ host: user.uid }).then((events) => {
-        setHosted(attachIDs(events));
-      });
+      const getHostedEvents = Array.from(
+        UserModel.get(realm, user._id).hostedEvents.values()
+      );
+      setHosted(getHostedEvents);
     } else {
       getHostedEvents();
     }
@@ -42,6 +43,7 @@ function ProfileHosted({
             <EventDetail event={item} navigation={navigation} trash edit />
           );
         }}
+        keyExtractor={(item) => item._id.toString()}
         ListEmptyComponent={() => (
           <View centerH centerV style={styles.emptyText}>
             <Text text65 style={{ fontWeight: "bold" }}>
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
 export default connect(
   (state) => ({
     hostedEvents: state.hostedEvents,
+    realm: state.realm,
   }),
   {
     getHostedEvents,

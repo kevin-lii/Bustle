@@ -7,75 +7,90 @@ const events = (state, action) => {
     action.type === actionTypes.FILTER_EVENTS
   )
     return action.events;
+  if (action.type === actionTypes.LOGOUT) return [];
   return state || [];
 };
 
 const eventFilters = (state, action) => {
   if (action.type === actionTypes.FILTER_EVENTS) return action.filters;
+  if (action.type === actionTypes.LOGOUT) return [];
   return state || {};
 };
 
 const hostedEvents = (state, action) => {
   if (action.type === actionTypes.UPDATE_HOSTED_EVENTS)
     return action.hostedEvents;
+  if (action.type === actionTypes.LOGOUT) return [];
+  return state || [];
+};
+
+const users = (state, action) => {
+  if (action.type === actionTypes.GET_USER) return action.users;
+  if (action.type === actionTypes.LOGOUT) return [];
+  return state || [];
+};
+
+const user = (state, action) => {
+  if (
+    action.type === actionTypes.UPDATE_USER ||
+    action.type === actionTypes.LOGIN
+  )
+    return action.user;
+  if (
+    action.type === actionTypes.LOGOUT ||
+    action.type === actionTypes.REGISTER_APP
+  )
+    return {};
+  return state || null;
+};
+
+const auth = (state, action) => {
+  if (action.type === actionTypes.LOGIN) return action.auth;
+  if (action.type === actionTypes.LOGOUT) return null;
+  return state || null;
+};
+
+const app = (state, action) => {
+  if (action.type === actionTypes.REGISTER_APP) return action.app;
+  return state || null;
+};
+
+const userRealm = (state, action) => {
+  if (action.type === actionTypes.LOGIN) return action.userRealm;
+  if (action.type === actionTypes.LOGOUT) return null;
+  return state || null;
+};
+
+const realm = (state, action) => {
+  if (action.type === actionTypes.LOGIN) return action.realm;
+  if (action.type === actionTypes.LOGOUT) return null;
+  return state || null;
+};
+
+const saved = (state, action) => {
+  if (action.type === actionTypes.UPDATE_INTERESTED_EVENTS) return action.saved;
+  if (action.type === actionTypes.LOGOUT) return [];
   return state || [];
 };
 
 const savedEvents = (state, action) => {
   if (action.type === actionTypes.UPDATE_INTERESTED_EVENTS)
     return action.savedEvents;
+  if (action.type === actionTypes.LOGOUT) return [];
   return state || [];
-};
-
-const event = (state, action) => {
-  if (action.type === actionTypes.GET_EVENT) {
-    return action.event;
-  }
-  return state || [];
-};
-
-const user = (state, action) => {
-  if (action.type === actionTypes.UPDATE_USER) {
-    return Object.assign({ ...state }, action.user);
-  }
-  if (
-    action.type === actionTypes.LOGOUT ||
-    action.type === actionTypes.REGISTER_APP
-  ) {
-    return {};
-  }
-  return state || null;
-};
-
-const app = (state, action) => {
-  if (action.type === actionTypes.REGISTER_APP) {
-    return action.app;
-  }
-  return state || null;
-};
-
-const userRealm = (state, action) => {
-  if (action.type === actionTypes.UPDATE_USER) {
-    return action.userRealm;
-  }
-  return state || null;
-};
-
-const eventRealm = (state, action) => {
-  if (action.type === actionTypes.UPDATE_USER) {
-    return action.eventRealm;
-  }
-  return state || null;
 };
 
 export default combineReducers({
-  event,
   events,
   eventFilters,
   hostedEvents,
-  savedEvents,
   user,
+  users,
   app,
+  auth,
   userRealm,
-  eventRealm,
+  // sessionKey,
+  realm,
+  saved,
+  savedEvents,
 });

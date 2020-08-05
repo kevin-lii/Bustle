@@ -3,6 +3,7 @@ import { View, Text, TextField } from "react-native-ui-lib";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { connect } from "react-redux";
 
 import Category from "./components/Category";
 import DateTime from "./components/DateTimeInput";
@@ -11,7 +12,7 @@ import LocationInput from "./components/LocationInput";
 import ToggleRow from "./components/ToggleRow";
 
 import { UserContext } from "../../dataContainers/context";
-import EventModel from "../../models/CollegeEvent";
+import EventModel from "../../models/Event";
 import Icons from "../../components/Image/Icons";
 import ImageUploader from "../../components/Form/ImageUploader";
 import Tokenizer from "../../components/Form/Tokenizer";
@@ -20,13 +21,13 @@ import { Theme, eventTags } from "../../global/constants";
 import { validateURL } from "../../global/utils";
 import globalStyles from "../../global/styles";
 
-export default class EventCreate extends React.Component {
+class EventCreate extends React.Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
     const event = props.route?.params?.event;
     this.state = event
-      ? { ...event }
+      ? event.toJSON()
       : {
           name: "",
           description: "",
@@ -44,14 +45,13 @@ export default class EventCreate extends React.Component {
           link: "",
           tags: [],
         };
-
     if (event) {
       this.state.image = { uri: event.photoURL };
-      this.state.date = event.startDate.toDate();
-      this.state.time = event.startDate.toDate();
-      this.state.endDate = event.endDate?.toDate();
-      this.state.endTime = event.endDate?.toDate();
-      this.state.tags = this.state.tags.map((value) => ({
+      this.state.date = event.startDate;
+      this.state.time = event.startDate;
+      this.state.endDate = event.endDate;
+      this.state.endTime = event.endDate;
+      this.state.tags = this.state.tags?.map((value) => ({
         label: value,
         value,
       }));
@@ -62,6 +62,7 @@ export default class EventCreate extends React.Component {
   }
 
   async submit(update = false) {
+    const { realm, user } = this.props;
     try {
       this.setState({ disabled: true });
       const stateCopy = Object.assign({}, this.state);
@@ -74,6 +75,7 @@ export default class EventCreate extends React.Component {
         stateCopy.endDate.setHours(this.state.endTime.getHours());
         stateCopy.endDate.setMinutes(this.state.endTime.getMinutes());
       }
+      stateCopy.host = user;
       delete stateCopy.endTime;
       delete stateCopy.date;
       delete stateCopy.time;
@@ -82,16 +84,8 @@ export default class EventCreate extends React.Component {
       stateCopy.tags = stateCopy.tags.map(({ value }) => value);
 
       if (update)
-        EventModel.update(this.props.route.params?.event.id, stateCopy);
-      else
-        EventModel.create(
-          {
-            uid: this.context.uid,
-            displayName: this.context.displayName,
-            photoURL: this.context.photoURL,
-          },
-          stateCopy
-        );
+        EventModel.update(realm, this.props.route.params?.event, stateCopy);
+      else EventModel.create(realm, stateCopy);
       this.props.navigation.goBack();
     } catch (e) {
       console.log(e);
@@ -265,7 +259,7 @@ export default class EventCreate extends React.Component {
                   pillColor={Theme.primary}
                   color="white"
                   onChange={(tags) => this.setState({ tags })}
-                  data={eventTags[this.state.category].map((tag) => ({
+                  data={eventTags[this.state.category]?.map((tag) => ({
                     label: tag,
                     value: tag,
                   }))}
@@ -278,3 +272,11 @@ export default class EventCreate extends React.Component {
     );
   }
 }
+
+export default connect(
+  (state) => ({
+    realm: state.userRealm,
+    user: state.user,
+  }),
+  {}
+)(EventCreate);
