@@ -1,12 +1,16 @@
 import { ObjectId } from "bson";
 import moment from "moment";
 import _ from "lodash";
+import S3 from "aws-sdk/clients/s3";
+import { decode } from "base64-arraybuffer";
+import * as RNFS from "react-native-fs";
 
 export default class Event {
   constructor({
+    id = new ObjectId(),
     name,
     partition = "Berkeley",
-    id = new ObjectId(),
+    regionID = "Berkeley",
     category = "",
     link = "",
     host,
@@ -33,6 +37,7 @@ export default class Event {
     this.startDate = startDate;
     this.tags = tags || [];
     this.virtual = virtual;
+    this.regionID = regionID;
   }
 
   static schema = {
@@ -57,12 +62,12 @@ export default class Event {
       link: "string?",
       location: "string?",
       tags: "string[]",
+      regionID: "string?",
     },
     primaryKey: "_id",
   };
 
   static filter(query, filters) {
-    console.log(query);
     if (filters.containsID?.length)
       query = query.filtered("_id in " + filters.containsID);
     if (filters.host) query = query.filtered(`host == "${filters.host}"`);
@@ -105,16 +110,43 @@ export default class Event {
 
   static async create(realm, data) {
     if (!data.name) throw new Error("Name not provided");
-    realm.write(() => {
-      const newEvent = new Event({ ...data });
+    realm.write(async () => {
+      if (data.image?.data) {
+        const id = new ObjectId();
+        const s3bucket = new S3({
+          accessKeyId: "AKIART42PSEQKVT24D62",
+          secretAccessKey: "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",
+          Bucket: "bustle-images",
+          signatureVersion: "v4",
+        });
+        let contentDeposition = `inline;filename="${id.toString()}"`;
+        const base64 = await RNFS.readFile(data.image.uri, "base64");
+        const arrayBuffer = decode(base64);
+        s3bucket.createBucket(() => {
+          const params = {
+            Bucket: "bustle-images",
+            Key: `events/${id.toString()}`,
+            Body: arrayBuffer,
+            ContentDisposition: contentDeposition,
+            ContentType: "image/jpeg",
+          };
+          s3bucket.upload(params, (err, newData) => {
+            if (err) {
+              console.log("error in callback");
+            }
+            console.log("success");
+            console.log("Response URL : " + newData.Location);
+            data.photoURL = newData.Location;
+          });
+        });
+        delete data.image;
+      }
+      const newEvent = new Event({ id, ...data });
       realm.create("Event", newEvent);
-      console.log("success");
     });
   }
 
   static async update(realm, event, update) {
-    console.log("update");
-    console.log(update);
     realm.write(() => {
       if (
         (update.virtual != null || update.virtual != undefined) &&
@@ -138,7 +170,35 @@ export default class Event {
       if (update.tags && !_.isEqual(event.tags, update.tags))
         event.tags = update.tags;
     });
-    console.log(event);
+    if (update.image?.data) {
+      const s3bucket = new S3({
+        accessKeyId: "AKIART42PSEQKVT24D62",
+        secretAccessKey: "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",
+        Bucket: "bustle-images",
+        signatureVersion: "v4",
+      });
+      let contentDeposition = `inline;filename="${event._id.toString()}"`;
+      const base64 = await RNFS.readFile(update.image.uri, "base64");
+      const arrayBuffer = decode(base64);
+      await s3bucket.createBucket(() => {
+        const params = {
+          Bucket: "bustle-images",
+          Key: `events/${event._id.toString()}`,
+          Body: arrayBuffer,
+          ContentDisposition: contentDeposition,
+          ContentType: "image/jpeg",
+        };
+        s3bucket.upload(params, (err, data) => {
+          if (err) {
+            console.log("error in callback");
+          }
+          console.log("Response URL : " + data.Location);
+          realm.write(() => {
+            event.photoURL = data.Location + `?time=${new Date()}`;
+          });
+        });
+      });
+    }
   }
 
   static remove(realm, event) {

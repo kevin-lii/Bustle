@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Realm from "realm";
+import { Credentials } from "realm";
 import { Platform } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { AccessToken, LoginManager } from "react-native-fbsdk";
@@ -17,14 +17,14 @@ import { login } from "../../store/actions";
 import styles from "./styles";
 
 function Login({ navigation, login }) {
-  const [email, setEmail] = useState("A@berkeley.edu");
+  const [email, setEmail] = useState("test@berkeley.edu");
   const [password, setPassword] = useState("tester");
   const [error, setError] = useState("");
 
   async function emailLogin() {
     try {
       resetError();
-      const creds = Realm.Credentials.emailPassword(email, password);
+      const creds = Credentials.emailPassword(email, password);
       login(creds);
     } catch (e) {
       handleError(e);
@@ -32,10 +32,7 @@ function Login({ navigation, login }) {
   }
 
   async function facebookLogin() {
-    const result = await LoginManager.logInWithPermissions([
-      "public_profile",
-      "email",
-    ]);
+    const result = await LoginManager.logInWithPermissions(["email"]);
     resetError();
     if (result.isCancelled) {
       setError("Login cancelled");
@@ -46,9 +43,8 @@ function Login({ navigation, login }) {
       setError("Cancelled");
     } else {
       const token = await AccessToken.getCurrentAccessToken();
-      const credential = Realm.Credentials.facebook(token.accessToken);
-      console.log(token.accessToken.toString());
-      console.log(credential);
+      const credential = Credentials.facebook(token.accessToken);
+      console.log(credential.provider());
       try {
         login(credential);
       } catch (e) {
@@ -76,12 +72,14 @@ function Login({ navigation, login }) {
     });
     const { identityToken, nonce } = appleAuthRequestResponse;
     if (identityToken) {
-      const appleCredential = await auth.AppleAuthProvider.credential(
-        identityToken,
-        nonce
-      );
+      // const appleCredential = await auth.AppleAuthProvider.credential(
+      //   identityToken,
+      //   nonce
+      // );
+      const credential = Credentials.apple(identityToken);
+      console.log(credential.provider());
       try {
-        await firebase.auth().signInWithCredential(appleCredential);
+        login(credential);
       } catch (e) {
         handleError(e);
       }
@@ -95,6 +93,7 @@ function Login({ navigation, login }) {
           <TextField
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
+            autoCapitalize="none"
           ></TextField>
         </View>
         <SecureText placeholder="Password" onChange={setPassword}></SecureText>

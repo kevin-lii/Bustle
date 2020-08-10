@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Realm from "realm";
+import { Credentials } from "realm";
 import { View, Text, TextField } from "react-native-ui-lib";
 import { connect } from "react-redux";
 
@@ -16,13 +16,10 @@ function SignUp({ app, login }) {
   const [passwordAgain, setUpPasswordAgain] = useState("");
   const [error, setError] = useState("");
 
-  const loginAttempt = () => {
-    console.log("hello");
-    login(Realm.Credentials.emailPassword(email, password));
-  };
-
   const submit = async () => {
-    await app.auth.emailPassword.registerEmail(email, password);
+    await app.emailPasswordAuth.registerUser(email, password);
+    const token = Credentials.emailPassword(email, password);
+    login(token);
   };
 
   async function validateSubmission() {
@@ -51,6 +48,7 @@ function SignUp({ app, login }) {
           placeholder="Email"
           onChangeText={setEmail}
           textContentType="emailAddress"
+          autoCapitalize="none"
         ></TextField>
         <SecureText
           placeholder="Password"

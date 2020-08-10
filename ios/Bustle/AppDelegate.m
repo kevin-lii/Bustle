@@ -14,7 +14,6 @@
 
 #import <GoogleMaps/GoogleMaps.h>
 
-#import <Firebase/Firebase.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 
 @implementation AppDelegate
@@ -36,7 +35,6 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [FIRApp configure];
   [[FBSDKApplicationDelegate sharedInstance] application:application
     didFinishLaunchingWithOptions:launchOptions];
   return YES;

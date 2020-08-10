@@ -1,6 +1,5 @@
 import _ from "lodash";
 import Realm from "realm";
-import { ObjectId } from "bson";
 
 import EventModel from "../models/Event";
 import UserModel from "../models/User";
@@ -18,32 +17,8 @@ export const actionTypes = {
   GET_USER: "get user",
 };
 const subscriptions = {};
-export const registerApp = () => async (dispatch, getState) => {
-  const appConfig = {
-    id: realmID,
-    timeout: 10000,
-    app: {
-      name: "default",
-      version: "1",
-    },
-  };
-  const data = new Realm.App(appConfig);
-  dispatch({
-    type: actionTypes.REGISTER_APP,
-    app: data,
-  });
-};
 
-export const login = (creds) => async (dispatch, getState) => {
-  const { app, auth } = getState();
-  if (auth != null) {
-    console.warn("Already logged in -- can't log out!");
-    return;
-  }
-  console.log("signing in");
-  const authUser = await app.logIn(creds);
-  console.log(authUser.identity);
-
+const generateUser = (authUser) => {
   const userConfig = {
     schema: [EventModel.schema, UserModel.privateSchema],
     sync: {
@@ -61,17 +36,85 @@ export const login = (creds) => async (dispatch, getState) => {
     mayWrite: false,
     mayRead: true,
   };
-  const realm = await Realm.open(config);
   const userRealm = new Realm(userConfig);
-  const query = UserModel.get(userRealm, authUser.identity);
+  const realm = new Realm(config);
+  const query = UserModel.get(userRealm, authUser.id);
+  return { realm, userRealm, query };
+};
+
+export const registerApp = () => async (dispatch, getState) => {
+  // const { sessionKey, sessionID } = getState();
+  const { sessionID } = getState();
+  const appConfig = {
+    id: realmID,
+    timeout: 10000,
+    app: {
+      name: "default",
+      version: "1",
+    },
+  };
+  const data = new Realm.App(appConfig);
+  if (data?.currentUser?.id === sessionID) {
+    const { query, userRealm, realm } = generateUser(data.currentUser);
+    dispatch({
+      type: actionTypes.REGISTER_APP,
+      app: data,
+    });
+    dispatch({
+      type: actionTypes.LOGIN,
+      user: query,
+      userRealm,
+      realm,
+      auth: data.currentUser,
+      // sessionKey,
+      sessionID,
+    });
+    query.addListener((obj, change) => {
+      if (!_.values(change).every(_.isEmpty)) {
+        dispatch({
+          type: actionTypes.UPDATE_USER,
+          user: obj,
+        });
+      }
+    });
+  } else {
+    dispatch({
+      type: actionTypes.REGISTER_APP,
+      app: data,
+    });
+  }
+};
+
+export const login = (crendetials) => async (dispatch, getState) => {
+  const { app, auth } = getState();
+  if (auth != null) {
+    console.warn("Already logged in -- can't log out!");
+    return;
+  }
+
+  // const newName = new ObjectId();
+  // const apiKey = await authUser.apiKeys.create(newName.toString());
+  // const apiCredentials = Realm.Credentials.userApiKey(apiKey.key);
+  // const temp = await app.logIn(apiCredentials);
+  let userData;
+  let authUser;
+  while (!userData?.query) {
+    authUser = await app.logIn(crendetials);
+    userData = generateUser(authUser);
+    console.log(userData);
+  }
   dispatch({
     type: actionTypes.LOGIN,
-    user: query,
-    userRealm,
-    realm,
+    user: userData.query,
+    userRealm: userData.userRealm,
+    realm: userData.realm,
     auth: authUser,
+    sessionID: authUser.id,
+    // sessionKey: apiKey.key,
+    // sessionID: apiKey.id.toString(),
   });
-  query.addListener((obj, change) => {
+
+  userData.query.addListener((obj, change) => {
     if (!_.values(change).every(_.isEmpty)) {
       dispatch({
         type: actionTypes.UPDATE_USER,
@@ -82,12 +125,11 @@ export const login = (creds) => async (dispatch, getState) => {
 };
 
 export const logout = () => async (dispatch, getState) => {
-  const { user, userRealm, realm, auth } = getState();
+  const { sessionID, userRealm, realm, auth, app } = getState();
   if (auth == null) {
     console.warn("Not logged in -- can't log out!");
     return;
   }
-
   userRealm.removeAllListeners();
   userRealm.close();
 
@@ -95,7 +137,18 @@ export const logout = () => async (dispatch, getState) => {
   realm.close();
 
   console.log("Logging out...");
-  auth.logOut();
+  // await app.removeUser(app.currentUser, true);
+  console.log("Removed");
+  await auth.logOut();
+  Object.values(app.allUsers).forEach((user) => {
+    console.log(
+      `User with id ${user.id} is ${
+        user.isLoggedIn ? "logged in" : "logged out"
+      }`
+    );
+  });
+  // const temp = await app.currentUser.apiKeys.delete(new ObjectId(sessionID));
+
   dispatch({
     type: actionTypes.LOGOUT,
   });

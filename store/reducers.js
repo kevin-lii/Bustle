@@ -80,6 +80,18 @@ const savedEvents = (state, action) => {
   return state || [];
 };
 
+// const sessionKey = (state, action) => {
+//   if (action.type === actionTypes.LOGIN) return action.sessionKey;
+//   if (action.type === actionTypes.LOGOUT) return null;
+//   return state || null;
+// };
+
+const sessionID = (state, action) => {
+  if (action.type === actionTypes.LOGIN) return action.sessionID;
+  if (action.type === actionTypes.LOGOUT) return null;
+  return state || null;
+};
+
 export default combineReducers({
   events,
   eventFilters,
@@ -93,4 +105,5 @@ export default combineReducers({
   realm,
   saved,
   savedEvents,
+  sessionID,
 });

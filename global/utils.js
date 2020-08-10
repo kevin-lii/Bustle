@@ -1,6 +1,4 @@
-import React from "react";
 import { Alert, Platform, Linking } from "react-native";
-import firestore from "@react-native-firebase/firestore";
 import { PERMISSIONS, request, check } from "react-native-permissions";
 import Geolocation from "react-native-geolocation-service";
 
@@ -10,10 +8,6 @@ exports.bindAll = function (thisArg, obj) {
   for (const key of Object.keys(obj)) {
     thisArg[key] = obj[key].bind(thisArg);
   }
-};
-
-exports.createChat = async function () {
-  firestore().collection("chats").doc("{messages: []}");
 };
 
 exports.getLocation = async function () {

@@ -58,5 +58,8 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+/ios/generate_client_secret.rb
+/ios/AuthKey_3GQ9KLXR7W.p8
+/ios/client_secret.txt
 
 global/secrets.js

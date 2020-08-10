@@ -44,7 +44,6 @@ const EventDetail = function ({
   navigation,
   user,
   savedEvents,
-  realm,
   userRealm,
   saveEvent,
   removeEvent,
@@ -54,29 +53,21 @@ const EventDetail = function ({
     savedEvents.includes(event._id.toString())
   );
   const [index, setIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(0);
   const isHost = user._id.toString() === event.host._id.toString();
 
   useEffect(() => {
     let object;
-    if (isHost) object = EventModel.getOne(userRealm, route.params?.event?._id);
-    else object = EventModel.getOne(realm, route.params?.event?._id);
+    if (true) object = EventModel.getOne(userRealm, route.params?.event?._id);
+    // else object = EventModel.getOne(realm, route.params?.event?._id);
     setEvent(object);
     object.addListener((obj, change) => {
-      console.log(change);
       if (!_.values(change).every(_.isEmpty)) {
-        console.log(change);
-        setLoading(!loading);
         setEvent(obj);
-        setLoading(!loading);
+        setLoading(loading + 1);
       }
     });
   }, []);
-
-  useEffect(() => {
-    setLoading(!loading);
-    setLoading(!loading);
-  }, [user.interestedEvents.length]);
 
   const routes = [
     {
@@ -243,7 +234,7 @@ const EventDetail = function ({
           color={Theme.primary}
           size={iconSize}
         />
-        {!isHost && (
+        {isHost && (
           <IconButton
             containerStyle={styles.iconCircle}
             iconStyle={{ paddingBottom: 2, paddingLeft: 1 }}

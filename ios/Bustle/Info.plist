@@ -78,6 +78,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to have constant access to your bluetooth devices</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>

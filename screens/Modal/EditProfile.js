@@ -29,6 +29,7 @@ class EditProfile extends React.Component {
       bio: props.user?.bio ? props.user.bio : "",
       instagram: props.user?.instagram ? props.user.instagram : "",
       snapchat: props.user?.snapchat ? props.user.snapchat : "",
+      twitter: props.user?.twitter ? props.user.twitter : "",
       linkedin: props.user?.linkedin ? props.user.linkedin : "",
     };
   }

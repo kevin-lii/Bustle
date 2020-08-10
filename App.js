@@ -1,7 +1,4 @@
 /**
- * Sample React Native App with Firebase
- * https://github.com/invertase/react-native-firebase
- *
  * @format
  * @flow
  */

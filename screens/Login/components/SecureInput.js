@@ -15,6 +15,7 @@ export default function ({ placeholder, onChange }) {
         <TextField
           placeholder={placeholder}
           secureTextEntry={displayText}
+          autoCapitalize="none"
           onChangeText={(text) => onChange(text)}
         ></TextField>
       </View>

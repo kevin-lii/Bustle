@@ -18,7 +18,7 @@ import globalStyles from "../../global/styles";
 
 function Profile({ navigation, route, currentUser, auth }) {
   const isForeign =
-    route.params?.user && route.params.user._id.toString() !== auth.identity;
+    route.params?.user && route.params.user._id.toString() !== auth.id;
   const [foreignUser, setUser] = useState(route.params?.user);
 
   const [index, setIndex] = useState(0);
@@ -187,6 +187,9 @@ const styles = StyleSheet.create({
 });
 
 export default connect(
-  (state) => ({ currentUser: state.user, auth: state.auth }),
+  (state) => ({
+    currentUser: state.user,
+    auth: state.auth,
+  }),
   {}
 )(Profile);

@@ -4,6 +4,7 @@ export default class User {
   constructor({
     name = "",
     partition = "Berkeley",
+    regionID = "Berkeley",
     id = new ObjectId(),
     uid = "",
     instagram = "",
@@ -32,6 +33,7 @@ export default class User {
     this.photoURL = photoURL;
     this.year = year;
     this.newUser = newUser;
+    this.regionID = regionID;
   }
   static schema = {
     name: "User",
@@ -54,6 +56,7 @@ export default class User {
       snapchat: "string?",
       twitter: "string?",
       year: "int?",
+      regionID: "string?",
     },
     primaryKey: "_id",
   };
@@ -81,6 +84,7 @@ export default class User {
       year: "int?",
       email: "string?",
       newUser: "bool?",
+      regionID: "string?",
     },
     primaryKey: "_id",
   };
@@ -116,9 +120,69 @@ export default class User {
         user.instagram = update.instagram;
       if (update.snapchat && user.snapchat != update.snapchat)
         user.snapchat = update.snapchat;
+      if (update.twitter && update.twitter != user.twitter)
+        user.twitter = update.twitter;
       if (update.linkedin && user.linkedin != update.linkedin)
         user.linkedin = update.linkedin;
     });
+    if (update.image?.data) {
+      const s3bucket = new S3({
+        accessKeyId: "AKIART42PSEQKVT24D62",
+        secretAccessKey: "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",
+        Bucket: "bustle-images",
+        signatureVersion: "v4",
+      });
+      let contentDeposition = `inline;filename="${user._id.toString()}"`;
+      const base64 = await RNFS.readFile(update.image.uri, "base64");
+      const arrayBuffer = decode(base64);
+      await s3bucket.createBucket(() => {
+        const params = {
+          Bucket: "bustle-images",
+          Key: `profile/${event._id.toString()}`,
+          Body: arrayBuffer,
+          ContentDisposition: contentDeposition,
+          ContentType: "image/jpeg",
+        };
+        s3bucket.upload(params, (err, data) => {
+          if (err) {
+            console.log("error in callback");
+          }
+          console.log("Response URL : " + data.Location);
+          realm.write(() => {
+            event.photoURL = data.Location + `?time=${new Date()}`;
+          });
+        });
+      });
+    }
+    if (update.coverImage?.data) {
+      const s3bucket = new S3({
+        accessKeyId: "AKIART42PSEQKVT24D62",
+        secretAccessKey: "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",
+        Bucket: "bustle-images",
+        signatureVersion: "v4",
+      });
+      let contentDeposition = `inline;filename="${user._id.toString()}"`;
+      const base64 = await RNFS.readFile(update.coverImage.uri, "base64");
+      const arrayBuffer = decode(base64);
+      await s3bucket.createBucket(() => {
+        const params = {
+          Bucket: "bustle-images",
+          Key: `cover/${event._id.toString()}`,
+          Body: arrayBuffer,
+          ContentDisposition: contentDeposition,
+          ContentType: "image/jpeg",
+        };
+        s3bucket.upload(params, (err, data) => {
+          if (err) {
+            console.log("error in callback");
+          }
+          console.log("Response URL : " + data.Location);
+          realm.write(() => {
+            event.photoURL = data.Location + `?time=${new Date()}`;
+          });
+        });
+      });
+    }
   }
   static async createNewProfile(realm, user, data) {
     await this.update(realm, user, { newUser: false, ...data });
