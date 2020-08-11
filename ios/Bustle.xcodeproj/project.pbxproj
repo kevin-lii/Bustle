@@ -808,6 +808,7 @@
 					"$(SRCROOT)/../**",
 				);
 				INFOPLIST_FILE = Bustle/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.1;
 				OTHER_LDFLAGS = (
@@ -834,6 +835,7 @@
 					"$(SRCROOT)/../**",
 				);
 				INFOPLIST_FILE = Bustle/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.1;
 				OTHER_LDFLAGS = (

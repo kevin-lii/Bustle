@@ -6,6 +6,7 @@
     "start": "react-native start",
     "run:android": "npx react-native run-android",
     "run:ios": "npx react-native run-ios",
+    "run:ios:device": "react-native run-ios --device",
     "build:apk": "cd android && ./gradlew assembleRelease",
     "build:bundle": "cd android && ./gradlew bundleRelease",
     "test": "jest",
