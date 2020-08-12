@@ -15,6 +15,8 @@ import CardIcons from "./components/CardIcons";
 import { trimString } from "../../global/utils";
 import Icons from "../Image/Icons";
 import { Theme } from "../../global/constants";
+import { Avatar, Badge } from "react-native-elements";
+import { Icon } from "react-native-elements";
 
 const radius = 12;
 
@@ -29,6 +31,94 @@ export default ({
 }) => {
   const navigation = useNavigation();
   const startDate = moment(event.startDate.toDate());
+  let badge;
+  if (event.startDate.toDate() < new Date()) {
+    if (event.endDate !== null) {
+      if (event.endDate.toDate() > new Date()) {
+        badge = (
+          <View
+            absT
+            padding-10
+            style={{ flexDirection: "row", paddingTop: "3%" }}
+          >
+            <Badge value="Live" status="error" />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                paddingLeft: "55%",
+              }}
+            >
+              <Icon name="fire" type="material-community" color="#FF7100" />
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: "white",
+                  fontWeight: "bold",
+                  marginTop: "1.5%",
+                }}
+              >
+                ({event.attendees.length} Interested)
+              </Text>
+            </View>
+          </View>
+        );
+      }
+    } else {
+      badge = (
+        <View
+          absT
+          padding-10
+          style={{ flexDirection: "row", paddingTop: "3%" }}
+        >
+          <Badge value="Live" status="error" />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              paddingLeft: "55%",
+            }}
+          >
+            <Icon name="fire" type="material-community" color="#FF7100" />
+            <Text
+              style={{
+                fontSize: 15,
+                color: "white",
+                fontWeight: "bold",
+                marginTop: "1.5%",
+              }}
+            >
+              ({event.attendees.length} Interested)
+            </Text>
+          </View>
+        </View>
+      );
+    }
+  } else {
+    badge = (
+      <View
+        absT
+        padding-10
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          paddingLeft: "65%",
+        }}
+      >
+        <Icon name="fire" type="material-community" color="#FF7100" />
+        <Text
+          style={{
+            fontSize: 15,
+            color: "white",
+            fontWeight: "bold",
+            marginTop: "1.5%",
+          }}
+        >
+          ({event.attendees.length} Interested)
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <TouchableOpacity onPress={() => navigation.push(path, { event })}>
@@ -43,6 +133,8 @@ export default ({
           colors={["#33333360", "#333333f0"]}
           style={styles.gradient}
         />
+
+        {badge}
         <View row absB centerV spread padding-10>
           <View marginR-15>
             <CategoriesIcon type={event.category} size={30} color="white" />
@@ -52,7 +144,7 @@ export default ({
               {event.cancelled ? "Cancelled" : startDate.calendar()}
             </Text>
             <Text style={styles.name}>{trimString(event.name, 62)}</Text>
-            <View row centerV>
+            {/* <View row centerV>
               <View marginR-10>
                 <Icons
                   icon="desktop"
@@ -65,7 +157,7 @@ export default ({
                   ? Url.parse(event.link).hostname
                   : trimString(event.location.description, 15)}
               </Text>
-            </View>
+            </View> */}
           </View>
           <CardIcons
             navigation={navigation}
