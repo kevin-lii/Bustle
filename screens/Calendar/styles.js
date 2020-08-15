@@ -24,10 +24,6 @@ export default StyleSheet.create({
     height: "100%",
     right: 0,
   },
-  scrollView: {
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
   formContainer: {
     justifyContent: "center",
     alignItems: "center",

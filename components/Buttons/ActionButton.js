@@ -11,11 +11,14 @@ export default ({
   disabled,
   style,
   children,
+  outline = true,
+  round = false,
   outlineWidth = 1,
   backgroundColor = "white",
   color = Theme.secondary,
   borderColor = Theme.secondary,
   borderRadius = 30,
+  size = "large",
 }) => (
   <Button
     label={text}
@@ -23,7 +26,9 @@ export default ({
     backgroundColor={primary ? Theme.primary : backgroundColor}
     outlineColor={primary ? Theme.primary : borderColor}
     outlineWidth={outlineWidth}
-    size="large"
+    // outline={outline}
+    size={size}
+    round={round}
     borderRadius={borderRadius}
     onPress={onPress}
     disabled={disabled}

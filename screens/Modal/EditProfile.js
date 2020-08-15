@@ -13,20 +13,24 @@ import ImageUploader from "../../components/Form/ImageUploader";
 import UserModel from "../../models/User";
 import ActionButton from "../../components/Buttons/ActionButton";
 import GradePicker from "../../components/Form/GradePicker";
+import Picker from "../../components/Form/Picker";
 import { logout } from "../../store/actions";
-import { Theme } from "../../global/constants";
+import { Theme, majors } from "../../global/constants";
+import { locations, classes } from "../../global/pickerItems";
+import Tokenizer from "../../components/Form/Tokenizer";
 
 class EditProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       image: { uri: props.user?.photoURL ? props.user.photoURL : "" },
-      coverImage: {
-        uri: props.user?.coverPhotoURL ? props.user.coverPhotoURL : "",
-      },
+      // coverImage: {
+      //   uri: props.user?.coverPhotoURL ? props.user.coverPhotoURL : "",
+      // },
       major: props.user?.major ? props.user.major : "",
       year: props.user?.year ? props.user.year : "",
-      bio: props.user?.bio ? props.user.bio : "",
+      classes: props.user?.classes?.length > 0 ? props.user.classes : [],
+      location: props.user?.location ? props.user.location : "",
       instagram: props.user?.instagram ? props.user.instagram : "",
       snapchat: props.user?.snapchat ? props.user.snapchat : "",
       twitter: props.user?.twitter ? props.user.twitter : "",
@@ -35,7 +39,7 @@ class EditProfile extends React.Component {
   }
   async update() {
     const { realm, user } = this.props;
-    const stateCopy = _.pickBy(this.state);
+    const stateCopy = this.state;
     this.props.navigation.goBack();
     return await UserModel.update(realm, user, stateCopy);
   }
@@ -67,7 +71,7 @@ class EditProfile extends React.Component {
               />
             </View>
           </View>
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <Text text70 color={Theme.grey} style={{ fontWeight: "bold" }}>
               Cover Photo
             </Text>
@@ -77,18 +81,20 @@ class EditProfile extends React.Component {
               borderRadius={25}
               uri={this.state.coverImage.uri}
             />
-          </View>
+          </View> */}
 
-          <View row marginT-20 style={styles.section}>
+          <View row centerV marginT-20 style={styles.section}>
             <View marginR-10>
               <Icons icon="graduation-cap" size={iconSize} type="Entypo" />
             </View>
             <View flex style={{ marginRight: 12.5 }}>
-              <TextField
-                placeholder="Major"
-                enableErrors={false}
+              <Picker
+                underline
+                size="small"
                 value={this.state.major}
-                onChangeText={(major) => this.setState({ major })}
+                onChange={(major) => this.setState({ major })}
+                showSearch
+                data={majors}
               />
             </View>
             <View flex style={{ marginLeft: 12.5 }}>
@@ -102,16 +108,36 @@ class EditProfile extends React.Component {
           </View>
           <View row marginT-25 style={styles.section}>
             <View marginL-4 marginR-15>
-              <Icons icon="info" size={iconSize - 2} />
+              <Icons icon="location" type="Entypo" size={iconSize - 2} />
             </View>
             <View flex>
-              <TextField
-                value={this.state.bio}
-                expandable={true}
-                enableErrors={false}
-                placeholder="Bio"
-                autoFocus={true}
-                onChangeText={(bio) => this.setState({ bio })}
+              <Picker
+                underline
+                size="small"
+                value={this.state.location}
+                onChange={(location) => this.setState({ location })}
+                data={locations}
+                placeholder="Location"
+              />
+            </View>
+          </View>
+          <View row marginT-25 style={styles.section}>
+            <View flex>
+              <Tokenizer
+                size={13}
+                value={
+                  this.state.classes?.map((c) => ({ label: c, value: c })) || []
+                }
+                onChange={(items) => {
+                  const classes = items.map((item) => item.value);
+                  this.setState({ classes });
+                }}
+                data={classes.map((c) => ({
+                  label: c,
+                  value: c,
+                }))}
+                placeholder={"Add Classes"}
+                noMargin
               />
             </View>
           </View>

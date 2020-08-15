@@ -7,7 +7,7 @@ import EventCreate from "../screens/Modal/EventCreate";
 import EditProfile from "../screens/Modal/EditProfile";
 import FormTypes from "../components/Form/FormTypes";
 import NewUserFlow from "../screens/Modal/NewUserFlow";
-import SocialInfo from "../screens/Profile/SocialInfo";
+import UserFilters from "../screens/Modal/UserFilterCards";
 import EventFilters from "../screens/Modal/EventFilterCard";
 import PrivacyPolicy from "../screens/Settings/PrivacyPolicy";
 import Terms from "../screens/Settings/Terms";
@@ -62,11 +62,6 @@ function RootNavigator({ user }) {
         options={modalOptions}
       />
       <Stack.Screen
-        name={"socialinfo"}
-        component={SocialInfo}
-        options={modalOptions}
-      />
-      <Stack.Screen
         name="privacy"
         component={PrivacyPolicy}
         options={{
@@ -87,6 +82,11 @@ function RootNavigator({ user }) {
       <Stack.Screen
         name={"eventfilters"}
         component={EventFilters}
+        options={{ animationEnabled: false, ...modalOptions }}
+      />
+      <Stack.Screen
+        name={"userfilters"}
+        component={UserFilters}
         options={{ animationEnabled: false, ...modalOptions }}
       />
 

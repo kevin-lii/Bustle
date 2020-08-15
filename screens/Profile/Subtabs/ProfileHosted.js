@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { Text, View } from "react-native-ui-lib";
+import { View, Text } from "react-native-ui-lib";
 
 import UserModel from "../../../models/User";
 import { getHostedEvents } from "../../../store/actions";
@@ -29,48 +29,39 @@ function ProfileHosted({
     }
   }, []);
   const eventsHosted = isCurrentUser ? hostedEvents : hosted;
-  return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        contentContainerStyle={
-          eventsHosted != null && eventsHosted.length > 0
-            ? styles.scrollView
-            : styles.emptyView
-        }
-        data={eventsHosted}
-        renderItem={({ item, index }) => {
-          return (
-            <EventDetail event={item} navigation={navigation} trash edit />
-          );
-        }}
-        keyExtractor={(item) => item._id.toString()}
-        ListEmptyComponent={() => (
-          <View centerH centerV style={styles.emptyText}>
-            <Text text65 style={{ fontWeight: "bold" }}>
-              {isCurrentUser ? "You are " : user.displayName + " is "}not
-              hosting any events.
-            </Text>
-          </View>
-        )}
-      />
-    </SafeAreaView>
-  );
+  let content;
+  if (eventsHosted?.length > 0) {
+    content = eventsHosted.map((item) => {
+      return (
+        <EventDetail
+          key={item._id}
+          event={item}
+          navigation={navigation}
+          trash
+          edit
+        />
+      );
+    });
+  } else {
+    content = (
+      <View centerV centerH style={styles.emptyView}>
+        <Text text65 style={{ fontWeight: "bold" }}>
+          {isCurrentUser ? "You are " : user.displayName + " is "}not hosting
+          any events.
+        </Text>
+      </View>
+    );
+  }
+  return <View style={styles.container}>{content}</View>;
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-  },
-  scrollView: {
     paddingHorizontal: 10,
   },
   emptyView: {
-    flex: 1,
-    height: "100%",
-  },
-  emptyText: {
     color: Theme.secondary,
-    height: "100%",
+    marginTop: 25,
   },
 });
 

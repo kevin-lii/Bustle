@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Credentials } from "realm";
 import { Platform } from "react-native";
 import { View, Text, TextField } from "react-native-ui-lib";
@@ -8,6 +8,7 @@ import appleAuth, {
   AppleAuthRequestOperation,
 } from "@invertase/react-native-apple-authentication";
 import { connect } from "react-redux";
+import Loading from "../../components/Loading";
 
 import SecureText from "./components/SecureInput";
 import ActionButton from "../../components/Buttons/ActionButton";
@@ -16,10 +17,21 @@ import { login } from "../../store/actions";
 
 import styles from "./styles";
 
-function Login({ navigation, login }) {
+function Login({ navigation, login, app, route }) {
   const [email, setEmail] = useState("test@berkeley.edu");
   const [password, setPassword] = useState("tester");
   const [error, setError] = useState("");
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    if (route.params?.token && route.params?.tokenId) {
+      app.emailPasswordAuth
+        .confirmUser(route.params?.token, route.params?.tokenId)
+        .then(setIsReady(true));
+    } else {
+      setIsReady(true);
+    }
+  }, [route.params?.token, route.params?.tokenId]);
 
   async function emailLogin() {
     try {
@@ -44,7 +56,6 @@ function Login({ navigation, login }) {
     } else {
       const token = await AccessToken.getCurrentAccessToken();
       const credential = Credentials.facebook(token.accessToken);
-      console.log(credential.provider());
       try {
         login(credential);
       } catch (e) {
@@ -61,6 +72,19 @@ function Login({ navigation, login }) {
     setError("");
   }
 
+  async function fetchAndUpdateCredentialState(updateCredentialStateForUser) {
+    if (user === null) {
+      updateCredentialStateForUser("N/A");
+    } else {
+      const credentialState = await appleAuth.getCredentialStateForUser(user);
+      if (credentialState === AppleAuthCredentialState.AUTHORIZED) {
+        updateCredentialStateForUser("AUTHORIZED");
+      } else {
+        updateCredentialStateForUser(credentialState);
+      }
+    }
+  }
+
   async function onAppleButtonPress() {
     // performs login reques
     const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -70,20 +94,23 @@ function Login({ navigation, login }) {
         AppleAuthRequestScope.FULL_NAME,
       ],
     });
-    const { identityToken, nonce } = appleAuthRequestResponse;
+    const { user: newUser, identityToken, nonce } = appleAuthRequestResponse;
     if (identityToken) {
       // const appleCredential = await auth.AppleAuthProvider.credential(
       //   identityToken,
       //   nonce
       // );
       const credential = Credentials.apple(identityToken);
-      console.log(credential.provider());
       try {
         login(credential);
       } catch (e) {
         handleError(e);
       }
     }
+  }
+
+  if (!isReady) {
+    return <Loading />;
   }
 
   return (
@@ -158,6 +185,11 @@ function Login({ navigation, login }) {
   );
 }
 
-export default connect((state) => ({}), {
-  login,
-})(Login);
+export default connect(
+  (state) => ({
+    app: state.app,
+  }),
+  {
+    login,
+  }
+)(Login);

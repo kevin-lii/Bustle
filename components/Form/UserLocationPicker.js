@@ -1,8 +1,8 @@
 import React from "react";
-
 import { Picker, Text, View } from "react-native-ui-lib";
 
-import { Theme, gradeLevels } from "../../global/constants";
+import { Theme } from "../../global/constants";
+import { Theme, locations } from "../../global/pickerItems";
 
 export default ({ value, onChange, size = "large", underline }) => (
   <Picker
@@ -24,13 +24,13 @@ export default ({ value, onChange, size = "large", underline }) => (
           style={{ fontSize: size === "large" ? 30 : 16 }}
           color={v ? null : Theme.grey}
         >
-          {"Class of " + v || "Year"}
+          {v || "Year"}
         </Text>
       </View>
     )}
   >
-    {gradeLevels.map((grade, i) => (
-      <Picker.Item label={"Class of " + grade} value={grade} key={i} />
+    {locations.map((location, i) => (
+      <Picker.Item label={location} value={location} key={i} />
     ))}
   </Picker>
 );

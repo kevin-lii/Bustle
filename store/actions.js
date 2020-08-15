@@ -14,6 +14,7 @@ export const actionTypes = {
   UPDATE_HOSTED_EVENTS: "hosted event update",
   UPDATE_INTERESTED_EVENTS: "interested event update",
   REGISTER_APP: "register realm app",
+  REGISTER_APP_LOGIN: "register realm app and login",
   GET_USER: "get user",
 };
 const subscriptions = {};
@@ -57,7 +58,7 @@ export const registerApp = () => async (dispatch, getState) => {
   if (data?.currentUser?.id === sessionID) {
     const { query, userRealm, realm } = generateUser(data.currentUser);
     dispatch({
-      type: actionTypes.REGISTER_APP,
+      type: actionTypes.REGISTER_APP_LOGIN,
       app: data,
     });
     dispatch({
@@ -73,7 +74,7 @@ export const registerApp = () => async (dispatch, getState) => {
       if (!_.values(change).every(_.isEmpty)) {
         dispatch({
           type: actionTypes.UPDATE_USER,
-          user: obj,
+          user: Object.assign(obj, query),
         });
       }
     });
@@ -98,11 +99,18 @@ export const login = (crendetials) => async (dispatch, getState) => {
   // const temp = await app.logIn(apiCredentials);
   let userData;
   let authUser;
-  while (!userData?.query) {
+  let count = 0;
+  while (!userData?.query && count < 5) {
     authUser = await app.logIn(crendetials);
     userData = generateUser(authUser);
-    console.log(userData);
+    if (!userData?.query) {
+      userData.userRealm.close();
+      userData.realm.close();
+      count++;
+    }
   }
+  if (!userData?.query) return;
+
   dispatch({
     type: actionTypes.LOGIN,
     user: userData.query,
@@ -118,7 +126,7 @@ export const login = (crendetials) => async (dispatch, getState) => {
     if (!_.values(change).every(_.isEmpty)) {
       dispatch({
         type: actionTypes.UPDATE_USER,
-        user: obj,
+        user: Object.assign(obj, userData.query),
       });
     }
   });
@@ -138,15 +146,7 @@ export const logout = () => async (dispatch, getState) => {
 
   console.log("Logging out...");
   // await app.removeUser(app.currentUser, true);
-  console.log("Removed");
   await auth.logOut();
-  Object.values(app.allUsers).forEach((user) => {
-    console.log(
-      `User with id ${user.id} is ${
-        user.isLoggedIn ? "logged in" : "logged out"
-      }`
-    );
-  });
   // const temp = await app.currentUser.apiKeys.delete(new ObjectId(sessionID));
 
   dispatch({
@@ -205,12 +205,14 @@ export const getSavedEvents = (filters = {}) => (dispatch, getState) => {
   });
 };
 
-export const getUser = (id) => (dispatch, getState) => {
-  const { realm } = getState();
-  const query = UserModel.get(realm, id);
+export const getUsers = (filters = {}) => (dispatch, getState) => {
+  const { realm, usersFilters } = getState();
+  const newFilters = { ...usersFilters, ...filters };
+  const query = Array.from(UserModel.getUsers(realm, newFilters));
   dispatch({
     type: actionTypes.GET_USER,
     users: query,
+    usersFilters: newFilters,
   });
 };
 
@@ -219,8 +221,8 @@ export const setEventFilters = (filters = {}) => (dispatch, getState) => {
     subscriptions.getEvents();
     return;
   }
-  const { eventFilters, realm } = getState();
-  const query = EventModel.get(realm, { ...eventFilters, ...filters });
+  const { eventFilters, userRealm } = getState();
+  const query = EventModel.get(userRealm, { ...eventFilters, ...filters });
   dispatch({
     type: actionTypes.FILTER_EVENTS,
     events: Array.from(query.values()),
@@ -252,51 +254,3 @@ export const removeEvent = (eventID) => (dispatch, getState) => {
       user.interestedEvents.splice(index, 1);
     });
 };
-// export const saveEvent = (event) => (dispatch, getState) => {
-//   const { user, saved, userRealm } = getState();
-//   const allEvents = [];
-//   let flag = true;
-//   const boundary = Date.now();
-//   saved.forEach((e) => {
-//     if (e.startDate < boundary) {
-//       allEvents.push(e);
-//       flag = false;
-//     } else if (e.startDate.toDate() > boundary) {
-//       saved[e._id] = false;
-//     } else {
-//       allEvents.push(e);
-//       saved[e._id] = true;
-//     }
-//   });
-//   if (flag && event.startDate < boundary) {
-//     allEvents.push(event);
-//     saved[event._id] = true;
-//   }
-//   userRealm.write(() => {
-//     user.interestedEvents = allEvents;
-//   });
-//   dispatch({
-//     type: actionTypes.UPDATE_INTERESTED_EVENTS,
-//     saved,
-//   });
-// };
-
-// export const removeEvent = (eventID) => (dispatch, getState) => {
-//   const { user, saved, userRealm } = getState();
-//   const allEvents = [];
-//   user.interestedEvents?.forEach((e) => {
-//     if (e._id === eventID) {
-//       saved[e._id] = false;
-//     } else {
-//       allEvents.push(e);
-//       saved[e._id] = true;
-//     }
-//   });
-//   userRealm.write(() => {
-//     user.interestedEvents = allEvents;
-//   })
-//   dispatch({
-//     type: actionTypes.UPDATE_INTERESTED_EVENTS,
-//     saved,
-//   });
-// };

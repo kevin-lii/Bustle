@@ -3,36 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>618597421919-ptnj4sb3du61j06v2o6i0239ldakcnks.apps.googleusercontent.com</string>
+	<string>797486470835-kgjam7pvr4l91kk59p926nvfum5n09lm.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.618597421919-ptnj4sb3du61j06v2o6i0239ldakcnks</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>618597421919-m40it92m5kg0tsofsj8mbua27mm46m7g.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.797486470835-kgjam7pvr4l91kk59p926nvfum5n09lm</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBCsjrB7hUpM28VxeN67iuexISi-ABMKoY</string>
+	<string>AIzaSyDpv3rN37-IsZSEnZtdNT6bKWDztiu8V30</string>
 	<key>GCM_SENDER_ID</key>
-	<string>618597421919</string>
+	<string>797486470835</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.bustle.app</string>
 	<key>PROJECT_ID</key>
-	<string>bustle-31c86</string>
+	<string>bustleapp</string>
 	<key>STORAGE_BUCKET</key>
-	<string>bustle-31c86.appspot.com</string>
+	<string>bustleapp.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:618597421919:ios:e938383c8dfad64d</string>
+	<string>1:797486470835:ios:504ea9ee92da412ac3c2c6</string>
 	<key>DATABASE_URL</key>
-	<string>https://bustle-31c86.firebaseio.com</string>
+	<string>https://bustleapp-35fe0.firebaseio.com</string>
 </dict>
 </plist>

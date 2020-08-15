@@ -66,6 +66,7 @@ export default function Icons({
           style={style}
         ></Foundation>
       );
+    case "MaterialCommunity":
     case "MaterialIcons":
       return (
         <MaterialIcons

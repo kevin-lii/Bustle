@@ -1,14 +1,25 @@
 import React from "react";
-
 import { Picker, Text, View } from "react-native-ui-lib";
 
-import { Theme, gradeLevels } from "../../global/constants";
+import { Theme } from "../../global/constants";
 
-export default ({ value, onChange, size = "large", underline }) => (
+export default ({
+  value,
+  onChange,
+  size = "large",
+  underline,
+  showSearch,
+  data,
+  placeholder,
+}) => (
   <Picker
     containerStyle={underline && { flex: 1 }}
     onChange={(v) => onChange(v.value)}
     value={value}
+    showSearch={showSearch}
+    listProps={{
+      keyboardShouldPersistTaps: "always",
+    }}
     renderPicker={(v) => (
       <View
         paddingB-13
@@ -24,13 +35,13 @@ export default ({ value, onChange, size = "large", underline }) => (
           style={{ fontSize: size === "large" ? 30 : 16 }}
           color={v ? null : Theme.grey}
         >
-          {"Class of " + v || "Year"}
+          {v || placeholder}
         </Text>
       </View>
     )}
   >
-    {gradeLevels.map((grade, i) => (
-      <Picker.Item label={"Class of " + grade} value={grade} key={i} />
+    {data.map((item, i) => (
+      <Picker.Item label={item} value={item} key={i} />
     ))}
   </Picker>
 );

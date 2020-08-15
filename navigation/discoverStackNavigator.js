@@ -3,13 +3,19 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Profile from "../screens/Profile";
 import EventDetail from "../screens/Detail/EventDetail";
-import SocialInfo from "../screens/Profile/SocialInfo";
+import Discover from "../screens/Discover/DiscoverUsers";
+import FeedHeader from "../components/Header/FeedHeader";
 
 const Stack = createStackNavigator();
 
-export default function ProfileNavigator() {
+export default function DiscoverNavigator() {
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="search"
+        component={Discover}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="profile"
         component={Profile}
@@ -20,11 +26,6 @@ export default function ProfileNavigator() {
       <Stack.Screen
         name="event"
         component={EventDetail}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="info"
-        component={SocialInfo}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

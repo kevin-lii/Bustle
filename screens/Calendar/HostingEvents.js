@@ -24,28 +24,20 @@ class HostedFeed extends Component {
       }
     };
     return (
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          style={styles.scrollView}
-          data={hostedEvents}
-          renderItem={({ item }) => {
-            return (
-              <EventDetail
-                event={item}
-                navigation={navigation}
-                map
-                edit
-                trash
-              />
-            );
-          }}
-          keyExtractor={(item) => item._id.toString()}
-          ListEmptyComponent={() => (
-            <Text marginT-10>You have no hosted events.</Text>
-          )}
-          ListFooterComponent={renderFooter}
-        />
-      </SafeAreaView>
+      <FlatList
+        style={styles.scrollView}
+        data={hostedEvents}
+        renderItem={({ item }) => {
+          return (
+            <EventDetail event={item} navigation={navigation} map edit trash />
+          );
+        }}
+        keyExtractor={(item) => item._id.toString()}
+        ListEmptyComponent={() => (
+          <Text marginT-10>You have no hosted events.</Text>
+        )}
+        ListFooterComponent={renderFooter}
+      />
     );
   }
 }

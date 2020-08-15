@@ -11,7 +11,9 @@ import { Theme } from "../global/constants";
 import FeedHeader from "../components/Header/FeedHeader";
 import EventStackNavigator from "./eventStackNavigator";
 import CalendarStackNavigator from "./calendarStackNavigator";
+import DiscoverStackNavigator from "./discoverStackNavigator";
 import ProfileNavigator from "./profileNavigator";
+import Icons from "../components/Image/Icons";
 
 const CustomTabRouter = (options) => {
   const router = TabRouter(options);
@@ -114,14 +116,28 @@ export default function TabNavigator({ route }) {
               <FeedHeader
                 navigation={navigation}
                 text="Explore Events"
-                filterable
+                filterable="eventfilters"
               />
             );
           },
           tabBarIcon: ({ color, size }) => (
-            <Icon name="search" size={size} color={color} />
+            <Icons
+              icon="home"
+              type="MaterialCommunity"
+              size={30}
+              color={color}
+            />
           ),
           tabBarVisible: showTabs,
+        }}
+      />
+      <Tab.Screen
+        name="discover"
+        component={DiscoverStackNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icons icon="search" type="Font" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen

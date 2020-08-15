@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-native-ui-lib";
 import { connect } from "react-redux";
-import { ObjectId } from "bson";
 
 import { Theme } from "../../global/constants";
 import Icons from "../Image/Icons";

@@ -4,6 +4,7 @@ import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { connect } from "react-redux";
+import moment from "moment";
 
 import Category from "./components/Category";
 import DateTime from "./components/DateTimeInput";
@@ -70,10 +71,19 @@ class EventCreate extends React.Component {
       stateCopy.startDate.setTime(this.state.date.getTime());
       stateCopy.startDate.setHours(this.state.time.getHours());
       stateCopy.startDate.setMinutes(this.state.time.getMinutes());
+      stateCopy.endDate = new Date();
       if (this.state.endDate && this.state.endTime) {
         stateCopy.endDate.setTime(this.state.endDate.getTime());
         stateCopy.endDate.setHours(this.state.endTime.getHours());
         stateCopy.endDate.setMinutes(this.state.endTime.getMinutes());
+        stateCopy.endDate.setSeconds(0);
+      } else {
+        const tempDate = new Date();
+        tempDate.setDate(this.state.date.getDate() + 1);
+        stateCopy.endDate.setTime(tempDate.getTime());
+        stateCopy.endDate.setHours(this.state.time.getHours());
+        stateCopy.endDate.setMinutes(this.state.time.getMinutes());
+        stateCopy.endDate.setSeconds(0);
       }
       stateCopy.host = user;
       delete stateCopy.endTime;
@@ -96,10 +106,8 @@ class EventCreate extends React.Component {
 
   validateSubmission() {
     const errors = [];
-    const { name, endDate, endTime, link, location } = this.state;
+    const { name, link, location } = this.state;
     if (!name) errors.push("Event name required");
-    if (!endDate && endTime) errors.push("End date required");
-    if (endDate && !endTime) errors.push("End time required");
     if (link && !validateURL(link)) errors.push("Invalid link");
     if (!link && !location) errors.push("Link or location required");
     if (errors.length > 0) return Alert.alert("Error", errors.join("\n"));
@@ -157,7 +165,7 @@ class EventCreate extends React.Component {
                 onTime={(time) => this.setState({ time })}
               />
             </View>
-            <View marginL-35 marginT-15 marginB-20>
+            <View marginL-35 marginT-15>
               <DateTime
                 date={this.state.endDate}
                 time={this.state.endTime}
@@ -166,16 +174,20 @@ class EventCreate extends React.Component {
                 onTime={(endTime) => this.setState({ endTime })}
               />
             </View>
+            <Text marginH-5 marginB-20 text80>
+              **If no end date is set, events are set to end 24 hours after the
+              start date.
+            </Text>
 
-            <ToggleRow
+            {/* <ToggleRow
               icon={<Icons icon="desktop" size={iconSize - 3} />}
               label="Virtual Event"
               value={this.state.virtual}
               size={40}
               onChange={(virtual) => this.setState({ virtual })}
-            />
+            /> */}
 
-            <View row marginT-30 marginB-10>
+            <View row marginT-10 marginB-10>
               <View marginR-10>
                 <Icons
                   icon={this.state.virtual ? "link" : "map-marker-alt"}

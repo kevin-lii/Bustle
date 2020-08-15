@@ -15,20 +15,28 @@ export default ({ onDate, onTime, date, time, endTime }) => {
 
   const setDate = (event, value) => {
     if (Platform.OS !== "android" || event.type !== "dismissed") onDate(value);
-    setModal(null);
+    if (Platform.OS === "android") setModal(null);
   };
   const setTime = (event, value) => {
     if (Platform.OS !== "android" || event.type !== "dismissed") onTime(value);
-    setModal(null);
+    if (Platform.OS == "android") setModal(null);
   };
 
   const Picker = ({ time, value }) =>
     Platform.OS == "ios" ? (
-      <Modal isVisible={true}>
+      <Modal
+        isVisible={true}
+        onBackdropPress={() => {
+          setModal(null);
+        }}
+        onBackButtonPress={() => {
+          setModal(null);
+        }}
+      >
         <View style={styles.container}>
           <View style={styles.innerContainer}>
             <TouchableOpacity>
-              <Text style={{ color: "blue" }} onPress={time ? onTime : onDate}>
+              <Text style={{ color: "blue" }} onPress={() => setModal(null)}>
                 Done
               </Text>
             </TouchableOpacity>
@@ -98,8 +106,6 @@ const styles = StyleSheet.create({
   innerContainer: {
     justifyContent: "flex-end",
     alignItems: "flex-end",
-    borderBottomColor: "grey",
-    borderBottomWidth: 0.5,
     padding: 15,
   },
   text: {

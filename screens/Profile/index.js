@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ImageBackground, StyleSheet } from "react-native";
+import _ from "lodash";
+import { StyleSheet, ScrollView } from "react-native";
 import { View, Text, TouchableOpacity } from "react-native-ui-lib";
 import { TabView, TabBar } from "react-native-tab-view";
 import { connect } from "react-redux";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeArea } from "react-native-safe-area-context";
 
 import Icons from "../../components/Image/Icons";
 import AvatarButton from "../../components/Buttons/AvatarButton";
@@ -12,6 +13,9 @@ import ProfileHosted from "./Subtabs/ProfileHosted";
 import ActionButton from "../../components/Buttons/ActionButton";
 import FormTypes from "../../components/Form/FormTypes";
 import IconButton from "../../components/Buttons/IconButton";
+import { SocialIcon } from "react-native-elements";
+import { trimString } from "../../global/utils";
+import { openURL } from "../../global/utils";
 
 import { Theme } from "../../global/constants";
 import globalStyles from "../../global/styles";
@@ -19,15 +23,24 @@ import globalStyles from "../../global/styles";
 function Profile({ navigation, route, currentUser, auth }) {
   const isForeign =
     route.params?.user && route.params.user._id.toString() !== auth.id;
-  const [foreignUser, setUser] = useState(route.params?.user);
-
+  const [user, setUser] = useState(isForeign ? route.params.user : currentUser);
+  const [loading, setLoading] = useState(0);
   const [index, setIndex] = useState(0);
+  useEffect(() => {
+    navigation.addListener(
+      "focus",
+      () => {
+        setUser(isForeign ? route.params.user : currentUser);
+        setLoading(loading + 1);
+      },
+      []
+    );
+  });
   const routes = [
     { key: "events", title: "Past" },
     { key: "hosted", title: "Hosted" },
   ];
 
-  const user = isForeign ? foreignUser : currentUser;
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "hosted":
@@ -51,97 +64,175 @@ function Profile({ navigation, route, currentUser, auth }) {
     }
   };
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={{ ...styles.imageContainer, height: 150 }}>
-        <ImageBackground
-          source={user.coverPhotoURL ? { uri: user.coverPhotoURL } : null}
-          style={styles.image}
-        >
-          <View
-            flex
-            row
-            spread
-            paddingT-15
-            paddingH-20
-            style={{ width: "100%" }}
-          >
-            {route.params?.user && (
-              <IconButton
-                containerStyle={styles.iconCircle}
-                type="MaterialIcons"
-                icon="arrow-left"
-                color={Theme.primary}
-                size={30}
-                onPress={navigation.goBack}
-              />
-            )}
-            {!isForeign && (
-              <View
-                center
-                absT
-                absR
-                marginT-15
-                marginR-15
-                style={styles.iconCircle}
-              >
-                <TouchableOpacity
-                  onPress={() => navigation.navigate(FormTypes.PROFILE_EDIT)}
-                >
-                  <Icons
-                    icon="player-settings"
-                    type="Fontisto"
-                    size={25}
-                    color={Theme.primary}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-        </ImageBackground>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 15,
-          marginTop: -50,
-          // backgroundColor: "white"
-        }}
-      >
-        <AvatarButton
-          photoURL={user.photoURL}
-          name={user.displayName}
-          size={150}
-          borderColor={Theme.primary}
-          borderWidth={2}
-        />
+    <ScrollView
+      style={{
+        ...styles.container,
+        marginTop: useSafeArea().top,
+      }}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={{ backgroundColor: "white" }}>
         <View
+          flex
+          row
+          spread
+          centerV
           style={{
-            marginLeft: "10%",
-            width: "40%",
-            alignContent: "center",
-            marginTop: 60,
+            width: "100%",
+            paddingTop: 0,
+            paddingTop: 15,
+            paddingHorizontal: 15,
+            marginBottom: 10,
           }}
         >
-          <Text
-            numberOfLines={1}
-            text60
-            style={{ fontWeight: "bold", alignSelf: "center" }}
-          >
-            {user.displayName}
-          </Text>
-          <ActionButton
-            text="Social Info"
-            onPress={() => navigation.navigate("socialinfo", { user })}
-            primary
-            style={{
-              width: "100%",
-              borderRadius: 50,
-              borderWidth: 0,
-              marginVertical: 10,
-            }}
-          />
+          {route.params?.user ? (
+            <IconButton
+              containerStyle={styles.iconCircle}
+              type="MaterialIcons"
+              icon="arrow-left"
+              color={Theme.primary}
+              size={30}
+              onPress={navigation.goBack}
+            />
+          ) : (
+            <View />
+          )}
+          {!isForeign && (
+            <View center style={styles.iconCircle}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(FormTypes.PROFILE_EDIT)}
+              >
+                <Icons
+                  icon="player-settings"
+                  type="Fontisto"
+                  size={25}
+                  color={Theme.primary}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
+        <View style={{ paddingHorizontal: 20 }}>
+          <View row spread>
+            <View centerV style={{ marginBottom: 10 }}>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 30, paddingBottom: 5 }}
+              >
+                {user.displayName}
+              </Text>
+              {Boolean(user.major) && (
+                <Text
+                  style={{
+                    fontSize: 15,
+                  }}
+                >
+                  <Text maxLength={20} style={{ fontWeight: "bold" }}>
+                    {" "}
+                    Major:{" "}
+                  </Text>{" "}
+                  {user.major}
+                </Text>
+              )}
+
+              {Boolean(user.year) && (
+                <Text
+                  style={{
+                    fontSize: 15,
+                  }}
+                >
+                  <Text style={{ fontWeight: "bold" }}> Year: </Text>{" "}
+                  {user.year}
+                </Text>
+              )}
+              {Boolean(user.location) && (
+                <Text
+                  style={{
+                    fontSize: 15,
+                    marginLeft: 5,
+                  }}
+                >
+                  <Text style={{ fontWeight: "bold" }}>Location: </Text>{" "}
+                  {trimString(user.location, 25)}
+                </Text>
+              )}
+            </View>
+            <View>
+              <AvatarButton
+                photoURL={user.photoURL}
+                name={user.displayName}
+                size={100}
+                borderColor={Theme.primary}
+                borderWidth={2}
+              />
+            </View>
+          </View>
+          {Boolean(user.classes?.length > 0) && (
+            <Text
+              style={{
+                marginBottom: 5,
+                fontSize: 17.5,
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Classes: </Text>{" "}
+              {user.classes.join(", ")}
+            </Text>
+          )}
+          {/* <View style={{ flexDirection: "row", marginLeft: 15 }}>
+              <ActionButton
+                text="Interested in"
+                primary
+                size="small"
+                style={{ width: "40%" }}
+              />
+              <ActionButton
+                text="I think you're.."
+                primary
+                size="small"
+                style={{ width: "40%" }}
+              />
+            </View> */}
+          <View row centerV>
+            {Boolean(user.instagram) && (
+              <SocialIcon
+                type="instagram"
+                onPress={() => openURL(user.instagram, "instagram")}
+              ></SocialIcon>
+            )}
+            {Boolean(user.snapchat) && (
+              <ActionButton
+                backgroundColor="#FFFC00"
+                onPress={() => openURL(user.snapchat, "snapchat")}
+                round
+                borderRadius={50}
+                style={{
+                  borderWidth: 0,
+                  height: 55,
+                  width: 55,
+                  marginHorizontal: 5,
+                }}
+              >
+                <Icons
+                  type="Font5"
+                  icon="snapchat-ghost"
+                  size={25}
+                  color="white"
+                />
+              </ActionButton>
+            )}
+            {Boolean(user.twitter) && (
+              <SocialIcon
+                type="twitter"
+                onPress={() => openURL(user.twitter, "twitter")}
+              ></SocialIcon>
+            )}
+            {Boolean(user.linkedin) && (
+              <SocialIcon
+                type="linkedin"
+                onPress={() => openURL(user.linkedin, "linkedin")}
+              ></SocialIcon>
+            )}
+          </View>
         </View>
       </View>
       <TabView
@@ -159,7 +250,7 @@ function Profile({ navigation, route, currentUser, auth }) {
         onIndexChange={setIndex}
         lazy
       />
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 

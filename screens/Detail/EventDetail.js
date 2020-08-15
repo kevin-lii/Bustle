@@ -14,29 +14,40 @@ import ActionButton from "../../components/Buttons/ActionButton";
 import FormTypes from "../../components/Form/FormTypes";
 import IconButton from "../../components/Buttons/IconButton";
 import ProfileLink from "../../components/Buttons/ProfileLink";
-import EventModel from "../../models/Event";
 import { saveEvent, removeEvent } from "../../store/actions";
 import { Theme } from "../../global/constants";
 import globalStyles from "../../global/styles";
 
-const Description = ({ event }) => (
-  <View style={{ padding: 10 }}>
-    <HyperLink linkDefault>
-      <Text text65>{event.description}</Text>
-    </HyperLink>
-  </View>
-);
+const Description = ({ event }) => {
+  if (event.description)
+    return (
+      <View style={{ padding: 10 }}>
+        <HyperLink linkDefault>
+          <Text text65>{event.description}</Text>
+        </HyperLink>
+      </View>
+    );
+  else
+    return (
+      <View centerV centerH flex padding-10>
+        <Text text65>There is no description for this event</Text>
+      </View>
+    );
+};
 
 const Attendees = ({ navigation, event }) => {
-  return (
-    <View>
-      {event.attendees?.map((user, i) => (
-        <View centerV padding-10 key={i}>
-          <ProfileLink navigation={navigation} user={user} size={35} key={i} />
-        </View>
-      ))}
-    </View>
-  );
+  if (event.attendees?.length > 0)
+    return event.attendees?.map((user, i) => (
+      <View centerV padding-10 key={i}>
+        <ProfileLink navigation={navigation} user={user} size={35} key={i} />
+      </View>
+    ));
+  else
+    return (
+      <View centerV centerH flex padding-10>
+        <Text text65>Be the first to interest this event!</Text>
+      </View>
+    );
 };
 
 const EventDetail = function ({
@@ -57,11 +68,7 @@ const EventDetail = function ({
   const isHost = user._id.toString() === event.host._id.toString();
 
   useEffect(() => {
-    let object;
-    if (true) object = EventModel.getOne(userRealm, route.params?.event?._id);
-    // else object = EventModel.getOne(realm, route.params?.event?._id);
-    setEvent(object);
-    object.addListener((obj, change) => {
+    event.addListener((obj, change) => {
       if (!_.values(change).every(_.isEmpty)) {
         setEvent(obj);
         setLoading(loading + 1);
@@ -88,8 +95,9 @@ const EventDetail = function ({
       onPress={() => {
         Linking.openURL(event.link);
         if (
-          !user.pastEvents.filter((x) => x.toString() === event._id.toString())
-            .length
+          !user.pastEvents.filter(
+            (x) => x._id.toString() === event._id.toString()
+          ).length > 0
         ) {
           userRealm.write(() => {
             user.pastEvents.push(event);
@@ -138,7 +146,7 @@ const EventDetail = function ({
 
     if (!isHost)
       text = <Text center>Link available when the event starts.</Text>;
-  } else if (event.endDate && new Date() > event.endDate) {
+  } else if (event.ended) {
     button = null;
     text = <Text center>Event Ended.</Text>;
   } else if (isHost) {

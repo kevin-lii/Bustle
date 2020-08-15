@@ -21,7 +21,7 @@ export default ({ host, onToggle }) => {
     >
       <Text
         color={Theme.primary}
-        style={{ fontSize: 24, fontWeight: "bold", marginTop: padTop }}
+        style={{ fontSize: 28, fontFamily: "Roboto-Medium", marginTop: padTop }}
       >
         {host ? "Events Hosting" : "Saved Events"}
       </Text>

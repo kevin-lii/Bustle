@@ -1,26 +1,77 @@
 import React from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  TouchableNativeFeedback,
-} from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { View, Text, Card, Image } from "react-native-ui-lib";
+import { Badge } from "react-native-elements";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
-import Url from "url";
 
 import CategoriesIcon from "../Image/CategoriesIcon";
 import CardIcons from "./components/CardIcons";
 import { trimString } from "../../global/utils";
 import Icons from "../Image/Icons";
-import { Theme } from "../../global/constants";
 
 const radius = 12;
 
 export default ({ children, event, map, edit, trash, rsvp }) => {
   const navigation = useNavigation();
   const startDate = moment(event.startDate);
+  let badge;
+  if (
+    event.startDate < new Date() &&
+    (!event.ended || (event.endDate !== null && event.endDate > new Date()))
+  ) {
+    badge = (
+      <View row absT padding-10 spread style={{ width: "100%" }}>
+        <Badge value="Live" status="error" />
+        <View
+          row
+          style={{
+            justifyContent: "flex-end",
+          }}
+        >
+          <Icons
+            icon="fire"
+            type="MaterialCommunity"
+            color="#FF7100"
+            size={20}
+          />
+          <Text
+            white
+            style={{
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            ({event.attendees.length} Interested)
+          </Text>
+        </View>
+      </View>
+    );
+  } else {
+    badge = (
+      <View
+        absT
+        padding-10
+        row
+        style={{
+          justifyContent: "flex-end",
+          width: "100%",
+        }}
+      >
+        <Icons icon="fire" type="MaterialCommunity" color="#FF7100" size={20} />
+        <Text
+          style={{
+            fontSize: 15,
+            color: "white",
+            fontWeight: "bold",
+          }}
+        >
+          ({event.attendees.length} Interested)
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <TouchableOpacity onPress={() => navigation.push("event", { event })}>
@@ -35,6 +86,7 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
           colors={["#33333360", "#333333f0"]}
           style={styles.gradient}
         />
+        {badge}
         <View row absB centerV spread padding-10>
           <View marginR-15>
             <CategoriesIcon type={event.category} size={30} color="white" />
@@ -44,7 +96,7 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
               {event.cancelled ? "Cancelled" : startDate.calendar()}
             </Text>
             <Text style={styles.name}>{trimString(event.name, 62)}</Text>
-            <View row centerV>
+            {/* <View row centerV>
               <View marginR-10>
                 <Icons
                   icon="desktop"
@@ -57,7 +109,7 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
                   ? Url.parse(event.link).hostname
                   : trimString(event.location.description, 15)}
               </Text>
-            </View>
+            </View> */}
           </View>
           <CardIcons
             navigation={navigation}

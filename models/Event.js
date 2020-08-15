@@ -25,6 +25,7 @@ export default class Event {
     this._partition = partition;
     this._id = id;
     this.name = name;
+    this.ended = false;
     this.cancelled = false;
     this.category = category;
     this.attendees = [];
@@ -47,6 +48,7 @@ export default class Event {
       _partition: "string",
       name: "string",
       cancelled: "bool",
+      ended: "bool",
       category: "string",
       description: "string",
       photoURL: "string",
@@ -79,20 +81,17 @@ export default class Event {
     }
     if (filters.tags?.length) {
       const filter = filters.tags.map((tag) => `"${tag}" in tags`).join(" OR ");
-      å;
       query = query.filtered(filter);
     }
-    if (filters.active)
+    if (filters.active) {
       query = query
         .filtered(
-          "startDate >= " +
+          "ended == false AND startDate >= " +
             moment().subtract(1, "d").format("YYYY-MM-DD@HH:MM:SS")
         )
-        .filtered(
-          "endDate == null OR endDate < " +
-            moment().format("YYYY-MM-DD@HH:MM:SS")
-        )
         .filtered("cancelled == false");
+      console.log(query);
+    }
     if (filters.live) query = query.filtered("ended == false");
     if (filters.orderBy) query = query.sorted([[filters.orderBy, false]]);
     return query;
@@ -111,8 +110,8 @@ export default class Event {
   static async create(realm, data) {
     if (!data.name) throw new Error("Name not provided");
     realm.write(async () => {
+      const id = new ObjectId();
       if (data.image?.data) {
-        const id = new ObjectId();
         const s3bucket = new S3({
           accessKeyId: "AKIART42PSEQKVT24D62",
           secretAccessKey: "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",
@@ -192,7 +191,6 @@ export default class Event {
           if (err) {
             console.log("error in callback");
           }
-          console.log("Response URL : " + data.Location);
           realm.write(() => {
             event.photoURL = data.Location + `?time=${new Date()}`;
           });
@@ -210,6 +208,7 @@ export default class Event {
   static end(realm, event) {
     realm.write(() => {
       event.endDate = new Date();
+      event.ended = true;
     });
   }
 

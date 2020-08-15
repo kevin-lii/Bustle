@@ -31,7 +31,7 @@ const EventFilters = ({ eventFilters, setEventFilters }) => {
           }))}
         />
         <Text text70 marginT-10 color={Theme.grey}>
-          Tags{console.log(allEventTags)}
+          Tags
         </Text>
         <Tokenizer
           onChange={(values) =>

@@ -3,7 +3,15 @@ import { Picker, TagsInput } from "react-native-ui-lib";
 
 import Pill from "../Buttons/PillButton";
 
-export default ({ onChange, value, data, size, color = "white" }) => {
+export default ({
+  onChange,
+  value,
+  data,
+  size,
+  color = "white",
+  placeholder = "Add",
+  noMargin,
+}) => {
   const picker = useRef();
   const getLabel = (value) => {
     if (value instanceof Array) {
@@ -22,16 +30,16 @@ export default ({ onChange, value, data, size, color = "white" }) => {
           hideUnderline
           text40
           editable={false}
-          containerStyle={{ marginTop: 4.75, flexWrap: "wrap" }}
+          containerStyle={{ marginTop: noMargin ? 0 : 4.75, flexWrap: "wrap" }}
           getLabel={getLabel}
-          tags={[{ label: "Add" }, ...v]}
+          tags={[{ label: placeholder || "Add" }, ...v]}
           renderTag={({ label }) => (
             <Pill
               fontSize={size}
               label={label}
               color={color}
-              active={label !== "Add"}
-              icon={label === "Add" ? "plus" : "times"}
+              active={label !== placeholder}
+              icon={label === placeholder ? "plus" : "times"}
             />
           )}
           onTagPress={(index) => {
@@ -46,8 +54,12 @@ export default ({ onChange, value, data, size, color = "white" }) => {
         keyboardShouldPersistTaps: "always",
       }}
     >
-      {data.map(({ label, value }, i) => (
-        <Picker.Item label={label} value={value} key={i} />
+      {data.map((item) => (
+        <Picker.Item
+          label={item?.label || item}
+          value={item?.value || item}
+          key={item}
+        />
       ))}
     </Picker>
   );

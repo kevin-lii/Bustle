@@ -7,7 +7,7 @@ import IconButton from "../Buttons/IconButton";
 
 import { Theme } from "../../global/constants";
 
-export default ({ navigation, text, filterable }) => {
+export default ({ navigation, text, filterable = "eventfilters" }) => {
   const safeTop = useSafeArea().top;
   return (
     <View
@@ -34,11 +34,11 @@ export default ({ navigation, text, filterable }) => {
         centerV
         style={{ marginTop: safeTop / 2, height: "100%", paddingRight: 10 }}
       >
-        {filterable && (
+        {Boolean(filterable) && (
           <IconButton
             type="Font"
             icon="sliders-h"
-            onPress={() => navigation.push("eventfilters")}
+            onPress={() => navigation.push(filterable)}
             size={20}
             color={Theme.primary}
             containerStyle={{ height: "100%", marginHorizontal: 10 }}

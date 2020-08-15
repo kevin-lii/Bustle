@@ -6,9 +6,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import UserModel from "../../models/User";
 import GradePicker from "../../components/Form/GradePicker";
+import Picker from "../../components/Form/Picker";
 import ImageUploader from "../../components/Form/ImageUploader";
 import OnboardingScreen from "./OnboardingScreen";
 import { updateUser } from "../../store/actions";
+import { majors } from "../../global/constants";
 
 import { checkName } from "../../global/utils";
 
@@ -132,11 +134,12 @@ class NewUserFlow extends React.Component {
               value={this.state.year}
               onChange={(year) => this.setState({ year })}
             />
-            <TextInput
-              placeholder="Major"
-              style={{ fontSize: 30 }}
-              textAlign="center"
-              onChangeText={(major) => this.setState({ major, error: "" })}
+            <Picker
+              value={this.state.major}
+              onChange={(major) => this.setState({ major })}
+              data={majors}
+              placeholder={"Major"}
+              showSearch
             />
           </OnboardingScreen>
         </Carousel>

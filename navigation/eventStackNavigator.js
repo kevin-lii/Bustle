@@ -17,7 +17,11 @@ export default function EventStackNavigator() {
         options={{
           header: ({ scene, previous, navigation }) => {
             return (
-              <FeedHeader navigation={navigation} text="bustle" filterable />
+              <FeedHeader
+                navigation={navigation}
+                text="Events"
+                filterable="eventfilters"
+              />
             );
           },
         }}

@@ -40,7 +40,7 @@ const user = (state, action) => {
     action.type === actionTypes.LOGOUT ||
     action.type === actionTypes.REGISTER_APP
   )
-    return {};
+    return [];
   return state || null;
 };
 
@@ -51,7 +51,11 @@ const auth = (state, action) => {
 };
 
 const app = (state, action) => {
-  if (action.type === actionTypes.REGISTER_APP) return action.app;
+  if (
+    action.type === actionTypes.REGISTER_APP ||
+    action.type === actionTypes.REGISTER_APP_LOGIN
+  )
+    return action.app;
   return state || null;
 };
 
@@ -80,11 +84,11 @@ const savedEvents = (state, action) => {
   return state || [];
 };
 
-// const sessionKey = (state, action) => {
-//   if (action.type === actionTypes.LOGIN) return action.sessionKey;
-//   if (action.type === actionTypes.LOGOUT) return null;
-//   return state || null;
-// };
+const usersFilters = (state, action) => {
+  if (action.type === actionTypes.GET_USER) return action.usersFilters;
+  if (action.type === actionTypes.LOGOUT) return [];
+  return state || [];
+};
 
 const sessionID = (state, action) => {
   if (action.type === actionTypes.LOGIN) return action.sessionID;
@@ -101,7 +105,7 @@ export default combineReducers({
   app,
   auth,
   userRealm,
-  // sessionKey,
+  usersFilters,
   realm,
   saved,
   savedEvents,
