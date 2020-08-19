@@ -21,7 +21,8 @@ const CardIcons = ({
   user,
   hostedEvents,
 }) => {
-  const hostedIDs = hostedEvents?.map((item) => item._id.toString());
+  const hostedIDs =
+    Boolean(edit) && hostedEvents?.map((item) => item._id.toString());
   return (
     <View style={{ flexDirection: "row-reverse" }} spread>
       {trash && user._id.toString() === event.host._id.toString() && (

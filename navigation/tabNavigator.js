@@ -124,7 +124,7 @@ export default function TabNavigator({ route }) {
             <Icons
               icon="home"
               type="MaterialCommunity"
-              size={30}
+              size={35}
               color={color}
             />
           ),

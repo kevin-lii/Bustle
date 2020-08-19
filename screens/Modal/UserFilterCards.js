@@ -6,7 +6,7 @@ import WithOverlayBottomSheet from "../../components/Container/WithOverlayBottom
 
 export default ({ navigation, route }) => (
   <WithOverlayBottomSheet
-    height={400}
+    height={600}
     navigation={navigation}
     sheetContent={<UserFilters />}
   />

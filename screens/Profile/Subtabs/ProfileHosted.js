@@ -21,7 +21,7 @@ function ProfileHosted({
   useEffect(() => {
     if (!isCurrentUser) {
       const getHostedEvents = Array.from(
-        UserModel.get(realm, user._id).hostedEvents.values()
+        UserModel.get(realm, user._id).hostedEvents?.values()
       );
       setHosted(getHostedEvents);
     } else {
@@ -45,7 +45,7 @@ function ProfileHosted({
   } else {
     content = (
       <View centerV centerH style={styles.emptyView}>
-        <Text text65 style={{ fontWeight: "bold" }}>
+        <Text text65 style={{ fontWeight: "bold", textAlign: "center" }}>
           {isCurrentUser ? "You are " : user.displayName + " is "}not hosting
           any events.
         </Text>
@@ -68,7 +68,8 @@ const styles = StyleSheet.create({
 export default connect(
   (state) => ({
     hostedEvents: state.hostedEvents,
-    realm: state.realm,
+    // realm: state.realm,
+    realm: state.userRealm,
   }),
   {
     getHostedEvents,

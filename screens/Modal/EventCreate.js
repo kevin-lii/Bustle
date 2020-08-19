@@ -78,11 +78,10 @@ class EventCreate extends React.Component {
         stateCopy.endDate.setMinutes(this.state.endTime.getMinutes());
         stateCopy.endDate.setSeconds(0);
       } else {
-        const tempDate = new Date();
-        tempDate.setDate(this.state.date.getDate() + 1);
+        const tempDate = moment(stateCopy.startDate).add(2, "h").toDate();
         stateCopy.endDate.setTime(tempDate.getTime());
-        stateCopy.endDate.setHours(this.state.time.getHours());
-        stateCopy.endDate.setMinutes(this.state.time.getMinutes());
+        stateCopy.endDate.setHours(tempDate.getHours());
+        stateCopy.endDate.setMinutes(tempDate.getMinutes());
         stateCopy.endDate.setSeconds(0);
       }
       stateCopy.host = user;
@@ -106,10 +105,12 @@ class EventCreate extends React.Component {
 
   validateSubmission() {
     const errors = [];
-    const { name, link, location } = this.state;
+    const { name, link, location, endDate, endTime } = this.state;
     if (!name) errors.push("Event name required");
     if (link && !validateURL(link)) errors.push("Invalid link");
-    if (!link && !location) errors.push("Link or location required");
+    if (!link && !location) errors.push("Link  required");
+    if (endDate && !endTime) errors.push("Add an end time");
+    if (endTime && !endDate) errors.push("Add an end date");
     if (errors.length > 0) return Alert.alert("Error", errors.join("\n"));
 
     this.submit(Boolean(this.props.route.params?.event));
@@ -175,8 +176,8 @@ class EventCreate extends React.Component {
               />
             </View>
             <Text marginH-5 marginB-20 text80>
-              **If no end date is set, events are set to end 24 hours after the
-              start date.
+              **If no end date is set, events are set to end 2 hours after the
+              set start date.
             </Text>
 
             {/* <ToggleRow

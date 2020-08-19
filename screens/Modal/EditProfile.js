@@ -136,21 +136,8 @@ class EditProfile extends React.Component {
                   label: c,
                   value: c,
                 }))}
-                placeholder={"Add Classes"}
+                placeholder={"Add Courses"}
                 noMargin
-              />
-            </View>
-          </View>
-          <View row marginT-25 style={styles.section}>
-            <View marginL-4 marginR-15>
-              <Icons icon="snapchat-ghost" size={iconSize - 2} type="Font" />
-            </View>
-            <View flex>
-              <TextField
-                placeholder="Snapchat Username"
-                enableErrors={false}
-                value={this.state.snapchat}
-                onChangeText={(snapchat) => this.setState({ snapchat })}
               />
             </View>
           </View>
@@ -164,6 +151,19 @@ class EditProfile extends React.Component {
                 enableErrors={false}
                 value={this.state.instagram}
                 onChangeText={(instagram) => this.setState({ instagram })}
+              />
+            </View>
+          </View>
+          <View row marginT-25 style={styles.section}>
+            <View marginL-4 marginR-15>
+              <Icons icon="snapchat-ghost" size={iconSize - 2} type="Font" />
+            </View>
+            <View flex>
+              <TextField
+                placeholder="Snapchat Username"
+                enableErrors={false}
+                value={this.state.snapchat}
+                onChangeText={(snapchat) => this.setState({ snapchat })}
               />
             </View>
           </View>

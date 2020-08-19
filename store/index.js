@@ -10,7 +10,7 @@ export default function configureStore() {
     key: "root",
     storage: AsyncStorage,
     // whitelist: ["sessionKey", "sessionID"],
-    whitelist: ["sessionID"],
+    whitelist: ["sessionID", "sessionToken"],
   };
   const persistedReducers = persistReducer(persistConfig, reducers);
   const store = createStore(persistedReducers, {}, applyMiddleware(reduxThunk));

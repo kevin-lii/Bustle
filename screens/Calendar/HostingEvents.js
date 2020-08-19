@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FlatList } from "react-native";
-import { Text } from "react-native-ui-lib";
+import { Text, View } from "react-native-ui-lib";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 
@@ -24,20 +24,32 @@ class HostedFeed extends Component {
       }
     };
     return (
-      <FlatList
-        style={styles.scrollView}
-        data={hostedEvents}
-        renderItem={({ item }) => {
-          return (
-            <EventDetail event={item} navigation={navigation} map edit trash />
-          );
-        }}
-        keyExtractor={(item) => item._id.toString()}
-        ListEmptyComponent={() => (
-          <Text marginT-10>You have no hosted events.</Text>
-        )}
-        ListFooterComponent={renderFooter}
-      />
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          style={styles.scrollView}
+          data={hostedEvents}
+          renderItem={({ item }) => {
+            return (
+              <EventDetail
+                event={item}
+                navigation={navigation}
+                map
+                edit
+                trash
+              />
+            );
+          }}
+          keyExtractor={(item) => item._id.toString()}
+          ListEmptyComponent={() => (
+            <View centerV centerH flex>
+              <Text text60 style={{ fontWeight: "bold" }}>
+                You have no hosted events.
+              </Text>
+            </View>
+          )}
+          ListFooterComponent={renderFooter}
+        />
+      </SafeAreaView>
     );
   }
 }

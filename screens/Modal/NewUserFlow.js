@@ -21,7 +21,7 @@ class NewUserFlow extends React.Component {
     this.state = {
       pageNumber: 0,
       displayName: props.user?.displayName || "",
-      image: {},
+      image: { uri: props.user?.photoURL ? props.user.photoURL : "" },
       coverImage: {},
       major: "",
       year: "",
@@ -47,7 +47,6 @@ class NewUserFlow extends React.Component {
     const data = { ...this.state };
     const { realm, user } = this.props;
     delete data.error;
-    delete data.image;
     delete data.pageNumber;
 
     if (this.check("all")) {
@@ -116,7 +115,7 @@ class NewUserFlow extends React.Component {
             title="Show us what you look like?"
           >
             <ImageUploader
-              onImageSubmit={(image) => this.setState({ image })}
+              onImageSubmit={(res) => this.setState({ image: res })}
               uri={this.state.image.uri}
               borderRadius={100}
               height={150}
@@ -132,11 +131,11 @@ class NewUserFlow extends React.Component {
           >
             <GradePicker
               value={this.state.year}
-              onChange={(year) => this.setState({ year })}
+              onChange={(year) => this.setState({ year, error: "" })}
             />
             <Picker
               value={this.state.major}
-              onChange={(major) => this.setState({ major })}
+              onChange={(major) => this.setState({ major, error: "" })}
               data={majors}
               placeholder={"Major"}
               showSearch

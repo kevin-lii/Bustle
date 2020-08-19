@@ -8,20 +8,22 @@ import appleAuth, {
   AppleAuthRequestOperation,
 } from "@invertase/react-native-apple-authentication";
 import { connect } from "react-redux";
-import Loading from "../../components/Loading";
+import LinearGradient from "react-native-linear-gradient";
 
+import Loading from "../../components/Loading";
 import SecureText from "./components/SecureInput";
 import ActionButton from "../../components/Buttons/ActionButton";
-import Icons from "../../components/Image/Icons";
 import { login } from "../../store/actions";
+import { Theme } from "../../global/constants";
 
 import styles from "./styles";
 
 function Login({ navigation, login, app, route }) {
-  const [email, setEmail] = useState("test@berkeley.edu");
-  const [password, setPassword] = useState("tester");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isReady, setIsReady] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (route.params?.token && route.params?.tokenId) {
@@ -34,13 +36,10 @@ function Login({ navigation, login, app, route }) {
   }, [route.params?.token, route.params?.tokenId]);
 
   async function emailLogin() {
-    try {
-      resetError();
-      const creds = Credentials.emailPassword(email, password);
-      login(creds);
-    } catch (e) {
-      handleError(e);
-    }
+    setLoading(true);
+    resetError();
+    const creds = Credentials.emailPassword(email, password);
+    login(creds, handleError);
   }
 
   async function facebookLogin() {
@@ -56,16 +55,13 @@ function Login({ navigation, login, app, route }) {
     } else {
       const token = await AccessToken.getCurrentAccessToken();
       const credential = Credentials.facebook(token.accessToken);
-      try {
-        login(credential);
-      } catch (e) {
-        handleError(e);
-      }
+      login(credential, handleError);
     }
   }
 
   function handleError(e) {
     setError(e.message);
+    setLoading(false);
   }
 
   function resetError() {
@@ -102,7 +98,7 @@ function Login({ navigation, login, app, route }) {
       // );
       const credential = Credentials.apple(identityToken);
       try {
-        login(credential);
+        login(credential, handleError);
       } catch (e) {
         handleError(e);
       }
@@ -114,74 +110,105 @@ function Login({ navigation, login, app, route }) {
   }
 
   return (
-    <View flex spread style={styles.container}>
-      <View flex centerV>
-        <View centerV style={styles.input}>
+    <LinearGradient
+      colors={["#ffa45b", "rgba(255, 164, 91, 0.54)"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      style={styles.container}
+    >
+      <View flex centerV paddingH-20>
+        <View centerV marginV-10>
+          <View centerH>
+            <Text
+              color="white"
+              text30
+              style={{ fontWeight: "bold", marginVertical: 40 }}
+            >
+              bustle login
+            </Text>
+          </View>
           <TextField
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             autoCapitalize="none"
-          ></TextField>
-        </View>
-        <SecureText placeholder="Password" onChange={setPassword}></SecureText>
-        <Text style={{ color: "red" }}>{error}</Text>
-      </View>
-
-      <View flex centerV>
-        <View style={styles.button}>
-          <ActionButton onPress={emailLogin} text="Login" />
-        </View>
-
-        <View style={styles.button}>
-          <ActionButton
-            backgroundColor="#3B5998"
-            borderColor="#3B5998"
-            onPress={facebookLogin}
-          >
-            <View row centerV>
-              <Icons
-                type="Font"
-                icon="facebook-f"
-                size={15}
-                color="white"
-                style={{ marginRight: 5 }}
-              />
-              <Text text70 color="white">
-                Sign in with Facebook
-              </Text>
-            </View>
-          </ActionButton>
-        </View>
-
-        {Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 13 && (
-          <ActionButton
-            onPress={() => onAppleButtonPress()}
-            backgroundColor="black"
-            borderColor="black"
-          >
-            <View row centerV>
-              <Icons
-                type="Font"
-                icon="apple"
-                size={15}
-                color="white"
-                style={{ marginRight: 5 }}
-              />
-              <Text text70 color="white">
-                Sign in with Apple
-              </Text>
-            </View>
-          </ActionButton>
-        )}
-
-        <View style={styles.button}>
-          <ActionButton
-            onPress={() => navigation.navigate("SignUp")}
-            text="Sign Up"
+            underlineColor="white"
+            textContentType="emailAddress"
+            placeholderTextColor="white"
+            color="white"
+            style={{ width: "100%" }}
           />
+          <SecureText
+            placeholder="Password"
+            onChange={setPassword}
+            color="white"
+          />
+          <Text style={{ color: "red" }}>{error}</Text>
+        </View>
+
+        <View centerV>
+          <View>
+            <ActionButton
+              backgroundColor={Theme.secondary}
+              color="white"
+              onPress={emailLogin}
+              text="Login"
+              disabled={loading}
+            />
+          </View>
+
+          {/* <View style={styles.button}>
+            <ActionButton
+              backgroundColor="#3B5998"
+              borderColor="#3B5998"
+              onPress={facebookLogin}
+            >
+              <View row centerV>
+                <Icons
+                  type="Font"
+                  icon="facebook-f"
+                  size={15}
+                  color="white"
+                  style={{ marginRight: 5 }}
+                />
+                <Text text70 color="white">
+                  Sign in with Facebook
+              </Text>
+              </View>
+            </ActionButton>
+          </View>
+
+          {Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 13 && (
+            <ActionButton
+              onPress={() => onAppleButtonPress()}
+              backgroundColor="black"
+              borderColor="black"
+            >
+              <View row centerV>
+                <Icons
+                  type="Font"
+                  icon="apple"
+                  size={15}
+                  color="white"
+                  style={{ marginRight: 5 }}
+                />
+                <Text text70 color="white">
+                  Sign in with Apple
+              </Text>
+              </View>
+            </ActionButton>
+          )} */}
+
+          <View style={styles.button}>
+            <ActionButton
+              onPress={() => navigation.navigate("SignUp")}
+              backgroundColor={Theme.secondary}
+              color="white"
+              text="Sign Up"
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 

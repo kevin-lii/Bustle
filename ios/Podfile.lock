@@ -357,7 +357,7 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - ReactNativeUiLib (2.0.2):
     - React
-  - RealmJS (10.0.0-beta.9):
+  - RealmJS (10.0.0-beta.7):
     - GCDWebServer
     - React
   - RNAppleAuthentication (0.2.0):
@@ -661,7 +661,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   ReactNativeUiLib: 9883f80a22b855d4a866ceee433d1e24b1014a2a
-  RealmJS: 61689a0aefda5ba30c9f21a447a0348ba4b0cdee
+  RealmJS: f3ad9ffc77069916986ab73c242c2a14ae1be0db
   RNAppleAuthentication: e875711ddda0361c2b7fca28fb6c64cdd94f7968
   RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
   RNCMaskedView: 71fc32d971f03b7f03d6ab6b86b730c4ee64f5b6
@@ -678,6 +678,6 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
 
-PODFILE CHECKSUM: 363e063624a93a648c5a13beceeffacc017f9535
+PODFILE CHECKSUM: 8e0f4eba9caa4754375ba4564c9a14bfb7999b38
 
 COCOAPODS: 1.8.4

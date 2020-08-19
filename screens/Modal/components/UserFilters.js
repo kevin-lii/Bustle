@@ -7,6 +7,7 @@ import Tokenizer from "../../../components/Form/Tokenizer";
 
 import { getUsers } from "../../../store/actions";
 import { Theme, gradeLevels, majors } from "../../../global/constants";
+import { classes } from "../../../global/pickerItems";
 
 const UserFilters = ({ usersFilters, getUsers }) => {
   return (
@@ -49,6 +50,24 @@ const UserFilters = ({ usersFilters, getUsers }) => {
           data={majors.map((major) => ({
             label: major,
             value: major,
+          }))}
+        />
+        <Text text70 marginT-10 color={Theme.grey}>
+          Course(s)
+        </Text>
+        <Tokenizer
+          onChange={(values) =>
+            getUsers({
+              ...usersFilters,
+              classes: values.map((c) => c.value),
+            })
+          }
+          value={
+            usersFilters.classes?.map((c) => ({ label: c, value: c })) || []
+          }
+          data={classes.map((c) => ({
+            label: c,
+            value: c,
           }))}
         />
       </View>

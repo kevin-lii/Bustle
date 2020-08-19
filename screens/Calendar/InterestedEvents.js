@@ -1,7 +1,8 @@
 import React from "react";
-import { Text, FlatList, SafeAreaView, View } from "react-native";
+import { FlatList } from "react-native";
+import { Text, View } from "react-native-ui-lib";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
-import _ from "lodash";
 
 import EventDetail from "../../components/Cards/EventDetailCard";
 import { getSavedEvents } from "../../store/actions";
@@ -35,7 +36,11 @@ class InterestedFeed extends React.Component {
           }}
           keyExtractor={(item) => item._id.toString()}
           ListEmptyComponent={() => (
-            <Text marginT-10>You have no saved events.</Text>
+            <View centerV centerH flex>
+              <Text text60 style={{ fontWeight: "bold" }}>
+                You have no saved events.
+              </Text>
+            </View>
           )}
           ListFooterComponent={renderFooter}
         />

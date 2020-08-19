@@ -9,7 +9,9 @@ import { Theme } from "../../../global/constants";
 export default class ProfileEvent extends React.Component {
   render() {
     const { navigation, isCurrentUser, user } = this.props;
-    const pastEvents = Array.from(user.pastEvents.values());
+    const pastEvents = user.pastEvents
+      ? Array.from(user.pastEvents?.values())
+      : [];
     let content;
     if (pastEvents?.length > 0) {
       content = pastEvents.map((item) => {
@@ -26,7 +28,7 @@ export default class ProfileEvent extends React.Component {
     } else {
       content = (
         <View centerV centerH style={styles.emptyView}>
-          <Text text65 style={{ fontWeight: "bold" }}>
+          <Text text65 style={{ fontWeight: "bold", textAlign: "center" }}>
             {isCurrentUser
               ? "You do not have"
               : user.displayName + " does not have"}{" "}

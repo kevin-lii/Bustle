@@ -2,12 +2,11 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   container: {
-    display: "flex",
-    marginLeft: 20,
-    marginRight: 20,
+    flex: 1,
   },
   button: {
     margin: 5,
+    width: "100%",
   },
   error: {
     color: "red",

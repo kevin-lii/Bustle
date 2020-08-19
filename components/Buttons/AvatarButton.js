@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { ActivityIndicator } from "react-native";
 import { Avatar, Colors } from "react-native-ui-lib";
 
 import { UserContext } from "../../dataContainers/context";
@@ -20,6 +21,7 @@ export default function ({
   shadow = true,
 }) {
   const user = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   // set photo if photo is valid
   let photo;
   if (photoURL) {
@@ -69,6 +71,11 @@ export default function ({
       size={size}
       backgroundColor={photo ? Colors.white : Colors.yellow60}
       labelColor={Colors.orange20}
-    />
+      onImageLoadEnd={() => setLoading(false)}
+    >
+      {Boolean(loading && photo) && (
+        <ActivityIndicator size={size} color={Theme.primary} />
+      )}
+    </Avatar>
   );
 }

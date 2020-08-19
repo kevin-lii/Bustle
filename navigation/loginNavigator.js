@@ -56,17 +56,18 @@ export default () => {
           component={SignUp}
           options={({ navigation }) => ({
             headerTitle: () => null,
-            headerLeft: () => null,
-            headerRight: () => (
+            headerRight: () => null,
+            headerLeft: () => (
               <IconButton
-                icon="close-a"
-                type="Fontisto"
+                type="FontAwesome"
+                icon="arrow-left"
                 size={25}
+                color="white"
                 onPress={() => navigation.navigate("Login")}
               />
             ),
             headerTransparent: true,
-            headerRightContainerStyle: { marginTop: 20, marginRight: 25 },
+            headerLeftContainerStyle: { marginTop: 20, marginLeft: 25 },
           })}
         />
       </Stack.Navigator>

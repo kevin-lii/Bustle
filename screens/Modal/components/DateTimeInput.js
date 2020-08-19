@@ -14,11 +14,11 @@ export default ({ onDate, onTime, date, time, endTime }) => {
   const [modal, setModal] = useState(null);
 
   const setDate = (event, value) => {
-    if (Platform.OS !== "android" || event.type !== "dismissed") onDate(value);
+    if (event.type !== "dismissed") onDate(value);
     if (Platform.OS === "android") setModal(null);
   };
   const setTime = (event, value) => {
-    if (Platform.OS !== "android" || event.type !== "dismissed") onTime(value);
+    if (event.type !== "dismissed") onTime(value);
     if (Platform.OS == "android") setModal(null);
   };
 
@@ -27,16 +27,26 @@ export default ({ onDate, onTime, date, time, endTime }) => {
       <Modal
         isVisible={true}
         onBackdropPress={() => {
+          time
+            ? setTime({ type: "cancel" }, null)
+            : setDate({ type: "cancel" }, null);
           setModal(null);
         }}
         onBackButtonPress={() => {
+          time
+            ? setTime({ type: "cancel" }, null)
+            : setDate({ type: "cancel" }, null);
           setModal(null);
         }}
       >
         <View style={styles.container}>
           <View style={styles.innerContainer}>
             <TouchableOpacity>
-              <Text style={{ color: "blue" }} onPress={() => setModal(null)}>
+              <Text
+                text65
+                style={{ color: "blue" }}
+                onPress={() => setModal(null)}
+              >
                 Done
               </Text>
             </TouchableOpacity>

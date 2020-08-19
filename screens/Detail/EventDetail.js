@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ImageBackground, StyleSheet, Linking, ScrollView } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  Linking,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { View, Text } from "react-native-ui-lib";
 import { connect } from "react-redux";
 import moment from "moment";
@@ -64,16 +70,26 @@ const EventDetail = function ({
     savedEvents.includes(event._id.toString())
   );
   const [index, setIndex] = useState(0);
-  const [loading, setLoading] = useState(0);
+  const [loading, setLoading] = useState(Boolean(event.photoURL));
+  const [editing, setEditing] = useState(false);
   const isHost = user._id.toString() === event.host._id.toString();
 
   useEffect(() => {
-    event.addListener((obj, change) => {
+    const updateEvent = (obj, change) => {
       if (!_.values(change).every(_.isEmpty)) {
+        setEditing(true);
         setEvent(obj);
-        setLoading(loading + 1);
+        setEditing(false);
       }
+    };
+    event.addListener(updateEvent);
+    const unsubscribe = navigation.addListener("focus", () => {
+      setEditing(false);
     });
+    return () => {
+      event.removeListener(updateEvent);
+      unsubscribe();
+    };
   }, []);
 
   const routes = [
@@ -177,11 +193,19 @@ const EventDetail = function ({
   return (
     <>
       <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-        <View style={{ ...styles.imageContainer, height: 175 + padTop }}>
+        <View
+          centerV
+          style={{ ...styles.imageContainer, height: 175 + padTop }}
+        >
           <ImageBackground
             source={event.photoURL ? { uri: event.photoURL } : null}
             style={styles.image}
-          ></ImageBackground>
+            onLoadEnd={() => setLoading(false)}
+          >
+            {loading && (
+              <ActivityIndicator size="large" color={Theme.primary} />
+            )}
+          </ImageBackground>
         </View>
 
         <Text style={styles.popupTitle}>{event.name}</Text>
@@ -246,7 +270,10 @@ const EventDetail = function ({
           <IconButton
             containerStyle={styles.iconCircle}
             iconStyle={{ paddingBottom: 2, paddingLeft: 1 }}
-            onPress={() => navigation.navigate(FormTypes.EVENT_EDIT, { event })}
+            onPress={() => {
+              navigation.navigate(FormTypes.EVENT_EDIT, { event });
+              setEditing(true);
+            }}
             type="Font"
             icon="edit"
             color={Theme.primary}
@@ -260,7 +287,6 @@ const EventDetail = function ({
 
 export default connect(
   (state) => ({
-    realm: state.realm,
     userRealm: state.userRealm,
     user: state.user,
     savedEvents: state.saved,

@@ -90,7 +90,6 @@ export default class Event {
             moment().subtract(1, "d").format("YYYY-MM-DD@HH:MM:SS")
         )
         .filtered("cancelled == false");
-      console.log(query);
     }
     if (filters.live) query = query.filtered("ended == false");
     if (filters.orderBy) query = query.sorted([[filters.orderBy, false]]);
@@ -109,40 +108,44 @@ export default class Event {
 
   static async create(realm, data) {
     if (!data.name) throw new Error("Name not provided");
-    realm.write(async () => {
-      const id = new ObjectId();
-      if (data.image?.data) {
-        const s3bucket = new S3({
-          accessKeyId: "AKIART42PSEQKVT24D62",
-          secretAccessKey: "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",
+    const id = new ObjectId();
+    const image = data.image;
+    delete data.image;
+    let query;
+    realm.write(() => {
+      const newEvent = new Event({ id, ...data });
+      query = realm.create("Event", newEvent);
+    });
+    if (image?.data) {
+      const s3bucket = new S3({
+        accessKeyId: "AKIART42PSEQKVT24D62",
+        secretAccessKey: "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",
+        Bucket: "bustle-images",
+        signatureVersion: "v4",
+      });
+      let contentDeposition = `inline;filename="${id.toString()}"`;
+      const base64 = await RNFS.readFile(image.uri, "base64");
+      const arrayBuffer = decode(base64);
+      s3bucket.createBucket(() => {
+        const params = {
           Bucket: "bustle-images",
-          signatureVersion: "v4",
-        });
-        let contentDeposition = `inline;filename="${id.toString()}"`;
-        const base64 = await RNFS.readFile(data.image.uri, "base64");
-        const arrayBuffer = decode(base64);
-        s3bucket.createBucket(() => {
-          const params = {
-            Bucket: "bustle-images",
-            Key: `events/${id.toString()}`,
-            Body: arrayBuffer,
-            ContentDisposition: contentDeposition,
-            ContentType: "image/jpeg",
-          };
-          s3bucket.upload(params, (err, newData) => {
-            if (err) {
-              console.log("error in callback");
-            }
-            console.log("success");
-            console.log("Response URL : " + newData.Location);
-            data.photoURL = newData.Location;
+          Key: `events/${id.toString()}`,
+          Body: arrayBuffer,
+          ContentDisposition: contentDeposition,
+          ContentType: "image/jpeg",
+        };
+        s3bucket.upload(params, (err, newData) => {
+          if (err) {
+            console.log("error in callback");
+          }
+          console.log("success");
+          console.log("Response URL : " + newData.Location);
+          realm.write(() => {
+            query.photoURL = newData.Location;
           });
         });
-        delete data.image;
-      }
-      const newEvent = new Event({ id, ...data });
-      realm.create("Event", newEvent);
-    });
+      });
+    }
   }
 
   static async update(realm, event, update) {
@@ -200,6 +203,26 @@ export default class Event {
   }
 
   static remove(realm, event) {
+    const id = event._id.toString();
+    const photoURL = event.photoURL;
+    if (Boolean(photoURL)) {
+      const s3bucket = new S3({
+        accessKeyId: "AKIART42PSEQKVT24D62",
+        secretAccessKey: "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",
+        Bucket: "bustle-images",
+        signatureVersion: "v4",
+      });
+      const params = {
+        Bucket: "bustle-images",
+        Key: `events/${id}`,
+      };
+
+      s3bucket.deleteObject(params, function (err, data) {
+        if (err) console.log(err, err.stack);
+        // error
+        else console.log("success"); // deleted
+      });
+    }
     realm.write(() => {
       realm.delete(event);
     });

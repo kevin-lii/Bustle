@@ -59,7 +59,7 @@ function Discover({ navigation, users, getUsers }) {
                 icon="instagram"
                 onPress={() => openURL(item.instagram, "instagram")}
                 type="FontAwesome5"
-                size={25}
+                size={23}
                 color="black"
                 containerStyle={{ marginRight: 10 }}
               />
@@ -69,7 +69,7 @@ function Discover({ navigation, users, getUsers }) {
                 icon="snapchat-ghost"
                 type="FontAwesome5"
                 onPress={() => openURL(item.snapchat, "snapchat")}
-                size={25}
+                size={23}
                 color="black"
                 containerStyle={{ marginRight: 10 }}
               />
@@ -78,9 +78,9 @@ function Discover({ navigation, users, getUsers }) {
               <IconButton
                 icon="twitter"
                 color="#1da1f2"
-                onPress={() => openURL(item.twitter, "Twitter")}
+                onPress={() => openURL(item.twitter, "twitter")}
                 type="FontAwesome5"
-                size={25}
+                size={23}
                 containerStyle={{ marginRight: 10 }}
               />
             )}
@@ -88,9 +88,9 @@ function Discover({ navigation, users, getUsers }) {
               <IconButton
                 icon="linkedin"
                 color="#0072b1"
-                onPress={() => openURL(item.linkedin, "LinkedIn")}
+                onPress={() => openURL(item.linkedin, "linkedin")}
                 type="FontAwesome5"
-                size={25}
+                size={23}
                 containerStyle={{ marginRight: 10 }}
               />
             )}

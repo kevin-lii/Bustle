@@ -5,11 +5,9 @@ const smallEdge = 50;
 
 export default StyleSheet.create({
   container: {
-    display: "flex",
-    marginLeft: 20,
-    marginRight: 20,
+    flex: 1,
   },
   button: {
-    margin: 5,
+    marginVertical: 10,
   },
 });

@@ -120,6 +120,12 @@ export default class User {
         .join(" OR ");
       query = query.filtered(filter);
     }
+    if (filters.classes?.length > 0) {
+      const filter = filters.classes
+        .map((c) => `"${c}" in classes`)
+        .join(" OR ");
+      query = query.filtered(filter);
+    }
     if (filters.orderBy) query = query.sorted([[filters.orderBy]]);
     else query = query.sorted(["displayName"]);
     return query.values();

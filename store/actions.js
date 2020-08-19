@@ -1,5 +1,6 @@
 import _ from "lodash";
 import Realm from "realm";
+import { ObjectId } from "bson";
 
 import EventModel from "../models/Event";
 import UserModel from "../models/User";
@@ -16,6 +17,7 @@ export const actionTypes = {
   REGISTER_APP: "register realm app",
   REGISTER_APP_LOGIN: "register realm app and login",
   GET_USER: "get user",
+  INITIALIZE_TOKEN: "set token",
 };
 const subscriptions = {};
 
@@ -27,25 +29,14 @@ const generateUser = (authUser) => {
       partitionValue: "Berkeley",
     },
   };
-  const config = {
-    schema: [EventModel.schema, UserModel.schema],
-    path: "userConfig.realm",
-    sync: {
-      user: authUser,
-      partitionValue: "Berkeley",
-    },
-    mayWrite: false,
-    mayRead: true,
-  };
   const userRealm = new Realm(userConfig);
-  const realm = new Realm(config);
-  const query = UserModel.get(userRealm, authUser.id);
-  return { realm, userRealm, query };
+  // const realm = new Realm(config);
+  const query = UserModel.get(userRealm, authUser.identity);
+  return { userRealm, query };
 };
 
 export const registerApp = () => async (dispatch, getState) => {
-  // const { sessionKey, sessionID } = getState();
-  const { sessionID } = getState();
+  const { sessionID, sessionToken } = getState();
   const appConfig = {
     id: realmID,
     timeout: 10000,
@@ -55,28 +46,42 @@ export const registerApp = () => async (dispatch, getState) => {
     },
   };
   const data = new Realm.App(appConfig);
-  if (data?.currentUser?.id === sessionID) {
-    const { query, userRealm, realm } = generateUser(data.currentUser);
+  if (data?.currentUser()?.identity === sessionID && sessionToken != null) {
+    await data.currentUser().logOut();
+    let credentials;
+    try {
+      credentials = Realm.Credentials.userAPIKey(sessionToken[sessionID]);
+    } catch {
+      dispatch({
+        type: actionTypes.REGISTER_APP,
+        app: data,
+      });
+    }
+    let userData;
+    let authUser;
+    let count = 0;
+    while (!userData?.query && count < 5) {
+      try {
+        authUser = await data.logIn(credentials);
+      } catch (e) {
+        console.log(e);
+        throw new Error(e);
+      }
+      userData = generateUser(authUser);
+      if (!userData?.query) {
+        userData.userRealm.close();
+        count++;
+      }
+    }
+
     dispatch({
       type: actionTypes.REGISTER_APP_LOGIN,
       app: data,
-    });
-    dispatch({
-      type: actionTypes.LOGIN,
-      user: query,
-      userRealm,
-      realm,
-      auth: data.currentUser,
-      // sessionKey,
+      user: userData.query,
+      userRealm: userData.userRealm,
+      // realm,
+      auth: data.currentUser(),
       sessionID,
-    });
-    query.addListener((obj, change) => {
-      if (!_.values(change).every(_.isEmpty)) {
-        dispatch({
-          type: actionTypes.UPDATE_USER,
-          user: Object.assign(obj, query),
-        });
-      }
     });
   } else {
     dispatch({
@@ -86,69 +91,80 @@ export const registerApp = () => async (dispatch, getState) => {
   }
 };
 
-export const login = (crendetials) => async (dispatch, getState) => {
-  const { app, auth } = getState();
+export const realmDisable = () => (dispatch, getState) => {
+  const { userRealm } = getState();
+  userRealm.syncSession.pause();
+};
+
+export const login = (crendetials, handleError) => async (
+  dispatch,
+  getState
+) => {
+  const { app, auth, sessionToken } = getState();
   if (auth != null) {
-    console.warn("Already logged in -- can't log out!");
+    handleError({ message: "Already logged in -- can't log out!" });
     return;
   }
-
-  // const newName = new ObjectId();
-  // const apiKey = await authUser.apiKeys.create(newName.toString());
-  // const apiCredentials = Realm.Credentials.userApiKey(apiKey.key);
-  // const temp = await app.logIn(apiCredentials);
   let userData;
   let authUser;
   let count = 0;
   while (!userData?.query && count < 5) {
-    authUser = await app.logIn(crendetials);
+    try {
+      authUser = await app.logIn(crendetials);
+    } catch (e) {
+      handleError(e);
+      return;
+    }
     userData = generateUser(authUser);
     if (!userData?.query) {
       userData.userRealm.close();
-      userData.realm.close();
+      // userData.realm.close();
       count++;
     }
   }
-  if (!userData?.query) return;
+  if (!userData?.query) {
+    handleError({ message: "Something went wrong. Please try again!" });
+    return;
+  }
 
   dispatch({
     type: actionTypes.LOGIN,
     user: userData.query,
     userRealm: userData.userRealm,
-    realm: userData.realm,
+    // realm: userData.realm,
     auth: authUser,
-    sessionID: authUser.id,
-    // sessionKey: apiKey.key,
-    // sessionID: apiKey.id.toString(),
+    sessionID: authUser.identity,
   });
-
-  userData.query.addListener((obj, change) => {
-    if (!_.values(change).every(_.isEmpty)) {
-      dispatch({
-        type: actionTypes.UPDATE_USER,
-        user: Object.assign(obj, userData.query),
-      });
-    }
-  });
+  if (sessionToken == null || !sessionToken[authUser.identity]) {
+    const name = new ObjectId().toString();
+    const key = await app.currentUser().auth.apiKeys.createAPIKey(name);
+    const object = {};
+    object[authUser.identity] = key.key;
+    dispatch({
+      type: actionTypes.INITIALIZE_TOKEN,
+      sessionToken: { ...object, ...sessionToken },
+    });
+  }
 };
 
 export const logout = () => async (dispatch, getState) => {
-  const { sessionID, userRealm, realm, auth, app } = getState();
+  // const { userRealm, realm, auth } = getState();
+  const { userRealm, auth, app } = getState();
   if (auth == null) {
     console.warn("Not logged in -- can't log out!");
     return;
   }
-  userRealm.removeAllListeners();
+
+  Object.keys(subscriptions).forEach(function (key) {
+    subscriptions[key].removeAllListeners();
+    delete subscriptions[key];
+  });
   userRealm.close();
 
-  realm.removeAllListeners();
-  realm.close();
+  // realm.removeAllListeners();
+  // realm.close();
 
-  console.log("Logging out...");
-  // await app.removeUser(app.currentUser, true);
   await auth.logOut();
-  // const temp = await app.currentUser.apiKeys.delete(new ObjectId(sessionID));
-
   dispatch({
     type: actionTypes.LOGOUT,
   });
@@ -156,7 +172,6 @@ export const logout = () => async (dispatch, getState) => {
 
 export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.hostedEvents) {
-    subscriptions.hostedEvents();
     return;
   }
   const { user } = getState();
@@ -167,7 +182,8 @@ export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
     type: actionTypes.UPDATE_HOSTED_EVENTS,
     hostedEvents,
   });
-  subscriptions.hostedEvents = query.addListener((collection, change) => {
+  subscriptions.hostedEvents = query;
+  query.addListener((collection, change) => {
     if (!_.values(change).every(_.isEmpty)) {
       const hostedEvents = Array.from(collection.values());
       dispatch({
@@ -180,7 +196,6 @@ export const getHostedEvents = (filters = {}) => (dispatch, getState) => {
 
 export const getSavedEvents = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.savedEvents) {
-    subscriptions.savedEvents();
     return;
   }
   const { user } = getState();
@@ -192,7 +207,8 @@ export const getSavedEvents = (filters = {}) => (dispatch, getState) => {
     saved,
     savedEvents,
   });
-  subscriptions.savedEvents = query.addListener((collection, change) => {
+  subscriptions.savedEvents = query;
+  query.addListener((collection, change) => {
     if (!_.values(change).every(_.isEmpty)) {
       const savedEvents = Array.from(collection.values());
       const saved = savedEvents.map((item) => item._id.toString());
@@ -206,9 +222,9 @@ export const getSavedEvents = (filters = {}) => (dispatch, getState) => {
 };
 
 export const getUsers = (filters = {}) => (dispatch, getState) => {
-  const { realm, usersFilters } = getState();
+  const { userRealm, usersFilters } = getState();
   const newFilters = { ...usersFilters, ...filters };
-  const query = Array.from(UserModel.getUsers(realm, newFilters));
+  const query = Array.from(UserModel.getUsers(userRealm, newFilters));
   dispatch({
     type: actionTypes.GET_USER,
     users: query,
@@ -218,7 +234,6 @@ export const getUsers = (filters = {}) => (dispatch, getState) => {
 
 export const setEventFilters = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.getEvents) {
-    subscriptions.getEvents();
     return;
   }
   const { eventFilters, userRealm } = getState();
@@ -228,18 +243,21 @@ export const setEventFilters = (filters = {}) => (dispatch, getState) => {
     events: Array.from(query.values()),
     filters: { ...eventFilters, ...filters },
   });
-  subscriptions.getEvents = query.addListener((collection, change) => {
+  subscriptions.getEvents = query;
+  query.addListener((collection, change) => {
     if (!_.values(change).every(_.isEmpty)) {
+      // const { events } = getState();
+      const events = Array.from(collection.values());
       dispatch({
         type: actionTypes.UPDATE_EVENTS,
-        events: Array.from(collection.values()),
+        events,
       });
     }
   });
 };
 
 export const saveEvent = (eventID) => (dispatch, getState) => {
-  const { user, saved, savedEvents, userRealm } = getState();
+  const { user, saved, userRealm } = getState();
   const event = EventModel.getOne(userRealm, eventID);
   userRealm.write(() => {
     user.interestedEvents.push(event);
@@ -247,7 +265,7 @@ export const saveEvent = (eventID) => (dispatch, getState) => {
 };
 
 export const removeEvent = (eventID) => (dispatch, getState) => {
-  const { user, saved, savedEvents, userRealm } = getState();
+  const { user, saved, userRealm } = getState();
   const index = saved.indexOf(eventID.toString());
   if (index >= 0)
     userRealm.write(() => {

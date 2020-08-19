@@ -5,7 +5,6 @@ export default StyleSheet.create({
     display: "flex",
     height: "100%",
     paddingHorizontal: 5,
-    paddingBottom: 60,
   },
   title: {
     fontSize: 30,

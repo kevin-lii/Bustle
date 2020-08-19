@@ -33,7 +33,8 @@ const users = (state, action) => {
 const user = (state, action) => {
   if (
     action.type === actionTypes.UPDATE_USER ||
-    action.type === actionTypes.LOGIN
+    action.type === actionTypes.LOGIN ||
+    action.type === actionTypes.REGISTER_APP_LOGIN
   )
     return action.user;
   if (
@@ -45,7 +46,11 @@ const user = (state, action) => {
 };
 
 const auth = (state, action) => {
-  if (action.type === actionTypes.LOGIN) return action.auth;
+  if (
+    action.type === actionTypes.LOGIN ||
+    action.type === actionTypes.REGISTER_APP_LOGIN
+  )
+    return action.auth;
   if (action.type === actionTypes.LOGOUT) return null;
   return state || null;
 };
@@ -60,16 +65,20 @@ const app = (state, action) => {
 };
 
 const userRealm = (state, action) => {
-  if (action.type === actionTypes.LOGIN) return action.userRealm;
+  if (
+    action.type === actionTypes.LOGIN ||
+    action.type === actionTypes.REGISTER_APP_LOGIN
+  )
+    return action.userRealm;
   if (action.type === actionTypes.LOGOUT) return null;
   return state || null;
 };
 
-const realm = (state, action) => {
-  if (action.type === actionTypes.LOGIN) return action.realm;
-  if (action.type === actionTypes.LOGOUT) return null;
-  return state || null;
-};
+// const realm = (state, action) => {
+//   if (action.type === actionTypes.LOGIN) return action.realm;
+//   if (action.type === actionTypes.LOGOUT) return null;
+//   return state || null;
+// };
 
 const saved = (state, action) => {
   if (action.type === actionTypes.UPDATE_INTERESTED_EVENTS) return action.saved;
@@ -91,8 +100,17 @@ const usersFilters = (state, action) => {
 };
 
 const sessionID = (state, action) => {
-  if (action.type === actionTypes.LOGIN) return action.sessionID;
+  if (
+    action.type === actionTypes.LOGIN ||
+    action.type === actionTypes.REGISTER_APP_LOGIN
+  )
+    return action.sessionID;
   if (action.type === actionTypes.LOGOUT) return null;
+  return state || null;
+};
+
+const sessionToken = (state, action) => {
+  if (action.type === actionTypes.INITIALIZE_TOKEN) return action.sessionToken;
   return state || null;
 };
 
@@ -106,8 +124,9 @@ export default combineReducers({
   auth,
   userRealm,
   usersFilters,
-  realm,
+  // realm,
   saved,
   savedEvents,
   sessionID,
+  sessionToken,
 });

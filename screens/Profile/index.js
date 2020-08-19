@@ -22,20 +22,16 @@ import globalStyles from "../../global/styles";
 
 function Profile({ navigation, route, currentUser, auth }) {
   const isForeign =
-    route.params?.user && route.params.user._id.toString() !== auth.id;
-  const [user, setUser] = useState(isForeign ? route.params.user : currentUser);
-  const [loading, setLoading] = useState(0);
+    route.params?.user && route.params.user._id.toString() !== auth.identity;
+  const user = isForeign ? route.params.user : currentUser;
   const [index, setIndex] = useState(0);
+  const [_, setEditing] = useState();
   useEffect(() => {
-    navigation.addListener(
-      "focus",
-      () => {
-        setUser(isForeign ? route.params.user : currentUser);
-        setLoading(loading + 1);
-      },
-      []
-    );
-  });
+    const unsubscribe = navigation.addListener("focus", () => {
+      setEditing(false);
+    });
+    return unsubscribe;
+  }, []);
   const routes = [
     { key: "events", title: "Past" },
     { key: "hosted", title: "Hosted" },
@@ -100,7 +96,10 @@ function Profile({ navigation, route, currentUser, auth }) {
           {!isForeign && (
             <View center style={styles.iconCircle}>
               <TouchableOpacity
-                onPress={() => navigation.navigate(FormTypes.PROFILE_EDIT)}
+                onPress={() => {
+                  navigation.navigate(FormTypes.PROFILE_EDIT);
+                  setEditing(true);
+                }}
               >
                 <Icons
                   icon="player-settings"
@@ -115,49 +114,49 @@ function Profile({ navigation, route, currentUser, auth }) {
 
         <View style={{ paddingHorizontal: 20 }}>
           <View row spread>
-            <View centerV style={{ marginBottom: 10 }}>
+            <View centerV style={{ marginBottom: 15, width: "65%" }}>
               <Text
-                style={{ fontWeight: "bold", fontSize: 30, paddingBottom: 5 }}
+                numberOfLines={2}
+                style={{ fontWeight: "bold", fontSize: 25, marginBottom: 10 }}
               >
                 {user.displayName}
               </Text>
               {Boolean(user.major) && (
                 <Text
+                  numberOfLines={1}
                   style={{
                     fontSize: 15,
                   }}
                 >
-                  <Text maxLength={20} style={{ fontWeight: "bold" }}>
-                    {" "}
-                    Major:{" "}
-                  </Text>{" "}
+                  <Text style={{ fontWeight: "bold" }}>Major: </Text>
                   {user.major}
                 </Text>
               )}
 
               {Boolean(user.year) && (
                 <Text
+                  numberOfLines={1}
                   style={{
                     fontSize: 15,
                   }}
                 >
-                  <Text style={{ fontWeight: "bold" }}> Year: </Text>{" "}
+                  <Text style={{ fontWeight: "bold" }}>Year: </Text>
                   {user.year}
                 </Text>
               )}
               {Boolean(user.location) && (
                 <Text
+                  numberOfLines={1}
                   style={{
                     fontSize: 15,
-                    marginLeft: 5,
                   }}
                 >
-                  <Text style={{ fontWeight: "bold" }}>Location: </Text>{" "}
-                  {trimString(user.location, 25)}
+                  <Text style={{ fontWeight: "bold" }}>Location: </Text>
+                  {user.location}
                 </Text>
               )}
             </View>
-            <View>
+            <View style={{ width: "30%" }}>
               <AvatarButton
                 photoURL={user.photoURL}
                 name={user.displayName}
@@ -170,11 +169,11 @@ function Profile({ navigation, route, currentUser, auth }) {
           {Boolean(user.classes?.length > 0) && (
             <Text
               style={{
-                marginBottom: 5,
+                marginVertical: 5,
                 fontSize: 17.5,
               }}
             >
-              <Text style={{ fontWeight: "bold" }}>Classes: </Text>{" "}
+              <Text style={{ fontWeight: "bold" }}>Courses: </Text>
               {user.classes.join(", ")}
             </Text>
           )}

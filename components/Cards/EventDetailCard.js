@@ -1,13 +1,14 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { View, Text, Card, Image } from "react-native-ui-lib";
-import { Badge } from "react-native-elements";
+import { StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, Card } from "react-native-ui-lib";
+import { Badge, Image } from "react-native-elements";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
 
 import CategoriesIcon from "../Image/CategoriesIcon";
 import CardIcons from "./components/CardIcons";
+import { Theme } from "../../global/constants";
 import { trimString } from "../../global/utils";
 import Icons from "../Image/Icons";
 
@@ -81,7 +82,15 @@ export default ({ children, event, map, edit, trash, rsvp }) => {
         width={"100%"}
         containerStyle={styles.containerStyle}
       >
-        <Image style={styles.image} source={{ uri: event.photoURL || "" }} />
+        <Image
+          style={styles.image}
+          source={Boolean(event.photoURL) ? { uri: event.photoURL } : null}
+          PlaceholderContent={
+            Boolean(event.photoURL) ? (
+              <ActivityIndicator size="large" color={Theme.primary} />
+            ) : null
+          }
+        />
         <LinearGradient
           colors={["#33333360", "#333333f0"]}
           style={styles.gradient}
