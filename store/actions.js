@@ -234,7 +234,7 @@ export const getUsers = (filters = {}) => (dispatch, getState) => {
 
 export const setEventFilters = (filters = {}) => (dispatch, getState) => {
   if (subscriptions.getEvents) {
-    return;
+    subscriptions.getEvents.removeAllListeners();
   }
   const { eventFilters, userRealm } = getState();
   const query = EventModel.get(userRealm, { ...eventFilters, ...filters });

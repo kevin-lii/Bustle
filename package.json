@@ -8,6 +8,7 @@
     "run:ios": "npx react-native run-ios",
     "run:ios:device": "react-native run-ios --device",
     "build:apk": "cd android && ./gradlew assembleRelease",
+    "build:apk:device": "npx react-native run-android --variant=release",
     "build:bundle": "cd android && ./gradlew bundleRelease",
     "test": "jest",
     "prepare": "patch-package"
